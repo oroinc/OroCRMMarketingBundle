@@ -1,0 +1,38 @@
+{
+    "name": "oro/marketing",
+    "description": "BAP marketing-related bundles",
+    "homepage": "https://github.com/orocrm/marketing.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Oro": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/orocrm/marketing.git"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "oro/platform": "1.x-dev"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
