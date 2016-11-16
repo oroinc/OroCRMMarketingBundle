@@ -6,37 +6,22 @@ use Doctrine\DBAL\Schema\Schema;
 
 use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\MigrationBundle\Migration\Extension\RenameExtension;
-use Oro\Bundle\MigrationBundle\Migration\Extension\RenameExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-
-use Oro\Bundle\TrackingBundle\Migrations\Schema\v1_4\OroTrackerBundle as OroTrackingBundle_v1_4;
-use Oro\Bundle\TrackingBundle\Migrations\Schema\v2_0\OroTrackingBundle as OroTrackingBundle_v2_0;
+use Oro\Bundle\TrackingBundle\Migrations\Schema\v1_4\OroTrackerBundle;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class OroTrackingBundleInstaller implements Installation, RenameExtensionAwareInterface
+class OroTrackingBundleInstaller implements Installation
 {
-    /** @var RenameExtension */
-    private $renameExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRenameExtension(RenameExtension $renameExtension)
-    {
-        $this->renameExtension = $renameExtension;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v2_0';
+        return 'v1_10';
     }
 
     /**
@@ -57,13 +42,11 @@ class OroTrackingBundleInstaller implements Installation, RenameExtensionAwareIn
         $this->addOroTrackingEventForeignKeys($schema);
         $this->addOroTrackingWebsiteForeignKeys($schema);
 
-        OroTrackingBundle_v1_4::addOrganization($schema);
+        OroTrackerBundle::addOrganization($schema);
 
         $this->addOroTrackingVisitEventForeignKeys($schema);
         $this->addOroTrackingEventDictionaryForeignKeys($schema);
         $this->addOroTrackingVisitForeignKeys($schema);
-
-        OroTrackingBundle_v2_0::updateTrackingVisitEvent($schema, $queries, $this->renameExtension);
     }
 
     /**
