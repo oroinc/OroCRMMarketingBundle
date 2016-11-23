@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Migration\Extension;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\SchemaException;
 
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
@@ -56,5 +57,45 @@ class VisitEventAssociationExtension implements ExtendExtensionAwareInterface
             $targetTable,
             $targetColumnName
         );
+    }
+
+    /**
+     * @param Schema $schema
+     * @param string $targetTableName
+     *
+     * @return bool
+     *
+     * @throws SchemaException if valid primary key does not exist
+     */
+    public function hasVisitEventAssociation(Schema $schema, $targetTableName)
+    {
+        $visitTable = $schema->getTable(self::VISIT_EVENT_TABLE_NAME);
+        $targetTable  = $schema->getTable($targetTableName);
+
+        $associationName = ExtendHelper::buildAssociationName(
+            $this->extendExtension->getEntityClassByTableName($targetTableName)
+        );
+
+        if (!$targetTable->hasPrimaryKey()) {
+            throw new SchemaException(
+                sprintf('The table "%s" must have a primary key.', $targetTable->getName())
+            );
+        }
+        $primaryKeyColumns = $targetTable->getPrimaryKey()->getColumns();
+        if (count($primaryKeyColumns) !== 1) {
+            throw new SchemaException(
+                sprintf('A primary key of "%s" table must include only one column.', $targetTable->getName())
+            );
+        }
+
+        $primaryKeyColumnName = array_pop($primaryKeyColumns);
+
+        $nameGenerator = $this->extendExtension->getNameGenerator();
+        $selfColumnName = $nameGenerator->generateRelationColumnName(
+            $associationName,
+            '_' . $primaryKeyColumnName
+        );
+
+        return $visitTable->hasColumn($selfColumnName);
     }
 }

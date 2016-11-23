@@ -8,7 +8,6 @@ use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-
 use Oro\Bundle\TrackingBundle\Migrations\Schema\v1_4\OroTrackerBundle;
 
 /**
