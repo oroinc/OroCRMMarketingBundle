@@ -28,12 +28,6 @@ features:
             - 'oro_api_post_marketinglist_removeditem_deprecated'
             - 'oro_api_post_marketinglist_segment_run_deprecated'
             - 'oro_api_post_marketinglist_unsubscribeditem_deprecated'
-            - 'oro_mailchimp_marketing_list_connect'
-            - 'oro_mailchimp_sync_status'
-            - 'oro_dotmailer_marketing_list_disconnect'
-            - 'oro_dotmailer_marketing_list_connect'
-            - 'oro_dotmailer_marketing_list_buttons'
-            - 'oro_dotmailer_sync_status'
 
             # campaign routes
             - 'oro_campaign_index'
@@ -55,9 +49,6 @@ features:
             - 'oro_api_options_emailcampaigns'
             - 'oro_api_get_emailcampaign_email_templates'
             - 'oro_api_options_emailcampaign_email_templates'
-            - 'oro_mailchimp_email_campaign_status'
-            - 'oro_mailchimp_email_campaign_activity_update_toggle'
-            - 'oro_dotmailer_email_campaign_status'
 
             # tracking routes
             - 'oro_tracking_data_create'
