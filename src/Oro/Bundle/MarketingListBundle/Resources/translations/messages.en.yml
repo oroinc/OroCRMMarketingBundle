@@ -6,8 +6,6 @@ oro:
             features: Marketing Features
             title: Marketing
             feature_enabled: Enable Marketing Features
-            system_configuration:
-                title: Titlul pentru ceva
         entity_label:        Marketing List
         entity_plural_label: Marketing Lists
         description.label:   Description
