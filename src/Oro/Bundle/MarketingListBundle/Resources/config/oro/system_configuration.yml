@@ -1,0 +1,34 @@
+system_configuration:
+    groups:
+        marketing_features:
+            title: oro.marketinglist.marketing.features
+            icon: icon-file
+        marketing_setup:
+            title: oro.marketinglist.marketing.setup
+        marketing_settings:
+            title: oro.marketinglist.marketing.settings
+            icon: icon-wrench
+            page_reload: true
+        marketing:
+            title: oro.marketinglist.marketing.title
+            icon: icon-bar-chart
+
+    fields:
+        oro_marketing.feature_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: oro.marketinglist.marketing.feature_enabled
+
+
+    tree:
+        system_configuration:
+            marketing:
+                children:
+                    marketing_setup:
+                        children:
+                            marketing_settings:
+                                children:
+                                    marketing_features:
+                                        children:
+                                            - oro_marketing.feature_enabled
