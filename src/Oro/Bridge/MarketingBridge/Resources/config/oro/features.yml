@@ -63,3 +63,5 @@ features:
             - 'campaigns_leads'
             - 'campaigns_opportunity'
             - 'campaigns_by_close_revenue'
+        field_configs:
+            - 'campaign'
