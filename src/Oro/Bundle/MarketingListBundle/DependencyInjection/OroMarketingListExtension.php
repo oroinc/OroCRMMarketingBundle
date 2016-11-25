@@ -9,6 +9,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OroMarketingListExtension extends Extension
 {
+    const ALIAS = 'oro_marketing';
+
     /**
      * {@inheritDoc}
      */
