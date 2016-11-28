@@ -54,7 +54,7 @@ can be filled by Piwik automatically, otherwise client should fill them in custo
 
 ## Example
 
-Fully working code you can find in OroCRM MagentoBundle -> TrackingCustomerIdentification
+Fully working code you can find in OroCRM MarketingCRM Bridge -> Provider -> TrackingCustomerIdentification
 As a simple example, it will looks like this:
 
 ###Services:
