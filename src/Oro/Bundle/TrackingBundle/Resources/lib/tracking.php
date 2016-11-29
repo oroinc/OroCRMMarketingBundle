@@ -2,6 +2,7 @@
 /**
  * This is tracking endpoint, which must be as fast as possible.
  * KISS.
+ * @SuppressWarnings(PHPMD)
  */
 
 $trackingFolder = '../app/logs/tracking';
