@@ -44,17 +44,17 @@ The main goal of processing(parsing) tracking events is to identify object(s) fo
   "scripts": {
     "post-install-cmd": [
       ...
-      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::symlinkTrackingScript",
+      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::copyTrackingScript",
       ...
     ],
     "post-update-cmd": [
       ...
-      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::symlinkTrackingScript",
+      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::copyTrackingScript",
       ...
     ]
   },
 ```
-This will symlink the ``tracking.php`` front controller to the application's ``/web`` folder.
+This will copy the ``tracking.php`` front controller to the application's ``/web`` folder.
 
 ## Request parameters expected by tracking
 

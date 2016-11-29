@@ -12,11 +12,11 @@ class TrackingInstaller extends ScriptHandler
     const SCRIPT_NAME = 'tracking.php';
 
     /**
-     * Symlinks tracking script to application's web directory
+     * Copied tracking script to application's web directory
      *
      * @param Event $event Composer script event
      */
-    public static function symlinkTrackingScript(Event $event)
+    public static function copyTrackingScript(Event $event)
     {
         $options = self::getOptions($event);
         $webDir  = $options['symfony-web-dir'];
@@ -25,9 +25,9 @@ class TrackingInstaller extends ScriptHandler
         $targetPath = $webDir . sprintf('/%s', static::SCRIPT_NAME);
 
         $filesystem = new Filesystem();
-        $filesystem->symlink($scriptPath, $targetPath, true);
+        $filesystem->copy($scriptPath, $targetPath, true);
         $event->getIO()->write(
-            sprintf('<info>Symlinked tracking script to "%s"</info>', $targetPath)
+            sprintf('<info>Copied tracking script to "%s"</info>', $targetPath)
         );
     }
 }
