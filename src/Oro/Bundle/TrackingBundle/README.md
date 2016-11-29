@@ -38,6 +38,24 @@ The main goal of processing(parsing) tracking events is to identify object(s) fo
 
 - To connect tracking event with your data, provider should have 3 additional methods: **isApplicableVisitEvent**, **processEvent**, **getEventTargets**
 
+## Installation
+- In order to collect information, when installing the package with Composer you have to add these lines to the ``post-install-cmd`` and ``post-update-cmd`` sections of the ``scripts`` node in the application's ``composer.json`` file.
+```json
+  "scripts": {
+    "post-install-cmd": [
+      ...
+      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::symlinkTrackingScript",
+      ...
+    ],
+    "post-update-cmd": [
+      ...
+      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::symlinkTrackingScript",
+      ...
+    ]
+  },
+```
+This will symlink the ``tracking.php`` front controller to the application's ``/web`` folder.
+
 ## Request parameters expected by tracking
 
 Actuall mapping can be seen in `Oro\Bundle\TrackingBundle\ImportExport\DataConverter`,
