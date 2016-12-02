@@ -237,3 +237,36 @@ The main entity for this data is **Visitor event** - parsed web event data relat
  - List of connected records to the event event entity.
 
 Additionally, there is **Tracking Event** table - original web event data recorded from the website
+
+
+# Security firewalls
+
+TrackingBundle comes with a default firewall configuration, to allow data to be pushed into the system:
+```yaml
+security:
+    firewalls:
+        tracking_data:
+            pattern:   ^/tracking/data/create
+            provider:  chain_provider
+            anonymous: true
+```
+
+However, this can be overwritten to fit your needs, in 2 different ways:
+
+###1. Application's ``security.yml``:
+```yaml
+security:
+    firewalls:
+        # override pattern
+        tracking_data:
+            pattern:   ^%web_backend_prefix%/tracking/data/create
+```
+
+###2. Bundle's ``app.yml`` in ``Resources/config/oro``:
+```yaml
+security:
+    firewalls:
+        # override pattern
+        tracking_data:
+            pattern:   ^%web_backend_prefix%/tracking/data/create
+```
