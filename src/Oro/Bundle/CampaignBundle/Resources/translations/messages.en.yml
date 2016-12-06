@@ -1,5 +1,6 @@
 oro:
     campaign:
+        feature_enabled: Enable Campaign Features
         entity_description:  Marketing campaigns
         entity_label:        Campaign
         entity_plural_label: Campaigns

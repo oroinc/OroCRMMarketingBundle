@@ -14,11 +14,11 @@ system_configuration:
             icon: icon-bar-chart
 
     fields:
-        oro_marketing.feature_enabled:
+        oro_marketing_list.feature_enabled:
             data_type: boolean
             type: oro_config_checkbox
             options:
-                label: oro.marketinglist.marketing.feature_enabled
+                label: oro.marketinglist.feature_enabled
 
 
     tree:
@@ -31,4 +31,4 @@ system_configuration:
                                 children:
                                     marketing_features:
                                         children:
-                                            - oro_marketing.feature_enabled
+                                            - oro_marketing_list.feature_enabled

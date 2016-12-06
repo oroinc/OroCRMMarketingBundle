@@ -65,6 +65,12 @@ system_configuration:
                 acl: oro_tracking_website_view
                 title: oro.tracking.website_configuration
 
+        oro_tracking.feature_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: oro.tracking.feature_enabled
+
     tree:
         system_configuration:
             platform:
@@ -82,6 +88,15 @@ system_configuration:
                                             - oro_tracking.piwik_host
                                             - oro_tracking.piwik_token_auth
                                             - oro_tracking.wesite_configuration
+            marketing:
+                children:
+                    marketing_setup:
+                        children:
+                            marketing_settings:
+                                children:
+                                    marketing_features:
+                                        children:
+                                            - oro_tracking.feature_enabled
 
     api_tree:
         tracking:
