@@ -5,7 +5,7 @@ oro:
             settings: Settings
             features: Marketing Features
             title: Marketing
-            feature_enabled: Enable Marketing Features
+        feature_enabled: Enable Marketing List Features
         entity_label:        Marketing List
         entity_plural_label: Marketing Lists
         description.label:   Description

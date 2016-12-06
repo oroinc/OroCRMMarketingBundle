@@ -14,6 +14,11 @@ system_configuration:
             type: text
             options:
                 label: oro.campaign.emailcampaign.system_configuration.campaign_sender_name
+        oro_campaign.feature_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: oro.campaign.feature_enabled
 
     tree:
         system_configuration:
@@ -28,6 +33,15 @@ system_configuration:
                                         children:
                                             - oro_campaign.campaign_sender_email
                                             - oro_campaign.campaign_sender_name
+            marketing:
+                children:
+                    marketing_setup:
+                        children:
+                            marketing_settings:
+                                children:
+                                    marketing_features:
+                                        children:
+                                            - oro_campaign.feature_enabled
     api_tree:
         email_configuration:
             oro_campaign.campaign_sender_email: ~

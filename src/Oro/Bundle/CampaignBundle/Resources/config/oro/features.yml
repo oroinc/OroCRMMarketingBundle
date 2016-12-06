@@ -1,0 +1,34 @@
+features:
+    campaign:
+        label: oro.campaign.feature.label
+        description: oro.campaign.feature.description
+        toggle: oro_campaign.feature_enabled
+        routes:
+            # campaign routes
+            - 'oro_campaign_index'
+            - 'oro_campaign_create'
+            - 'oro_campaign_update'
+            - 'oro_campaign_view'
+            - 'oro_campaign_event_plot'
+            - 'oro_email_campaign_index'
+            - 'oro_email_campaign_create'
+            - 'oro_email_campaign_update'
+            - 'oro_email_campaign_view'
+            - 'oro_email_campaign_send'
+            - 'oro_campaign_dashboard_campaigns_leads_chart'
+            - 'oro_campaign_dashboard_campaigns_opportunity_chart'
+            - 'oro_campaign_dashboard_campaigns_by_close_revenue_chart'
+            - 'oro_api_delete_campaign'
+            - 'oro_api_options_campaigns'
+            - 'oro_api_delete_emailcampaign'
+            - 'oro_api_options_emailcampaigns'
+            - 'oro_api_get_emailcampaign_email_templates'
+            - 'oro_api_options_emailcampaign_email_templates'
+        dashboard_widgets:
+            - 'campaigns_leads'
+            - 'campaigns_opportunity'
+            - 'campaigns_by_close_revenue'
+        field_configs:
+            - 'campaign'
+        navigation_items:
+            - 'application_menu > reports_tab > oro.campaign.entity_plural_label_report_tab'

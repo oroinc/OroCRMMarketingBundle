@@ -1,5 +1,6 @@
 oro:
     tracking:
+        feature_enabled: Enable Tracking Features
         trackingwebsite:
             entity_label:        Tracking Website
             entity_plural_label: Tracking Websites

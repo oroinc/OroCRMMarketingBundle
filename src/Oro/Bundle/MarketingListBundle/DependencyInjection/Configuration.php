@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\CampaignBundle\DependencyInjection;
+namespace Oro\Bundle\MarketingListBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -10,18 +10,17 @@ use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('oro_campaign');
+
+        $rootNode = $treeBuilder->root('oro_marketing_list');
 
         SettingsBuilder::append(
             $rootNode,
             [
-                'campaign_sender_email' => ['value' => sprintf('no-reply@%s.example', gethostname())],
-                'campaign_sender_name'  => ['value' => 'Oro'],
                 'feature_enabled' => ['value' => true],
             ]
         );

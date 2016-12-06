@@ -1,0 +1,29 @@
+features:
+    marketing_list:
+        label: oro.marketing_list.feature.label
+        description: oro.marketing_list.feature.description
+        toggle: oro_marketing_list.feature_enabled
+        routes:
+            - 'oro_marketing_list_index'
+            - 'oro_marketing_list_view'
+            - 'oro_marketing_list_create'
+            - 'oro_marketing_list_update'
+            - 'oro_api_contact_marketinglist_information_field_type'
+            - 'oro_api_entity_marketinglist_contact_information_fields'
+            - 'oro_api_delete_marketinglist'
+            - 'oro_api_options_marketinglists'
+            - 'oro_api_remove_marketinglist_removeditem'
+            - 'oro_api_unremove_marketinglist_removeditem'
+            - 'oro_api_post_marketinglist_removeditem'
+            - 'oro_api_delete_marketinglist_removeditem'
+            - 'oro_api_options_marketinglist_removeditems'
+            - 'oro_api_unsubscribe_marketinglist_unsubscribeditem'
+            - 'oro_api_subscribe_marketinglist_unsubscribeditem'
+            - 'oro_api_post_marketinglist_unsubscribeditem'
+            - 'oro_api_delete_marketinglist_unsubscribeditem'
+            - 'oro_api_options_marketinglist_unsubscribeditems'
+            - 'oro_api_post_marketinglist_segment_run'
+            - 'oro_api_options_marketinglist_segments'
+            - 'oro_api_post_marketinglist_removeditem_deprecated'
+            - 'oro_api_post_marketinglist_segment_run_deprecated'
+            - 'oro_api_post_marketinglist_unsubscribeditem_deprecated'
