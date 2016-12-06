@@ -24,6 +24,8 @@ features:
             - 'oro_api_options_emailcampaigns'
             - 'oro_api_get_emailcampaign_email_templates'
             - 'oro_api_options_emailcampaign_email_templates'
+        configuration:
+            - 'email_campaign_settings'
         dashboard_widgets:
             - 'campaigns_leads'
             - 'campaigns_opportunity'
