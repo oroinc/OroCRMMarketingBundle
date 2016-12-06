@@ -51,6 +51,13 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
+        if (!$featureChecker->isFeatureEnabled('tracking')) {
+            $output->writeln('The tracking feature is disabled. The command will not run.');
+
+            return 0;
+        }
+
         $fs     = new Filesystem();
         $finder = new Finder();
 

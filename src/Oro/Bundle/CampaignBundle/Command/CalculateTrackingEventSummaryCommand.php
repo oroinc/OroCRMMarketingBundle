@@ -61,6 +61,13 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
+        if (!$featureChecker->isFeatureEnabled('tracking') || !$featureChecker->isFeatureEnabled('campaign')) {
+            $output->writeln('This feature is disabled. The command will not run.');
+
+            return 0;
+        }
+
         $campaigns = $this->getCampaignRepository()->findAll();
 
         if (!$campaigns) {

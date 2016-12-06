@@ -24,6 +24,9 @@ features:
             - 'oro_api_options_emailcampaigns'
             - 'oro_api_get_emailcampaign_email_templates'
             - 'oro_api_options_emailcampaign_email_templates'
+        api_resources:
+            - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
+            - 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign'
         configuration:
             - 'email_campaign_settings'
         dashboard_widgets:

@@ -39,6 +39,13 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
+        if (!$featureChecker->isFeatureEnabled('campaign')) {
+            $output->writeln('The campaign feature is disabled. The command will not run.');
+
+            return 0;
+        }
+
         $emailCampaigns = $this->getEmailCampaignRepository()->findEmailCampaignsToSend();
 
         if (!$emailCampaigns) {

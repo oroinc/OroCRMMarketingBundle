@@ -13,3 +13,5 @@ features:
             - 'oro_api_delete_tracking_website'
             - 'oro_api_options_tracking_websites'
             - 'oro_magento_widget_tracking_events'
+        api_resources:
+            - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
