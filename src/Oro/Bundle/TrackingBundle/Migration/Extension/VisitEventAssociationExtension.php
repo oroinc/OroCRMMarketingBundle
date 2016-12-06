@@ -73,7 +73,8 @@ class VisitEventAssociationExtension implements ExtendExtensionAwareInterface
         $targetTable  = $schema->getTable($targetTableName);
 
         $associationName = ExtendHelper::buildAssociationName(
-            $this->extendExtension->getEntityClassByTableName($targetTableName)
+            $this->extendExtension->getEntityClassByTableName($targetTableName),
+            self::ASSOCIATION_KIND
         );
 
         if (!$targetTable->hasPrimaryKey()) {
