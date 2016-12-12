@@ -2,10 +2,10 @@ oro:
     marketinglist:
         marketing:
             setup: General Setup
-            settings: Settings
+            settings: Features
             features: Marketing Features
             title: Marketing
-        feature_enabled: Enable Marketing List Features
+        feature_enabled: Enable Marketing List
         entity_label:        Marketing List
         entity_plural_label: Marketing Lists
         description.label:   Description
