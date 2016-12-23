@@ -38,24 +38,6 @@ The main goal of processing(parsing) tracking events is to identify object(s) fo
 
 - To connect tracking event with your data, provider should have 3 additional methods: **isApplicableVisitEvent**, **processEvent**, **getEventTargets**
 
-## Installation
-- In order to collect information, when installing the package with Composer you have to add these lines to the ``post-install-cmd`` and ``post-update-cmd`` sections of the ``scripts`` node in the application's ``composer.json`` file.
-```json
-  "scripts": {
-    "post-install-cmd": [
-      ...
-      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::copyTrackingScript",
-      ...
-    ],
-    "post-update-cmd": [
-      ...
-      "Oro\\Bundle\\TrackingBundle\\Composer\\TrackingInstaller::copyTrackingScript",
-      ...
-    ]
-  },
-```
-This will copy the ``tracking.php`` front controller to the application's ``/web`` folder.
-
 ## Request parameters expected by tracking
 
 Actuall mapping can be seen in `Oro\Bundle\TrackingBundle\ImportExport\DataConverter`,
@@ -238,6 +220,15 @@ The main entity for this data is **Visitor event** - parsed web event data relat
 
 Additionally, there is **Tracking Event** table - original web event data recorded from the website
 
+
+# Configuration
+
+In order to collect information, `Resources/lib/tracking.php` file need to be copied to the application's `/web` folder. This is performed automatically, but if your application has different `/web` folder you need to configure it in `app/config/config.yml`. For example:
+
+```yaml
+oro_tracking:
+    web_root: %kernel.root_dir%/../web
+```
 
 # Security firewalls
 

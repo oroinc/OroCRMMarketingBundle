@@ -9,12 +9,16 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('oro_tracking');
+        $rootNode = $treeBuilder->root('oro_tracking');
+        $rootNode
+            ->children()
+                ->scalarNode('web_root')->defaultValue('%kernel.root_dir%/../web')->end()
+            ->end();
 
         SettingsBuilder::append(
             $rootNode,
