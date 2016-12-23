@@ -32,6 +32,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'empty' => [
                 'configs'  => [[]],
                 'expected' => [
+                    'web_root' => '%kernel.root_dir%/../web',
                     'settings' => [
                         'resolved'                 => 1,
                         'dynamic_tracking_enabled' => [
@@ -48,6 +49,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         ],
                         'piwik_token_auth'         => [
                             'value' => null,
+                            'scope' => 'app'
+                        ],
+                        'feature_enabled'          => [
+                            'value' => true,
                             'scope' => 'app'
                         ]
                     ]
