@@ -12,17 +12,3 @@ In order to use the package in your project, it needs to be added as a dependenc
         "oro/marketing": "1.0.*"
     }
 ```
-
-Until it's a private repository and it's not published on packagist:
-```yaml
-    "require": {
-        "oro/marketing": "dev-master",
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/orocrm/marketing.git",
-            "branch": "master"
-        }
-    ],
-```
