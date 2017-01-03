@@ -12,6 +12,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
+use Oro\Bundle\QueryDesignerBundle\Grid\QueryDesignerQueryConfiguration;
 use Oro\Bundle\TagBundle\Grid\TagsExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
@@ -23,7 +24,6 @@ class MarketingListProvider
     const FULL_ENTITIES_MIXIN = 'orocrm-marketing-full-mixin';
     const MANUAL_RESULT_ITEMS_MIXIN = 'orocrm-marketing-list-manual-items-mixin';
     const MANUAL_RESULT_ENTITIES_MIXIN = 'orocrm-marketing-list-manual-entities-mixin';
-    const DATAGRID_COLUMN_ALIASES_PATH = '[source][query_config][column_aliases]';
 
     /**
      * @var Manager
@@ -204,7 +204,7 @@ class MarketingListProvider
             }
         }
 
-        $columnAliases = $dataGrid->getConfig()->offsetGetByPath(self::DATAGRID_COLUMN_ALIASES_PATH);
+        $columnAliases = $dataGrid->getConfig()->offsetGetByPath(QueryDesignerQueryConfiguration::COLUMN_ALIASES, []);
         $columnInformation = [];
         foreach ($columnAliases as $alias => $selectAlias) {
             if (array_key_exists($selectAlias, $columnToSelectExpr)) {
