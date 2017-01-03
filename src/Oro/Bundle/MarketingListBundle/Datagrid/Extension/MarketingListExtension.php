@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Datagrid\Extension;
 
 use Doctrine\ORM\Query\Expr\Andx;
-use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
@@ -49,7 +48,7 @@ class MarketingListExtension extends AbstractExtension
             return false;
         }
 
-        if ($config->getDatasourceType() !== OrmDatasource::TYPE) {
+        if (!$config->isOrmDatasource()) {
             return false;
         }
 
