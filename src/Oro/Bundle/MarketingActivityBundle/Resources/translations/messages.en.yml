@@ -1,0 +1,13 @@
+oro:
+    marketingactivity:
+        entity_label:                 Marketing Activity
+        entity_plural_label:          Marketing Activities
+        id.label:                     Id
+        owner.label:                  Owner
+        campaign.label:               Campaign
+        entity_id.label:              Entity Id
+        entity_class.label:           Entity Class
+        related_campaign_id.label:    Related Campaign Id
+        related_campaign_class.label: Related Campaign Class
+        details.label:                Details
+        action_date.label:            Action Date
