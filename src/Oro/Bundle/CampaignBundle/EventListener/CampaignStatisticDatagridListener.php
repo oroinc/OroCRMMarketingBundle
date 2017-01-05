@@ -14,8 +14,8 @@ class CampaignStatisticDatagridListener
     /** @deprecated since 1.10. Use config->getName() instead */
     const PATH_NAME = '[name]';
 
-    const MIXIN_SENT_NAME = 'orocrm-email-campaign-marketing-list-sent-items-mixin';
-    const MIXIN_UNSENT_NAME = 'orocrm-email-campaign-marketing-list-unsent-items-mixin';
+    const MIXIN_SENT_NAME = 'oro-email-campaign-marketing-list-sent-items-mixin';
+    const MIXIN_UNSENT_NAME = 'oro-email-campaign-marketing-list-unsent-items-mixin';
 
     /**
      * @var ManagerRegistry

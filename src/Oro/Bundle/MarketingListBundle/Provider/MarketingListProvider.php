@@ -19,11 +19,11 @@ use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
 class MarketingListProvider
 {
-    const RESULT_ITEMS_MIXIN = 'orocrm-marketing-list-items-mixin';
-    const RESULT_ENTITIES_MIXIN = 'orocrm-marketing-list-entities-mixin';
-    const FULL_ENTITIES_MIXIN = 'orocrm-marketing-full-mixin';
-    const MANUAL_RESULT_ITEMS_MIXIN = 'orocrm-marketing-list-manual-items-mixin';
-    const MANUAL_RESULT_ENTITIES_MIXIN = 'orocrm-marketing-list-manual-entities-mixin';
+    const RESULT_ITEMS_MIXIN = 'oro-marketing-list-items-mixin';
+    const RESULT_ENTITIES_MIXIN = 'oro-marketing-list-entities-mixin';
+    const FULL_ENTITIES_MIXIN = 'oro-marketing-full-mixin';
+    const MANUAL_RESULT_ITEMS_MIXIN = 'oro-marketing-list-manual-items-mixin';
+    const MANUAL_RESULT_ENTITIES_MIXIN = 'oro-marketing-list-manual-entities-mixin';
 
     /**
      * @var Manager

@@ -37,10 +37,10 @@ use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
  *          },
  *          "form"={
  *              "form_type"="oro_campaign_select",
- *              "grid_name"="orocrm-campaign-grid",
+ *              "grid_name"="oro-campaign-grid",
  *          },
  *          "grid"={
- *              "default"="orocrm-campaign-grid"
+ *              "default"="oro-campaign-grid"
  *          },
  *          "tag"={
  *              "enabled"=true

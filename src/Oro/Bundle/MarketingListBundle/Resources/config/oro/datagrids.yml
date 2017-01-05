@@ -1,5 +1,5 @@
 datagrids:
-    orocrm-marketing-list-grid:
+    oro-marketing-list-grid:
         extended_entity_name: Oro\Bundle\MarketingListBundle\Entity\MarketingList
         source:
             type: orm
@@ -115,7 +115,7 @@ datagrids:
             entity_pagination: true
 
     # Segment based grids mixins:
-    orocrm-marketing-full-mixin:
+    oro-marketing-full-mixin:
         source:
             query:
                 join:
@@ -130,7 +130,7 @@ datagrids:
             skip_count_walker: true
             mixin: true
 
-    orocrm-marketing-list-items-base-mixin:
+    oro-marketing-list-items-base-mixin:
         source:
             query:
                 select:
@@ -170,8 +170,8 @@ datagrids:
             skip_count_walker: true
             mixin: true
 
-    orocrm-marketing-list-items-base-unsubscribe-mixin:
-        extends: orocrm-marketing-list-items-base-mixin
+    oro-marketing-list-items-base-unsubscribe-mixin:
+        extends: oro-marketing-list-items-base-mixin
         source:
             query:
                 select:
@@ -216,8 +216,8 @@ datagrids:
                 icon:         minus
                 acl_resource: oro_marketinglist_unsubscribed_item_create
 
-    orocrm-marketing-list-items-mixin:
-        extends: orocrm-marketing-list-items-base-unsubscribe-mixin
+    oro-marketing-list-items-mixin:
+        extends: oro-marketing-list-items-base-unsubscribe-mixin
         source:
             query:
                 where:
@@ -242,8 +242,8 @@ datagrids:
                     confirm_content: oro.marketinglist.remove_dialog.content
                     success:         oro.marketinglist.remove_dialog.success
 
-    orocrm-marketing-list-removed-items-mixin:
-        extends: orocrm-marketing-list-items-base-mixin
+    oro-marketing-list-removed-items-mixin:
+        extends: oro-marketing-list-items-base-mixin
         source:
             query:
                 where:
@@ -268,7 +268,7 @@ datagrids:
                     confirm_content: oro.marketinglist.unremove_dialog.content
                     success:         oro.marketinglist.unremove_dialog.success
 
-    orocrm-marketing-list-entities-base-unsubscribe-mixin:
+    oro-marketing-list-entities-base-unsubscribe-mixin:
         source:
             query:
                 join:
@@ -288,8 +288,8 @@ datagrids:
                         - mlr.id IS NULL
                         - mlu.id IS NULL
 
-    orocrm-marketing-list-entities-mixin:
-        extends: orocrm-marketing-list-entities-base-unsubscribe-mixin
+    oro-marketing-list-entities-mixin:
+        extends: oro-marketing-list-entities-base-unsubscribe-mixin
         source:
             query:
                 join:
@@ -305,7 +305,7 @@ datagrids:
             mixin: true
 
     # Manual marketing list based mixins
-    orocrm-marketing-list-manual-items-base-mixin:
+    oro-marketing-list-manual-items-base-mixin:
         source:
             query:
                 select:
@@ -346,8 +346,8 @@ datagrids:
             skip_count_walker: true
             mixin: true
 
-    orocrm-marketing-list-manual-items-base-unsubscribe-mixin:
-        extends: orocrm-marketing-list-manual-items-base-mixin
+    oro-marketing-list-manual-items-base-unsubscribe-mixin:
+        extends: oro-marketing-list-manual-items-base-mixin
         source:
             query:
                 select:
@@ -392,8 +392,8 @@ datagrids:
                 icon:         minus
                 acl_resource: oro_marketinglist_unsubscribed_item_create
 
-    orocrm-marketing-list-manual-items-mixin:
-        extends: orocrm-marketing-list-manual-items-base-unsubscribe-mixin
+    oro-marketing-list-manual-items-mixin:
+        extends: oro-marketing-list-manual-items-base-unsubscribe-mixin
         source:
             query:
                 where:
@@ -418,8 +418,8 @@ datagrids:
                     confirm_content: oro.marketinglist.remove_dialog.content
                     success:         oro.marketinglist.remove_dialog.success
 
-    orocrm-marketing-list-manual-removed-items-mixin:
-        extends: orocrm-marketing-list-manual-items-base-mixin
+    oro-marketing-list-manual-removed-items-mixin:
+        extends: oro-marketing-list-manual-items-base-mixin
         source:
             query:
                 where:
@@ -444,8 +444,8 @@ datagrids:
                     confirm_content: oro.marketinglist.unremove_dialog.content
                     success:         oro.marketinglist.unremove_dialog.success
 
-    orocrm-marketing-list-manual-entities-mixin:
-        extends: orocrm-marketing-list-entities-base-unsubscribe-mixin
+    oro-marketing-list-manual-entities-mixin:
+        extends: oro-marketing-list-entities-base-unsubscribe-mixin
         source:
             query:
                 join:
