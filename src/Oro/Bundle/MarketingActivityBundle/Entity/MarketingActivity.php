@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivityType;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 
 /**
@@ -40,6 +41,14 @@ class MarketingActivity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var MarketingActivityType
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivityType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $type;
 
     /**
      * @var Organization
@@ -100,6 +109,8 @@ class MarketingActivity
     protected $actionDate;
 
     /**
+     * Get id
+     *
      * @return int
      */
     public function getId()
@@ -108,6 +119,8 @@ class MarketingActivity
     }
 
     /**
+     * Get owner organization
+     *
      * @return Organization
      */
     public function getOwner()
@@ -116,8 +129,9 @@ class MarketingActivity
     }
 
     /**
-     * @param Organization $owner
+     * Set owner organization
      *
+     * @param Organization $owner
      * @return MarketingActivity
      */
     public function setOwner(Organization $owner = null)
@@ -128,6 +142,31 @@ class MarketingActivity
     }
 
     /**
+     * Get marketing activity type
+     *
+     * @return MarketingActivityType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set marketing activity type
+     *
+     * @param MarketingActivityType $type
+     * @return MarketingActivity
+     */
+    public function setType(MarketingActivityType $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get campaign
+     *
      * @return Campaign
      */
     public function getCampaign()
@@ -136,8 +175,9 @@ class MarketingActivity
     }
 
     /**
-     * @param Campaign $campaign
+     * Set campaign
      *
+     * @param Campaign $campaign
      * @return MarketingActivity
      */
     public function setCampaign(Campaign $campaign = null)
@@ -148,6 +188,8 @@ class MarketingActivity
     }
 
     /**
+     * Get entity id
+     *
      * @return int
      */
     public function getEntityId()
@@ -156,8 +198,9 @@ class MarketingActivity
     }
 
     /**
-     * @param int $entityId
+     * Set entity id
      *
+     * @param int $entityId
      * @return MarketingActivity
      */
     public function setEntityId($entityId)
@@ -168,6 +211,8 @@ class MarketingActivity
     }
 
     /**
+     * Get entity class
+     *
      * @return string
      */
     public function getEntityClass()
@@ -176,8 +221,9 @@ class MarketingActivity
     }
 
     /**
-     * @param string $entityClass
+     * Set entity class
      *
+     * @param string $entityClass
      * @return MarketingActivity
      */
     public function setEntityClass($entityClass)
@@ -188,6 +234,8 @@ class MarketingActivity
     }
 
     /**
+     * Get related campaign id
+     *
      * @return int
      */
     public function getRelatedCampaignId()
@@ -196,8 +244,9 @@ class MarketingActivity
     }
 
     /**
-     * @param int $relatedCampaignId
+     * Set related campaign id
      *
+     * @param int $relatedCampaignId
      * @return MarketingActivity
      */
     public function setRelatedCampaignId($relatedCampaignId)
@@ -208,6 +257,8 @@ class MarketingActivity
     }
 
     /**
+     * Get related campaign class
+     *
      * @return string
      */
     public function getRelatedCampaignClass()
@@ -216,8 +267,9 @@ class MarketingActivity
     }
 
     /**
-     * @param string $relatedCampaignClass
+     * Set related campaign class
      *
+     * @param string $relatedCampaignClass
      * @return MarketingActivity
      */
     public function setRelatedCampaignClass($relatedCampaignClass)
@@ -228,6 +280,8 @@ class MarketingActivity
     }
 
     /**
+     * Get details
+     *
      * @return string
      */
     public function getDetails()
@@ -236,8 +290,9 @@ class MarketingActivity
     }
 
     /**
-     * @param string $details
+     * Set details
      *
+     * @param string $details
      * @return MarketingActivity
      */
     public function setDetails($details)
@@ -248,6 +303,8 @@ class MarketingActivity
     }
 
     /**
+     * Get action date/time
+     *
      * @return \DateTime
      */
     public function getActionDate()
@@ -256,11 +313,12 @@ class MarketingActivity
     }
 
     /**
-     * @param \DateTime $actionDate
+     * Set action date/time
      *
+     * @param \DateTime $actionDate
      * @return MarketingActivity
      */
-    public function setActionDate($actionDate)
+    public function setActionDate(\DateTime $actionDate)
     {
         $this->actionDate = $actionDate;
 

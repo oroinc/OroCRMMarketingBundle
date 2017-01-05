@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivityType;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
@@ -15,6 +16,7 @@ class MarketingActivityTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertPropertyAccessors(new MarketingActivity(), [
             ['id', 42],
+            ['type', new MarketingActivityType()],
             ['owner', new Organization()],
             ['campaign', new Campaign()],
             ['entityId', 42],

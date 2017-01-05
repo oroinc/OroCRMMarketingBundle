@@ -11,3 +11,19 @@ oro:
         related_campaign_class.label: Related Campaign Class
         details.label:                Details
         action_date.label:            Action Date
+
+        type:
+            label:       Type
+            send:        Send
+            open:        Open
+            click:       Click
+            soft_bounce: Soft Bounce
+            hard_bounce: Hard Bounce
+
+        marketingactivitytype:
+            entity_label:        Marketing Activity Type
+            entity_plural_label: Marketing Activity Types
+            id.label:            Id
+            name.label:          Name
+            label.label:         Label
+            template.label:      Template
