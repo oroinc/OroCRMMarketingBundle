@@ -162,4 +162,15 @@ class CampaignRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * @return int
+     */
+    public function getCount()
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)');
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
+    }
 }
