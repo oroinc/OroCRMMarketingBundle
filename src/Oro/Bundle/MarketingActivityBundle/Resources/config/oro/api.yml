@@ -1,3 +1,4 @@
 api:
     entities:
         Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity: ~
+        Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivityType: ~
