@@ -11,6 +11,7 @@ oro:
         related_campaign_class.label: Related Campaign Class
         details.label:                Details
         action_date.label:            Action Date
+        email_campaign.label:         Email Campaign
 
         type:
             label:       Type

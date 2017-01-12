@@ -39,6 +39,13 @@ class OroMarketingActivityBundle implements Migration
         $table->addColumn('action_date', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addIndex(['owner_id'], 'IDX_8A01A8357E3C61F9', []);
         $table->addIndex(['campaign_id'], 'IDX_8A01A835F639F774', []);
+        $table->addIndex(['entity_id', 'entity_class'], 'IDX_MARKETING_ACTIVITY_ENTITY', []);
+        $table->addIndex(
+            ['related_campaign_id', 'related_campaign_class'],
+            'IDX_MARKETING_ACTIVITY_RELATED_CAMPAIGN',
+            []
+        );
+        $table->addIndex(['action_date'], 'IDX_MARKETING_ACTIVITY_ACTION_DATE', []);
         $table->setPrimaryKey(['id']);
     }
 

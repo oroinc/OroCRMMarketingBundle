@@ -12,7 +12,17 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="orocrm_marketing_activity")
+ * @ORM\Table(
+ *     name="orocrm_marketing_activity",
+ *     indexes={
+ *          @ORM\Index(name="IDX_MARKETING_ACTIVITY_ENTITY", columns={"entity_id", "entity_class"}),
+ *          @ORM\Index(
+ *              name="IDX_MARKETING_ACTIVITY_RELATED_CAMPAIGN",
+ *              columns={"related_campaign_id", "related_campaign_class"
+ *          }),
+ *          @ORM\Index(name="IDX_MARKETING_ACTIVITY_ACTION_DATE", columns={"action_date"})
+ *     }
+ * )
  * @Config(
  *  defaultValues={
  *      "entity"={
