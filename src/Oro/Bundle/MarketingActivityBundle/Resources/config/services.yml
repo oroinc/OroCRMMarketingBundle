@@ -1,1 +1,4 @@
+parameters:
+    # Entities
+    oro_marketing_activity.entity.class: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity
 services:
