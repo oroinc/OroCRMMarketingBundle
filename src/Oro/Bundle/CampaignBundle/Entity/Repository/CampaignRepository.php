@@ -157,6 +157,7 @@ class CampaignRepository extends EntityRepository
             ->from('OroCampaignBundle:Campaign', 'campaign')
             ->join('OroSalesBundle:Lead', 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', $opportunitiesAlias)
+            ->where(sprintf('%s.status=\'won\'', $opportunitiesAlias))
             ->orderBy('closeRevenue', 'DESC')
             ->groupBy('campaign.name');
 

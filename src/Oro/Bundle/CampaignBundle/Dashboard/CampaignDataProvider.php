@@ -85,7 +85,7 @@ class CampaignDataProvider
             $this->qbTransformer
         );
         $qb->setMaxResults(self::CAMPAIGN_CLOSE_REVENUE_COUNT);
-        $this->dateFilterProcessor->process($qb, $dateRange, 'opportunities.createdAt');
+        $this->dateFilterProcessor->applyDateRangeFilterToQuery($qb, $dateRange, 'opportunities.createdAt');
 
         return $this->aclHelper->apply($qb)->getArrayResult();
     }
