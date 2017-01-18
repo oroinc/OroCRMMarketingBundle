@@ -103,37 +103,6 @@ class CampaignRepository extends EntityRepository
     }
 
     /**
-     * @param AclHelper $aclHelper
-     * @param int       $recordsCount
-     * @param array     $dateRange
-     *
-     * @return array
-     */
-    public function getCampaignsByCloseRevenue(AclHelper $aclHelper, $recordsCount, $dateRange = null)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb
-            ->select(
-                'campaign.name as label',
-                'SUM(CASE WHEN (opp.status=\'won\') THEN opp.closeRevenueValue ELSE 0 END) as closeRevenue'
-            )
-            ->from('OroCampaignBundle:Campaign', 'campaign')
-            ->join('OroSalesBundle:Lead', 'lead', 'WITH', 'lead.campaign = campaign')
-            ->join('lead.opportunities', 'opp')
-            ->orderBy('closeRevenue', 'DESC')
-            ->groupBy('campaign.name')
-            ->setMaxResults($recordsCount);
-
-        if ($dateRange) {
-            $qb->where($qb->expr()->between('opp.createdAt', ':dateFrom', ':dateTo'))
-                ->setParameter('dateFrom', $dateRange['start'])
-                ->setParameter('dateTo', $dateRange['end']);
-        }
-
-        return $aclHelper->apply($qb)->getArrayResult();
-    }
-
-    /**
      * @param string $opportunitiesAlias
      * @param CurrencyQueryBuilderTransformerInterface $qbTransformer
      *
@@ -149,8 +118,7 @@ class CampaignRepository extends EntityRepository
             ->select(
                 'campaign.name as label',
                 sprintf(
-                    'SUM(CASE WHEN (%s.status=\'won\') THEN %s ELSE 0 END) as closeRevenue',
-                    $opportunitiesAlias,
+                    'SUM(%s) as closeRevenue',
                     $crSelect
                 )
             )
