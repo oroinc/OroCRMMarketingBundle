@@ -15,7 +15,6 @@ class OroMarketingActivityBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->createOroMarketingActivityTable($schema);
-        $this->createOroMarketingActivityTypeTable($schema);
         $this->addOroMarketingActivityForeignKeys($schema);
     }
 
@@ -29,7 +28,6 @@ class OroMarketingActivityBundle implements Migration
         $table = $schema->createTable('orocrm_marketing_activity');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('owner_id', 'integer', ['notnull' => false]);
-        $table->addColumn('type_id', 'integer', ['notnull' => false]);
         $table->addColumn('campaign_id', 'integer', ['notnull' => false]);
         $table->addColumn('entity_id', 'integer', ['notnull' => true]);
         $table->addColumn('entity_class', 'string', ['length' => 255, 'notnull' => true]);
@@ -50,21 +48,6 @@ class OroMarketingActivityBundle implements Migration
     }
 
     /**
-     * Create orocrm_marketing_activity_type table
-     *
-     * @param Schema $schema
-     */
-    protected function createOroMarketingActivityTypeTable(Schema $schema)
-    {
-        $table = $schema->createTable('orocrm_marketing_activity_type');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('name', 'string', ['length' => 32, 'notnull' => true]);
-        $table->addColumn('label', 'string', ['length' => 255, 'notnull' => true]);
-        $table->addColumn('template', 'string', ['length' => 255, 'notnull' => false]);
-        $table->setPrimaryKey(['id']);
-    }
-
-    /**
      * Add orocrm_marketing_activity foreign keys.
      *
      * @param Schema $schema
@@ -75,12 +58,6 @@ class OroMarketingActivityBundle implements Migration
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['owner_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => 'SET NULL']
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('orocrm_marketing_activity_type'),
-            ['type_id'],
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'SET NULL']
         );

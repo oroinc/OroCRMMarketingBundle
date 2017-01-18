@@ -6,10 +6,17 @@ use Doctrine\DBAL\Schema\Schema;
 
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MarketingActivityBundle\Migrations\Schema\v1_0;
 
-class OroMarketingActivityInstaller implements Installation
+class OroMarketingActivityInstaller implements Installation, ExtendExtensionAwareInterface
 {
+    /**
+     * @var ExtendExtension
+     */
+    protected $extendExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -25,5 +32,17 @@ class OroMarketingActivityInstaller implements Installation
     {
         $migration = new v1_0\OroMarketingActivityBundle();
         $migration->up($schema, $queries);
+
+        $addEnumFieldsMigration = new v1_0\AddEnumFields();
+        $addEnumFieldsMigration->setExtendExtension($this->extendExtension);
+        $addEnumFieldsMigration->up($schema, $queries);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

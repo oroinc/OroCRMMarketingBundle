@@ -5,6 +5,7 @@ oro:
         id.label:                     Id
         owner.label:                  Owner
         campaign.label:               Campaign
+        type.label:                   Type
         entity_id.label:              Entity Id
         entity_class.label:           Entity Class
         related_campaign_id.label:    Related Campaign Id
@@ -12,19 +13,3 @@ oro:
         details.label:                Details
         action_date.label:            Action Date
         email_campaign.label:         Email Campaign
-
-        type:
-            label:       Type
-            send:        Send
-            open:        Open
-            click:       Click
-            soft_bounce: Soft Bounce
-            hard_bounce: Hard Bounce
-
-        marketingactivitytype:
-            entity_label:        Marketing Activity Type
-            entity_plural_label: Marketing Activity Types
-            id.label:            Id
-            name.label:          Name
-            label.label:         Label
-            template.label:      Template
