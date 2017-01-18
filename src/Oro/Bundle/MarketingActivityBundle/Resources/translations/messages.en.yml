@@ -13,3 +13,25 @@ oro:
         details.label:                Details
         action_date.label:            Action Date
         email_campaign.label:         Email Campaign
+
+    query_designer:
+        aggregates:
+            marketing_activity_type:
+                SendCount:
+                    name: Send Count
+                    hint: Number of 'send' items
+                OpenCount:
+                    name: Open Count
+                    hint: Number of 'open' items
+                ClickCount:
+                    name: Click Count
+                    hint: Number of 'click' items
+                SoftBounceCount:
+                    name: Soft Bounce Count
+                    hint: Number of 'soft bounce' items
+                HardBounceCount:
+                    name: Hard Bounce Count
+                    hint: Number of 'hard bounce' items
+                UnsubscribeCount:
+                    name: Unsubscribe Count
+                    hint: Number of 'unsubscribe' items
