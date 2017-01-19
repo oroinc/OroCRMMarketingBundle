@@ -19,6 +19,8 @@ use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
  * )
  * @ORM\HasLifecycleCallbacks()
  * @Config(
+ *      routeName="oro_campaign_index",
+ *      routeView="oro_campaign_view",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-volume-up"
@@ -44,6 +46,9 @@ use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
  *          },
  *          "tag"={
  *              "enabled"=true
+ *          },
+ *          "merge"={
+ *              "enable"=true
  *          }
  *      }
  * )
@@ -68,6 +73,13 @@ class Campaign extends ExtendCampaign
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -91,6 +103,13 @@ class Campaign extends ExtendCampaign
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="start_date", type="date", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $startDate;
 
@@ -98,6 +117,13 @@ class Campaign extends ExtendCampaign
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="end_date", type="date", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $endDate;
 
@@ -105,6 +131,13 @@ class Campaign extends ExtendCampaign
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $description;
 
@@ -112,6 +145,13 @@ class Campaign extends ExtendCampaign
      * @var double
      *
      * @ORM\Column(name="budget", type="money", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $budget;
 
@@ -120,6 +160,13 @@ class Campaign extends ExtendCampaign
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $owner;
 
@@ -314,6 +361,18 @@ class Campaign extends ExtendCampaign
     }
 
     /**
+     * @param \DateTime
+     *
+     * @return Campaign
+     */
+    public function setCreatedAt($created)
+    {
+        $this->createdAt = $created;
+
+        return $this;
+    }
+
+    /**
      * Get campaign last update date/time
      *
      * @return \DateTime
@@ -324,13 +383,25 @@ class Campaign extends ExtendCampaign
     }
 
     /**
+     * @param \DateTime
+     *
+     * @return Campaign
+     */
+    public function setUpdatedAt($updated)
+    {
+        $this->updatedAt = $updated;
+
+        return $this;
+    }
+
+    /**
      * Pre persist event handler
      *
      * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->setCombinedName($this->name, $this->code);
+        $this->setCombinedName($this->generateCombinedName($this->name, $this->code));
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->updatedAt = clone $this->createdAt;
     }
@@ -342,19 +413,18 @@ class Campaign extends ExtendCampaign
      */
     public function preUpdate()
     {
-        $this->setCombinedName($this->name, $this->code);
+        $this->setCombinedName($this->generateCombinedName($this->name, $this->code));
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
      * Set combined name in format "campaign name (campaign_code)"
      *
-     * @param string $name
-     * @param string $code
+     * @param string $combinedName
      */
-    public function setCombinedName($name, $code)
+    public function setCombinedName($combinedName)
     {
-        $this->combinedName = sprintf('%s (%s)', $name, $code);
+        $this->combinedName = $combinedName;
     }
 
     /**
@@ -363,6 +433,18 @@ class Campaign extends ExtendCampaign
     public function getCombinedName()
     {
         return $this->combinedName;
+    }
+
+    /**
+     * Generate combined name in format "campaign name (campaign_code)"
+     *
+     * @param string $name
+     * @param string $code
+     * @return string
+     */
+    public function generateCombinedName($name, $code)
+    {
+        return sprintf('%s (%s)', $name, $code);
     }
 
     /**
