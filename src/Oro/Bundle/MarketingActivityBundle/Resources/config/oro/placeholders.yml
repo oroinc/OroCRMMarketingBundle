@@ -1,0 +1,9 @@
+placeholders:
+    placeholders:
+        view_content_data_marketing_activities_summary:
+            items:
+                view_oro_marketing_activity_summary: ~
+
+    items:
+        view_oro_marketing_activity_summary:
+            action: OroMarketingActivityBundle:MarketingActivity:summary

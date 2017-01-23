@@ -13,6 +13,15 @@ oro:
         details.label:                Details
         action_date.label:            Action Date
         email_campaign.label:         Email Campaign
+        summary:
+            label: Marketing Activity Summary
+            send.label: Send
+            open.label: Open
+            click.label: Click
+            forward.label: Forward
+            soft_bounce.label: Soft Bounce
+            hard_bounce.label: Hard Bounce
+            unsubscribe.label: Unsubscribe
 
     query_designer:
         aggregates:
