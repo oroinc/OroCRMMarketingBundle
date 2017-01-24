@@ -3,7 +3,13 @@ placeholders:
         view_content_data_marketing_activities_summary:
             items:
                 view_oro_marketing_activity_summary: ~
+        view_content_data_marketing_activities:
+            items:
+                view_oro_marketing_activity_list: ~
 
     items:
         view_oro_marketing_activity_summary:
             action: OroMarketingActivityBundle:MarketingActivity:summary
+        view_oro_marketing_activity_list:
+            applicable: "@oro_marketing_activity.placeholder.filter->isApplicable($entity$)"
+            template: OroMarketingActivityBundle:MarketingActivity:marketingActivitiesSection.html.twig

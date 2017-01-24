@@ -22,6 +22,8 @@ oro:
             soft_bounce.label: Soft Bounce
             hard_bounce.label: Hard Bounce
             unsubscribe.label: Unsubscribe
+        sections:
+            marketingactivities: Marketing Activity
 
     query_designer:
         aggregates:
