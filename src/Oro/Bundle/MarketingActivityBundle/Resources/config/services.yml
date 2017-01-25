@@ -14,3 +14,9 @@ services:
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@oro_marketing_list.entity_provider.contact_information'
+    oro_marketing_activity.marketing_activity.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity'
+            - "@doctrine.orm.entity_manager"

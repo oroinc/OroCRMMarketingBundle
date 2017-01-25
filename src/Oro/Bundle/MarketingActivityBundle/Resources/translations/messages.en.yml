@@ -13,6 +13,7 @@ oro:
         details.label:                Details
         action_date.label:            Action Date
         email_campaign.label:         Email Campaign
+        view_campaign.label:          View Campaign
         summary:
             label: Marketing Activity Summary
             send.label: Send

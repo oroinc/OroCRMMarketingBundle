@@ -1,0 +1,10 @@
+oro_marketing_activity_bundle:
+    resource:     "@OroMarketingActivityBundle/Controller"
+    type:         annotation
+    prefix:       /
+
+oro_marketing_activity_api_get_marketing_activities:
+    path: api/rest/{version}/marketingactivity/{entityClass}/{entityId}.{_format}
+    defaults: {_controller: OroMarketingActivityBundle:Api/Rest/MarketingActivity:cget, _format: json, version: latest}
+    requirements:
+         _method: GET

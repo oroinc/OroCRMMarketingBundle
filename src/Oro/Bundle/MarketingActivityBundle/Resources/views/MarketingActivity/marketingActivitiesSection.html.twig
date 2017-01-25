@@ -1,5 +1,14 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set widgetContent %}
-    Marketing Activities Placeholder
+    {{ oro_widget_render({
+        'widgetType': 'block',
+        'url': path('oro_marketing_activity_widget_marketing_activities', {
+            entityClass: oro_class_name(entity, true),
+            entityId: entity.id
+        }),
+        'title': 'Marketing Activities',
+        'alias': 'marketing-activity-widget',
+        'cssClass': 'list-widget activity-list-widget standard-action-buttons',
+    }) }}
 {% endset %}
 {{ UI.scrollSubblock(null, [widgetContent]) }}
