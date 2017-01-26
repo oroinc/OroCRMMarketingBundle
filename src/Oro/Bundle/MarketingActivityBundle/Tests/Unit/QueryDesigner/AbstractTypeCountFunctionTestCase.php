@@ -13,9 +13,6 @@ abstract class AbstractTypeCountFunctionTestCase extends \PHPUnit_Framework_Test
     /** @var  string */
     protected $type;
 
-    /**
-     * {@inheritdoc}
-     */
     public function testGetExpression()
     {
         $qc = $this->getMockBuilder(AbstractQueryConverter::class)->disableOriginalConstructor()->getMock();
