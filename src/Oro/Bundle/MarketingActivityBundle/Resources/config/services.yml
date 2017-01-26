@@ -1,9 +1,6 @@
-parameters:
-    oro_marketing_activity.provider.virtual_relation.marketing_activity.class: Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider
-
 services:
     oro_marketing_activity.provider.virtual_relation.marketing_activity:
-        class: %oro_marketing_activity.provider.virtual_relation.marketing_activity.class%
+        class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider'
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@oro_marketing_list.entity_provider.contact_information'

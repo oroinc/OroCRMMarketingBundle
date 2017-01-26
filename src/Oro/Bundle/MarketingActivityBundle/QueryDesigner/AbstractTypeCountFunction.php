@@ -19,13 +19,16 @@ abstract class AbstractTypeCountFunction implements FunctionInterface
      */
     public function getExpression($tableAlias, $fieldName, $columnName, $columnAlias, AbstractQueryConverter $qc)
     {
-        // split by dot $columnName
-        // there we will have tableAlias.columnName for dictionary virtual column
-        list($statusTableAlias) = explode('.', $columnName);
+        list($alias, $name) = explode('.', $columnName);
+        if ($name === 'type') {
+            // Make sure type table joined when marketing activity is used as virtual relation
+            // @Todo: remove after BAP-13387 is fixed
+            $alias = $qc->ensureChildTableJoined($alias, 'type', 'inner');
+        }
 
         return sprintf(
             "SUM(CASE WHEN %s.id = '%s' THEN 1 ELSE 0 END)",
-            $statusTableAlias,
+            $alias,
             $this->getType()
         );
     }

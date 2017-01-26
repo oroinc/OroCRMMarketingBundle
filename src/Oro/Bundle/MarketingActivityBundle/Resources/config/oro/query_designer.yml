@@ -1,7 +1,7 @@
 query_designer:
     aggregates:
         marketing_activity_type:
-            applicable: [{entity: OroMarketingActivityBundle:MarketingActivity, field: type }]
+            applicable: [{entity: 'OroMarketingActivityBundle:MarketingActivity', field: type }]
             functions:
                 - { name: SendCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\SendTypeCountFunction' }
                 - { name: OpenCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\OpenTypeCountFunction' }
@@ -9,4 +9,4 @@ query_designer:
                 - { name: SoftBounceCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\SoftBounceTypeCountFunction' }
                 - { name: HardBounceCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\HardBounceTypeCountFunction' }
                 - { name: UnsubscribeCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\UnsubscribeTypeCountFunction' }
-            query_type: [report]
+            query_type: [segment, report]

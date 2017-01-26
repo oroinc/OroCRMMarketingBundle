@@ -3,14 +3,15 @@
     "type": "symfony-bundle",
     "description": "Oro CRM Mareting Activity",
     "keywords": ["CRM", "Marketing Activity"],
-    "homepage": "https://github.com/orocrm/MarketingActivityBundle",
+    "homepage": "https://github.com/orocrm/OroCRMMarketingBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.6",
         "symfony/symfony": "2.8.*, !=2.8.10",
         "oro/user-bundle": "dev-master",
-        "oro/segment-bundle": "dev-master",
-        "oro/ui-bundle": "dev-master"
+        "oro/ui-bundle": "dev-master",
+        "orocrm/campaign-bundle": "dev-master",
+        "orocrm/marketing-list-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "": "src/" }

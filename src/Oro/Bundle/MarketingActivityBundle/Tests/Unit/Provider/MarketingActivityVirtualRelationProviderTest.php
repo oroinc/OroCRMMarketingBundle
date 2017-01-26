@@ -131,12 +131,12 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
             [
                 'label' => 'oro.marketingactivity.entity_label',
                 'relation_type' => 'oneToMany',
-                'related_entity_name' => 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity',
+                'related_entity_name' => MarketingActivity::class,
                 'query' => [
                     'join' => [
                         'left' => [
                             [
-                                'join' => 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity',
+                                'join' => MarketingActivity::class,
                                 'alias' => 'marketingActivity',
                                 'conditionType' => Join::WITH,
                                 'condition' => "marketingActivity.entityClass = '{$className}'"

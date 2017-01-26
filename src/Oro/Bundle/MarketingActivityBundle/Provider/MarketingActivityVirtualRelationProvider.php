@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
 class MarketingActivityVirtualRelationProvider implements VirtualRelationProviderInterface
 {
@@ -108,12 +109,12 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
         return [
             'label' => 'oro.marketingactivity.entity_label',
             'relation_type' => 'oneToMany',
-            'related_entity_name' => 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity',
+            'related_entity_name' => MarketingActivity::class,
             'query' => [
                 'join' => [
                     'left' => [
                         [
-                            'join' => 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity',
+                            'join' => MarketingActivity::class,
                             'alias' => self::RELATION_NAME,
                             'conditionType' => Join::WITH,
                             'condition' => self::RELATION_NAME . ".entityClass = '{$className}'"
