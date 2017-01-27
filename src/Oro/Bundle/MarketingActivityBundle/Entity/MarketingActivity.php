@@ -7,12 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivityType;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+
+use Oro\Bundle\MarketingActivityBundle\Model\ExtendMarketingActivity;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="orocrm_marketing_activity")
+ * @ORM\Table(
+ *     name="orocrm_marketing_activity",
+ *     indexes={
+ *          @ORM\Index(name="IDX_MARKETING_ACTIVITY_ENTITY", columns={"entity_id", "entity_class"}),
+ *          @ORM\Index(
+ *              name="IDX_MARKETING_ACTIVITY_RELATED_CAMPAIGN",
+ *              columns={"related_campaign_id", "related_campaign_class"
+ *          }),
+ *          @ORM\Index(name="IDX_MARKETING_ACTIVITY_ACTION_DATE", columns={"action_date"})
+ *     }
+ * )
  * @Config(
  *  defaultValues={
  *      "entity"={
@@ -31,8 +42,16 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
  *  }
  * )
  */
-class MarketingActivity
+class MarketingActivity extends ExtendMarketingActivity
 {
+    /** constant for enum ma_type */
+    const TYPE_SEND        = 'send';
+    const TYPE_OPEN        = 'open';
+    const TYPE_CLICK       = 'click';
+    const TYPE_SOFT_BOUNCE = 'soft_bounce';
+    const TYPE_HARD_BOUNCE = 'hard_bounce';
+    const TYPE_UNSUBSCRIBE = 'unsubscribe';
+    
     /**
      * @var int
      *
@@ -41,14 +60,6 @@ class MarketingActivity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @var MarketingActivityType
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivityType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $type;
 
     /**
      * @var Organization
@@ -137,29 +148,6 @@ class MarketingActivity
     public function setOwner(Organization $owner = null)
     {
         $this->owner = $owner;
-
-        return $this;
-    }
-
-    /**
-     * Get marketing activity type
-     *
-     * @return MarketingActivityType
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set marketing activity type
-     *
-     * @param MarketingActivityType $type
-     * @return MarketingActivity
-     */
-    public function setType(MarketingActivityType $type = null)
-    {
-        $this->type = $type;
 
         return $this;
     }

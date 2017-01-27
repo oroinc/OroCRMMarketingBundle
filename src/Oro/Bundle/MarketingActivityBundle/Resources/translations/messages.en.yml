@@ -5,25 +5,33 @@ oro:
         id.label:                     Id
         owner.label:                  Owner
         campaign.label:               Campaign
+        type.label:                   Type
         entity_id.label:              Entity Id
         entity_class.label:           Entity Class
         related_campaign_id.label:    Related Campaign Id
         related_campaign_class.label: Related Campaign Class
         details.label:                Details
         action_date.label:            Action Date
+        email_campaign.label:         Email Campaign
 
-        type:
-            label:       Type
-            send:        Send
-            open:        Open
-            click:       Click
-            soft_bounce: Soft Bounce
-            hard_bounce: Hard Bounce
-
-        marketingactivitytype:
-            entity_label:        Marketing Activity Type
-            entity_plural_label: Marketing Activity Types
-            id.label:            Id
-            name.label:          Name
-            label.label:         Label
-            template.label:      Template
+    query_designer:
+        aggregates:
+            marketing_activity_type:
+                SendCount:
+                    name: Send Count
+                    hint: Number of 'send' items
+                OpenCount:
+                    name: Open Count
+                    hint: Number of 'open' items
+                ClickCount:
+                    name: Click Count
+                    hint: Number of 'click' items
+                SoftBounceCount:
+                    name: Soft Bounce Count
+                    hint: Number of 'soft bounce' items
+                HardBounceCount:
+                    name: Hard Bounce Count
+                    hint: Number of 'hard bounce' items
+                UnsubscribeCount:
+                    name: Unsubscribe Count
+                    hint: Number of 'unsubscribe' items
