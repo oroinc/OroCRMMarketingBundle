@@ -54,7 +54,7 @@ class MarketingActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
+    public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('campaign.id as id, campaign.name as campaignName, type.name as eventType')
@@ -69,6 +69,30 @@ class MarketingActivityRepository extends EntityRepository
             ->setParameter(':entityClass', $entityClass)
             ->setParameter(':entityId', $entityId);
 
+        if (!empty($pageFilter['date']) && !empty($pageFilter['ids'])) {
+            $this->applyPageFilter($queryBuilder, $pageFilter);
+        }
+
         return $queryBuilder;
+    }
+
+    /**
+     * @param $queryBuilder
+     * @param $pageFilter
+     *
+     * @return MarketingActivityRepository
+     */
+    protected function applyPageFilter($queryBuilder, $pageFilter)
+    {
+        $dateFilter = new \DateTime($pageFilter['date'], new \DateTimeZone('UTC'));
+        $whereComparison = $pageFilter['action'] === 'prev' ? 'gte' : 'lte';
+        $orderDirection = $pageFilter['action'] === 'prev' ? 'ASC' : 'DESC';
+
+        $queryBuilder->andWhere($queryBuilder->expr()->notIn('campaign.id', implode(',', $pageFilter['ids'])));
+        $queryBuilder->having($queryBuilder->expr()->{$whereComparison}('eventDate', ':dateFilter'));
+        $queryBuilder->setParameter(':dateFilter', $dateFilter->format('Y-m-d H:i:s'));
+        $queryBuilder->orderBy('eventDate', $orderDirection);
+
+        return $this;
     }
 }

@@ -50,7 +50,7 @@ class MarketingActivityController extends RestController implements ClassResourc
 
         $items = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
-            ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
+            ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter)
             ->setMaxResults(MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE)
             ->getQuery()
             ->getArrayResult();
