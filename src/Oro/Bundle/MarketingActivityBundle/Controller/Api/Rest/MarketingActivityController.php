@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Controller\Api\Rest;
 
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Util\Codes;
@@ -47,35 +48,15 @@ class MarketingActivityController extends RestController implements ClassResourc
         $filter      = $this->getRequest()->get('filter');
         $pageFilter  = $this->getRequest()->get('pageFilter');
 
-        $results = [
-            'count' => 2,
-            'data' =>[
-                [
-                    'id' => 1,
-                    'campaignName' => 'Campaign 1',
-                    'eventType' => 'Open',
-                    'eventDate' => '2017-01-14T15:30:20+00:00',
-                    'relatedActivityClass' => 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity',
-                    'relatedActivityId' => 1,
-                    'createdAt' => '2017-01-16T15:30:20+00:00',
-                    'updatedAt' => '2017-01-16T15:30:20+00:00',
-                    'editable' => false,
-                    'removable' => false,
-                ],
-                [
-                    'id' => 2,
-                    'campaignName' => 'Campaign 2',
-                    'eventType' => 'Forward',
-                    'eventDate' => '2017-01-15T09:30:20+00:00',
-                    'relatedActivityClass' => 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity',
-                    'relatedActivityId' => 2,
-                    'createdAt' => '2017-01-14T15:30:20+00:00',
-                    'updatedAt' => '2017-01-14T15:30:20+00:00',
-                    'editable' => false,
-                    'removable' => false,
-                ],
-            ]
-        ];
+        $items = $this->getDoctrine()
+            ->getRepository('OroMarketingActivityBundle:MarketingActivity')
+            ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
+            ->setMaxResults(MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE)
+            ->getQuery()
+            ->getArrayResult();
+
+        $results = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
+            ->getNormalizedData($items);
 
         return new JsonResponse($results);
     }

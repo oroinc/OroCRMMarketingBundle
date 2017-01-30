@@ -6,7 +6,7 @@
             <div class="icon">
                 <i class="fa-volume-up"></i>
             </div>
-            <div class="details">
+            <div class="campaign-name">
                 <strong><%= campaignName %></strong>
             </div>
             <div class="actions">
@@ -29,11 +29,11 @@
                 </div>
             </div>
             <div class="extra-info">
-                <div>
+                <div class="marketing-activity-type">
                     <%= eventType %>
                 </div>
-                <div>
-                    &nbsp;&nbsp;<%= dateFormatter.formatDateTime(eventDate) %>
+                <div class="marketing-activity-date">
+                    <%= dateFormatter.formatDateTime(eventDate) %>
                 </div>
             </div>
         </div>

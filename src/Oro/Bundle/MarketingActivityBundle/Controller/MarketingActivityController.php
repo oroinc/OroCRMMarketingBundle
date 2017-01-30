@@ -54,15 +54,22 @@ class MarketingActivityController extends Controller
 
         /** @var DateTimeRangeFilter $dateRangeFilter */
         $dateRangeFilter = $this->get('oro_filter.datetime_range_filter');
+        $campaignEntityClass = 'Oro\Bundle\CampaignBundle\Entity\Campaign';
+        $template = "OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig";
+        $configurationEntityKey = $this->get('oro_entity.routing_helper')->getUrlSafeClassName($campaignEntityClass);
 
         return [
             'entity'                  => $entity,
-            'configuration'           => ['Oro_Bundle_MarketingActivityBundle_Entity_MarketingActivity' => [
-                'label' => "Marketing Activity",
-                'template' => "OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig",
-                'routes' => ['itemView' => 'oro_marketing_activity_widget_marketing_activities_info'],
-                'has_comments' => false,
-            ]],
+            'configuration'           => [
+                $configurationEntityKey => [
+                    'label' => $this->get('translator')->trans('oro.campaign.entity_label'),
+                    'template' => $template,
+                    'routes' => [
+                        'itemView' => 'oro_marketing_activity_widget_marketing_activities_info'
+                    ],
+                    'has_comments' => false,
+                ]
+            ],
             'dateRangeFilterMetadata' => $dateRangeFilter->getMetadata(),
         ];
     }

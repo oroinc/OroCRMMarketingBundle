@@ -47,4 +47,28 @@ class MarketingActivityRepository extends EntityRepository
 
         return $result;
     }
+
+    /**
+     * @param $entityClass
+     * @param $entityId
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('campaign.id as id, campaign.name as campaignName, type.name as eventType')
+            ->addSelect('MAX(ma.actionDate) as eventDate, campaign.updatedAt, campaign.createdAt')
+            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->join('ma.type', 'type')
+            ->join('ma.campaign', 'campaign')
+            ->where('ma.entityClass = :entityClass')
+            ->andWhere('ma.entityId = :entityId')
+            ->groupBy('ma.campaign')
+            ->orderBy('eventDate', 'DESC')
+            ->setParameter(':entityClass', $entityClass)
+            ->setParameter(':entityId', $entityId);
+
+        return $queryBuilder;
+    }
 }

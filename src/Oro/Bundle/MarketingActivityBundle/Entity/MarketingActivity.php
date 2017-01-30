@@ -51,6 +51,8 @@ class MarketingActivity extends ExtendMarketingActivity
     const TYPE_SOFT_BOUNCE = 'soft_bounce';
     const TYPE_HARD_BOUNCE = 'hard_bounce';
     const TYPE_UNSUBSCRIBE = 'unsubscribe';
+
+    const MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE = 5;
     
     /**
      * @var int
