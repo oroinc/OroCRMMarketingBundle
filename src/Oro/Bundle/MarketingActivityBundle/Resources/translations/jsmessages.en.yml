@@ -1,0 +1,6 @@
+oro:
+    marketingactivity:
+        widget:
+            filter:
+                start_date_picker.title: Start Date
+                end_date_picker.title: End Date
