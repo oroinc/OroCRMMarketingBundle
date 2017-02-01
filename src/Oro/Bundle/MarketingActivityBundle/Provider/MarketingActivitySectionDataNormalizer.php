@@ -64,4 +64,20 @@ class MarketingActivitySectionDataNormalizer
             ]
         );
     }
+
+    /**
+     * @param array $items
+     *
+     * @return array
+     */
+    public function getCampaignFilterValues($items)
+    {
+        $result = [];
+
+        foreach ($items as $item) {
+            $result[$item['id']] = $item['campaignName'];
+        }
+
+        return $result;
+    }
 }

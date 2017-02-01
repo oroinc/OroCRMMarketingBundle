@@ -48,7 +48,7 @@ class MarketingActivityController extends RestController implements ClassResourc
         $filter      = $this->getRequest()->get('filter');
         $pageFilter  = $this->getRequest()->get('pageFilter');
 
-         $queryBuilder = $this->getDoctrine()
+        $queryBuilder = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
             ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter);
 

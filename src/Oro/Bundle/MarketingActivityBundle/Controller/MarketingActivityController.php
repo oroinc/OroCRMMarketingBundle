@@ -58,6 +58,16 @@ class MarketingActivityController extends Controller
         $template = "OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig";
         $configurationEntityKey = $this->get('oro_entity.routing_helper')->getUrlSafeClassName($campaignEntityClass);
 
+        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
+        $marketingActivitySectionItems = $this->getDoctrine()
+            ->getRepository('OroMarketingActivityBundle:MarketingActivity')
+            ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
+            ->getQuery()
+            ->getArrayResult();
+
+        $campaignFilterValues = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
+            ->getCampaignFilterValues($marketingActivitySectionItems);
+
         return [
             'entity'                  => $entity,
             'configuration'           => [
@@ -71,6 +81,7 @@ class MarketingActivityController extends Controller
                 ]
             ],
             'dateRangeFilterMetadata' => $dateRangeFilter->getMetadata(),
+            'campaignFilterValues' => $campaignFilterValues,
         ];
     }
 

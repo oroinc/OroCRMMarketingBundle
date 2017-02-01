@@ -19,6 +19,9 @@ define(function(require) {
         /** @type DatetimeFilter */
         endDateRangeFilter: null,
 
+        /** @type MultiSelectFilter */
+        campaignTypeFilter: null,
+
         /**
          * Returns filter state
          *
@@ -27,12 +30,17 @@ define(function(require) {
         getFilterState: function() {
             return {
                 startDateRange: this.startDateRangeFilter.getValue(),
-                endDateRange: this.endDateRangeFilter.getValue()
+                endDateRange: this.endDateRangeFilter.getValue(),
+                campaigns: this.campaignTypeFilter.getValue()
             };
         },
 
         isFiltersEmpty: function() {
-            return (this.startDateRangeFilter.isEmptyValue() && this.endDateRangeFilter.isEmptyValue());
+            return (
+                this.startDateRangeFilter.isEmptyValue()
+                && this.endDateRangeFilter.isEmptyValue()
+                && this.campaignTypeFilter.isEmptyValue()
+            );
         },
 
         /**
@@ -67,6 +75,20 @@ define(function(require) {
             this.endDateRangeFilter.on('update', this.onFilterStateChange, this);
             $filterContainer.append(this.endDateRangeFilter.$el);
             this.endDateRangeFilter.rendered();
+
+            // prepare choices
+            var campaignChoices = this.options.activityListOptions.campaignFilterValues;
+
+            // create and render
+            this.campaignTypeFilter = new MultiSelectFilter({
+                'label': __('oro.marketingactivity.widget.filter.campaign.title'),
+                'choices': campaignChoices || {}
+            });
+
+            this.campaignTypeFilter.render();
+            this.campaignTypeFilter.on('update', this.onFilterStateChange, this);
+            $filterContainer.append(this.campaignTypeFilter.$el);
+            this.campaignTypeFilter.rendered();
         }
     });
 

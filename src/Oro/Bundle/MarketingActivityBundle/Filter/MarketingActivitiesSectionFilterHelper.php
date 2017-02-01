@@ -46,6 +46,15 @@ class MarketingActivitiesSectionFilterHelper
                 'campaign.endDate'
             );
         }
+
+        if (!empty($filterData['campaigns']['value'])) {
+            $values = array_filter($filterData['campaigns']['value'], function ($value) {
+                return !empty($value);
+            });
+            if (!empty($values)) {
+                $queryBuilder->andWhere($queryBuilder->expr()->in('campaign.id', implode(',', $values)));
+            }
+        }
     }
 
     /**

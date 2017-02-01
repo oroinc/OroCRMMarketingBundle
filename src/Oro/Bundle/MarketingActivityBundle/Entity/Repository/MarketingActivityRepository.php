@@ -49,12 +49,13 @@ class MarketingActivityRepository extends EntityRepository
     }
 
     /**
-     * @param $entityClass
-     * @param $entityId
+     * @param string $entityClass
+     * @param int    $entityId
+     * @param array  $pageFilter
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter)
+    public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter = null)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('campaign.id as id, campaign.name as campaignName, type.name as eventType')
