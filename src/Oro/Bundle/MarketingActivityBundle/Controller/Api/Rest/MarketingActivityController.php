@@ -60,7 +60,7 @@ class MarketingActivityController extends RestController implements ClassResourc
             ->getArrayResult();
 
         $results = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
-            ->getNormalizedData($items);
+            ->getNormalizedData($items, $entityClass, $entityId);
 
         return new JsonResponse($results);
     }

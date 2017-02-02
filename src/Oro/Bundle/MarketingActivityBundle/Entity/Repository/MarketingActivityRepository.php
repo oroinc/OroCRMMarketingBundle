@@ -15,7 +15,7 @@ class MarketingActivityRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getMarketingActivitySummaryQueryBuilder($campaignId)
+    public function getMarketingActivitySummaryQueryBuilder($campaignId, $entityClass, $entityId)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('count(ma.id) as value, type.id as typeId')
@@ -25,6 +25,14 @@ class MarketingActivityRepository extends EntityRepository
             ->groupBy('type.id')
             ->setParameter(':campaignId', $campaignId);
 
+        if (!empty($entityClass) && !empty($entityId)) {
+            $queryBuilder->andWhere('ma.entityClass = :entityClass')
+                ->andWhere('ma.entityId = :entityId')
+                ->setParameter(':entityClass', $entityClass)
+                ->setParameter(':entityId', $entityId);
+
+        }
+
         return $queryBuilder;
     }
 
@@ -33,9 +41,9 @@ class MarketingActivityRepository extends EntityRepository
      *
      * @return array
      */
-    public function getMarketingActivitySummaryByCampaign($campaignId)
+    public function getMarketingActivitySummaryByCampaign($campaignId, $entityClass, $entityId)
     {
-        $summary = $this->getMarketingActivitySummaryQueryBuilder($campaignId)
+        $summary = $this->getMarketingActivitySummaryQueryBuilder($campaignId, $entityClass, $entityId)
             ->getQuery()
             ->getResult();
 

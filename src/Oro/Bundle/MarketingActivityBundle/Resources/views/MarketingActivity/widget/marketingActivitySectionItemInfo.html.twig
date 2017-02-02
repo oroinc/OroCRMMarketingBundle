@@ -1,9 +1,9 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 <div class="widget-content form-horizontal box-content box-split-content row-fluid">
-    {% placeholder view_content_data_marketing_activities_summary with {'campaignId': entity.id} %}
-    <div>
-        <h4>Marketing activities</h4>
-        {{ dataGrid.renderGrid('magento-orderitem-grid', {id: entity.id}) }}
-    </div>
+    {% placeholder view_content_data_marketing_activities_summary with {'campaignId': campaignId, 'entityClass': entityClass, 'entityId': entityId} %}
+</div>
+<div>
+    <h5>{{ 'oro.marketingactivity.entity_plural_label'|trans }}</h5>
+    {{ dataGrid.renderGrid('magento-orderitem-grid', {id: campaignId}) }}
 </div>

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -29,11 +30,11 @@ class MarketingActivityController extends Controller
      * @AclAncestor("oro_campaign_view"))
      * @Template
      */
-    public function summaryAction($campaignId)
+    public function summaryAction($campaignId, $entityClass, $entityId)
     {
         return $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
-            ->getMarketingActivitySummaryByCampaign($campaignId);
+            ->getMarketingActivitySummaryByCampaign($campaignId, $entityClass, $entityId);
     }
 
     /**
@@ -93,10 +94,12 @@ class MarketingActivityController extends Controller
      * )
      * @Template("OroMarketingActivityBundle:MarketingActivity/widget:marketingActivitySectionItemInfo.html.twig")
      */
-    public function infoAction(MarketingActivity $entity)
+    public function infoAction($id, Request $request)
     {
         return [
-            'entity'         => $entity,
+            'campaignId'  => $id,
+            'entityClass' => $request->get('targetActivityClass'),
+            'entityId'    => $request->get('targetActivityId')
         ];
     }
 }

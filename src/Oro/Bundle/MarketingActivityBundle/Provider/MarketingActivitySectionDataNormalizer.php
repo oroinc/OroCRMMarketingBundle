@@ -5,16 +5,18 @@ namespace Oro\Bundle\MarketingActivityBundle\Provider;
 class MarketingActivitySectionDataNormalizer
 {
     /**
-     * @param $items
+     * @param array   $items
+     * @param string  $entityClass
+     * @param integer $entityId
      *
      * @return array
      */
-    public function getNormalizedData($items)
+    public function getNormalizedData($items, $entityClass, $entityId)
     {
         $result = [];
 
         foreach ($items as $item) {
-            $result[] = $this->normalizeItem($item);
+            $result[] = $this->normalizeItem($item, $entityClass, $entityId);
         }
 
         return [
@@ -24,11 +26,13 @@ class MarketingActivitySectionDataNormalizer
     }
 
     /**
-     * @param $item
+     * @param array   $item
+     * @param string  $entityClass
+     * @param integer $entityId
      *
      * @return array
      */
-    protected function normalizeItem($item)
+    protected function normalizeItem($item, $entityClass, $entityId)
     {
         $resultItem = [];
 
@@ -43,6 +47,7 @@ class MarketingActivitySectionDataNormalizer
         }
 
         $resultItem = $this->applyAdditionalData($resultItem);
+        $resultItem = $this->applyTargetEntityData($resultItem, $entityClass, $entityId);
 
         return $resultItem;
     }
@@ -61,6 +66,26 @@ class MarketingActivitySectionDataNormalizer
                 'relatedActivityId' => $item['id'],
                 'editable' => false,
                 'removable' => false,
+            ]
+        );
+    }
+
+    /**
+     * @param array   $item
+     * @param string  $entityClass
+     * @param integer $entityId
+     *
+     * @return array
+     */
+    protected function applyTargetEntityData($item, $entityClass, $entityId)
+    {
+        return array_merge(
+            $item,
+            [
+                'targetEntityData' => [
+                    'class' => $entityClass,
+                    'id' => $entityId
+                ]
             ]
         );
     }
