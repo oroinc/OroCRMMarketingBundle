@@ -3,17 +3,17 @@
 namespace Oro\Bundle\TrackingBundle\Processor;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-
-use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
@@ -95,6 +95,14 @@ class TrackingProcessor implements LoggerAwareInterface
             $this->maxExecTime    = $minutes;
             $this->maxExecTimeout = $minutes > 0 ? new \DateInterval('PT' . $minutes . 'M') : false;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasEntitiesToProcess()
+    {
+        return $this->getEventsCount() > 0;
     }
 
     /**
@@ -214,12 +222,8 @@ class TrackingProcessor implements LoggerAwareInterface
      */
     protected function getEventsCount()
     {
-        $em           = $this->getEntityManager();
-        $queryBuilder = $em
-            ->getRepository(self::TRACKING_EVENT_ENTITY)
-            ->createQueryBuilder('entity')
-            ->select('COUNT (entity.id)')
-            ->where('entity.parsed = false');
+        $queryBuilder = $this->createNotParsedEntityQueryBuilder()
+            ->select('COUNT (entity.id)');
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -462,10 +466,7 @@ class TrackingProcessor implements LoggerAwareInterface
      */
     protected function processVisits()
     {
-        $queryBuilder = $this->getEntityManager()
-            ->getRepository(self::TRACKING_EVENT_ENTITY)
-            ->createQueryBuilder('entity')
-            ->where('entity.parsed = false')
+        $queryBuilder = $this->createNotParsedEntityQueryBuilder()
             ->orderBy('entity.id', 'ASC')
             ->setMaxResults($this->getBatchSize());
 
@@ -478,6 +479,19 @@ class TrackingProcessor implements LoggerAwareInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    protected function createNotParsedEntityQueryBuilder()
+    {
+        return $this->getEntityManager()
+            ->getRepository(self::TRACKING_EVENT_ENTITY)
+            ->createQueryBuilder('entity')
+            ->andWhere('entity.parsed = false')
+            ->innerJoin('entity.eventData', 'eventData')
+        ;
     }
 
     /**
