@@ -27,7 +27,14 @@ class TrackCommand extends ContainerAwareCommand implements CronCommandInterface
 
     public function isActive()
     {
-        return true;
+        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
+        if (!$featureChecker->isFeatureEnabled('tracking')) {
+            return false;
+        }
+        /** @var TrackingProcessor $processor */
+        $processor = $this->getContainer()->get('oro_tracking.processor.tracking_processor');
+
+        return  $processor->hasEntitiesToProcess();
     }
 
     /**
