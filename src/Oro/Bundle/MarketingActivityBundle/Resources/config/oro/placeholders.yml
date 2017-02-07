@@ -9,6 +9,7 @@ placeholders:
 
     items:
         view_oro_marketing_activity_summary:
+            applicable: "@oro_marketing_activity.placeholder.filter->isSummaryApplicable($campaignId$)"
             action: OroMarketingActivityBundle:MarketingActivity:summary
         view_oro_marketing_activity_list:
             applicable: "@oro_marketing_activity.placeholder.filter->isApplicable($entity$)"
