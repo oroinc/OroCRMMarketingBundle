@@ -18,7 +18,7 @@ class MarketingActivityRepository extends EntityRepository
     public function getMarketingActivitySummaryQueryBuilder($campaignId, $entityClass, $entityId)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('count(ma.id) as value, type.id as typeId')
+        $queryBuilder->select('COUNT(ma.id) as value, type.id as typeId')
             ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
             ->join('ma.type', 'type')
             ->where('ma.campaign = :campaignId')
@@ -54,6 +54,23 @@ class MarketingActivityRepository extends EntityRepository
         }
 
         return $result;
+    }
+
+    /**
+     * @param integer $campaignId
+     *
+     * @return boolean
+     */
+    public function getMarketingActivitySummaryCountByCampaign($campaignId)
+    {
+        return (bool) $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('COUNT(ma.id)')
+            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->where('ma.campaign = :campaignId')
+            ->setParameter(':campaignId', $campaignId)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

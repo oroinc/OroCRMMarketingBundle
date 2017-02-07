@@ -4,6 +4,7 @@ namespace Oro\Bundle\MarketingActivityBundle\Placeholder;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
 class PlaceholderFilter
 {
@@ -25,6 +26,18 @@ class PlaceholderFilter
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->marketingActivityEntityProvider = $entityProvider;
+    }
+
+    /**
+     * @param integer $campaignId
+     *
+     * @return boolean
+     */
+    public function isSummaryApplicable($campaignId)
+    {
+        return $this->doctrineHelper
+                ->getEntityRepository(MarketingActivity::class)
+                ->getMarketingActivitySummaryCountByCampaign($campaignId);
     }
 
     /**

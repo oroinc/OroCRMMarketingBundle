@@ -32,9 +32,13 @@ class MarketingActivityController extends Controller
      */
     public function summaryAction($campaignId, $entityClass, $entityId)
     {
-        return $this->getDoctrine()
+        $summaryData = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
             ->getMarketingActivitySummaryByCampaign($campaignId, $entityClass, $entityId);
+
+        return [
+            'summary' => $summaryData
+        ];
     }
 
     /**
