@@ -1,16 +1,11 @@
 {% import 'OroUIBundle::macros.html.twig' as ui %}
 
 <div class="row-fluid form-horizontal">
-    <div class="responsive-block">
-        {{ ui.renderProperty('oro.marketingactivity.summary.send.label'|trans, send|default('0')) }}
-        {{ ui.renderProperty('oro.marketingactivity.summary.open.label'|trans, open|default('0')) }}
-        {{ ui.renderProperty('oro.marketingactivity.summary.click.label'|trans, click|default('0')) }}
-
-    </div>
-
-    <div class="responsive-block">
-        {{ ui.renderProperty('oro.marketingactivity.summary.soft_bounce.label'|trans, soft_bounce|default('0')) }}
-        {{ ui.renderProperty('oro.marketingactivity.summary.hard_bounce.label'|trans, hard_bounce|default('0')) }}
-        {{ ui.renderProperty('oro.marketingactivity.summary.unsubscribe.label'|trans, unsubscribe|default('0')) }}
-    </div>
+    {% for row in summary|batch(summary|length / 2) %}
+        <div class="responsive-block">
+            {% for key,data in row %}
+                {{ ui.renderProperty(('oro.marketingactivity.summary.' ~ key ~ '.label')|trans, data|default('0')) }}
+            {% endfor %}
+        </div>
+    {% endfor %}
 </div>
