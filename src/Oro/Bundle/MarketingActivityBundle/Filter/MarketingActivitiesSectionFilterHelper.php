@@ -48,6 +48,7 @@ class MarketingActivitiesSectionFilterHelper
         }
 
         if (!empty($filterData['campaigns']['value'])) {
+            //filter empty values
             $values = array_filter($filterData['campaigns']['value'], function ($value) {
                 return !empty($value);
             });

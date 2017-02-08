@@ -18,10 +18,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 class MarketingActivityController extends Controller
 {
     /**
-     * @param int $campaignId
-     *
-     * @return array
-     *
      * @Route(
      *         "/widget/marketing-activities/summary/{campaignId}",
      *          name="oro_marketing_activity_widget_summary",
@@ -29,6 +25,12 @@ class MarketingActivityController extends Controller
      * )
      * @AclAncestor("oro_campaign_view"))
      * @Template
+     *
+     * @param integer $campaignId  The ID of Campaign entity
+     * @param string  $entityClass Entity class name
+     * @param integer $entityId    Entity id
+     *
+     * @return array
      */
     public function summaryAction($campaignId, $entityClass, $entityId)
     {
@@ -97,6 +99,11 @@ class MarketingActivityController extends Controller
      *      requirements={"id"="\d+"},
      * )
      * @Template("OroMarketingActivityBundle:MarketingActivity/widget:marketingActivitySectionItemInfo.html.twig")
+     *
+     * @param integer $id The ID of Campaign entity
+     * @param Request $request
+     *
+     * @return array
      */
     public function infoAction($id, Request $request)
     {

@@ -79,7 +79,7 @@
             <div class="container-fluid accordion"
                 data-page-component-module="oromarketingactivity/js/app/components/marketing-activities-section-component"
                 data-page-component-options="{{ options|json_encode }}"></div>
-            {% include 'OroActivityListBundle:ActivityList:js/list.html.twig' with {'id': 'template-marketing-activities'} %}
+            {% include 'OroMarketingActivityBundle:MarketingActivity:js/list.html.twig' with {'id': 'template-marketing-activities'} %}
             {% include 'OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig' with {'id': 'template-marketing-activities-item'} %}
             {% for activityClass, activityOptions in configuration %}
                 {% include activityOptions.template with {'id': ('template-activity-item-' ~ activityClass) } %}

@@ -4,6 +4,7 @@ namespace Oro\Bundle\MarketingActivityBundle\Controller\Api\Rest;
 
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -23,6 +24,7 @@ class MarketingActivityController extends RestController implements ClassResourc
      *
      * @param string  $entityClass Entity class name
      * @param integer $entityId    Entity id
+     * @param Request $request
      *
      * @QueryParam(
      *     name="pageFilter", nullable=true,
@@ -42,11 +44,11 @@ class MarketingActivityController extends RestController implements ClassResourc
      * )
      * @return JsonResponse
      */
-    public function cgetAction($entityClass, $entityId)
+    public function cgetAction($entityClass, $entityId, Request $request)
     {
         $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
-        $filter      = $this->getRequest()->get('filter');
-        $pageFilter  = $this->getRequest()->get('pageFilter');
+        $filter      = $request->get('filter');
+        $pageFilter  = $request->get('pageFilter');
 
         $queryBuilder = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')

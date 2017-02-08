@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingActivityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class MarketingActivityRepository
@@ -11,9 +12,11 @@ use Doctrine\ORM\EntityRepository;
 class MarketingActivityRepository extends EntityRepository
 {
     /**
-     * @param $campaignId
+     * @param integer $campaignId
+     * @param string  $entityClass
+     * @param integer $entityId
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getMarketingActivitySummaryQueryBuilder($campaignId, $entityClass, $entityId)
     {
@@ -30,14 +33,15 @@ class MarketingActivityRepository extends EntityRepository
                 ->andWhere('ma.entityId = :entityId')
                 ->setParameter(':entityClass', $entityClass)
                 ->setParameter(':entityId', $entityId);
-
         }
 
         return $queryBuilder;
     }
 
     /**
-     * @param $campaignId
+     * @param integer $campaignId
+     * @param string  $entityClass
+     * @param integer $entityId
      *
      * @return array
      */
@@ -103,12 +107,12 @@ class MarketingActivityRepository extends EntityRepository
     }
 
     /**
-     * @param $queryBuilder
-     * @param $pageFilter
+     * @param QueryBuilder $queryBuilder
+     * @param array        $pageFilter
      *
      * @return MarketingActivityRepository
      */
-    protected function applyPageFilter($queryBuilder, $pageFilter)
+    protected function applyPageFilter(QueryBuilder $queryBuilder, $pageFilter)
     {
         $dateFilter = new \DateTime($pageFilter['date'], new \DateTimeZone('UTC'));
         $whereComparison = $pageFilter['action'] === 'prev' ? 'gte' : 'lte';

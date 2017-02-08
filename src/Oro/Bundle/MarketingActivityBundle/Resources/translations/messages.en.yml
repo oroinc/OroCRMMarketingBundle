@@ -1,22 +1,23 @@
 oro:
     marketingactivity:
-        entity_label:                 Marketing Activity
-        entity_plural_label:          Marketing Activities
-        id.label:                     Id
-        owner.label:                  Owner
-        campaign.label:               Campaign
-        type.label:                   Type
-        entity_id.label:              Entity Id
-        entity_class.label:           Entity Class
-        related_campaign_id.label:    Related Campaign Id
-        related_campaign_class.label: Related Campaign Class
-        details.label:                Details
-        action_date.label:            Action Date
-        email_campaign.label:         Email Campaign
-        view_campaign.label:          View Campaign
-        email_campaign.label:         Email Campaign Name
-        event_type.label:             Event Type
-        event_date.label:             Event Date
+        entity_label:                  Marketing Activity
+        entity_plural_label:           Marketing Activities
+        id.label:                      Id
+        owner.label:                   Owner
+        campaign.label:                Campaign
+        type.label:                    Type
+        entity_id.label:               Entity Id
+        entity_class.label:            Entity Class
+        related_campaign_id.label:     Related Campaign Id
+        related_campaign_class.label:  Related Campaign Class
+        details.label:                 Details
+        action_date.label:             Action Date
+        email_campaign.label:          Email Campaign
+        view_campaign.label:           View Campaign
+        email_campaign.label:          Email Campaign Name
+        event_type.label:              Event Type
+        event_date.label:              Event Date
+        no_marketing_activities_exist: No marketing activities found
         summary:
             label: Marketing Activity Summary
             send.label: Send

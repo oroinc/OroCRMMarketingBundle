@@ -13,7 +13,6 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
 class LoadMarketingActivityData implements DependentFixtureInterface, SharedFixtureInterface
 {
-
     /**
      * Fixture reference repository
      *
@@ -28,6 +27,7 @@ class LoadMarketingActivityData implements DependentFixtureInterface, SharedFixt
     {
         $this->referenceRepository = $referenceRepository;
     }
+
     /**
      * @var array
      */
