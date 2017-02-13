@@ -11,6 +11,8 @@ placeholders:
         view_oro_marketing_activity_summary:
             applicable: "@oro_marketing_activity.placeholder.filter->isSummaryApplicable($campaignId$)"
             action: OroMarketingActivityBundle:MarketingActivity:summary
+            acl: oro_marketing_activity_view
         view_oro_marketing_activity_list:
             applicable: "@oro_marketing_activity.placeholder.filter->isApplicable($entity$)"
             template: OroMarketingActivityBundle:MarketingActivity:marketingActivitiesSection.html.twig
+            acl: oro_marketing_activity_view

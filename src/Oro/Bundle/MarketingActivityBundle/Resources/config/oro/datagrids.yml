@@ -9,12 +9,17 @@ datagrids:
                     - ma.actionDate as eventDate
                     - eventType.id as eventTypeId
                     - eventType.name as eventTypeName
+                    - ma.details
                 from:
                     - { table: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity , alias: ma }
                 join:
                     left:
                         - { join: ma.type, alias: eventType }
-                        - { join: %oro_campaign.email_campaign.entity.class%, alias: emailCampaign, conditionType: WITH, condition: "emailCampaign.id = ma.relatedCampaignId" }
+                        -
+                            join: %oro_campaign.email_campaign.entity.class%
+                            alias: emailCampaign
+                            conditionType: WITH
+                            condition: "emailCampaign.id = ma.relatedCampaignId AND ma.relatedCampaignClass = '%oro_campaign.email_campaign.entity.class%'"
                 where:
                     and:
                         - ma.campaign = :id
@@ -32,11 +37,15 @@ datagrids:
             eventDate:
                 label: oro.marketingactivity.event_date.label
                 frontend_type: datetime
+            details:
+                label: oro.marketingactivity.details.label
+                renderable: false
         sorters:
             columns:
                 emailCampaignName: { data_name: emailCampaign.name }
                 eventTypeName:     { data_name: eventTypeName }
                 eventDate:         { data_name: ma.actionDate }
+                details:           { data_name: ma.details }
             default:
                 eventDate: DESC
         filters:
@@ -51,3 +60,6 @@ datagrids:
                 eventDate:
                     type: datetime
                     data_name: ma.actionDate
+                details:
+                    type: string
+                    data_name: ma.details

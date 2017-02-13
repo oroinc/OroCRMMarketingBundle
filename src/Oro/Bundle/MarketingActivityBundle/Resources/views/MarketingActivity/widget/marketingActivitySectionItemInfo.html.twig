@@ -5,5 +5,9 @@
 </div>
 <div class="marketing-activities-section-data-grid">
     <h5>{{ 'oro.marketingactivity.entity_plural_label'|trans }}</h5>
-    {{ dataGrid.renderGrid('marketing-activity-section-data-grid', {'id': campaignId, 'entityClass': entityClass, 'entityId': entityId}) }}
+    {% set scope = 'marketing-activity-campaign-%campaign%'|replace({'%campaign%': campaignId}) %}
+    {{ dataGrid.renderGrid(
+        oro_datagrid_build_fullname('marketing-activity-section-data-grid', scope),
+        {'id': campaignId, 'entityClass': entityClass, 'entityId': entityId})
+    }}
 </div>

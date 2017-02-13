@@ -8,6 +8,16 @@
         count: 1,
         sortingField: 'eventDate'
     } %}
+    {% set configuration = {
+        (configurationKey): {
+            label: 'oro.campaign.entity_label'|trans,
+            template: 'OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig',
+            has_comments: false,
+            routes: {
+                itemView: 'oro_marketing_activity_widget_marketing_activities_info',
+            }
+        }
+    } %}
     {% block widget_content %}
 
         {% block widget_actions %}
@@ -47,7 +57,7 @@
             {% set options = {
                 widgetId: app.request.get('_wid'),
                 activityListData: render(path(
-                    'oro_marketing_activity_api_get_marketing_activities',
+                    'oro_marketing_activity_widget_marketing_activities_list',
                     {
                         entityClass: oro_class_name(entity, true),
                         entityId: entity.id
@@ -62,7 +72,7 @@
                     reloadOnAdd: false,
                     reloadOnUpdate: false,
                     urls: {
-                        route: 'oro_marketing_activity_api_get_marketing_activities',
+                        route: 'oro_marketing_activity_widget_marketing_activities_list',
                         parameters: {
                             entityClass: oro_class_name(entity, true),
                             entityId: entity.id

@@ -5,10 +5,6 @@ namespace Oro\Bundle\MarketingActivityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class MarketingActivityRepository
- * @package Oro\Bundle\MarketingActivityBundle\Entity\Repository
- */
 class MarketingActivityRepository extends EntityRepository
 {
     /**

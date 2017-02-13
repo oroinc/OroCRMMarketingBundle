@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,7 +24,7 @@ class MarketingActivityController extends Controller
      *          name="oro_marketing_activity_widget_summary",
      *          requirements={"campaignId"="\d+"}
      * )
-     * @AclAncestor("oro_campaign_view"))
+     * @AclAncestor("oro_marketing_activity_view")
      * @Template
      *
      * @param integer $campaignId  The ID of Campaign entity
@@ -48,6 +49,7 @@ class MarketingActivityController extends Controller
      *     "/view/widget/marketing-activities/{entityClass}/{entityId}",
      *     name="oro_marketing_activity_widget_marketing_activities"
      * )
+     * @AclAncestor("oro_marketing_activity_view")
      * @Template("OroMarketingActivityBundle:MarketingActivity:marketingActivitiesSection.html.twig")
      *
      * @param string  $entityClass The entity class which marketing activities should be rendered
@@ -61,7 +63,7 @@ class MarketingActivityController extends Controller
 
         /** @var DateTimeRangeFilter $dateRangeFilter */
         $dateRangeFilter = $this->get('oro_filter.datetime_range_filter');
-        $campaignEntityClass = 'Oro\Bundle\CampaignBundle\Entity\Campaign';
+        $campaignEntityClass = $this->container->getParameter('oro_campaign.entity.class');
         $template = "OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig";
         $configurationEntityKey = $this->get('oro_entity.routing_helper')->getUrlSafeClassName($campaignEntityClass);
 
@@ -77,18 +79,19 @@ class MarketingActivityController extends Controller
 
         return [
             'entity'                  => $entity,
-            'configuration'           => [
-                $configurationEntityKey => [
-                    'label' => $this->get('translator')->trans('oro.campaign.entity_label'),
-                    'template' => $template,
-                    'routes' => [
-                        'itemView' => 'oro_marketing_activity_widget_marketing_activities_info'
-                    ],
-                    'has_comments' => false,
-                ]
-            ],
+            'configurationKey'        => $configurationEntityKey,
+//            'configuration'           => [
+//                $configurationEntityKey => [
+//                    'label' => $this->get('translator')->trans('oro.campaign.entity_label'),
+//                    'template' => $template,
+//                    'routes' => [
+//                        'itemView' => 'oro_marketing_activity_widget_marketing_activities_info'
+//                    ],
+//                    'has_comments' => false,
+//                ]
+//            ],
             'dateRangeFilterMetadata' => $dateRangeFilter->getMetadata(),
-            'campaignFilterValues' => $campaignFilterValues,
+            'campaignFilterValues'    => $campaignFilterValues,
         ];
     }
 
@@ -98,6 +101,7 @@ class MarketingActivityController extends Controller
      *      name="oro_marketing_activity_widget_marketing_activities_info",
      *      requirements={"id"="\d+"},
      * )
+     * @AclAncestor("oro_marketing_activity_view")
      * @Template("OroMarketingActivityBundle:MarketingActivity/widget:marketingActivitySectionItemInfo.html.twig")
      *
      * @param integer $id The ID of Campaign entity
@@ -112,5 +116,43 @@ class MarketingActivityController extends Controller
             'entityClass' => $request->get('targetActivityClass'),
             'entityId'    => $request->get('targetActivityId')
         ];
+    }
+
+    /**
+     * Get filtered marketing activities for given entity
+     *
+     * @Route(
+     *     "/view/widget/marketing-activities/list/{entityClass}/{entityId}",
+     *     name="oro_marketing_activity_widget_marketing_activities_list"
+     * )
+     * @AclAncestor("oro_marketing_activity_view")
+     *
+     * @param string  $entityClass The entity class which marketing activities should be rendered
+     * @param integer $entityId    The entity object id which marketing activities should be rendered
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listAction($entityClass, $entityId, Request $request)
+    {
+        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
+        $filter      = $request->get('filter');
+        $pageFilter  = $request->get('pageFilter');
+
+        $queryBuilder = $this->getDoctrine()
+            ->getRepository('OroMarketingActivityBundle:MarketingActivity')
+            ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter);
+
+        $this->get('oro_marketing_activity.section_data.filter.helper')
+            ->addFiltersToQuery($queryBuilder, $filter);
+
+        $items = $queryBuilder->setMaxResults(MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE)
+            ->getQuery()
+            ->getArrayResult();
+
+        $results = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
+            ->getNormalizedData($items, $entityClass, $entityId);
+
+        return new JsonResponse($results);
     }
 }

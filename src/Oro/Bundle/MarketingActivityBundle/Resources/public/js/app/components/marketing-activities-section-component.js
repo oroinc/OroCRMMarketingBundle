@@ -3,11 +3,8 @@ define(function(require) {
 
     var MarketingActivitiesSectionComponent;
     var ActivityListComponent = require('oroactivitylist/js/app/components/activity-list-component');
-    var $ = require('jquery');
     var _ = require('underscore');
     var __ = require('orotranslation/js/translator');
-    var tools = require('oroui/js/tools');
-    var mediator = require('oroui/js/mediator');
     var MultiSelectFilter = require('oro/filter/multiselect-filter');
     var DatetimeFilter = require('oro/filter/datetime-filter');
     var dataFilterWrapper = require('orofilter/js/datafilter-wrapper');
@@ -37,9 +34,9 @@ define(function(require) {
 
         isFiltersEmpty: function() {
             return (
-                this.startDateRangeFilter.isEmptyValue()
-                && this.endDateRangeFilter.isEmptyValue()
-                && this.campaignTypeFilter.isEmptyValue()
+                this.startDateRangeFilter.isEmptyValue() &&
+                this.endDateRangeFilter.isEmptyValue() &&
+                this.campaignTypeFilter.isEmptyValue()
             );
         },
 
