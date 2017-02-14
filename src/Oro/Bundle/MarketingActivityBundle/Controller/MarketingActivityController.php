@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
+use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,9 +128,10 @@ class MarketingActivityController extends Controller
         $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
         $filter      = $request->get('filter');
         $pageFilter  = $request->get('pageFilter');
+        /** @var MarketingActivityRepository $repository */
+        $repository = $this->getDoctrine()->getRepository('OroMarketingActivityBundle:MarketingActivity');
 
-        $queryBuilder = $this->getDoctrine()
-            ->getRepository('OroMarketingActivityBundle:MarketingActivity')
+        $queryBuilder = $repository
             ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter);
 
         $this->get('oro_marketing_activity.section_data.filter.helper')
@@ -138,6 +140,8 @@ class MarketingActivityController extends Controller
         $items = $queryBuilder->setMaxResults(MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE)
             ->getQuery()
             ->getArrayResult();
+
+        $repository->addEventTypeData($items, $entityClass, $entityId);
 
         $results = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
             ->getNormalizedData($items, $entityClass, $entityId);

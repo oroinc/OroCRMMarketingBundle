@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingActivityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 
 class MarketingActivityRepository extends EntityRepository
@@ -83,10 +84,9 @@ class MarketingActivityRepository extends EntityRepository
     public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter = null)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('campaign.id as id, campaign.name as campaignName, type.name as eventType')
+        $queryBuilder->select('campaign.id as id, campaign.name as campaignName')
             ->addSelect('MAX(ma.actionDate) as eventDate, campaign.updatedAt, campaign.createdAt')
             ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
-            ->join('ma.type', 'type')
             ->join('ma.campaign', 'campaign')
             ->where('ma.entityClass = :entityClass')
             ->andWhere('ma.entityId = :entityId')
@@ -100,6 +100,51 @@ class MarketingActivityRepository extends EntityRepository
         }
 
         return $queryBuilder;
+    }
+
+    /**
+     * @param array   $items
+     * @param string  $entityClass
+     * @param integer $entityId
+     *
+     * @return MarketingActivityRepository
+     */
+    public function addEventTypeData(&$items, $entityClass, $entityId)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('ma.actionDate, IDENTITY(ma.campaign) as campaignId, type.name')
+            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->join('ma.type', 'type')
+            ->where('ma.entityClass = :entityClass')
+            ->andWhere('ma.entityId = :entityId')
+            ->groupBy('ma.campaign')
+            ->setParameter(':entityClass', $entityClass)
+            ->setParameter(':entityId', $entityId);
+
+        /** @var Orx $orX */
+        $orX = $queryBuilder->expr()->orX();
+        foreach ($items as $item) {
+            $orX->add($queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq('ma.campaign', $item['id']),
+                $queryBuilder->expr()->eq('ma.actionDate', $queryBuilder->expr()->literal($item['eventDate']))
+            ));
+        }
+        $queryBuilder->andWhere($orX);
+
+        $types = $queryBuilder->getQuery()->getArrayResult();
+
+        foreach ($items as &$item) {
+            $item['eventType'] = '';
+            foreach ($types as $type) {
+                if ($item['id'] == $type['campaignId']
+                    && $item['eventDate'] == $type['actionDate']->format('Y-m-d H:i:s')
+                ) {
+                    $item['eventType'] = $type['name'];
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**
