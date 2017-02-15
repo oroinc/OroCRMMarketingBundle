@@ -4,9 +4,6 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @group segfault
- */
 class TrackingWebsiteControllerTest extends WebTestCase
 {
     protected function setUp()
