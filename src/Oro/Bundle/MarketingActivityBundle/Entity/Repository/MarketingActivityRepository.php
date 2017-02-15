@@ -18,11 +18,10 @@ class MarketingActivityRepository extends EntityRepository
     public function getMarketingActivitySummaryQueryBuilder($campaignId, $entityClass, $entityId)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('COUNT(ma.id) as value, type.id as typeId')
+        $queryBuilder->select('COUNT(ma.id) as value, IDENTITY(ma.type) as typeId')
             ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
-            ->join('ma.type', 'type')
             ->where('ma.campaign = :campaignId')
-            ->groupBy('type.id')
+            ->groupBy('typeId')
             ->setParameter(':campaignId', $campaignId);
 
         if (!empty($entityClass) && !empty($entityId)) {
