@@ -34,22 +34,6 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
             ])
             ->getMock();
 
-        $this->doctrineHelper->expects($this->any())
-            ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
-                if (method_exists($entity, 'getId')) {
-                    return !(bool)$entity->getId();
-                }
-
-                throw new \RuntimeException('Something wrong');
-            }));
-
-        $this->doctrineHelper->expects($this->any())
-            ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
-                return ClassUtils::getClass($entity);
-            }));
-
         $this->entityProvider = $this->getMockBuilder('\Oro\Bundle\EntityBundle\Provider\EntityProvider')
             ->disableOriginalConstructor()
             ->setMethods(['getEntities'])
@@ -64,14 +48,44 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
     public function testIsApplicableEmptyEntity()
     {
         $this->doctrineHelper->expects($this->any())
+            ->method('isNewEntity')
+            ->will($this->returnCallback(function ($entity) {
+                if (method_exists($entity, 'getId')) {
+                    return !(bool)$entity->getId();
+                }
+
+                return false;
+            }));
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
+        $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
+
         $this->assertFalse($this->filter->isApplicable(null));
         $this->assertFalse($this->filter->isApplicable(new EntityStub()));
     }
 
     public function testIsApplicableNonManageableEntity()
     {
+        $this->doctrineHelper->expects($this->any())
+            ->method('isNewEntity')
+            ->will($this->returnCallback(function ($entity) {
+                if (method_exists($entity, 'getId')) {
+                    return !(bool)$entity->getId();
+                }
+
+                return false;
+            }));
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(false);
@@ -81,6 +95,21 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testIsApplicableEntity()
     {
+        $this->doctrineHelper->expects($this->any())
+            ->method('isNewEntity')
+            ->will($this->returnCallback(function ($entity) {
+                if (method_exists($entity, 'getId')) {
+                    return !(bool)$entity->getId();
+                }
+
+                return false;
+            }));
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
@@ -95,6 +124,21 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
     public function testIsApplicableWrongEntity()
     {
         $this->doctrineHelper->expects($this->any())
+            ->method('isNewEntity')
+            ->will($this->returnCallback(function ($entity) {
+                if (method_exists($entity, 'getId')) {
+                    return !(bool)$entity->getId();
+                }
+
+                return false;
+            }));
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
+        $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
 
@@ -107,6 +151,21 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
 
     public function isSummaryApplicable()
     {
+        $this->doctrineHelper->expects($this->any())
+            ->method('isNewEntity')
+            ->will($this->returnCallback(function ($entity) {
+                if (method_exists($entity, 'getId')) {
+                    return !(bool)$entity->getId();
+                }
+
+                return false;
+            }));
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
         $this->doctrineHelper->expects($this->once())
             ->method('getEntityRepository')
             ->willReturnSelf();
