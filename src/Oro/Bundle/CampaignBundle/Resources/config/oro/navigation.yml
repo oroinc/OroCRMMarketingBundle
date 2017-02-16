@@ -2,29 +2,29 @@ navigation:
     menu_config:
         items:
             marketing_tab:
-                label: 'oro.campaign.menu.marketing_tab.label'
-                uri: '#'
+                label:    'oro.campaign.menu.marketing_tab.label'
+                uri:      '#'
+                position: 40
                 extras:
-                    position: 40
                     icon: fa-sitemap
             campaigns_list:
-                label: 'oro.campaign.entity_plural_label'
-                route: 'oro_campaign_index'
+                label:    'oro.campaign.entity_plural_label'
+                route:    'oro_campaign_index'
+                position: 10
                 extras:
                     routes: ['oro_campaign_*']
-                    position: 10
             email_campaigns_list:
-                label: 'oro.campaign.emailcampaign.entity_plural_label'
-                route: 'oro_email_campaign_index'
+                label:    'oro.campaign.emailcampaign.entity_plural_label'
+                route:    'oro_email_campaign_index'
+                position: 20
                 extras:
                     routes: ['oro_email_campaign_*']
-                    position: 20
             websites_list:
-                label: 'oro.tracking.trackingwebsite.entity_plural_label'
-                route: 'oro_tracking_website_index'
+                label:    'oro.tracking.trackingwebsite.entity_plural_label'
+                route:    'oro_tracking_website_index'
+                position: 20
                 extras:
                     routes: ['oro_tracking_*']
-                    position: 20
         tree:
             application_menu:
                 children:
