@@ -1,6 +1,6 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set containerExtraClass = containerExtraClass is defined ? containerExtraClass : '' %}
-<div class="widget-content marketing-activities {{ containerExtraClass }}">
+<div class="widget-content activity-list marketing-activities {{ containerExtraClass }}">
     {% set pager = {
         current: 1,
         pagesize: constant('Oro\\Bundle\\MarketingActivityBundle\\Entity\\MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE'),
@@ -67,7 +67,7 @@
                     configuration: configuration,
                     template: '#template-marketing-activities',
                     itemTemplate: '#template-marketing-activities-item',
-                    listWidgetSelector: '.marketing-activities-list-widget',
+                    listWidgetSelector: '.marketing-activities-container .marketing-activities-list-widget',
                     activityListSelector: '.marketing-activities',
                     reloadOnAdd: false,
                     reloadOnUpdate: false,
