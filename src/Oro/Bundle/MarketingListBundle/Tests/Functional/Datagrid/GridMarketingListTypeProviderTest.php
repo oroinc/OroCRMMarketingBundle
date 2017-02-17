@@ -7,9 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MarketingListBundle\Datagrid\GridMarketingListTypeProvider;
 
-/**
- * @dbIsolation
- */
 class GridMarketingListTypeProviderTest extends WebTestCase
 {
     /**

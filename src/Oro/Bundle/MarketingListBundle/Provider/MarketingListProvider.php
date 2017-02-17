@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
@@ -89,7 +89,7 @@ class MarketingListProvider
             DatagridConfiguration::DATASOURCE_SKIP_COUNT_WALKER_PATH,
             false
         );
-        $iterator = new BufferedQueryResultIterator($queryBuilder, !$skipCountWalker);
+        $iterator = new BufferedIdentityQueryResultIterator($queryBuilder, !$skipCountWalker);
 
         return $iterator;
     }
@@ -130,11 +130,11 @@ class MarketingListProvider
      * @param MarketingList $marketingList
      * @param string $mixin
      *
-     * @return BufferedQueryResultIterator
+     * @return \Iterator
      */
     public function getMarketingListEntitiesIterator(MarketingList $marketingList, $mixin = null)
     {
-        return new BufferedQueryResultIterator(
+        return new BufferedIdentityQueryResultIterator(
             $this->getMarketingListEntitiesQueryBuilder($marketingList, $mixin),
             false
         );

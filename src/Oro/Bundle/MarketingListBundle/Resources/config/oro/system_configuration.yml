@@ -2,16 +2,16 @@ system_configuration:
     groups:
         marketing_features:
             title: oro.marketinglist.marketing.features
-            icon: icon-file
+            icon: fa-file
         marketing_setup:
             title: oro.marketinglist.marketing.setup
         marketing_settings:
             title: oro.marketinglist.marketing.settings
-            icon: icon-wrench
+            icon: fa-wrench
             page_reload: true
         marketing:
             title: oro.marketinglist.marketing.title
-            icon: icon-bar-chart
+            icon: fa-bar-chart
 
     fields:
         oro_marketing_list.feature_enabled:

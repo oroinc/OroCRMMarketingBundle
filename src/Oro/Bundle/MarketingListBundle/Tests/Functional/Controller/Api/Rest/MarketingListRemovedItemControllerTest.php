@@ -6,9 +6,6 @@ use FOS\RestBundle\Util\Codes;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class MarketingListRemovedItemControllerTest extends WebTestCase
 {
     protected function setUp()
