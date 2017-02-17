@@ -44,6 +44,8 @@ use Oro\Bundle\MarketingActivityBundle\Model\ExtendMarketingActivity;
  */
 class MarketingActivity extends ExtendMarketingActivity
 {
+    const TYPE_ENUM_CODE = 'ma_type';
+
     /** constant for enum ma_type */
     const TYPE_SEND        = 'send';
     const TYPE_OPEN        = 'open';
@@ -51,7 +53,7 @@ class MarketingActivity extends ExtendMarketingActivity
     const TYPE_SOFT_BOUNCE = 'soft_bounce';
     const TYPE_HARD_BOUNCE = 'hard_bounce';
     const TYPE_UNSUBSCRIBE = 'unsubscribe';
-    
+
     /**
      * @var int
      *
