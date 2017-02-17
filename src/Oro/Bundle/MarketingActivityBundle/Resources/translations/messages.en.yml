@@ -1,5 +1,6 @@
 oro:
     marketingactivity:
+        feature_enabled:               Enable Marketing Activities Features
         entity_label:                  Marketing Activity
         entity_plural_label:           Marketing Activities
         id.label:                      Id
