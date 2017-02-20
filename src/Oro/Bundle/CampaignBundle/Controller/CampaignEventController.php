@@ -49,7 +49,7 @@ class CampaignEventController extends Controller
         }
 
         $gridParameters = [
-            'code' => $campaign->getCode(),
+            'campaign' => $campaign,
             PagerInterface::PAGER_ROOT_PARAM => [
                 PagerInterface::DISABLED_PARAM => true
             ]

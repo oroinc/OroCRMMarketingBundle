@@ -11,6 +11,23 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 class CampaignRepository extends EntityRepository
 {
     /**
+     * @param string $code
+     *
+     * @return mixed
+     */
+    public function findOneByCode($code)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('campaign')
+            ->from('OroCampaignBundle:Campaign', 'campaign')
+            ->join('OroCampaignBundle:CampaignCode', 'campaignCode', 'WITH', 'campaignCode.campaign = campaign')
+            ->where('campaignCode.code = :code')
+            ->setParameter('code', $code);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * @param AclHelper $aclHelper
      * @param int       $recordsCount
      * @param array     $dateRange

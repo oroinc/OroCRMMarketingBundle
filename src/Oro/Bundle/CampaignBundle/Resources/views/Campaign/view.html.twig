@@ -47,7 +47,7 @@
         {% if entity.reportPeriod is not constant('Oro\\Bundle\\CampaignBundle\\Entity\\Campaign::PERIOD_HOURLY') %}
             {% set trackingTotalGrid = trackingTotalGrid ~ '-precalculated' %}
         {% endif %}
-        {{ dataGrid.renderGrid(trackingTotalGrid, {code: entity.code}) }}
+        {{ dataGrid.renderGrid(trackingTotalGrid, {campaign: entity}) }}
     {% endset %}
 
     {% set trackingPlot %}

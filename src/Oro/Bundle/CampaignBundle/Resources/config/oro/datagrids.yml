@@ -103,12 +103,19 @@ datagrids:
         source:
             type: orm
             query:
+                join:
+                    inner:
+                        -
+                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
+                            alias: 'cc'
+                            conditionType: 'WITH'
+                            condition: 'e.code = cc.code'
                 where:
                     and:
-                        - e.code = :code
+                        - cc.campaign = :campaign
                 groupBy: e.name
             bind_parameters:
-                - code
+                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -168,12 +175,19 @@ datagrids:
                     - CONCAT(DATE(e.loggedAt), ' ', TIME(CONCAT(HOUR(e.loggedAt), ':00:00'))) as logTime
                 from:
                     - { table: %oro_tracking.tracking_event.class%, alias: e }
+                join:
+                    inner:
+                        -
+                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
+                            alias: 'cc'
+                            conditionType: 'WITH'
+                            condition: 'e.code = cc.code'
                 where:
                     and:
-                        - e.code = :code
+                        - cc.campaign = :campaign
                 groupBy: e.name, logTime
             bind_parameters:
-                - code
+                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -189,12 +203,19 @@ datagrids:
         source:
             type: orm
             query:
+                join:
+                    inner:
+                        -
+                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
+                            alias: 'cc'
+                            conditionType: 'WITH'
+                            condition: 'e.code = cc.code'
                 where:
                     and:
-                        - e.code = :code
+                        - cc.campaign = :campaign
                 groupBy: e.name, logTime
             bind_parameters:
-                - code
+                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -232,12 +253,19 @@ datagrids:
         source:
             type: orm
             query:
+                join:
+                    inner:
+                        -
+                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
+                            alias: 'cc'
+                            conditionType: 'WITH'
+                            condition: 'e.code = cc.code'
                 where:
                     and:
-                        - e.code = :code
+                        - cc.campaign = :campaign
                 groupBy: e.name, yearLoggedAt, monthLoggedAt
             bind_parameters:
-                - code
+                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
