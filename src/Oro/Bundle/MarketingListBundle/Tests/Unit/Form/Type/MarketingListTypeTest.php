@@ -72,7 +72,6 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
                     'filter_column_choice_type'   => 'oro_entity_field_select',
                     'data_class'                  => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
                     'intention'                   => 'marketing_list',
-                    'cascade_validation'          => true
                 ]
             );
 
