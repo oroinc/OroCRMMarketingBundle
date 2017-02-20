@@ -2,11 +2,11 @@ navigation:
     menu_config:
         items:
             marketing_lists_list:
-                label: 'oro.marketinglist.entity_plural_label'
-                route: 'oro_marketing_list_index'
+                label:    'oro.marketinglist.entity_plural_label'
+                route:    'oro_marketing_list_index'
+                position: 10
                 extras:
                     routes: ['oro_marketing_list_*']
-                    position: 10
         tree:
             application_menu:
                 children:
