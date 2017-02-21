@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
+
+use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command to send scheduled email campaigns
@@ -22,6 +22,16 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
     public function getDefaultDefinition()
     {
         return '*/1 * * * *';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        $count = $this->getEmailCampaignRepository()->countEmailCampaignsToSend();
+
+        return ($count > 0);
     }
 
     /**

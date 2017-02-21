@@ -2,26 +2,31 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Twig;
 
+use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\MarketingListBundle\Twig\ContactInformationFieldsExtension;
+use Oro\Component\Testing\Unit\TwigExtensionTestCaseTrait;
 
 class ContactInformationFieldsExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    use TwigExtensionTestCaseTrait;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $helper;
 
-    /**
-     * @var ContactInformationFieldsExtension
-     */
+    /** @var ContactInformationFieldsExtension */
     protected $extension;
 
     protected function setUp()
     {
-        $this->helper = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper')
+        $this->helper = $this->getMockBuilder(ContactInformationFieldHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->extension = new ContactInformationFieldsExtension($this->helper);
+
+        $container = self::getContainerBuilder()
+            ->add('oro_marketing_list.contact_information_field_helper', $this->helper)
+            ->getContainer($this);
+
+        $this->extension = new ContactInformationFieldsExtension($container);
     }
 
     protected function tearDown()
@@ -35,37 +40,29 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(ContactInformationFieldsExtension::NAME, $this->extension->getName());
     }
 
-    public function testGetFunctions()
-    {
-        $functions = $this->extension->getFunctions();
-        $this->assertCount(1, $functions);
-
-        $expectedFunctions = array(
-            'get_contact_information_fields_info'
-        );
-
-        /** @var \Twig_SimpleFunction $function */
-        foreach ($functions as $function) {
-            $this->assertInstanceOf('\Twig_SimpleFunction', $function);
-            $this->assertContains($function->getName(), $expectedFunctions);
-        }
-    }
-
     public function testGetContactInformationFieldsInfoNoEntity()
     {
         $this->helper->expects($this->never())
             ->method($this->anything());
-        $this->assertEmpty($this->extension->getContactInformationFieldsInfo(null));
+
+        $this->assertEmpty(
+            self::callTwigFunction($this->extension, 'get_contact_information_fields_info', [null])
+        );
     }
 
     public function testGetContactInformationFieldsInfo()
     {
         $entity = '\stdClass';
-        $contactInformation = array(array('name' => 'test'));
+        $contactInformation = [['name' => 'test']];
+
         $this->helper->expects($this->once())
             ->method('getEntityContactInformationFieldsInfo')
             ->with($entity)
             ->will($this->returnValue($contactInformation));
-        $this->assertEquals($contactInformation, $this->extension->getContactInformationFieldsInfo($entity));
+
+        $this->assertEquals(
+            $contactInformation,
+            self::callTwigFunction($this->extension, 'get_contact_information_fields_info', [$entity])
+        );
     }
 }

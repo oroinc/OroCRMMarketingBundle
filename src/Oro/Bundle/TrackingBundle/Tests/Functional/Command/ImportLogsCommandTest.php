@@ -7,9 +7,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class ImportLogsCommandTest extends WebTestCase
 {
     /**
@@ -34,17 +31,10 @@ class ImportLogsCommandTest extends WebTestCase
         $this->fs = new Filesystem();
 
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . time();
-
-        $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager()->beginTransaction();
     }
 
     protected function tearDown()
     {
-        // clear DB from separate connection, close to avoid connection limit and memory leak
-        $manager = $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
-        $manager->rollback();
-        $manager->getConnection()->close();
-
         $this->fs->remove($this->directory);
         parent::tearDown();
     }

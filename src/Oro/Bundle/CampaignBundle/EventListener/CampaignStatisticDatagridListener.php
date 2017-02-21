@@ -13,10 +13,9 @@ class CampaignStatisticDatagridListener
 {
     /** @deprecated since 1.10. Use config->getName() instead */
     const PATH_NAME = '[name]';
-    const PATH_DATAGRID_WHERE = '[source][query][where]';
 
-    const MIXIN_SENT_NAME = 'orocrm-email-campaign-marketing-list-sent-items-mixin';
-    const MIXIN_UNSENT_NAME = 'orocrm-email-campaign-marketing-list-unsent-items-mixin';
+    const MIXIN_SENT_NAME = 'oro-email-campaign-marketing-list-sent-items-mixin';
+    const MIXIN_UNSENT_NAME = 'oro-email-campaign-marketing-list-unsent-items-mixin';
 
     /**
      * @var ManagerRegistry
@@ -55,7 +54,7 @@ class CampaignStatisticDatagridListener
             ->find($emailCampaignId);
 
         if ($emailCampaign->isSent()) {
-            $config->offsetUnsetByPath(self::PATH_DATAGRID_WHERE);
+            $config->getOrmQuery()->resetWhere();
             $mixin = self::MIXIN_SENT_NAME;
         } else {
             $mixin = self::MIXIN_UNSENT_NAME;
