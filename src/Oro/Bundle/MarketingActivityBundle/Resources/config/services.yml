@@ -9,3 +9,8 @@ services:
             - '@oro_marketing_list.entity_provider.contact_information'
         tags:
             - { name: oro_entity.virtual_relation_provider, priority: 150 }
+
+    oro_marketing_activity.factory:
+        class: 'Oro\Bundle\MarketingActivityBundle\Model\ActivityFactory'
+        arguments:
+            - "@oro_entity_extend.enum_value_provider"
