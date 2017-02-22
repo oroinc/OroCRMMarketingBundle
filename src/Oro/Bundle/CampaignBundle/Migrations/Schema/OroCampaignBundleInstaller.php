@@ -53,7 +53,14 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
         $this->addOrocrmCmpgnTransportStngsForeignKeysForInternalTransport($schema);
         $this->addOrocrmCampaignCodeForeignKeys($schema);
 
-        $this->extension->addVisitEventAssociation($schema, 'orocrm_campaign');
+        $this->extension->addVisitEventAssociation(
+            $schema,
+            'orocrm_campaign',
+            null,
+            [
+                'merge' => ['inverse_display' => false],
+            ]
+        );
     }
 
     /**
