@@ -11,7 +11,7 @@ class LoadTestEntityData extends AbstractFixture
 {
     const TEST_ENTITY_1 = 'test_entity_1';
     const TEST_ENTITY_2 = 'test_entity_2';
-    const TEST_ENTITY_3 = 'test_entity_2';
+    const TEST_ENTITY_3 = 'test_entity_3';
 
     /**
      * @var array
@@ -19,7 +19,7 @@ class LoadTestEntityData extends AbstractFixture
     protected $entities = [
         self::TEST_ENTITY_1 => 1,
         self::TEST_ENTITY_2 => 2,
-        self::TEST_ENTITY_3 => 2,
+        self::TEST_ENTITY_3 => 3,
     ];
 
     /**

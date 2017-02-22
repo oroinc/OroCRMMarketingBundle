@@ -39,7 +39,6 @@ datagrids:
                 frontend_type: datetime
             details:
                 label: oro.marketingactivity.details.label
-                renderable: false
         sorters:
             columns:
                 emailCampaignName: { data_name: emailCampaign.name }

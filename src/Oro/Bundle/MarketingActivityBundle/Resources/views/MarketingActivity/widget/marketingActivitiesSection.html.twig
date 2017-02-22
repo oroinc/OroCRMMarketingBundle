@@ -3,7 +3,7 @@
 <div class="widget-content activity-list marketing-activities {{ containerExtraClass }}">
     {% set pager = {
         current: 1,
-        pagesize: constant('Oro\\Bundle\\MarketingActivityBundle\\Entity\\MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE'),
+        pagesize: oro_config_value('oro_activity_list.per_page'),
         total: 1,
         count: 1,
         sortingField: 'eventDate'

@@ -137,7 +137,7 @@ class MarketingActivityController extends Controller
         $this->get('oro_marketing_activity.section_data.filter.helper')
             ->addFiltersToQuery($queryBuilder, $filter);
 
-        $items = $queryBuilder->setMaxResults(MarketingActivity::MARKETING_ACTIVITY_SECTION_ITEMS_PER_PAGE)
+        $items = $queryBuilder->setMaxResults($this->get('oro_config.manager')->get('oro_activity_list.per_page'))
             ->getQuery()
             ->getArrayResult();
 

@@ -76,7 +76,7 @@ class MarketingActivityControllerTest extends WebTestCase
         $expected = [
             [
                 'campaignName' => $campaign1->getName(),
-                'eventType' => 'Send',
+                'eventType' => 'Open',
                 'editable' => false,
                 'removable' => false,
             ],
@@ -146,7 +146,7 @@ class MarketingActivityControllerTest extends WebTestCase
         $expected = [
             [
                 'campaignName' => $this->getReference('Campaign.Campaign1')->getName(),
-                'eventType' => 'Soft Bounce',
+                'eventType' => 'Unsubscribe',
                 'editable' => false,
                 'removable' => false,
             ],
@@ -179,7 +179,7 @@ class MarketingActivityControllerTest extends WebTestCase
         $expected = [
             [
                 'campaignName' => $campaign->getName(),
-                'eventType' => 'Send',
+                'eventType' => 'Open',
                 'editable' => false,
                 'removable' => false,
             ],

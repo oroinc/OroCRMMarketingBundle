@@ -28,5 +28,3 @@ services:
 
     oro_marketing_activity.section_data.filter.helper:
         class: 'Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper'
-        arguments:
-            - "@oro_filter.datetime_range_filter"

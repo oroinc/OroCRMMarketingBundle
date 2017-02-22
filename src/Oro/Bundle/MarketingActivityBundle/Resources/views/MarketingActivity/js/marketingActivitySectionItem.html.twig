@@ -30,10 +30,10 @@
             </div>
             <div class="extra-info">
                 <div class="marketing-activity-type">
-                    <%= eventType %>
+                    {{ 'oro.marketingactivity.last_event_type.label'|trans }}: <%= eventType %>
                 </div>
                 <div class="marketing-activity-date">
-                    <%= dateFormatter.formatDateTime(eventDate) %>
+                    {{ 'oro.marketingactivity.last_activity_date.label'|trans }}: <%= dateFormatter.formatDateTime(eventDate) %>
                 </div>
             </div>
         </div>
