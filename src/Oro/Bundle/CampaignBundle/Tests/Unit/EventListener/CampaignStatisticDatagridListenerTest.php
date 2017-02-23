@@ -117,7 +117,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onPreBuild(new PreBuild($config, $parameters));
 
         if ($isSent) {
-            $this->assertEmpty($config->offsetGetByPath(CampaignStatisticDatagridListener::PATH_DATAGRID_WHERE));
+            $this->assertEmpty($config->offsetGetByPath('[source][query][where]'));
         }
 
         $this->assertEquals($expectedMixin, $parameters->get(MixinListener::GRID_MIXIN));

@@ -5,10 +5,6 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\Command;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand;
 
-/**
- * @outputBuffering enabled
- * @dbIsolation
- */
 class CalculateTrackingEventSummaryCommandTest extends WebTestCase
 {
     protected function setUp()

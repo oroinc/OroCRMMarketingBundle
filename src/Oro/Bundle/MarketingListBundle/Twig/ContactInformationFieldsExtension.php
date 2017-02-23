@@ -2,23 +2,31 @@
 
 namespace Oro\Bundle\MarketingListBundle\Twig;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 
 class ContactInformationFieldsExtension extends \Twig_Extension
 {
     const NAME = 'oro_marketing_list_contact_information_fields';
 
-    /**
-     * @var ContactInformationFieldHelper
-     */
-    protected $helper;
+    /** @var ContainerInterface */
+    protected $container;
 
     /**
-     * @param ContactInformationFieldHelper $helper
+     * @param ContainerInterface $container
      */
-    public function __construct(ContactInformationFieldHelper $helper)
+    public function __construct(ContainerInterface $container)
     {
-        $this->helper = $helper;
+        $this->container = $container;
+    }
+
+    /**
+     * @return ContactInformationFieldHelper
+     */
+    protected function getHelper()
+    {
+        return $this->container->get('oro_marketing_list.contact_information_field_helper');
     }
 
     /**
@@ -26,25 +34,26 @@ class ContactInformationFieldsExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'get_contact_information_fields_info',
-                array($this, 'getContactInformationFieldsInfo')
+                [$this, 'getContactInformationFieldsInfo']
             )
-        );
+        ];
     }
 
     /**
      * @param string $entityClass
+     *
      * @return array
      */
     public function getContactInformationFieldsInfo($entityClass)
     {
         if (!$entityClass) {
-            return array();
+            return [];
         }
 
-        return $this->helper->getEntityContactInformationFieldsInfo($entityClass);
+        return $this->getHelper()->getEntityContactInformationFieldsInfo($entityClass);
     }
 
     /**

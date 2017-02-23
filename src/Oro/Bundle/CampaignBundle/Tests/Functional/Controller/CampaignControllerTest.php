@@ -4,10 +4,6 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @outputBuffering enabled
- * @dbIsolation
- */
 class CampaignControllerTest extends WebTestCase
 {
     const TEST_CODE         = 'code-1234';
@@ -43,7 +39,7 @@ class CampaignControllerTest extends WebTestCase
      */
     public function testUpdate()
     {
-        $response = $this->client->requestGrid('orocrm-campaign-grid');
+        $response = $this->client->requestGrid('oro-campaign-grid');
         $result   = $this->getJsonResponseContent($response, 200);
         $result   = reset($result['data']);
         $crawler  = $this->client->request(
@@ -69,7 +65,7 @@ class CampaignControllerTest extends WebTestCase
      */
     public function testGrid()
     {
-        $response = $this->client->requestGrid('orocrm-campaign-grid');
+        $response = $this->client->requestGrid('oro-campaign-grid');
         $result   = $this->getJsonResponseContent($response, 200);
         $result   = reset($result['data']);
         $this->assertEquals('new name', $result['name']);

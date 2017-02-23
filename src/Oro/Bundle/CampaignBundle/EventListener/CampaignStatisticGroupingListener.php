@@ -9,10 +9,8 @@ use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 
 class CampaignStatisticGroupingListener
 {
-    const PATH_GROUPBY = '[source][query][groupBy]';
     /** @deprecated since 1.10. Use config->getName() instead */
     const PATH_NAME = '[name]';
-    const PATH_SELECT = '[source][query][select]';
 
     const MIXIN_NAME = 'orocrm-email-campaign-marketing-list-items-mixin';
     const MANUAL_MIXIN_NAME = 'orocrm-email-campaign-marketing-list-manual-items-mixin';
@@ -51,12 +49,10 @@ class CampaignStatisticGroupingListener
             return;
         }
 
-        $selects = $config->offsetGetByPath(self::PATH_SELECT, []);
-        $groupBy = $config->offsetGetByPath(self::PATH_GROUPBY);
-
-        $groupBy = $this->groupByHelper->getGroupByFields($groupBy, $selects);
+        $query = $config->getOrmQuery();
+        $groupBy = $this->groupByHelper->getGroupByFields($query->getGroupBy(), $query->getSelect());
         if ($groupBy) {
-            $config->offsetSetByPath(self::PATH_GROUPBY, implode(',', $groupBy));
+            $query->setGroupBy(implode(',', $groupBy));
         }
     }
 

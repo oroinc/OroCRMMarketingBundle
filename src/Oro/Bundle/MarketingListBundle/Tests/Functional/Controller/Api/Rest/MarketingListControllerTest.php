@@ -8,9 +8,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
-/**
- * @dbIsolation
- */
 class MarketingListControllerTest extends WebTestCase
 {
     protected function setUp()

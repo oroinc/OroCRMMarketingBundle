@@ -1,5 +1,5 @@
 datagrids:
-    orocrm-campaign-grid:
+    oro-campaign-grid:
         extended_entity_name: Oro\Bundle\CampaignBundle\Entity\Campaign
         acl_resource: oro_campaign_view
         source:
@@ -269,7 +269,7 @@ datagrids:
                 from:
                     - { table: %oro_campaign.tracking_event_summary.class%, alias: e }
 
-    orocrm-email-campaign-grid:
+    oro-email-campaign-grid:
         extended_entity_name: Oro\Bundle\CampaignBundle\Entity\EmailCampaign
         acl_resource: oro_email_campaign_view
         source:
@@ -417,7 +417,7 @@ datagrids:
         options:
             entity_pagination: true
 
-    orocrm-email-campaign-marketing-list-unsent-items-mixin:
+    oro-email-campaign-marketing-list-unsent-items-mixin:
         source:
             query:
                 join:
@@ -437,7 +437,7 @@ datagrids:
                         - mlr.id IS NULL
                         - mlu.id IS NULL
 
-    orocrm-email-campaign-marketing-list-sent-items-mixin:
+    oro-email-campaign-marketing-list-sent-items-mixin:
         source:
             query:
                 select:

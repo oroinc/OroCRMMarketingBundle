@@ -269,7 +269,7 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
 
         $columnAliases = ['testField' => 'c1'];
         $config = DatagridConfiguration::createNamed('test', []);
-        $config->offsetSetByPath(MarketingListProvider::DATAGRID_COLUMN_ALIASES_PATH, $columnAliases);
+        $config->offsetSetByPath('[source][query_config][column_aliases]', $columnAliases);
 
         $dataGrid->expects($this->any())
             ->method('getConfig')
