@@ -61,7 +61,8 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
                                 ),
                                 'manyToOne'
                             ),
-                            'target_entity' => 'Test\TargetEntity'
+                            'target_entity' => 'Test\TargetEntity',
+                            'state' => 'Active'
                         ]
                     ]
                 ],
@@ -131,7 +132,8 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
                         ),
                         'manyToOne'
                     ),
-                    'target_entity' => 'Test\TargetEntity1'
+                    'target_entity' => 'Test\TargetEntity1',
+                    'state' => 'Active'
                 ],
                 [
                     'field_id' => new FieldConfigId(
@@ -143,7 +145,8 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
                         ),
                         'manyToOne'
                     ),
-                    'target_entity' => 'Test\TargetEntity2'
+                    'target_entity' => 'Test\TargetEntity2',
+                    'state' => 'Active'
                 ],
                 [   // should be ignored because field type is not manyToOne
                     'field_id' => new FieldConfigId(
@@ -164,7 +167,8 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
                         'testField',
                         'manyToOne'
                     ),
-                    'target_entity' => 'Test\TargetEntity4'
+                    'target_entity' => 'Test\TargetEntity4',
+                    'state' => 'Active'
                 ]
             ]
         ];
