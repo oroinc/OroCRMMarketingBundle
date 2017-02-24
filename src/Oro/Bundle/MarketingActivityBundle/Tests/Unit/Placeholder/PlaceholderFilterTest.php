@@ -6,6 +6,8 @@ use Doctrine\Common\Util\ClassUtils;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Oro\Bundle\MarketingActivityBundle\Placeholder\PlaceholderFilter;
 use Oro\Bundle\MarketingActivityBundle\Tests\Unit\Stub\EntityStub;
 
@@ -19,6 +21,9 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
 
     /** @var  PlaceholderFilter */
     protected $filter;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $featureChecker;
 
     public function setUp()
     {
@@ -39,10 +44,17 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['getEntities'])
             ->getMock();
 
+        $this->featureChecker = $this->getMockBuilder(FeatureChecker::class)
+            ->setMethods(['isFeatureEnabled'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->filter = new PlaceholderFilter(
             $this->doctrineHelper,
             $this->entityProvider
         );
+        $this->filter->setFeatureChecker($this->featureChecker);
+        $this->filter->addFeature('marketingactivity');
     }
 
     public function testIsApplicableEmptyEntity()
@@ -64,6 +76,10 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
+        $this->featureChecker->expects($this->any())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(true));
 
         $this->assertFalse($this->filter->isApplicable(null));
         $this->assertFalse($this->filter->isApplicable(new EntityStub()));
@@ -89,6 +105,11 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(false);
+
+        $this->featureChecker->expects($this->any())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(true));
 
         $this->assertFalse($this->filter->isApplicable(new EntityStub(1)));
     }
@@ -118,7 +139,41 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
             ->method('getEntities')
             ->willReturn([['name' => 'Oro\Bundle\MarketingActivityBundle\Tests\Unit\Stub\EntityStub']]);
 
+        $this->featureChecker->expects($this->any())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(true));
+
         $this->assertTrue($this->filter->isApplicable(new EntityStub(1)));
+    }
+
+    public function testIsApplicableWithDisabledFeature()
+    {
+        $this->doctrineHelper->expects($this->any())
+            ->method('isNewEntity')
+            ->will($this->returnCallback(function ($entity) {
+                if (method_exists($entity, 'getId')) {
+                    return !(bool)$entity->getId();
+                }
+
+                return false;
+            }));
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
+        $this->doctrineHelper->expects($this->any())
+            ->method('isManageableEntity')
+            ->willReturn(true);
+
+        $this->featureChecker->expects($this->any())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(false));
+
+        $this->assertFalse($this->filter->isApplicable(new EntityStub(1)));
     }
 
     public function testIsApplicableWrongEntity()
@@ -146,10 +201,15 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
             ->method('getEntities')
             ->willReturn([['name' => 'TestEntity']]);
 
+        $this->featureChecker->expects($this->any())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(true));
+
         $this->assertFalse($this->filter->isApplicable(new EntityStub(1)));
     }
 
-    public function isSummaryApplicable()
+    public function testIsSummaryApplicable()
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
@@ -174,6 +234,42 @@ class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
             ->method('getMarketingActivitySummaryCountByCampaign')
             ->willReturn(true);
 
+        $this->featureChecker->expects($this->once())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(true));
+
         $this->assertTrue($this->filter->isSummaryApplicable(1));
+    }
+
+    public function testSummaryIsNotApplicable()
+    {
+        $this->doctrineHelper->expects($this->never())
+            ->method('isNewEntity');
+
+        $this->doctrineHelper->expects($this->never())
+            ->method('getEntityClass')
+            ->will($this->returnCallback(function ($entity) {
+                return ClassUtils::getClass($entity);
+            }));
+        $this->doctrineHelper->expects($this->never())
+            ->method('getEntityRepository')
+            ->willReturnSelf();
+
+        $this->doctrineHelper->expects($this->never())
+            ->method('getMarketingActivitySummaryCountByCampaign')
+            ->willReturn(true);
+
+        $this->featureChecker->expects($this->once())
+            ->method('isFeatureEnabled')
+            ->with('marketingactivity', null)
+            ->will($this->returnValue(false));
+
+        $this->assertFalse($this->filter->isSummaryApplicable(1));
+    }
+
+    public function testFeatureToggleable()
+    {
+        $this->assertInstanceOf(FeatureToggleableInterface::class, $this->filter);
     }
 }

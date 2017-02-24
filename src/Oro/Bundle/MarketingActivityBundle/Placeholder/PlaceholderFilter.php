@@ -4,10 +4,14 @@ namespace Oro\Bundle\MarketingActivityBundle\Placeholder;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
-class PlaceholderFilter
+class PlaceholderFilter implements FeatureToggleableInterface
 {
+    use FeatureCheckerHolderTrait;
+
     /** @var DoctrineHelper */
     protected $doctrineHelper;
 
@@ -35,7 +39,7 @@ class PlaceholderFilter
      */
     public function isSummaryApplicable($campaignId)
     {
-        return $this->doctrineHelper
+        return $this->isFeaturesEnabled() && $this->doctrineHelper
                 ->getEntityRepository(MarketingActivity::class)
                 ->getMarketingActivitySummaryCountByCampaign($campaignId);
     }
@@ -49,7 +53,8 @@ class PlaceholderFilter
      */
     public function isApplicable($entity = null)
     {
-        if (!is_object($entity)
+        if (!$this->isFeaturesEnabled()
+            || !is_object($entity)
             || !$this->doctrineHelper->isManageableEntity($entity)
             || $this->doctrineHelper->isNewEntity($entity)
         ) {
