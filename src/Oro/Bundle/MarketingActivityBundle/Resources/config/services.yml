@@ -15,13 +15,6 @@ services:
         tags:
             - { name: oro_featuretogle.feature, feature: 'marketingactivity' }
 
-    oro_marketing_activity.marketing_activity.manager.api:
-        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity'
-            - "@doctrine.orm.entity_manager"
-
     oro_marketing_activity.normalizer.marketing_activity.section_data:
         class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer'
 
