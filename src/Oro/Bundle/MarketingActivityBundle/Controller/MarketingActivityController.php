@@ -62,8 +62,6 @@ class MarketingActivityController extends Controller
     {
         $entity = $this->get('oro_entity.routing_helper')->getEntity($entityClass, $entityId);
 
-        /** @var DateTimeRangeFilter $dateRangeFilter */
-        $dateRangeFilter = $this->get('oro_filter.datetime_range_filter');
         $campaignEntityClass = $this->container->getParameter('oro_campaign.entity.class');
         $configurationEntityKey = $this->get('oro_entity.routing_helper')->getUrlSafeClassName($campaignEntityClass);
 
@@ -80,7 +78,6 @@ class MarketingActivityController extends Controller
         return [
             'entity'                  => $entity,
             'configurationKey'        => $configurationEntityKey,
-            'dateRangeFilterMetadata' => $dateRangeFilter->getMetadata(),
             'campaignFilterValues'    => $campaignFilterValues,
         ];
     }
