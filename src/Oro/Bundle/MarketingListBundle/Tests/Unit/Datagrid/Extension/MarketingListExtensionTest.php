@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid\Extension;
 
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -40,9 +39,8 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
         $config
             ->expects($this->once())
-            ->method('getDatasourceType')
-            ->with()
-            ->will($this->returnValue('INCORRECT'));
+            ->method('isOrmDatasource')
+            ->will($this->returnValue(false));
 
         $config
             ->expects($this->once())
@@ -61,9 +59,8 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
         $config
             ->expects($this->atLeastOnce())
-            ->method('getDatasourceType')
-            ->with()
-            ->will($this->returnValue(OrmDatasource::TYPE));
+            ->method('isOrmDatasource')
+            ->will($this->returnValue(true));
 
         $config
             ->expects($this->atLeastOnce())
@@ -236,9 +233,8 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
         $config
             ->expects($this->atLeastOnce())
-            ->method('getDatasourceType')
-            ->with()
-            ->will($this->returnValue(OrmDatasource::TYPE));
+            ->method('isOrmDatasource')
+            ->will($this->returnValue(true));
 
         $config
             ->expects($this->atLeastOnce())

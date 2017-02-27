@@ -8,17 +8,17 @@ use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
+use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
-use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 
 class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInterface
 {
@@ -28,6 +28,35 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
     public function getDefaultDefinition()
     {
         return '1 * * * *';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        $fs     = new Filesystem();
+        $finder = new Finder();
+        $directory = $this
+                ->getContainer()
+                ->getParameter('kernel.logs_dir') . DIRECTORY_SEPARATOR . 'tracking';
+
+        if (!$fs->exists($directory)) {
+            return false;
+        }
+
+
+        $finder
+            ->files()
+            ->notName($this->getIgnoredFilename())
+            ->notName('settings.ser')
+            ->in($directory);
+
+        if (!$finder->count()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -36,7 +36,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
  *              "category"="marketing"
  *          },
  *          "grid"={
- *              "default"="orocrm-email-campaign-grid"
+ *              "default"="oro-email-campaign-grid"
  *          },
  *          "tag"={
  *              "enabled"=true

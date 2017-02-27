@@ -115,7 +115,7 @@ class CampaignStatisticGroupingListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->onPreBuild($event);
 
-        $this->assertEquals($expected, $config->offsetGetByPath(CampaignStatisticGroupingListener::PATH_GROUPBY));
+        $this->assertEquals($expected, $config->offsetGetByPath('[source][query][groupBy]'));
     }
 
     public function testOnPreBuildNotApplicable()

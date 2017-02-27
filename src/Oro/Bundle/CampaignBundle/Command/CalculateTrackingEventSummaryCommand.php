@@ -4,16 +4,16 @@ namespace Oro\Bundle\CampaignBundle\Command;
 
 use Doctrine\ORM\EntityManager;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository;
+
 use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
+use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Calculate Tracking Event Summary
@@ -45,6 +45,16 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
     public function getDefaultDefinition()
     {
         return '1 0 * * *';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        $count = $this->getCampaignRepository()->getCount();
+
+        return ($count > 0);
     }
 
     /**

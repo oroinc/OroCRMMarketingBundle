@@ -6,24 +6,24 @@ use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
+use Oro\Bundle\QueryDesignerBundle\Grid\QueryDesignerQueryConfiguration;
 use Oro\Bundle\TagBundle\Grid\TagsExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
 class MarketingListProvider
 {
-    const RESULT_ITEMS_MIXIN = 'orocrm-marketing-list-items-mixin';
-    const RESULT_ENTITIES_MIXIN = 'orocrm-marketing-list-entities-mixin';
-    const FULL_ENTITIES_MIXIN = 'orocrm-marketing-full-mixin';
-    const MANUAL_RESULT_ITEMS_MIXIN = 'orocrm-marketing-list-manual-items-mixin';
-    const MANUAL_RESULT_ENTITIES_MIXIN = 'orocrm-marketing-list-manual-entities-mixin';
-    const DATAGRID_COLUMN_ALIASES_PATH = '[source][query_config][column_aliases]';
+    const RESULT_ITEMS_MIXIN = 'oro-marketing-list-items-mixin';
+    const RESULT_ENTITIES_MIXIN = 'oro-marketing-list-entities-mixin';
+    const FULL_ENTITIES_MIXIN = 'oro-marketing-full-mixin';
+    const MANUAL_RESULT_ITEMS_MIXIN = 'oro-marketing-list-manual-items-mixin';
+    const MANUAL_RESULT_ENTITIES_MIXIN = 'oro-marketing-list-manual-entities-mixin';
 
     /**
      * @var Manager
@@ -89,7 +89,7 @@ class MarketingListProvider
             DatagridConfiguration::DATASOURCE_SKIP_COUNT_WALKER_PATH,
             false
         );
-        $iterator = new BufferedQueryResultIterator($queryBuilder, !$skipCountWalker);
+        $iterator = new BufferedIdentityQueryResultIterator($queryBuilder, !$skipCountWalker);
 
         return $iterator;
     }
@@ -130,11 +130,11 @@ class MarketingListProvider
      * @param MarketingList $marketingList
      * @param string $mixin
      *
-     * @return BufferedQueryResultIterator
+     * @return \Iterator
      */
     public function getMarketingListEntitiesIterator(MarketingList $marketingList, $mixin = null)
     {
-        return new BufferedQueryResultIterator(
+        return new BufferedIdentityQueryResultIterator(
             $this->getMarketingListEntitiesQueryBuilder($marketingList, $mixin),
             false
         );
@@ -204,7 +204,7 @@ class MarketingListProvider
             }
         }
 
-        $columnAliases = $dataGrid->getConfig()->offsetGetByPath(self::DATAGRID_COLUMN_ALIASES_PATH);
+        $columnAliases = $dataGrid->getConfig()->offsetGetByPath(QueryDesignerQueryConfiguration::COLUMN_ALIASES, []);
         $columnInformation = [];
         foreach ($columnAliases as $alias => $selectAlias) {
             if (array_key_exists($selectAlias, $columnToSelectExpr)) {

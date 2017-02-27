@@ -31,11 +31,8 @@ class OroMarketingActivityInstaller implements Installation, ExtendExtensionAwar
     public function up(Schema $schema, QueryBag $queries)
     {
         $migration = new v1_0\OroMarketingActivityBundle();
+        $migration->setExtendExtension($this->extendExtension);
         $migration->up($schema, $queries);
-
-        $addEnumFieldsMigration = new v1_0\AddEnumFields();
-        $addEnumFieldsMigration->setExtendExtension($this->extendExtension);
-        $addEnumFieldsMigration->up($schema, $queries);
     }
 
     /**
