@@ -6,9 +6,6 @@ use Oro\Bundle\MarketingActivityBundle\Tests\Functional\Fixtures\LoadTestEntityD
 use Oro\Bundle\TestFrameworkBundle\Entity\TestActivity;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class MarketingActivityControllerTest extends WebTestCase
 {
     public function setUp()
