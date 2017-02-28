@@ -22,7 +22,6 @@ parameters:
     oro_marketing_list.datagrid.extension.class: Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension
     oro_marketing_list.model.helper.class: Oro\Bundle\MarketingListBundle\Model\MarketingListHelper
 
-    oro_marketing_list.twig.extension.contact_information_fields.class: Oro\Bundle\MarketingListBundle\Twig\ContactInformationFieldsExtension
     oro_marketing_list.provider.contact_information_fields.class: Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider
 
     oro_marketing_list.datagrid.configuration.provider.class: Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider
@@ -145,9 +144,10 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: "marketing_lists", acl_resource: "oro_marketing_list_view" }
 
     oro_marketing_list.twig.extension.contact_information_fields:
-        class: %oro_marketing_list.twig.extension.contact_information_fields.class%
+        class: Oro\Bundle\MarketingListBundle\Twig\ContactInformationFieldsExtension
+        public: false
         arguments:
-            - "@oro_marketing_list.contact_information_field_helper"
+            - "@service_container"
         tags:
             - { name: twig.extension }
 
