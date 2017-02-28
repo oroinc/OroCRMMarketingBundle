@@ -61,7 +61,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                                 ),
                                 'manyToOne'
                             ),
-                            'target_entity' => 'Test\TargetEntity'
+                            'target_entity' => 'Test\TargetEntity',
+                            'state' => 'Active'
                         ]
                     ]
                 ],
@@ -79,7 +80,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                                 'testField',
                                 'manyToOne'
                             ),
-                            'target_entity' => 'Test\TargetEntity'
+                            'target_entity' => 'Test\TargetEntity',
+                            'state' => 'Active'
                         ]
                     ]
                 ],
@@ -100,7 +102,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                                 ),
                                 'manyToMany'
                             ),
-                            'target_entity' => 'Test\TargetEntity'
+                            'target_entity' => 'Test\TargetEntity',
+                            'state' => 'Active'
                         ]
                     ]
                 ],
@@ -131,7 +134,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                         ),
                         'manyToOne'
                     ),
-                    'target_entity' => 'Test\TargetEntity1'
+                    'target_entity' => 'Test\TargetEntity1',
+                    'state' => 'Active'
                 ],
                 [
                     'field_id' => new FieldConfigId(
@@ -143,7 +147,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                         ),
                         'manyToOne'
                     ),
-                    'target_entity' => 'Test\TargetEntity2'
+                    'target_entity' => 'Test\TargetEntity2',
+                    'state' => 'Active'
                 ],
                 [   // should be ignored because field type is not multipleManyToOne
                     'field_id' => new FieldConfigId(
@@ -155,7 +160,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                         ),
                         'manyToMany'
                     ),
-                    'target_entity' => 'Test\TargetEntity3'
+                    'target_entity' => 'Test\TargetEntity3',
+                    'state' => 'Active'
                 ],
                 [   // should be ignored because field name is not match association naming conventions
                     'field_id' => new FieldConfigId(
@@ -164,7 +170,8 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_Tes
                         'testField',
                         'manyToOne'
                     ),
-                    'target_entity' => 'Test\TargetEntity4'
+                    'target_entity' => 'Test\TargetEntity4',
+                    'state' => 'Active'
                 ]
             ]
         ];
