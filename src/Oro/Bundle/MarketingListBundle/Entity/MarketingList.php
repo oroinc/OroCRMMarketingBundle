@@ -40,7 +40,7 @@ use Oro\Bundle\MarketingListBundle\Model\ExtendMarketingList;
  *          },
  *          "form"={
  *              "form_type"="oro_marketing_list_select",
- *              "grid_name"="oro-marketing-list-grid",
+ *              "grid_name"="oro-marketing-list-select-grid",
  *          },
  *          "grid"={
  *              "default"="oro-marketing-list-grid"

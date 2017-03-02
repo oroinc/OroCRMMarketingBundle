@@ -14,8 +14,8 @@ class GridCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $container->findDefinition('oro_tag.grid.tags_extension')
-            ->addMethodCall('addReportOrSegmentGridPrefix', [ConfigurationProvider::GRID_PREFIX]);
+            ->addMethodCall('addUnsupportedGridPrefix', [ConfigurationProvider::GRID_PREFIX]);
         $container->findDefinition('oro_tag.grid.tags_report_extension')
-            ->addMethodCall('addReportOrSegmentGridPrefix', [ConfigurationProvider::GRID_PREFIX]);
+            ->addMethodCall('addUnsupportedGridPrefix', [ConfigurationProvider::GRID_PREFIX]);
     }
 }
