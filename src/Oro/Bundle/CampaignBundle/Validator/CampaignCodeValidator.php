@@ -45,10 +45,10 @@ class CampaignCodeValidator extends ConstraintValidator
             return;
         }
 
-        $code = $this->registry
-            ->getRepository('OroCampaignBundle:CampaignCode')
+        $codeHistory = $this->registry
+            ->getRepository('OroCampaignBundle:CampaignCodeHistory')
             ->findOneBy(['code' => $value->getCode()]);
-        if ($code && $code->getCampaign()->getId() != $value->getId()) {
+        if ($codeHistory && $codeHistory->getCampaign()->getId() != $value->getId()) {
             /** @var ExecutionContextInterface $context */
             $context = $this->context;
             $context->buildViolation($constraint->message)

@@ -6,9 +6,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\CampaignBundle\Entity\CampaignCode;
+use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 
-class CampaignCodeListener
+class CampaignCodeHistoryListener
 {
     /**
      * Before flush, create new campaign code
@@ -22,13 +22,13 @@ class CampaignCodeListener
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof Campaign) {
-                $this->createCampaignCode($entity, $em);
+                $this->createCampaignCodeHistory($entity, $em);
             }
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof Campaign && array_key_exists('code', $uow->getEntityChangeSet($entity))) {
-                $this->createCampaignCode($entity, $em);
+                $this->createCampaignCodeHistory($entity, $em);
             }
         }
     }
@@ -39,16 +39,17 @@ class CampaignCodeListener
      * @param Campaign $campaign
      * @param EntityManager $em
      */
-    protected function createCampaignCode(Campaign $campaign, EntityManager $em)
+    protected function createCampaignCodeHistory(Campaign $campaign, EntityManager $em)
     {
-        $code = $em->getRepository('OroCampaignBundle:CampaignCode')->findOneBy(['code' => $campaign->getCode()]);
-        if (!$code) {
-            $code = new CampaignCode();
-            $code->setCampaign($campaign);
-            $code->setCode($campaign->getCode());
+        $codeHistory = $em->getRepository('OroCampaignBundle:CampaignCodeHistory')
+            ->findOneBy(['code' => $campaign->getCode()]);
+        if (!$codeHistory) {
+            $codeHistory = new CampaignCodeHistory();
+            $codeHistory->setCampaign($campaign);
+            $codeHistory->setCode($campaign->getCode());
 
-            $em->persist($code);
-            $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata(CampaignCode::class), $code);
+            $em->persist($codeHistory);
+            $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata(CampaignCodeHistory::class), $codeHistory);
         }
     }
 }

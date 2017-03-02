@@ -99,23 +99,13 @@ datagrids:
             entity_pagination: true
 
     campaign-tracking-total-report-grid-basic:
+        mixins:
+            - oro-campaign-code-history-mixin
         acl_resource: oro_campaign_view
         source:
             type: orm
             query:
-                join:
-                    inner:
-                        -
-                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
-                            alias: 'cc'
-                            conditionType: 'WITH'
-                            condition: 'e.code = cc.code'
-                where:
-                    and:
-                        - cc.campaign = :campaign
                 groupBy: e.name
-            bind_parameters:
-                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -165,6 +155,8 @@ datagrids:
                     - { table: %oro_campaign.tracking_event_summary.class%, alias: e }
 
     campaign-tracking-detailed-report-hour-grid:
+        mixins:
+            - oro-campaign-code-history-mixin
         acl_resource: oro_campaign_view
         source:
             type: orm
@@ -175,19 +167,7 @@ datagrids:
                     - CONCAT(DATE(e.loggedAt), ' ', TIME(CONCAT(HOUR(e.loggedAt), ':00:00'))) as logTime
                 from:
                     - { table: %oro_tracking.tracking_event.class%, alias: e }
-                join:
-                    inner:
-                        -
-                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
-                            alias: 'cc'
-                            conditionType: 'WITH'
-                            condition: 'e.code = cc.code'
-                where:
-                    and:
-                        - cc.campaign = :campaign
                 groupBy: e.name, logTime
-            bind_parameters:
-                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -199,23 +179,13 @@ datagrids:
                 frontend_type: datetime
 
     campaign-tracking-detailed-report-day-grid-basic:
+        mixins:
+            - oro-campaign-code-history-mixin
         acl_resource: oro_campaign_view
         source:
             type: orm
             query:
-                join:
-                    inner:
-                        -
-                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
-                            alias: 'cc'
-                            conditionType: 'WITH'
-                            condition: 'e.code = cc.code'
-                where:
-                    and:
-                        - cc.campaign = :campaign
                 groupBy: e.name, logTime
-            bind_parameters:
-                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -249,23 +219,13 @@ datagrids:
                     - { table: %oro_campaign.tracking_event_summary.class%, alias: e }
 
     campaign-tracking-detailed-report-month-grid-basic:
+        mixins:
+            - oro-campaign-code-history-mixin
         acl_resource: oro_campaign_view
         source:
             type: orm
             query:
-                join:
-                    inner:
-                        -
-                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCode'
-                            alias: 'cc'
-                            conditionType: 'WITH'
-                            condition: 'e.code = cc.code'
-                where:
-                    and:
-                        - cc.campaign = :campaign
                 groupBy: e.name, yearLoggedAt, monthLoggedAt
-            bind_parameters:
-                - campaign
         columns:
             name:
                 label: oro.tracking.trackingevent.name.label
@@ -543,3 +503,19 @@ datagrids:
                 bounceCount:      { data_name: cs.bounceCount }
                 abuseCount:       { data_name: cs.abuseCount }
                 unsubscribeCount: { data_name: cs.unsubscribeCount }
+
+    oro-campaign-code-history-mixin:
+        source:
+            query:
+                join:
+                    inner:
+                        -
+                            join: 'Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory'
+                            alias: 'cch'
+                            conditionType: 'WITH'
+                            condition: 'e.code = cch.code'
+                where:
+                    and:
+                        - cch.campaign = :campaign
+            bind_parameters:
+                - campaign

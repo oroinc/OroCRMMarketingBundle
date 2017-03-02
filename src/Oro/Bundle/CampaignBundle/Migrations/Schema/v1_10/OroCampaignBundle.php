@@ -15,36 +15,36 @@ class OroCampaignBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation */
-        $this->createOrocrmCampaignCodeTable($schema);
+        $this->createOrocrmCampaignCodeHistoryTable($schema);
 
         /** Foreign keys generation */
-        $this->addOrocrmCampaignCodeForeignKeys($schema);
+        $this->addOrocrmCampaignCodeHistoryForeignKeys($schema);
     }
 
     /**
-     * Create orocrm_campaign_code table
+     * Create orocrm_campaign_code_history table
      *
      * @param Schema $schema
      */
-    protected function createOrocrmCampaignCodeTable(Schema $schema)
+    protected function createOrocrmCampaignCodeHistoryTable(Schema $schema)
     {
-        $table = $schema->createTable('orocrm_campaign_code');
+        $table = $schema->createTable('orocrm_campaign_code_history');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('campaign_id', 'integer', ['notnull' => false]);
+        $table->addColumn('campaign_id', 'integer', ['notnull' => true]);
         $table->addColumn('code', 'string', ['notnull' => true, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['campaign_id'], 'IDX_8F104FC2F639F774', []);
-        $table->addUniqueIndex(['code'], 'UNIQ_8F104FC277153098');
+        $table->addIndex(['campaign_id'], 'IDX_E952F134F639F774', []);
+        $table->addUniqueIndex(['code'], 'UNIQ_E952F13477153098');
     }
 
     /**
-     * Add orocrm_campaign_code foreign keys.
+     * Add orocrm_campaign_code_history foreign keys.
      *
      * @param Schema $schema
      */
-    protected function addOrocrmCampaignCodeForeignKeys(Schema $schema)
+    protected function addOrocrmCampaignCodeHistoryForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('orocrm_campaign_code');
+        $table = $schema->getTable('orocrm_campaign_code_history');
         $table->addForeignKeyConstraint(
             $schema->getTable('orocrm_campaign'),
             ['campaign_id'],

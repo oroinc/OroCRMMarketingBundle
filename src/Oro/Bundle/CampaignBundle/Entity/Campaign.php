@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
@@ -55,6 +56,8 @@ use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
  */
 class Campaign extends ExtendCampaign
 {
+    use DatesAwareTrait;
+
     const PERIOD_HOURLY  = 'hour';
     const PERIOD_DAILY   = 'day';
     const PERIOD_MONTHLY = 'month';
@@ -183,34 +186,6 @@ class Campaign extends ExtendCampaign
      * @ORM\Column(name="report_refresh_date", type="date", nullable=true)
      */
     protected $reportRefreshDate;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * @var Organization
@@ -348,50 +323,6 @@ class Campaign extends ExtendCampaign
     public function getOwner()
     {
         return $this->owner;
-    }
-
-    /**
-     * Get campaign created date/time
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime
-     *
-     * @return Campaign
-     */
-    public function setCreatedAt($created)
-    {
-        $this->createdAt = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get campaign last update date/time
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime
-     *
-     * @return Campaign
-     */
-    public function setUpdatedAt($updated)
-    {
-        $this->updatedAt = $updated;
-
-        return $this;
     }
 
     /**

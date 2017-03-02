@@ -7,9 +7,9 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="orocrm_campaign_code")
+ * @ORM\Table(name="orocrm_campaign_code_history")
  */
-class CampaignCode
+class CampaignCodeHistory
 {
     /**
      * @var int
@@ -24,7 +24,7 @@ class CampaignCode
      * @var Campaign
      *
      * @ORM\ManyToOne(targetEntity="Campaign")
-     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $campaign;
 
@@ -57,9 +57,9 @@ class CampaignCode
      * Set campaign
      *
      * @param Campaign $campaign
-     * @return CampaignCode
+     * @return $this
      */
-    public function setCampaign(Campaign $campaign = null)
+    public function setCampaign(Campaign $campaign)
     {
         $this->campaign = $campaign;
 
@@ -80,7 +80,7 @@ class CampaignCode
      * Set campaign code
      *
      * @param string $code
-     * @return CampaignCode
+     * @return $this
      */
     public function setCode($code)
     {

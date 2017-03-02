@@ -158,8 +158,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    oro_campaign.listener.campaign_code:
-        class: Oro\Bundle\CampaignBundle\EventListener\CampaignCodeListener
+    oro_campaign.listener.campaign_code_history:
+        class: Oro\Bundle\CampaignBundle\EventListener\CampaignCodeHistoryListener
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 

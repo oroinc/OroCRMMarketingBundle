@@ -9,13 +9,16 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
+use Oro\Component\Testing\Unit\EntityTrait;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\CampaignBundle\Entity\CampaignCode;
+use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator;
 
 class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    use EntityTrait;
+
     /**
      * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -56,31 +59,21 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($value, $this->constraint);
     }
 
-    /**
-     * @dataProvider validatePassedData
-     * @param $isFind
-     */
-    public function testValidatePassed($isFind)
+    public function testValidatePassed()
     {
-        if ($isFind) {
-            $code = $this->getMockBuilder(CampaignCode::class)
-                ->disableOriginalConstructor()
-                ->getMock();
-        } else {
-            $code = null;
-        }
+        $codeHistory = $this->getCampaignCodeHistory();
 
         $repository = $this->getMockBuilder(CampaignRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->registry->expects($this->once())
             ->method('getRepository')
-            ->with('OroCampaignBundle:CampaignCode')
+            ->with('OroCampaignBundle:CampaignCodeHistory')
             ->willReturn($repository);
         $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['code' => 'test'])
-            ->willReturn($code);
+            ->willReturn($codeHistory);
 
         $value = $this->getMockBuilder(Campaign::class)
             ->disableOriginalConstructor()
@@ -88,21 +81,9 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
         $value->expects($this->once())
             ->method('getCode')
             ->willReturn('test');
-
-        if ($isFind) {
-            $campaign = $this->getMockBuilder(Campaign::class)
-                ->disableOriginalConstructor()
-                ->getMock();
-            $code->expects($this->once())
-                ->method('getCampaign')
-                ->willReturn($campaign);
-            $campaign->expects($this->once())
-                ->method('getId')
-                ->willReturn('1');
-            $value->expects($this->once())
-                ->method('getId')
-                ->willReturn('1');
-        }
+        $value->expects($this->once())
+            ->method('getId')
+            ->willReturn('1');
 
         /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
         $context = $this->createMock(ExecutionContextInterface::class);
@@ -113,31 +94,21 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($value, $this->constraint);
     }
 
-    public function validatePassedData()
-    {
-        return [
-            [true],
-            [false]
-        ];
-    }
-
     public function testValidateFailed()
     {
-        $code = $this->getMockBuilder(CampaignCode::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $codeHistory = $this->getCampaignCodeHistory();
 
         $repository = $this->getMockBuilder(CampaignRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->registry->expects($this->once())
             ->method('getRepository')
-            ->with('OroCampaignBundle:CampaignCode')
+            ->with('OroCampaignBundle:CampaignCodeHistory')
             ->willReturn($repository);
         $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['code' => 'test'])
-            ->willReturn($code);
+            ->willReturn($codeHistory);
 
         $value = $this->getMockBuilder(Campaign::class)
             ->disableOriginalConstructor()
@@ -145,16 +116,6 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
         $value->expects($this->once())
             ->method('getCode')
             ->willReturn('test');
-
-        $campaign = $this->getMockBuilder(Campaign::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $code->expects($this->once())
-            ->method('getCampaign')
-            ->willReturn($campaign);
-        $campaign->expects($this->once())
-            ->method('getId')
-            ->willReturn('1');
         $value->expects($this->once())
             ->method('getId')
             ->willReturn('2');
@@ -175,5 +136,50 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->validator->initialize($context);
         $this->validator->validate($value, $this->constraint);
+    }
+
+    public function testValidateCodeHistoryNotFound()
+    {
+        $repository = $this->getMockBuilder(CampaignRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->registry->expects($this->once())
+            ->method('getRepository')
+            ->with('OroCampaignBundle:CampaignCodeHistory')
+            ->willReturn($repository);
+        $repository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['code' => 'test'])
+            ->willReturn(null);
+
+        $value = $this->getMockBuilder(Campaign::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $value->expects($this->once())
+            ->method('getCode')
+            ->willReturn('test');
+
+        /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+        $context = $this->createMock(ExecutionContextInterface::class);
+        $context->expects($this->never())
+            ->method($this->anything());
+
+        $this->validator->initialize($context);
+        $this->validator->validate($value, $this->constraint);
+    }
+
+    /**
+     * @return CampaignCodeHistory|object
+     */
+    public function getCampaignCodeHistory()
+    {
+        return $this->getEntity(
+            'Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory',
+            [
+                'id' => 1,
+                'campaign' => $this->getEntity('Oro\Bundle\CampaignBundle\Entity\Campaign', ['id' => 1]),
+                'code' => 'test'
+            ]
+        );
     }
 }

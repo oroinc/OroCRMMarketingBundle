@@ -28,7 +28,7 @@ class UpdateTrackingVisitConfigs implements Migration
                 $fieldName,
                 'merge',
                 'inverse_display',
-                true
+                false
             )
         );
     }
