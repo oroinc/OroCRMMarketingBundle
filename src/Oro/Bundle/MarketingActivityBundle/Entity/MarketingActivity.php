@@ -12,7 +12,7 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\MarketingActivityBundle\Model\ExtendMarketingActivity;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository")
  * @ORM\Table(
  *     name="orocrm_marketing_activity",
  *     indexes={

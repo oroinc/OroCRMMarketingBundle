@@ -33,7 +33,7 @@ class LoadCampaignData extends AbstractFixture
             'code' => 'cmp3',
             'reportPeriod' => Campaign::PERIOD_MONTHLY,
             'reportRefreshDate' => '-2 day',
-            'reference' => 'Campaign.Campaign2'
+            'reference' => 'Campaign.Campaign3'
         ]
     ];
 

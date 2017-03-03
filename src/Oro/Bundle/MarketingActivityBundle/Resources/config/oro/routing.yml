@@ -1,0 +1,4 @@
+oro_marketing_activity_bundle:
+    resource:     "@OroMarketingActivityBundle/Controller"
+    type:         annotation
+    prefix:       /
