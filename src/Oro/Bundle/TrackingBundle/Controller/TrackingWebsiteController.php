@@ -91,7 +91,7 @@ class TrackingWebsiteController extends Controller
      * @param TrackingWebsite $trackingWebsite
      * @return array|RedirectResponse
      */
-    public function update(TrackingWebsite $trackingWebsite)
+    protected function update(TrackingWebsite $trackingWebsite)
     {
         return $this->get('oro_form.model.update_handler')->update(
             $trackingWebsite,
