@@ -1,3 +1,6 @@
+parameters:
+    # Entities
+    oro_marketing_activity.entity.class: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity
 services:
     oro_marketing_activity.provider.virtual_relation.marketing_activity:
         class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider'
@@ -20,3 +23,8 @@ services:
 
     oro_marketing_activity.section_data.filter.helper:
         class: 'Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper'
+
+    oro_marketing_activity.factory:
+        class: 'Oro\Bundle\MarketingActivityBundle\Model\ActivityFactory'
+        arguments:
+            - "@oro_entity_extend.enum_value_provider"
