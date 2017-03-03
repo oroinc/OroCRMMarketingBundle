@@ -1,0 +1,66 @@
+operations:
+    DELETE:
+        exclude_entities:
+            - Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+            - Oro\Bundle\CampaignBundle\Entity\Campaign
+        exclude_datagrids:
+            - oro-campaign-grid
+            - oro-email-campaign-grid
+
+    oro_campaign_delete:
+        extends: DELETE
+        replace:
+            - exclude_entities
+            - exclude_datagrids
+            - for_all_datagrids
+            - for_all_entities
+            - entities
+            - datagrids
+            - preconditions
+            - datagrid_options
+        preconditions:
+            '@not_blank': $.data
+        entities:
+            - Oro\Bundle\CampaignBundle\Entity\Campaign
+        datagrids:
+            - oro-campaign-grid
+        actions:
+            - '@redirect':
+                  parameters:
+                      route: 'oro_campaign_index'
+        datagrid_options:
+            mass_action:
+                entity_name: Oro\Bundle\CampaignBundle\Entity\Campaign
+                data_identifier: c.id
+                type: delete
+                label: oro.grid.action.delete
+                link: delete_link
+                icon: trash-o
+
+    oro_email_campaign_delete:
+        extends: DELETE
+        replace:
+            - exclude_entities
+            - exclude_datagrids
+            - for_all_datagrids
+            - for_all_entities
+            - entities
+            - datagrids
+            - preconditions
+            - datagrid_options
+        preconditions:
+            '@not_blank': $.data
+        entities:
+            - Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+        datagrids:
+            - oro-email-campaign-grid
+        actions:
+            - '@redirect': {route: 'oro_email_campaign_index'}
+        datagrid_options:
+            mass_action:
+                entity_name: Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+                data_identifier: ec.id
+                type: delete
+                label: oro.grid.action.delete
+                link: delete_link
+                icon: trash-o
