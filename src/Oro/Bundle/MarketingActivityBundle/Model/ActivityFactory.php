@@ -7,6 +7,7 @@ use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class ActivityFactory
 {
@@ -29,9 +30,9 @@ class ActivityFactory
      * @param int $entityId
      * @param \DateTime $actionDate
      * @param string $type
+     * @param Organization $owner
      * @param int $relatedCampaignId
      * @param string $relatedCampaignClass
-     *
      * @return MarketingActivity
      */
     public function create(
@@ -40,6 +41,7 @@ class ActivityFactory
         $entityId,
         \DateTime $actionDate,
         $type,
+        Organization $owner,
         $relatedCampaignId,
         $relatedCampaignClass = EmailCampaign::class
     ) {
@@ -51,6 +53,7 @@ class ActivityFactory
         $marketingActivity->setRelatedCampaignId($relatedCampaignId);
         $marketingActivity->setRelatedCampaignClass($relatedCampaignClass);
         $marketingActivity->setActionDate($actionDate);
+        $marketingActivity->setOwner($owner);
 
         return $marketingActivity;
     }
