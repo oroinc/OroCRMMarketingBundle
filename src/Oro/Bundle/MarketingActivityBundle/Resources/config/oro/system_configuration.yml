@@ -1,0 +1,19 @@
+system_configuration:
+    fields:
+        oro_marketing_activity.feature_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: oro.marketingactivity.feature_enabled
+
+    tree:
+        system_configuration:
+            marketing:
+                children:
+                    marketing_setup:
+                        children:
+                            marketing_settings:
+                                children:
+                                    marketing_features:
+                                        children:
+                                            - oro_marketing_activity.feature_enabled

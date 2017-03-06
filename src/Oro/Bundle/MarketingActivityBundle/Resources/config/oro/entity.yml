@@ -1,0 +1,11 @@
+oro_entity:
+    virtual_relations:
+        Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity:
+            emailCampaign:
+                relation_type: oneToOne
+                related_entity_name: Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+                label: oro.marketingactivity.email_campaign.label
+                query:
+                    join:
+                        left:
+                            - { join: 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign', alias: emailCampaign, conditionType: 'WITH', condition: "entity.relatedCampaignClass = 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign' AND entity.relatedCampaignId = emailCampaign.id" }

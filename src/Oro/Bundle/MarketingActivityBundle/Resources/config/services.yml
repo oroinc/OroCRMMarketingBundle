@@ -1,0 +1,30 @@
+parameters:
+    # Entities
+    oro_marketing_activity.entity.class: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity
+services:
+    oro_marketing_activity.provider.virtual_relation.marketing_activity:
+        class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_marketing_list.entity_provider.contact_information'
+        tags:
+            - { name: oro_entity.virtual_relation_provider, priority: 150 }
+
+    oro_marketing_activity.placeholder.filter:
+        class: 'Oro\Bundle\MarketingActivityBundle\Placeholder\PlaceholderFilter'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_marketing_list.entity_provider.contact_information'
+        tags:
+            - { name: oro_featuretogle.feature, feature: 'marketingactivity' }
+
+    oro_marketing_activity.normalizer.marketing_activity.section_data:
+        class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer'
+
+    oro_marketing_activity.section_data.filter.helper:
+        class: 'Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper'
+
+    oro_marketing_activity.factory:
+        class: 'Oro\Bundle\MarketingActivityBundle\Model\ActivityFactory'
+        arguments:
+            - "@oro_entity_extend.enum_value_provider"
