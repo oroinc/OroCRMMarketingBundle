@@ -155,5 +155,12 @@ oro:
             id.label: Id
             template.label: Template
 
+        campaigncodehistory:
+            entity_label: Campaign Code History
+            entity_plural_label: Campaign Code History
+            id.label: Id
+            campaign.label: Campaign
+            code.label: Code
+
         privilege:
             category.marketing.label: Marketing

@@ -8,8 +8,32 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
+
 class CampaignRepository extends EntityRepository
 {
+    /**
+     * @param string $code
+     *
+     * @return Campaign|null
+     */
+    public function findOneByCode($code)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('campaign')
+            ->from('OroCampaignBundle:Campaign', 'campaign')
+            ->join(
+                'OroCampaignBundle:CampaignCodeHistory',
+                'campaignCodeHistory',
+                'WITH',
+                'campaignCodeHistory.campaign = campaign'
+            )
+            ->where('campaignCodeHistory.code = :code')
+            ->setParameter('code', $code);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
     /**
      * @param AclHelper $aclHelper
      * @param int       $recordsCount

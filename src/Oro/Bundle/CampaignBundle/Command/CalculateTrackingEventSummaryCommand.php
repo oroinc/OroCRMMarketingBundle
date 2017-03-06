@@ -133,7 +133,7 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
                 );
 
             $summary = new TrackingEventSummary();
-            $summary->setCode($campaign->getCode());
+            $summary->setCode($event['code']);
             $summary->setWebsite($website);
             $summary->setName($event['name']);
             $summary->setVisitCount($event['visitCount']);

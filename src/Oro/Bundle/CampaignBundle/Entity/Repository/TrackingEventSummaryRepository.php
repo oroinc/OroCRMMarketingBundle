@@ -18,18 +18,25 @@ class TrackingEventSummaryRepository extends EntityRepository
 
         $qb = $this->_em->createQueryBuilder()
             ->from('OroTrackingBundle:TrackingEvent', 'trackingEvent')
+            ->join(
+                'OroCampaignBundle:CampaignCodeHistory',
+                'campaignCodeHistory',
+                'WITH',
+                'campaignCodeHistory.code = trackingEvent.code'
+            )
             ->select(
                 [
                     'trackingEvent.name',
+                    'campaignCodeHistory.code',
                     'IDENTITY(trackingEvent.website) as websiteId',
                     'COUNT(trackingEvent.id) as visitCount',
                     'DATE(trackingEvent.loggedAt) as loggedAtDate',
                 ]
             )
             ->andWhere('trackingEvent.website IS NOT NULL')
-            ->andWhere('trackingEvent.code = :trackingEventCode')
+            ->andWhere('campaignCodeHistory.campaign = :campaign')
             ->andWhere('DATE(trackingEvent.loggedAt) < DATE(:today)')
-            ->setParameter('trackingEventCode', $campaign->getCode())
+            ->setParameter('campaign', $campaign)
             ->setParameter('today', $today)
             ->groupBy('trackingEvent.name, trackingEvent.website, loggedAtDate');
 
