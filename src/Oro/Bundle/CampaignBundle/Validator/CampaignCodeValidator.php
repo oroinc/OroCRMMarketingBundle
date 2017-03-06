@@ -10,7 +10,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode;
 
 class CampaignCodeValidator extends ConstraintValidator
 {
