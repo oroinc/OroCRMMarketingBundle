@@ -11,6 +11,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 
 /**
  * @Route("/marketing-list")
@@ -45,6 +46,8 @@ class MarketingListController extends Controller
      */
     public function viewAction(MarketingList $entity)
     {
+        $this->checkMarketingList($entity);
+
         $entityConfig = $this->get('oro_marketing_list.entity_provider')->getEntity($entity->getEntity());
 
         return [
@@ -86,6 +89,8 @@ class MarketingListController extends Controller
      */
     public function updateAction(MarketingList $entity)
     {
+        $this->checkMarketingList($entity);
+
         return $this->update($entity);
     }
 
@@ -114,5 +119,25 @@ class MarketingListController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * @param MarketingList $marketingList
+     */
+    protected function checkMarketingList(MarketingList $marketingList)
+    {
+        if ($marketingList->getEntity() &&
+            !$this->getFeatureChecker()->isResourceEnabled($marketingList->getEntity(), 'entities')
+        ) {
+            throw $this->createNotFoundException();
+        }
+    }
+
+    /**
+     * @return FeatureChecker
+     */
+    protected function getFeatureChecker()
+    {
+        return $this->get('oro_featuretoggle.checker.feature_checker');
     }
 }
