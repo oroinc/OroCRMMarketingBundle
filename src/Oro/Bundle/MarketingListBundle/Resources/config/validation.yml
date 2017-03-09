@@ -18,7 +18,12 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
             - Valid: ~
 
 Oro\Bundle\SegmentBundle\Entity\Segment:
+    group_sequence:
+        - PreQueryValidate
+        - Segment
     constraints:
+        - Oro\Bundle\MarketingListBundle\Validator\Constraints\ColumnDublicateConstraint:
+            groups: [PreQueryValidate]
         - Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint:
             groups: ["marketing_list"]
 
