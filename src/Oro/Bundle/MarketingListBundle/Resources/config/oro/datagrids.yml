@@ -1,6 +1,8 @@
 datagrids:
     oro-base-marketing-list-grid:
         extended_entity_name: Oro\Bundle\MarketingListBundle\Entity\MarketingList
+        features:
+            entity_class_name_path: ml.entity
         source:
             type: orm
             query:

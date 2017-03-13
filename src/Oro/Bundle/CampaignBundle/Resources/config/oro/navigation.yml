@@ -36,13 +36,13 @@ navigation:
 
     titles:
         oro_campaign_index:  ~
-        oro_campaign_view:   %%entity.name%%
-        oro_campaign_create: oro.ui.create_entity
-        oro_campaign_update: %%entity.name%% - Edit
+        oro_campaign_view:   '%entity.name%'
+        oro_campaign_create: 'oro.ui.create_entity'
+        oro_campaign_update: '%entity.name% - Edit'
 
         oro_tracking_website_index: ~
 
         oro_email_campaign_index:  ~
-        oro_email_campaign_view:   %%entity.name%%
-        oro_email_campaign_create: oro.ui.create_entity
-        oro_email_campaign_update: %%entity.name%% - Edit
+        oro_email_campaign_view:   '%entity.name%'
+        oro_email_campaign_create: 'oro.ui.create_entity'
+        oro_email_campaign_update: '%entity.name% - Edit'
