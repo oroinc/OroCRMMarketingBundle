@@ -38,7 +38,7 @@ class TrackingEventSummaryRepository extends EntityRepository
             ->andWhere('DATE(trackingEvent.loggedAt) < DATE(:today)')
             ->setParameter('campaign', $campaign)
             ->setParameter('today', $today)
-            ->groupBy('trackingEvent.name, trackingEvent.website, loggedAtDate');
+            ->groupBy('trackingEvent.name, trackingEvent.website, campaignCodeHistory.code, loggedAtDate');
 
         if ($campaign->getReportRefreshDate()) {
             $qb->andWhere('DATE(trackingEvent.loggedAt) > DATE(:since)')

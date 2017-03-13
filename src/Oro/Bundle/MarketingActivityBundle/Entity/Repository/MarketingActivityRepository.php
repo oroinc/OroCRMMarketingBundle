@@ -83,13 +83,13 @@ class MarketingActivityRepository extends EntityRepository
     public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter = null)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('campaign.id as id, campaign.name as campaignName')
+        $queryBuilder->select('IDENTITY(ma.campaign) as id, campaign.name as campaignName')
             ->addSelect('MAX(ma.actionDate) as eventDate, campaign.updatedAt, campaign.createdAt')
             ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
             ->join('ma.campaign', 'campaign')
             ->where('ma.entityClass = :entityClass')
             ->andWhere('ma.entityId = :entityId')
-            ->groupBy('ma.campaign')
+            ->groupBy('ma.campaign, campaign.name, campaign.updatedAt, campaign.createdAt')
             ->orderBy('eventDate', 'DESC')
             ->setParameter(':entityClass', $entityClass)
             ->setParameter(':entityId', $entityId);
@@ -116,7 +116,6 @@ class MarketingActivityRepository extends EntityRepository
             ->join('ma.type', 'type')
             ->where('ma.entityClass = :entityClass')
             ->andWhere('ma.entityId = :entityId')
-            ->groupBy('ma.campaign')
             ->setParameter(':entityClass', $entityClass)
             ->setParameter(':entityId', $entityId);
 
