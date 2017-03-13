@@ -1,6 +1,6 @@
 Oro\Bundle\CampaignBundle\Entity\Campaign:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode: ~
     properties:
         name:
             - NotBlank: ~

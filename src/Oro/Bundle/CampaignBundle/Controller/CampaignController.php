@@ -76,7 +76,14 @@ class CampaignController extends Controller
      */
     public function viewAction(Campaign $entity)
     {
-        return ['entity' => $entity];
+        $codesHistory = $this->getDoctrine()
+            ->getRepository("OroCampaignBundle:Campaign")
+            ->getCodesHistory($entity);
+
+        return [
+            'entity' => $entity,
+            'codes_history' => $codesHistory
+        ];
     }
 
     /**

@@ -1,0 +1,100 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set containerExtraClass = containerExtraClass is defined ? containerExtraClass : '' %}
+<div class="widget-content activity-list marketing-activities {{ containerExtraClass }}">
+    {% set pager = {
+        current: 1,
+        pagesize: oro_config_value('oro_activity_list.per_page'),
+        total: 1,
+        count: 1,
+        sortingField: 'eventDate'
+    } %}
+    {% set configuration = {
+        (configurationKey): {
+            label: 'oro.campaign.entity_label'|trans,
+            template: 'OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig',
+            has_comments: false,
+            routes: {
+                itemView: 'oro_marketing_activity_widget_marketing_activities_info',
+            }
+        }
+    } %}
+    {% block widget_content %}
+
+        {% block widget_actions %}
+        <div class="grid-toolbar">
+            <div class="filter-box oro-clearfix-width">
+                <div class="filter-container"></div>
+            </div>
+            <div class="pull-right">
+                <div class="actions-panel pull-right">
+                    {{ UI.clientLink({
+                        'aCss': 'action btn',
+                        'iCss': 'fa-refresh',
+                        'label': ' ' ~ ('Refresh'|trans),
+                        'dataAttributes': {'action-name': 'refresh', 'section': 'top'}
+                    }) }}
+                </div>
+            </div>
+            <div class="pagination">
+                <ul class="icons-holder">
+                    <li class="pagination-previous {% if pager.current == 1 %} disabled {% endif %}">
+                        <a href="#" data-section="top" data-action-name="goto_previous">
+                            <i class="fa-chevron-left hide-text"></i>
+                            {{ 'oro.activitylist.pagination.newer'|trans }}
+                        </a>
+                    </li>
+                    <li class="pagination-next">
+                        <a href="#" data-section="top" data-action-name="goto_next">
+                            {{ 'oro.activitylist.pagination.older'|trans }}
+                            <i class="fa-chevron-right hide-text"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endblock %}
+        {% block items_container %}
+            {% set options = {
+                widgetId: app.request.get('_wid'),
+                activityListData: render(path(
+                    'oro_marketing_activity_widget_marketing_activities_list',
+                    {
+                        entityClass: oro_class_name(entity, true),
+                        entityId: entity.id
+                    }
+                )),
+                activityListOptions: {
+                    configuration: configuration,
+                    template: '#template-marketing-activities',
+                    itemTemplate: '#template-marketing-activities-item',
+                    listWidgetSelector: '.marketing-activities-container .marketing-activities-list-widget',
+                    activityListSelector: '.marketing-activities',
+                    reloadOnAdd: false,
+                    reloadOnUpdate: false,
+                    triggerRefreshEvent: false,
+                    urls: {
+                        route: 'oro_marketing_activity_widget_marketing_activities_list',
+                        parameters: {
+                            entityClass: oro_class_name(entity, true),
+                            entityId: entity.id
+                        }
+                    },
+                    loadingContainerSelector: '.marketing-activities',
+                    pager: pager,
+                    campaignFilterValues: campaignFilterValues,
+                    routes: {}
+                }
+            } %}
+
+            <div class="container-fluid accordion"
+                data-page-component-module="oromarketingactivity/js/app/components/marketing-activities-section-component"
+                data-page-component-options="{{ options|json_encode }}"></div>
+            {% include 'OroMarketingActivityBundle:MarketingActivity:js/list.html.twig' with {'id': 'template-marketing-activities'} %}
+            {% include 'OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig' with {'id': 'template-marketing-activities-item'} %}
+            {% for activityClass, activityOptions in configuration %}
+                {% include activityOptions.template with {'id': ('template-activity-item-' ~ activityClass) } %}
+            {% endfor %}
+        {% endblock %}
+
+    {% endblock %}
+</div>

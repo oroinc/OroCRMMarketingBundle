@@ -1,0 +1,13 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<div class="widget-content form-horizontal box-content box-split-content row-fluid">
+    {% placeholder view_content_data_marketing_activities_summary with {'campaignId': campaignId, 'entityClass': entityClass, 'entityId': entityId} %}
+</div>
+<div class="marketing-activities-section-data-grid">
+    <h5>{{ 'oro.marketingactivity.entity_plural_label'|trans }}</h5>
+    {% set scope = 'marketing-activity-campaign-%campaign%'|replace({'%campaign%': campaignId}) %}
+    {{ dataGrid.renderGrid(
+        oro_datagrid_build_fullname('marketing-activity-section-data-grid', scope),
+        {'id': campaignId, 'entityClass': entityClass, 'entityId': entityId})
+    }}
+</div>

@@ -20,7 +20,7 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
      */
     public function getMigrationVersion()
     {
-        return 'v1_9';
+        return 'v1_10';
     }
 
     /** @var VisitEventAssociationExtension */
@@ -43,6 +43,7 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
         $this->createOrocrmCampaignTeSummaryTable($schema);
         $this->createOrocrmCmpgnTransportStngsTable($schema);
         $this->updateOrocrmCmpgnTransportStngsTableAddInternalEmailTransport($schema);
+        $this->createOrocrmCampaignCodeHistoryTable($schema);
 
         /** Foreign keys generation **/
         $this->addOrocrmCampaignForeignKeys($schema);
@@ -50,8 +51,16 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
         $this->addOrocrmEmailCampaignStatisticsForeignKeys($schema);
         $this->addOrocrmCampaignTeSummaryForeignKeys($schema);
         $this->addOrocrmCmpgnTransportStngsForeignKeysForInternalTransport($schema);
+        $this->addOrocrmCampaignCodeHistoryForeignKeys($schema);
 
-        $this->extension->addVisitEventAssociation($schema, 'orocrm_campaign');
+        $this->extension->addVisitEventAssociation(
+            $schema,
+            'orocrm_campaign',
+            null,
+            [
+                'merge' => ['inverse_display' => false],
+            ]
+        );
     }
 
     /**
@@ -194,6 +203,22 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
     }
 
     /**
+     * Create orocrm_campaign_code_history table
+     *
+     * @param Schema $schema
+     */
+    protected function createOrocrmCampaignCodeHistoryTable(Schema $schema)
+    {
+        $table = $schema->createTable('orocrm_campaign_code_history');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('campaign_id', 'integer', ['notnull' => true]);
+        $table->addColumn('code', 'string', ['notnull' => true, 'length' => 255]);
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['campaign_id'], 'IDX_E952F134F639F774', []);
+        $table->addUniqueIndex(['code'], 'UNIQ_E952F13477153098');
+    }
+
+    /**
      * Add oro_campaign foreign keys.
      *
      * @param Schema $schema
@@ -318,6 +343,22 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
             ['email_template_id'],
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'SET NULL']
+        );
+    }
+
+    /**
+     * Add orocrm_campaign_code_history foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addOrocrmCampaignCodeHistoryForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('orocrm_campaign_code_history');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_campaign'),
+            ['campaign_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'CASCADE']
         );
     }
 }

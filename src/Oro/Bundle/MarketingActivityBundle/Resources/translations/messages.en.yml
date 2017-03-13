@@ -1,0 +1,56 @@
+oro:
+    marketingactivity:
+        feature_enabled:               Enable Marketing Activities Features
+        entity_label:                  Marketing Activity
+        entity_plural_label:           Marketing Activities
+        id.label:                      Id
+        owner.label:                   Owner
+        campaign.label:                Campaign
+        type.label:                    Type
+        entity_id.label:               Entity Id
+        entity_class.label:            Entity Class
+        related_campaign_id.label:     Related Campaign Id
+        related_campaign_class.label:  Related Campaign Class
+        details.label:                 Details
+        action_date.label:             Action Date
+        email_campaign.label:          Email Campaign
+        view_campaign.label:           View Campaign
+        email_campaign.label:          Email Campaign Name
+        event_type.label:              Event Type
+        event_date.label:              Event Date
+        no_marketing_activities_exist: No marketing activities found
+        last_event_type.label:         Latest Activity
+        last_activity_date.label:      Latest Activity Date
+        summary:
+            label: Marketing Activity Summary
+            send.label: Send
+            open.label: Open
+            click.label: Click
+            forward.label: Forward
+            soft_bounce.label: Soft Bounce
+            hard_bounce.label: Hard Bounce
+            unsubscribe.label: Unsubscribe
+        sections:
+            marketingactivities: Marketing Activity
+
+    query_designer:
+        aggregates:
+            marketing_activity_type:
+                SendCount:
+                    name: Send Count
+                    hint: Number of 'send' items
+                OpenCount:
+                    name: Open Count
+                    hint: Number of 'open' items
+                ClickCount:
+                    name: Click Count
+                    hint: Number of 'click' items
+                SoftBounceCount:
+                    name: Soft Bounce Count
+                    hint: Number of 'soft bounce' items
+                HardBounceCount:
+                    name: Hard Bounce Count
+                    hint: Number of 'hard bounce' items
+                UnsubscribeCount:
+                    name: Unsubscribe Count
+                    hint: Number of 'unsubscribe' items

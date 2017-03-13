@@ -72,15 +72,15 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit_Framework_TestCase
 
         $testResult = new \stdClass();
 
-        $repo = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
+        $repo = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $this->em->expects($this->once())
             ->method('getRepository')
             ->with('OroCampaignBundle:Campaign')
             ->willReturn($repo);
-        $repo->expects($this->once())->method('findOneBy')
-            ->with(['code' => 'test'])
+        $repo->expects($this->once())->method('findOneByCode')
+            ->with('test')
             ->willReturn($isFind ? $testResult : null);
 
         $this->assertEquals($isFind ? [$testResult] : [], $this->provider->processEvent($event));

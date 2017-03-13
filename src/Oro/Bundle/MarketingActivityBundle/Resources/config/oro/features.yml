@@ -1,0 +1,14 @@
+features:
+    marketingactivity:
+        label: oro.marketingactivity.feature.label
+        description: oro.marketingactivity.feature.description
+        toggle: oro_marketing_activity.feature_enabled
+        dependencies:
+            - 'campaign'
+        routes:
+            - 'oro_marketing_activity_widget_summary'
+            - 'oro_marketing_activity_widget_marketing_activities'
+            - 'oro_marketing_activity_widget_marketing_activities_info'
+            - 'oro_marketing_activity_widget_marketing_activities_list'
+        api_resources:
+            - 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity'

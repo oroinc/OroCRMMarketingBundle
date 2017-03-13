@@ -1,0 +1,11 @@
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+
+<div class="row-fluid form-horizontal">
+    {% for row in summary|batch(summary|length / 2) %}
+        <div class="responsive-block">
+            {% for key,data in row %}
+                {{ ui.renderProperty(('oro.marketingactivity.summary.' ~ key ~ '.label')|trans, data|default('0')) }}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

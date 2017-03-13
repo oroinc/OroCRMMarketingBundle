@@ -1,0 +1,5 @@
+oro:
+    marketingactivity:
+        widget:
+            filter:
+                campaign.title: Campaign

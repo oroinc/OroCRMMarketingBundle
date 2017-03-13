@@ -1,0 +1,4 @@
+assets:
+    css:
+        oromarketingactivity:
+            - 'bundles/oromarketingactivity/css/less/main.less'

@@ -158,6 +158,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    oro_campaign.listener.campaign_code_history:
+        class: Oro\Bundle\CampaignBundle\EventListener\CampaignCodeHistoryListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
     oro_campaign.form.type.internal_transport_settings:
         class: %oro_campaign.form.type.internal_transport_settings.class%
         arguments:
@@ -209,3 +214,11 @@ services:
             - '@oro_security.acl_helper'
             - '@oro_dashboard.filter.date_filter_processor'
             - '@oro_currency.query.currency_transformer'
+
+    oro_campaign.validator.campaign_code:
+        class: Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator
+        arguments:
+            - '@doctrine'
+            - '@translator'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_campaign.campaign_code_validator }

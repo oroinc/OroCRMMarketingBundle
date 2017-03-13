@@ -9,6 +9,7 @@ oro:
         name.description:    This value should not exceed 100 characters.
         code.label:          Code
         code.description:    This value should not exceed 20 characters.
+        code.tooltip:        Previously used codes or codes of merged campaigns are shown in parenthesis and used for campaign tracking
         combined_name.label: Combined name
         start_date.label:    Start Date
         end_date.label:      End Date
@@ -154,6 +155,13 @@ oro:
             entity_plural_label: Email Campaign Internal Transport Settings
             id.label: Id
             template.label: Template
+
+        campaigncodehistory:
+            entity_label: Campaign Code History
+            entity_plural_label: Campaign Code History
+            id.label: Id
+            campaign.label: Campaign
+            code.label: Code
 
         privilege:
             category.marketing.label: Marketing
