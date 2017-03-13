@@ -9,6 +9,7 @@ oro:
         name.description:    This value should not exceed 100 characters.
         code.label:          Code
         code.description:    This value should not exceed 20 characters.
+        code.tooltip:        Previously used codes or codes of merged campaigns are shown in parenthesis and used for campaign tracking
         combined_name.label: Combined name
         start_date.label:    Start Date
         end_date.label:      End Date

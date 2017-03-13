@@ -35,6 +35,31 @@ class CampaignRepository extends EntityRepository
     }
 
     /**
+     * @param Campaign $campaign
+     * @param bool $excludeCurrent
+     * @return array
+     */
+    public function getCodesHistory(Campaign $campaign, $excludeCurrent = true)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('campaignCodeHistory.code')
+            ->from('OroCampaignBundle:CampaignCodeHistory', 'campaignCodeHistory')
+            ->where('campaignCodeHistory.campaign = :campaign')
+            ->setParameter('campaign', $campaign);
+        if ($excludeCurrent) {
+            $qb->andWhere('campaignCodeHistory.code != :code')
+                ->setParameter('code', $campaign->getCode());
+        }
+
+        $result = $qb->getQuery()->getArrayResult();
+        if ($result) {
+            $result = array_column($result, 'code');
+        }
+
+        return $result;
+    }
+
+    /**
      * @param AclHelper $aclHelper
      * @param int       $recordsCount
      * @param array     $dateRange
