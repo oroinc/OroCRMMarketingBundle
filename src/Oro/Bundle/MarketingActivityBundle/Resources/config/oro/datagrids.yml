@@ -5,6 +5,7 @@ datagrids:
             type: orm
             query:
                 select:
+                    - emailCampaign.id as emailCampaignId
                     - emailCampaign.name as emailCampaignName
                     - ma.actionDate as eventDate
                     - eventType.id as eventTypeId
@@ -62,3 +63,18 @@ datagrids:
                 details:
                     type: string
                     data_name: ma.details
+        properties:
+            emailCampaignId: ~
+            view_link:
+                type: url
+                route: oro_email_campaign_view
+                params: { id: emailCampaignId }
+        actions:
+            view:
+                type:         navigate
+                label:        oro.grid.action.view
+                link:         view_link
+                icon:         eye
+                acl_resource: oro_email_campaign_view
+                rowAction:    true
+
