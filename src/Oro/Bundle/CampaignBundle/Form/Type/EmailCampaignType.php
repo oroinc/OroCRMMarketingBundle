@@ -120,7 +120,6 @@ class EmailCampaignType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign',
-                'cascade_validation' => true
             ]
         );
     }

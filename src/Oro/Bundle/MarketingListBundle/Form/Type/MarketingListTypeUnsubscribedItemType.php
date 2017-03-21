@@ -32,9 +32,8 @@ class MarketingListTypeUnsubscribedItemType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'         => 'Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem',
-                'intention'          => 'marketing_list_unsubscribed_item',
-                'cascade_validation' => true
+                'data_class' => 'Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem',
+                'intention'  => 'marketing_list_unsubscribed_item',
             ]
         );
     }

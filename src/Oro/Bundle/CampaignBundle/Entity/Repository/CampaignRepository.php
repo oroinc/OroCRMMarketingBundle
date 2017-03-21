@@ -8,8 +8,57 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
+
 class CampaignRepository extends EntityRepository
 {
+    /**
+     * @param string $code
+     *
+     * @return Campaign|null
+     */
+    public function findOneByCode($code)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('campaign')
+            ->from('OroCampaignBundle:Campaign', 'campaign')
+            ->join(
+                'OroCampaignBundle:CampaignCodeHistory',
+                'campaignCodeHistory',
+                'WITH',
+                'campaignCodeHistory.campaign = campaign'
+            )
+            ->where('campaignCodeHistory.code = :code')
+            ->setParameter('code', $code);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Campaign $campaign
+     * @param bool $excludeCurrent
+     * @return array
+     */
+    public function getCodesHistory(Campaign $campaign, $excludeCurrent = true)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('campaignCodeHistory.code')
+            ->from('OroCampaignBundle:CampaignCodeHistory', 'campaignCodeHistory')
+            ->where('campaignCodeHistory.campaign = :campaign')
+            ->setParameter('campaign', $campaign);
+        if ($excludeCurrent) {
+            $qb->andWhere('campaignCodeHistory.code != :code')
+                ->setParameter('code', $campaign->getCode());
+        }
+
+        $result = $qb->getQuery()->getArrayResult();
+        if ($result) {
+            $result = array_column($result, 'code');
+        }
+
+        return $result;
+    }
+
     /**
      * @param AclHelper $aclHelper
      * @param int       $recordsCount

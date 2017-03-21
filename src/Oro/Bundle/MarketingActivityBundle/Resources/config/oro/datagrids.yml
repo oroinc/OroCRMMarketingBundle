@@ -1,0 +1,64 @@
+datagrids:
+    marketing-activity-section-data-grid:
+        acl_resource: oro_campaign_view
+        source:
+            type: orm
+            query:
+                select:
+                    - emailCampaign.name as emailCampaignName
+                    - ma.actionDate as eventDate
+                    - eventType.id as eventTypeId
+                    - eventType.name as eventTypeName
+                    - ma.details
+                from:
+                    - { table: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity , alias: ma }
+                join:
+                    left:
+                        - { join: ma.type, alias: eventType }
+                        -
+                            join: %oro_campaign.email_campaign.entity.class%
+                            alias: emailCampaign
+                            conditionType: WITH
+                            condition: "emailCampaign.id = ma.relatedCampaignId AND ma.relatedCampaignClass = '%oro_campaign.email_campaign.entity.class%'"
+                where:
+                    and:
+                        - ma.campaign = :id
+                        - ma.entityClass = :entityClass
+                        - ma.entityId = :entityId
+            bind_parameters:
+                - id
+                - entityClass
+                - entityId
+        columns:
+            emailCampaignName:
+                label: oro.marketingactivity.email_campaign.label
+            eventTypeName:
+                label: oro.marketingactivity.event_type.label
+            eventDate:
+                label: oro.marketingactivity.event_date.label
+                frontend_type: datetime
+            details:
+                label: oro.marketingactivity.details.label
+        sorters:
+            columns:
+                emailCampaignName: { data_name: emailCampaign.name }
+                eventTypeName:     { data_name: eventTypeName }
+                eventDate:         { data_name: ma.actionDate }
+                details:           { data_name: ma.details }
+            default:
+                eventDate: DESC
+        filters:
+            columns:
+                emailCampaignName:
+                    type: string
+                    data_name: emailCampaign.name
+                eventTypeName:
+                    type: enum
+                    data_name: eventTypeId
+                    enum_code: ma_type
+                eventDate:
+                    type: datetime
+                    data_name: ma.actionDate
+                details:
+                    type: string
+                    data_name: ma.details

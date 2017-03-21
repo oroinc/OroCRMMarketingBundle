@@ -1,0 +1,20 @@
+oro_entity:
+    virtual_relations:
+        Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity:
+            emailCampaign:
+                relation_type: manyToOne
+                related_entity_name: Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+                label: oro.marketingactivity.email_campaign.label
+                query:
+                    join:
+                        left:
+                            - { join: 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign', alias: emailCampaign, conditionType: 'WITH', condition: "entity.relatedCampaignClass = 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign' AND entity.relatedCampaignId = emailCampaign.id" }
+        Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
+            marketingActivity:
+                relation_type: oneToMany
+                related_entity_name: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity
+                label: oro.marketingactivity.entity_label
+                query:
+                    join:
+                        left:
+                            - { join: 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity', alias: marketingActivity, conditionType: 'WITH', condition: "marketingActivity.relatedCampaignClass = 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign' AND marketingActivity.relatedCampaignId = entity.id" }

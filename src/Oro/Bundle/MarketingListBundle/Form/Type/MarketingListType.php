@@ -86,7 +86,6 @@ class MarketingListType extends AbstractQueryDesignerType
             [
                 'data_class' => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
                 'intention' => 'marketing_list',
-                'cascade_validation' => true
             ]
         );
 

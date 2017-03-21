@@ -31,11 +31,13 @@ class VisitEventAssociationExtension implements ExtendExtensionAwareInterface
      * @param Schema $schema
      * @param string $targetTableName  Target entity table name
      * @param string $targetColumnName A column name is used to show related entity
+     * @param array  $options          Entity config options. [scope => [name => value, ...], ...]
      */
     public function addVisitEventAssociation(
         Schema $schema,
         $targetTableName,
-        $targetColumnName = null
+        $targetColumnName = null,
+        array $options = []
     ) {
         $visitTable   = $schema->getTable(self::VISIT_EVENT_TABLE_NAME);
         $targetTable = $schema->getTable($targetTableName);
@@ -55,7 +57,8 @@ class VisitEventAssociationExtension implements ExtendExtensionAwareInterface
             $visitTable,
             $associationName,
             $targetTable,
-            $targetColumnName
+            $targetColumnName,
+            $options
         );
     }
 

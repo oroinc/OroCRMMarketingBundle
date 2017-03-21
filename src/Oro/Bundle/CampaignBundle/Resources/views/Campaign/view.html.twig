@@ -39,7 +39,7 @@
         {% if entity.reportPeriod is not constant('Oro\\Bundle\\CampaignBundle\\Entity\\Campaign::PERIOD_HOURLY') %}
             {% set trackingTotalGrid = trackingTotalGrid ~ '-precalculated' %}
         {% endif %}
-        {{ dataGrid.renderGrid(trackingTotalGrid, {code: entity.code}) }}
+        {{ dataGrid.renderGrid(trackingTotalGrid, {campaign: entity}) }}
     {% endset %}
 
     {% set trackingPlot %}
@@ -82,6 +82,23 @@
             ]
         }
     ] %}
+
+    {%- set marketingActivitiesSummary -%}
+        {% placeholder view_content_data_marketing_activities_summary with {'campaignId': entity.id} %}
+    {%- endset -%}
+
+    {% if marketingActivitiesSummary is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'oro.marketingactivity.summary.label'|trans,
+            'priority' : 1000,
+            'subblocks': [
+                {
+                    'spanClass': 'empty',
+                    'data': [marketingActivitiesSummary]
+                }
+            ]
+        }]) %}
+    {% endif %}
 
     {% set id = 'campaignView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}

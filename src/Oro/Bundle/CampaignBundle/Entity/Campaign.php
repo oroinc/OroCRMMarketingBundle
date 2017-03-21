@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
@@ -19,6 +20,8 @@ use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
  * )
  * @ORM\HasLifecycleCallbacks()
  * @Config(
+ *      routeName="oro_campaign_index",
+ *      routeView="oro_campaign_view",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-volume-up"
@@ -44,12 +47,17 @@ use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
  *          },
  *          "tag"={
  *              "enabled"=true
+ *          },
+ *          "merge"={
+ *              "enable"=true
  *          }
  *      }
  * )
  */
 class Campaign extends ExtendCampaign
 {
+    use DatesAwareTrait;
+
     const PERIOD_HOURLY  = 'hour';
     const PERIOD_DAILY   = 'day';
     const PERIOD_MONTHLY = 'month';
@@ -68,6 +76,13 @@ class Campaign extends ExtendCampaign
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -91,6 +106,13 @@ class Campaign extends ExtendCampaign
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="start_date", type="date", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $startDate;
 
@@ -98,6 +120,13 @@ class Campaign extends ExtendCampaign
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="end_date", type="date", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $endDate;
 
@@ -105,6 +134,13 @@ class Campaign extends ExtendCampaign
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $description;
 
@@ -112,6 +148,13 @@ class Campaign extends ExtendCampaign
      * @var double
      *
      * @ORM\Column(name="budget", type="money", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $budget;
 
@@ -120,6 +163,13 @@ class Campaign extends ExtendCampaign
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
      */
     protected $owner;
 
@@ -136,34 +186,6 @@ class Campaign extends ExtendCampaign
      * @ORM\Column(name="report_refresh_date", type="date", nullable=true)
      */
     protected $reportRefreshDate;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * @var Organization
@@ -304,33 +326,13 @@ class Campaign extends ExtendCampaign
     }
 
     /**
-     * Get campaign created date/time
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get campaign last update date/time
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * Pre persist event handler
      *
      * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->setCombinedName($this->name, $this->code);
+        $this->setCombinedName($this->generateCombinedName($this->name, $this->code));
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->updatedAt = clone $this->createdAt;
     }
@@ -342,19 +344,18 @@ class Campaign extends ExtendCampaign
      */
     public function preUpdate()
     {
-        $this->setCombinedName($this->name, $this->code);
+        $this->setCombinedName($this->generateCombinedName($this->name, $this->code));
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
      * Set combined name in format "campaign name (campaign_code)"
      *
-     * @param string $name
-     * @param string $code
+     * @param string $combinedName
      */
-    public function setCombinedName($name, $code)
+    public function setCombinedName($combinedName)
     {
-        $this->combinedName = sprintf('%s (%s)', $name, $code);
+        $this->combinedName = $combinedName;
     }
 
     /**
@@ -363,6 +364,18 @@ class Campaign extends ExtendCampaign
     public function getCombinedName()
     {
         return $this->combinedName;
+    }
+
+    /**
+     * Generate combined name in format "campaign name (campaign_code)"
+     *
+     * @param string $name
+     * @param string $code
+     * @return string
+     */
+    public function generateCombinedName($name, $code)
+    {
+        return sprintf('%s (%s)', $name, $code);
     }
 
     /**

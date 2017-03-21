@@ -70,7 +70,7 @@ class TrackingVisitEventIdentification implements TrackingEventIdentifierInterfa
     public function processEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         $code = $trackingVisitEvent->getWebEvent()->getCode();
-        $campaign = $this->em->getRepository('OroCampaignBundle:Campaign')->findOneBy(['code' => $code]);
+        $campaign = $this->em->getRepository('OroCampaignBundle:Campaign')->findOneByCode($code);
         if ($campaign) {
             return [$campaign];
         }

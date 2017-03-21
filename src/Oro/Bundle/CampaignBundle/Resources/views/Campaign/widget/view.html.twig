@@ -6,7 +6,11 @@
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
             {{ ui.renderProperty('oro.campaign.name.label'|trans, entity.name) }}
-            {{ ui.renderProperty('oro.campaign.code.label'|trans, entity.code) }}
+            {%- set codesData -%}
+                {{ entity.code }}
+                {% if codes_history is not empty %} ({{ codes_history|join(', ') }}) {{ ui.tooltip('oro.campaign.code.tooltip'|trans) }}{% endif %}
+            {%- endset -%}
+            {{ ui.renderHtmlProperty('oro.campaign.code.label'|trans, codesData) }}
             {{ ui.renderHtmlProperty('oro.campaign.description.label'|trans, entity.description) }}
         </div>
 

@@ -34,7 +34,6 @@ class MarketingListTypeRemovedItemType extends AbstractType
             [
                 'data_class'         => 'Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem',
                 'intention'          => 'marketing_list_removed_item',
-                'cascade_validation' => true
             ]
         );
     }

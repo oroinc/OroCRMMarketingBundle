@@ -65,7 +65,6 @@ class EmailCampaignTypeTest extends \PHPUnit_Framework_TestCase
             ->with(
                 [
                     'data_class'         => 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign',
-                    'cascade_validation' => true
                 ]
             );
 
