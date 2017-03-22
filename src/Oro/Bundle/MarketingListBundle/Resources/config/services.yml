@@ -195,3 +195,8 @@ services:
             - "@oro_marketing_list.provider.contact_information_fields"
         tags:
             - { name: oro_action.condition, alias: has_contact_information }
+
+    oro_marketing_list.validator.column_dublicate_validator:
+        class: Oro\Bundle\MarketingListBundle\Validator\ColumnDublicateValidator
+        tags:
+            - { name: validator.constraint_validator, alias: oro_marketing_list.column_dublicate_validator }
