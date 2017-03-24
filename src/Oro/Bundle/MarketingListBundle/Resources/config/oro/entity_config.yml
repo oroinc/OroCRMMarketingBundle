@@ -3,6 +3,8 @@ entity_config:
         field:
             items:
                 contact_information:
+                    options:
+                        allowed_type: [string, text]
                     form:
                         type: choice
                         options:
