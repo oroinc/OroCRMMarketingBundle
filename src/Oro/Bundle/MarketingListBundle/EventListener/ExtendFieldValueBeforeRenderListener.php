@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\EventListener;
 
+use Doctrine\Common\Collections\Collection;
+
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -39,6 +41,9 @@ class ExtendFieldValueBeforeRenderListener
         if (null !== $contactInformationType
             && isset($this->contactInformationMap[$contactInformationType])
         ) {
+            if ($event->getFieldValue() instanceof Collection) {
+                return;
+            }
             $event->setFieldViewValue(
                 [
                     'value'    => $event->getFieldValue(),
