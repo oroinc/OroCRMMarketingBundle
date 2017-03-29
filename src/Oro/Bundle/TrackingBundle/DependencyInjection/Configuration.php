@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 'piwik_host'               => ['value' => null],
                 'piwik_token_auth'         => ['value' => null],
                 'feature_enabled'          => ['value' => true],
+                'precalculated_statistic_enabled' => ['value' => true],
             )
         );
 
