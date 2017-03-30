@@ -57,7 +57,7 @@ can be filled by Piwik automatically, otherwise client should fill them in custo
 Fully working code you can find in OroCRM MarketingCRM Bridge -> Provider -> TrackingCustomerIdentification
 As a simple example, it will looks like this:
 
-###Services:
+### Services:
 
 ```yaml
 
@@ -67,7 +67,7 @@ As a simple example, it will looks like this:
            - {name: oro_tracking.provider.identification, priority: 10}
 ```
 
-###Code:
+### Code:
 
 ``` php
 
@@ -182,7 +182,7 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
 
 # Tracked data in report builder
 
-User can crate reports based on tracked event data.
+User can create reports based on tracked event data.
 
 The main entity for this data is **Visitor event** - parsed web event data related to customer, campaign order or other customer data. This entity have next fields:
 
@@ -244,7 +244,7 @@ security:
 
 However, this can be overwritten to fit your needs, in 2 different ways:
 
-###1. Application's ``security.yml``:
+### 1. Application's ``security.yml``:
 ```yaml
 security:
     firewalls:
@@ -253,7 +253,7 @@ security:
             pattern:   ^%web_backend_prefix%/tracking/data/create
 ```
 
-###2. Bundle's ``app.yml`` in ``Resources/config/oro``:
+### 2. Bundle's ``app.yml`` in ``Resources/config/oro``:
 ```yaml
 security:
     firewalls:
