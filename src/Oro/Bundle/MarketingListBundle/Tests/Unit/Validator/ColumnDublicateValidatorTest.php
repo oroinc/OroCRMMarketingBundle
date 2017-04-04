@@ -40,9 +40,11 @@ class ColumnDublicateValidatorTest extends \PHPUnit_Framework_TestCase
             'columns' => [
                 0 => [
                     'name' => 'Test',
+                    'label' => 'Test',
                 ],
                 1 => [
                     'name' => 'Test',
+                    'label' => 'Test',
                 ]
             ]
         ]));
