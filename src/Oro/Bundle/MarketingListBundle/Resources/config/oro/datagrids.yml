@@ -1,5 +1,5 @@
 datagrids:
-    oro-marketing-list-grid:
+    oro-base-marketing-list-grid:
         extended_entity_name: Oro\Bundle\MarketingListBundle\Entity\MarketingList
         source:
             type: orm
@@ -87,6 +87,11 @@ datagrids:
                 route: oro_api_delete_marketinglist
                 params:
                     - id
+        options:
+            entity_pagination: true
+
+    oro-marketing-list-grid:
+        extends: oro-base-marketing-list-grid
         actions:
             view:
                 type:         navigate
@@ -111,8 +116,21 @@ datagrids:
                 link:          delete_link
                 launcherOptions:
                     className: 'no-hash mobile-hide'
-        options:
-            entity_pagination: true
+
+    oro-marketing-list-select-grid:
+        extends: oro-base-marketing-list-grid
+        inline_editing:
+            enable: false
+        actions:
+            view:
+                type:         navigate
+                label:        oro.grid.action.view
+                link:         view_link
+                icon:         eye
+                acl_resource: oro_marketing_list_view
+                rowAction:    true
+
+
 
     # Segment based grids mixins:
     oro-marketing-full-mixin:

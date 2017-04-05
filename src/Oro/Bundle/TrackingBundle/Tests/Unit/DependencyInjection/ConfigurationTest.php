@@ -54,6 +54,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'feature_enabled'          => [
                             'value' => true,
                             'scope' => 'app'
+                        ],
+                        'precalculated_statistic_enabled' => [
+                            'value' => true,
+                            'scope' => 'app'
                         ]
                     ]
                 ]
