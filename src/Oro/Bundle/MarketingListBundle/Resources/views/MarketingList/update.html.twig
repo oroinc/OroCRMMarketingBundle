@@ -171,7 +171,7 @@
         'hiddenData': form_widget(form.definition)
     } %}
 
-    {{ UI.scrollData(id, data, form) }}
+    {{ UI.scrollData(id, data, entity, form) }}
 
     {# TODO: remove this check after full support of manual marketing lists CRM-1878 #}
     {% if not form.vars.value.manual %}
