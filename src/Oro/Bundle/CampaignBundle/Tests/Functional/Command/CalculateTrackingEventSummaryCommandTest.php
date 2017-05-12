@@ -30,10 +30,7 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
             'Finished campaigns statistic calculation'
         ];
 
-        $this->assertEquals(
-            implode(PHP_EOL, $expectedMessages) . PHP_EOL,
-            $result
-        );
+        $this->assertEquals(implode(' ', $expectedMessages), $result);
 
         $timezone = new \DateTimeZone('UTC');
         $dateOne = new \DateTime('-1 day', $timezone);
