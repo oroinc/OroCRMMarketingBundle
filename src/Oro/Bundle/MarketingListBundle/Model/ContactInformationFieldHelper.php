@@ -77,8 +77,7 @@ class ContactInformationFieldHelper
      */
     public function getEntityContactInformationFields($entity)
     {
-        $metadata = $this->doctrineHelper->getEntityMetadata($entity);
-        $fields = $metadata->getFieldNames();
+        $fields = array_column($this->fieldProvider->getFields($entity, false, true), 'name');
         $contactInformationFields = [];
         foreach ($fields as $field) {
             if ($type = $this->getContactInformationFieldType($entity, $field)) {
@@ -130,6 +129,11 @@ class ContactInformationFieldHelper
         } elseif ($this->configProvider->hasConfig($className, $fieldName)) {
             $fieldConfiguration = $this->configProvider->getConfig($className, $fieldName);
             $contactInformationType = $fieldConfiguration->get('contact_information');
+        } else {
+            $entityFields = $this->fieldProvider->getFields($entity, false, true);
+            $fieldsNames = array_column($entityFields, 'name');
+            $contactInformationType = in_array($fieldName, $fieldsNames, true) && $fieldName === 'contactInformation' ?
+                $fieldName : null;
         }
 
         return $contactInformationType;
