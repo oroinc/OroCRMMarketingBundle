@@ -1,7 +1,12 @@
 <?php
 /**
+ * IMPORTANT:
+ *  Do not change this file manually, because it will be overwritten on application install/update procedure.
+ *  The original file is located in `Oro/Bundles/TrackingBundle/Resources/public/lib/tracking.php`.
+ *
  * This is tracking endpoint, which must be as fast as possible.
  * KISS.
+ *
  * @SuppressWarnings(PHPMD)
  * @codingStandardsIgnoreFile
  */
@@ -9,7 +14,7 @@
 $trackingFolder = '../app/logs/tracking';
 $settingsFile   = $trackingFolder . DIRECTORY_SEPARATOR . 'settings.ser';
 $settings       = [
-    'dynamic_tracking_enabled'  => true,
+    'dynamic_tracking_enabled'  => false,
     'dynamic_tracking_endpoint' => '/tracking/data/create',
     'log_rotate_interval'       => 60,
     'piwik_host'                => null,
