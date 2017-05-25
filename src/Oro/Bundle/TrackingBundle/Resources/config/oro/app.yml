@@ -4,3 +4,9 @@ security:
             pattern:   ^/tracking/data/create
             provider:  chain_provider
             anonymous: true
+assetic:
+    assets:
+        tracking_lib:
+            inputs:
+                - 'bundles/orotracking/lib/tracking.php'
+            output: 'tracking.php'

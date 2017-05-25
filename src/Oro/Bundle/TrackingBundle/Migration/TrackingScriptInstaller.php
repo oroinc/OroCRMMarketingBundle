@@ -7,7 +7,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class TrackingScriptInstaller
 {
-    const SCRIPT_PATH = '/../Resources/lib';
+    const SCRIPT_PATH = '/../Resources/public/lib';
     const SCRIPT_NAME = 'tracking.php';
 
     /** @var string */

@@ -2,7 +2,7 @@ connector:
     name: oro_importexport
     jobs:
         import_log_to_database:
-            title: "Import tracking log to databaser"
+            title: "Import tracking log to database"
             type: import
             steps:
                 import:
