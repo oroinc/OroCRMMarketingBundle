@@ -1,0 +1,13 @@
+oro_behat_extension:
+  elements:
+    Available contact information fields:
+      selector: "div[id='contact-information-fields-list']"
+
+  suites:
+    OroMarketingListBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroQueryDesignerBundle::QueryDesignerContext
+        - OroFormBundle::FormContext
+      paths:
+        - '@OroMarketingListBundle/Tests/Behat/Features'
