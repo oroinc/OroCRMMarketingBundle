@@ -23,4 +23,4 @@ Feature: System entities should be available as ML targets
       | Marketin list by Order         | Order         |
       | Marketin list by Quote         | Quote         |
       | Marketin list by Shopping List | Shopping List |
-      | Marketin list by User          | User          |
+      | Marketin list by Customer User | Customer User |
