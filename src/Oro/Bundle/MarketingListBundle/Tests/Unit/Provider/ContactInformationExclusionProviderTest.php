@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
+use Doctrine\ORM\Mapping\ClassMetadata;
+
 use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationExclusionProvider;
 
@@ -18,19 +20,18 @@ class ContactInformationExclusionProviderTest extends \PHPUnit_Framework_TestCas
     protected $virtualFieldProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $metadata;
 
-
     protected function setUp()
     {
-        $this->virtualFieldProvider = $this->createMock('Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface');
+        $this->virtualFieldProvider = $this
+            ->createMock('Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface');
         $this->metadata = $this
             ->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
             ->getMock();
-
 
         $this->provider = new ContactInformationExclusionProvider($this->virtualFieldProvider);
     }
