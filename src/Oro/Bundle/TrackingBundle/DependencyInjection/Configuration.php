@@ -15,10 +15,6 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oro_tracking');
-        $rootNode
-            ->children()
-                ->scalarNode('web_root')->defaultValue('%kernel.root_dir%/../web')->end()
-            ->end();
 
         SettingsBuilder::append(
             $rootNode,

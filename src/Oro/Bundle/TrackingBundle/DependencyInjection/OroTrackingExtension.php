@@ -20,7 +20,6 @@ class OroTrackingExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('oro_tracking.web_root', $config['web_root']);
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }
 }
