@@ -4,24 +4,18 @@ namespace Oro\Bundle\TrackingBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-
 use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\TrackingBundle\Migrations\Schema\v1_4\OroTrackerBundle;
-use Oro\Bundle\TrackingBundle\Migrations\Schema\v1_11\InstallTrackingScriptQuery;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class OroTrackingBundleInstaller implements Installation, ContainerAwareInterface
+class OroTrackingBundleInstaller implements Installation
 {
-    use ContainerAwareTrait;
-
     /**
      * {@inheritdoc}
      */
@@ -35,10 +29,6 @@ class OroTrackingBundleInstaller implements Installation, ContainerAwareInterfac
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $queries->addQuery(
-            new InstallTrackingScriptQuery($this->container->getParameter('oro_tracking.web_root'))
-        );
-
         /** Tables generation **/
         $this->createOroTrackingDataTable($schema);
         $this->createOroTrackingEventTable($schema);

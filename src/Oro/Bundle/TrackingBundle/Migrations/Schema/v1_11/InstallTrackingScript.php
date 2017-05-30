@@ -4,23 +4,19 @@ namespace Oro\Bundle\TrackingBundle\Migrations\Schema\v1_11;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-class InstallTrackingScript implements Migration, ContainerAwareInterface
+class InstallTrackingScript implements Migration
 {
-    use ContainerAwareTrait;
-
     /**
      * {@inheritdoc}
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $queries->addQuery(
-            new InstallTrackingScriptQuery($this->container->getParameter('oro_tracking.web_root'))
-        );
+        /**
+         * Tracking script installation (copying `tracking.php` into web folder) replaced with assets.
+         * See `Oro/Bundle/TrackingBundle/Resources/config/oro/app.yml`.
+         */
     }
 }
