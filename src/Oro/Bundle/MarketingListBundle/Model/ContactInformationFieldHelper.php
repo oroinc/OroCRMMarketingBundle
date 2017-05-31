@@ -15,7 +15,7 @@ class ContactInformationFieldHelper
     protected $configProvider;
 
     /** @var array */
-    protected $entityContactInfoColumns = array();
+    protected $entityContactInfoColumns = [];
 
     /** @var DoctrineHelper */
     protected $doctrineHelper;
@@ -147,6 +147,7 @@ class ContactInformationFieldHelper
     {
         $result = [];
         if ($this->configProvider->hasConfig($entity)) {
+            /** @var array $entityContactInformation */
             $entityContactInformation = $this->configProvider
                 ->getConfig($entity)
                 ->get('contact_information');
