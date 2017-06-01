@@ -3,8 +3,16 @@ Feature: System entities should be available as ML targets
   As administrator
   I need to be able to create marketing list based on system entities
 
-  Scenario Outline: Successful creating marketing list based on system entities
+  Scenario: Enable Business Customer entity
     Given I login as administrator
+    And I go to System/ Channels
+    And I press "Create Channel"
+    And I fill form with:
+      | Name         | Sales Channel |
+      | Channel Type | Sales         |
+    And I save and close form
+
+  Scenario Outline: Successful creating marketing list based on system entities
     And I go to Marketing/ Marketing Lists
     And I press "Create Marketing List"
     When I fill form with:
@@ -18,9 +26,12 @@ Feature: System entities should be available as ML targets
     Then I should see "Marketing list saved" flash message
 
     Examples:
-      | Marketing List Name            | Entity Name   |
-      | Marketin list by Account       | Account       |
-      | Marketin list by Order         | Order         |
-      | Marketin list by Quote         | Quote         |
-      | Marketin list by Shopping List | Shopping List |
-      | Marketin list by Customer User | Customer User |
+      | Marketing List Name | Entity Name       |
+      | Account             | Account           |
+      | Order               | Order             |
+      | Quote               | Quote             |
+      | Shopping List       | Shopping List     |
+      | Customer User       | Customer User     |
+      | Contact             | Contact           |
+      | Lead                | Lead              |
+      | Business Customer   | Business Customer |
