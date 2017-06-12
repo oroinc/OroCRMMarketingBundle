@@ -22,7 +22,7 @@ navigation:
             websites_list:
                 label:    'oro.tracking.trackingwebsite.entity_plural_label'
                 route:    'oro_tracking_website_index'
-                position: 20
+                position: 25
                 extras:
                     routes: ['oro_tracking_*']
         tree:
