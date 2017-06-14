@@ -14,6 +14,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
 
     public function testCreate()
     {
+        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in BAP-14871');
         $crawler                                  = $this->client->request(
             'GET',
             $this->getUrl('oro_tracking_website_create')
@@ -38,7 +39,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
      */
     public function testView()
     {
-        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in CRM-5973');
+        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in BAP-14871');
         $response = $this->client->requestGrid(
             'website-grid'
         );
@@ -62,7 +63,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
      */
     public function testGetTrackIdByIdentifier()
     {
-        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in CRM-5973');
+        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in BAP-14871');
         $response = $this->client->requestGrid(
             'website-grid',
             ['website-grid[_filter][identifier][value]' => 'unique']
@@ -80,7 +81,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
      */
     public function testUpdate($id)
     {
-        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in CRM-5973');
+        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in BAP-14871');
         $crawler = $this->client->request(
             'GET',
             $this->getUrl('oro_tracking_website_update', ['id' => $id])
@@ -104,7 +105,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
      */
     public function testIndex()
     {
-        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in CRM-5973');
+        $this->markTestSkipped('skipping because of Segmentation fault in travis. Should be fixed in BAP-14871');
         $this->client->request('GET', $this->getUrl('oro_tracking_website_index'));
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
