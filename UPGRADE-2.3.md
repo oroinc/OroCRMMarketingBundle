@@ -1,6 +1,12 @@
 UPGRADE FROM 2.2 to 2.3
 ========================
 
+CampaignBundle
+--------------
+- Class `Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener`
+    - changed the constructor signature: parameter `SecurityContextInterface $securityContext` was replaced with `TokenAccessorInterface $tokenAccessor`
+    - property `securityContext` was replaced with `tokenAccessor`
+
 MarketingListBundle
 -------------------
 - Tracking script `tracking.php` moved to `Oro/Bundles/TrackingBundle/Resources/public/lib/tracking.php`

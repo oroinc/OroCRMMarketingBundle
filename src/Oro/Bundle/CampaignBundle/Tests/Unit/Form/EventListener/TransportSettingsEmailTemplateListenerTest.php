@@ -8,33 +8,26 @@ use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 
 class TransportSettingsEmailTemplateListenerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var TransportSettingsEmailTemplateListener
-     */
+    /** @var TransportSettingsEmailTemplateListener */
     protected $listener;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $registry;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $securityContext;
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $tokenAccessor;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $form;
 
     protected function setUp()
     {
         $this->registry = $this->createMock('Symfony\Bridge\Doctrine\RegistryInterface');
-        $this->securityContext = $this->createMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->tokenAccessor = $this->createMock(TokenAccessorInterface::class);
 
         $this->form = $this
             ->getMockBuilder('Symfony\Component\Form\Form')
@@ -73,7 +66,7 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit_Framework_Test
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $this->listener = new TransportSettingsEmailTemplateListener($this->registry, $this->securityContext);
+        $this->listener = new TransportSettingsEmailTemplateListener($this->registry, $this->tokenAccessor);
     }
 
     public function testGetSubscribedEvents()

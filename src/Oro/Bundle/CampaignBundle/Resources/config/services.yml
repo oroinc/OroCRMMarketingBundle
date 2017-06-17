@@ -182,7 +182,7 @@ services:
         class: %oro_campaign.form.subscriber.transport_settings_email_template.class%
         arguments:
             - "@doctrine"
-            - "@security.context"
+            - "@oro_security.token_accessor"
 
     oro_campaign.form.handler.email_campaign:
         class: %oro_campaign.form.handler.email_campaign.class%
