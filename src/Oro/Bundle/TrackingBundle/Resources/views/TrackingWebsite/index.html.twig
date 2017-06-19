@@ -4,7 +4,7 @@
 {% set pageTitle = 'oro.tracking.trackingwebsite.entity_plural_label'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('oro_tracking_website_create') %}
+    {% if is_granted('oro_tracking_website_create') %}
         {{ UI.addButton({
             'path': path('oro_tracking_website_create'),
             'entity_label': 'oro.tracking.trackingwebsite.entity_label'|trans

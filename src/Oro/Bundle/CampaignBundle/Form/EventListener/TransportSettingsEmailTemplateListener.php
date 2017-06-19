@@ -2,17 +2,16 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\EventListener;
 
-use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 
 class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 {
@@ -22,18 +21,18 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
     protected $registry;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenAccessorInterface
      */
-    protected $securityContext;
+    protected $tokenAccessor;
 
     /**
-     * @param RegistryInterface        $registry
-     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface      $registry
+     * @param TokenAccessorInterface $tokenAccessor
      */
-    public function __construct(RegistryInterface $registry, SecurityContextInterface $securityContext)
+    public function __construct(RegistryInterface $registry, TokenAccessorInterface $tokenAccessor)
     {
-        $this->registry        = $registry;
-        $this->securityContext = $securityContext;
+        $this->registry = $registry;
+        $this->tokenAccessor = $tokenAccessor;
     }
 
     /**
@@ -97,18 +96,15 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
      */
     protected function fillEmailTemplateChoices(FormInterface $form, $entityName)
     {
-        /** @var UsernamePasswordOrganizationToken $token */
-        $token = $this->securityContext->getToken();
-
         FormUtils::replaceField(
             $form,
             'template',
             [
                 'selectedEntity' => $entityName,
-                'query_builder'  => function (EmailTemplateRepository $templateRepository) use ($entityName, $token) {
+                'query_builder'  => function (EmailTemplateRepository $templateRepository) use ($entityName) {
                     return $templateRepository->getEntityTemplatesQueryBuilder(
                         $entityName,
-                        $token->getOrganizationContext(),
+                        $this->tokenAccessor->getOrganization(),
                         true
                     );
                 },

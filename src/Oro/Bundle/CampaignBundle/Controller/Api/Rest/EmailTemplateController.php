@@ -10,11 +10,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
-use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 /**
  * @RouteResource("emailcampaign_email_template")
@@ -54,10 +51,7 @@ class EmailTemplateController extends RestController
             );
         }
 
-        $securityContext = $this->get('security.context');
-        /** @var UsernamePasswordOrganizationToken $token */
-        $token        = $securityContext->getToken();
-        $organization = $token->getOrganizationContext();
+        $organization = $this->get('oro_security.token_accessor')->getOrganization();
 
         $templatesQueryBuilder = $this
             ->getDoctrine()

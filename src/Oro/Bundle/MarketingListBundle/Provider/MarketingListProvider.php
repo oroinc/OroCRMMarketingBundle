@@ -168,7 +168,7 @@ class MarketingListProvider
             $gridParameters = [
                 PagerInterface::PAGER_ROOT_PARAM => [PagerInterface::DISABLED_PARAM => true],
                 /**
-                 * Disable tags extension because of problems with SecurityFacade::isGranted
+                 * Disable tags extension because of problems with AuthorizationCheckerInterface::isGranted
                  * calls during console command running
                  */
                 TagsExtension::TAGS_ROOT_PARAM => [TagsExtension::DISABLED_PARAM => true]
