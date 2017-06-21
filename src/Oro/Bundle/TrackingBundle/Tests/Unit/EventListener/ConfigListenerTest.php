@@ -4,6 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\TrackingBundle\EventListener\ConfigListener;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Routing\RequestContext;
 
 class ConfigListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -89,7 +90,7 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $event->expects($this->exactly(4))
+        $event->expects($this->exactly(5))
             ->method('isChanged')
             ->will(
                 $this->returnValueMap(
@@ -113,7 +114,7 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->configManager->expects($this->exactly(2))
+        $this->configManager->expects($this->exactly(3))
             ->method('get')
             ->will(
                 $this->returnValueMap(
@@ -141,19 +142,30 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
             'log_rotate_interval' => 5,
             'piwik_host' => 'http://test.com',
             'piwik_token_auth' => 'TEST_DEFAULT',
-            'dynamic_tracking_endpoint' => null
+            'dynamic_tracking_endpoint' => null,
+            'dynamic_tracking_base_url' => null
         );
         $actualSettings = unserialize(file_get_contents($this->settingsFile));
         $this->assertEquals($expectedSettings, $actualSettings);
     }
 
-    public function testOnUpdateAfterDynamic()
+    /**
+     * @param RequestContext    $requestContext
+     * @param mixed[]           $expectedSettings
+     *
+     * @dataProvider dynamicConfigProvider
+     */
+    public function testOnUpdateAfterDynamic(RequestContext $requestContext, array $expectedSettings)
     {
+        $this->router->expects($this->any())
+             ->method('getContext')
+             ->willReturn($requestContext);
+
         $event = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $event->expects($this->exactly(4))
+        $event->expects($this->exactly(5))
             ->method('isChanged')
             ->will(
                 $this->returnValueMap(
@@ -176,26 +188,56 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->configManager->expects($this->exactly(3))
+        $this->configManager->expects($this->exactly(4))
             ->method('get')
             ->will($this->returnValue('default'));
 
         $this->router->expects($this->once())
             ->method('generate')
             ->with('oro_tracking_data_create')
-            ->will($this->returnValue('/test/url'));
+            ->will($this->returnCallback(function () {
+                if (empty($this->router->getContext()->getBaseUrl())) {
+                    return '/test/url';
+                }
+
+                return sprintf('/%s%s', $this->router->getContext()->getBaseUrl(), '/test/url');
+            }));
 
         $this->listener->onUpdateAfter($event);
         $this->assertFileExists($this->settingsFile);
 
-        $expectedSettings = array(
-            'dynamic_tracking_enabled' => true,
-            'log_rotate_interval' => 'default',
-            'piwik_host' => 'default',
-            'piwik_token_auth' => 'default',
-            'dynamic_tracking_endpoint' => '/test/url'
-        );
         $actualSettings = unserialize(file_get_contents($this->settingsFile));
         $this->assertEquals($expectedSettings, $actualSettings);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function dynamicConfigProvider()
+    {
+        return [
+            [
+                new RequestContext(),
+                [
+                    'dynamic_tracking_enabled' => true,
+                    'log_rotate_interval' => 'default',
+                    'piwik_host' => 'default',
+                    'piwik_token_auth' => 'default',
+                    'dynamic_tracking_endpoint' => '/test/url',
+                    'dynamic_tracking_base_url' => null
+                ]
+            ],
+            [
+                new RequestContext('app.php'),
+                [
+                    'dynamic_tracking_enabled' => true,
+                    'log_rotate_interval' => 'default',
+                    'piwik_host' => 'default',
+                    'piwik_token_auth' => 'default',
+                    'dynamic_tracking_endpoint' => '/app.php/test/url',
+                    'dynamic_tracking_base_url' => 'app.php'
+                ]
+            ]
+        ];
     }
 }
