@@ -16,6 +16,7 @@ $settingsFile   = $trackingFolder . DIRECTORY_SEPARATOR . 'settings.ser';
 $settings       = [
     'dynamic_tracking_enabled'  => false,
     'dynamic_tracking_endpoint' => '/tracking/data/create',
+    'dynamic_tracking_base_url' => null,
     'log_rotate_interval'       => 60,
     'piwik_host'                => null,
     'piwik_token_auth'          => null
@@ -124,6 +125,9 @@ if (is_dir($trackingFolder)) {
 
 // Track visit
 if ($settings['dynamic_tracking_enabled']) {
+    if (!empty($settings['dynamic_tracking_base_url'])) {
+        $_SERVER['SCRIPT_FILENAME'] = $settings['dynamic_tracking_base_url'];
+    }
     // Pass visit to dynamic tracking endpoint
     passDataToApplication($settings['dynamic_tracking_endpoint']);
 } else {
