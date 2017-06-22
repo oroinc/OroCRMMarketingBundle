@@ -23,6 +23,7 @@ class ConfigListener
      */
     protected $keys = array(
         'dynamic_tracking_enabled',
+        'dynamic_tracking_base_url',
         'log_rotate_interval',
         'piwik_host',
         'piwik_token_auth'
@@ -90,9 +91,13 @@ class ConfigListener
         }
 
         if (!empty($configuration['dynamic_tracking_enabled'])) {
+            /** This fix remove app.php or other entry point from url if they are present. @see CRM-8338 */
+            $baseUrl = $this->router->getContext()->getBaseUrl();
             $configuration['dynamic_tracking_endpoint'] = $this->router->generate($this->dynamicTrackingRouteName);
+            $configuration['dynamic_tracking_base_url'] = $baseUrl;
         } else {
             $configuration['dynamic_tracking_endpoint'] = null;
+            $configuration['dynamic_tracking_base_url'] = null;
         }
 
         $trackingDir = $this->logsDir . DIRECTORY_SEPARATOR . 'tracking';
