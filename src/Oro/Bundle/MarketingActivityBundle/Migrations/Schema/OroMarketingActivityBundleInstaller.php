@@ -10,7 +10,7 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MarketingActivityBundle\Migrations\Schema\v1_0;
 
-class OroMarketingActivityInstaller implements Installation, ExtendExtensionAwareInterface
+class OroMarketingActivityBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
     /**
      * @var ExtendExtension

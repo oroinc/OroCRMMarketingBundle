@@ -4,7 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\TrackingBundle\DependencyInjection\OroTrackingExtension;
 
-class OroBundleTrackingExtensionTest extends \PHPUnit_Framework_TestCase
+class OroTrackingExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var OroTrackingExtension
