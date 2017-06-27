@@ -38,7 +38,7 @@ class MarketingListExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isApplicable(DatagridConfiguration $config)
     {
@@ -59,8 +59,19 @@ class MarketingListExtension extends AbstractExtension
 
         $marketingList = $this->marketingListHelper->getMarketingList($marketingListId);
 
+        if (!$marketingList || $marketingList->isManual()) {
+            return false;
+        }
+
+        $definition = json_decode($marketingList->getDefinition(), true);
+
+        // We should skip the configuration if it do not contain at least one filter
+        if (empty($definition['filters'])) {
+            return false;
+        }
+
         // Accept only segment based marketing lists
-        return $marketingList && !$marketingList->isManual();
+        return true;
     }
 
     /**
@@ -73,7 +84,7 @@ class MarketingListExtension extends AbstractExtension
         }
 
         /** @var OrmDatasource $datasource */
-        $qb       = $datasource->getQueryBuilder();
+        $qb = $datasource->getQueryBuilder();
         $dqlParts = $qb->getDQLParts();
 
         if (empty($dqlParts['where'])) {
