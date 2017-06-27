@@ -63,7 +63,7 @@ class EmailTransport implements TransportInterface
 
         /** @var EmailTemplate $template */
         $template = $campaign->getTransportSettings()->getSettingsBag()->get('template');
-        list ($subjectRendered, $templateRendered) = $this->emailRenderer->compileMessage(
+        list($subjectRendered, $templateRendered) = $this->emailRenderer->compileMessage(
             $template,
             ['entity' => $entity]
         );

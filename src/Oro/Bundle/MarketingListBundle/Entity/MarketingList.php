@@ -288,7 +288,7 @@ class MarketingList extends ExtendMarketingList
      * @param Segment $segment
      * @return MarketingList
      */
-    public function setSegment($segment)
+    public function setSegment(Segment $segment = null)
     {
         $this->segment = $segment;
 

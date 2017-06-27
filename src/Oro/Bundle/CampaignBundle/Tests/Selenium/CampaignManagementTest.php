@@ -97,7 +97,6 @@ class CampaignManagementTest extends Selenium2TestCase
      */
     public function testCreateCompanySales($leadName)
     {
-
         $login = $this->login();
         /** @var SalesFunnels $login */
         $login->openSalesFunnels('Oro\Bundle\SalesBundle')

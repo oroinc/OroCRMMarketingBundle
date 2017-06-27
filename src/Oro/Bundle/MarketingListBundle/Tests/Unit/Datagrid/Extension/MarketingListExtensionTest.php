@@ -4,39 +4,35 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid\Extension;
 
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
+
+use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var MarketingListExtension
-     */
+    /** @var MarketingListExtension */
     protected $extension;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|MarketingListHelper */
     protected $marketingListHelper;
 
     protected function setUp()
     {
-        $this->marketingListHelper = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\MarketingListHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->marketingListHelper = $this->createMock(MarketingListHelper::class);
 
         $this->extension = new MarketingListExtension($this->marketingListHelper);
     }
 
     public function testIsApplicableIncorrectDataSource()
     {
-        $config = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        /** @var \PHPUnit_Framework_MockObject_MockObject|DatagridConfiguration $config */
+        $config = $this->createMock(DatagridConfiguration::class);
         $config
             ->expects($this->once())
             ->method('isOrmDatasource')
@@ -52,11 +48,8 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsApplicableVisitTwice()
     {
-        $config = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        /** @var \PHPUnit_Framework_MockObject_MockObject|DatagridConfiguration $config */
+        $config = $this->createMock(DatagridConfiguration::class);
         $config
             ->expects($this->atLeastOnce())
             ->method('isOrmDatasource')
@@ -72,18 +65,20 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             ->with(ConfigurationProvider::GRID_PREFIX . '1')
             ->will($this->returnValue(1));
 
+        $marketingList = new MarketingList();
+        $marketingList->setSegment(new Segment())->setDefinition(json_encode(['filters' => ['filter' => 'dummy']]));
+
         $this->marketingListHelper->expects($this->any())
             ->method('getMarketingList')
             ->with(1)
-            ->will($this->returnValue(new MarketingList()));
+            ->willReturn($marketingList);
 
         $this->assertTrue($this->extension->isApplicable($config));
 
-        $qb         = $this->getQbMock();
-        $dataSource = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $qb = $this->getQbMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
+        $dataSource = $this->createMock(OrmDatasource::class);
 
         $condition = new Andx();
         $condition->add('argument');
@@ -122,53 +117,62 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function applicableDataProvider()
     {
-        $nonManualMarketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $nonManualMarketingList = $this->createMock(MarketingList::class);
         $nonManualMarketingList->expects($this->once())
             ->method('isManual')
             ->will($this->returnValue(false));
+        $nonManualMarketingList->expects($this->once())
+            ->method('getDefinition')
+            ->willReturn(json_encode(['filters' => ['filter' => 'dummy']]));
 
-        $manualMarketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manualMarketingList = $this->createMock(MarketingList::class);
         $manualMarketingList->expects($this->once())
             ->method('isManual')
             ->will($this->returnValue(true));
+        $manualMarketingList->expects($this->never())
+            ->method('getDefinition');
+
+        $nonManualMarketingListWithoutFilters = $this->createMock(MarketingList::class);
+        $nonManualMarketingListWithoutFilters->expects($this->once())
+            ->method('isManual')
+            ->will($this->returnValue(false));
+        $nonManualMarketingListWithoutFilters->expects($this->once())
+            ->method('getDefinition')->willReturn(json_encode(['filters' => []]));
 
         return [
             [null, null, false],
             [1, null, false],
             [2, $manualMarketingList, false],
-            [3, $nonManualMarketingList, true]
+            [3, $nonManualMarketingList, true],
+            [4, $nonManualMarketingListWithoutFilters, false],
         ];
     }
 
     /**
      * @param array $dqlParts
      * @param bool  $expected
-     * @param       bool false
+     * @param bool
      *
      * @dataProvider dataSourceDataProvider
      */
     public function testVisitDatasource($dqlParts, $expected, $isObject = false)
     {
         $marketingListId        = 1;
-        $nonManualMarketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $nonManualMarketingList = $this->createMock(MarketingList::class);
 
         $nonManualMarketingList->expects($this->once())
             ->method('isManual')
             ->will($this->returnValue(false));
 
+        $nonManualMarketingList->expects($this->once())->method('getDefinition')->willReturn(
+            json_encode(['filters' => ['filter' => 'dummy']])
+        );
+
         $gridName = 'test_grid';
         $config   = $this->assertIsApplicable($marketingListId, $nonManualMarketingList, $gridName);
 
-        $dataSource = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource')
-            ->disableOriginalConstructor()
-            ->getMock();
+        /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
+        $dataSource = $this->createMock(OrmDatasource::class);
 
         $qb = $this->getQbMock();
 
@@ -222,15 +226,11 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
      * @param object|null $marketingList
      * @param string      $gridName
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject|DatagridConfiguration
      */
     protected function assertIsApplicable($marketingListId, $marketingList, $gridName)
     {
-        $config = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $config = $this->createMock(DatagridConfiguration::class);
         $config
             ->expects($this->atLeastOnce())
             ->method('isOrmDatasource')
@@ -259,7 +259,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject|QueryBuilder
      */
     protected function getQbMock()
     {

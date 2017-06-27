@@ -56,7 +56,7 @@ class MarketingListItem
     protected $lastContactedAt;
 
     /**
-     * @var \Datetime
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
@@ -109,10 +109,10 @@ class MarketingListItem
     }
 
     /**
-     * @param \Datetime $createdAt
+     * @param \DateTime $createdAt
      * @return MarketingListItem
      */
-    public function setCreatedAt(\Datetime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -120,7 +120,7 @@ class MarketingListItem
     }
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
