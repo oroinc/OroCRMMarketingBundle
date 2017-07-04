@@ -24,11 +24,7 @@ Oro\Bundle\CampaignBundle\Entity\Campaign:
         budget:
             - Range:
                 min: 0
-        owner:
-            - NotBlank: ~
         reportPeriod:
-            - NotBlank: ~
-        organization:
             - NotBlank: ~
 
 Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
