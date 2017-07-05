@@ -28,7 +28,7 @@ oro:
             description: |
                 This is the time scale of the recorded events graph.
                 In case when items amount is more than 40 it will be
-                increased to larger scale
+                increased to larger scale.
         controller:
             campaign.saved.message:  "Campaign saved"
         menu:

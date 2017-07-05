@@ -114,23 +114,31 @@ The list of records to be deleted can be limited by filters.
 ### reportPeriod
 
 #### get, create, update
+
 {@inheritdoc}
-It supports the next values: `day`, `hour`, `month`.
+
+The supported values are `day`, `hour`, `month`.
 
 #### get_list, create_list, update_list
+
 {@inheritdoc}
-It supports the next values: `day`, `hour`, `month`.
+
+The supported values are `day`, `hour`, `month`.
 
 ### budget
+
 Budget of Marketing Campaign. Minimal value is 0.
 
 ### description
+
 Description of Marketing Campaign.
 
 ### startDate
+
 Campaign starts from this date.
 
 ### endDate
+
 Campaign finishes on this date.
 
 ## SUBRESOURCES
@@ -147,6 +155,7 @@ Retrieve the ID of the user who is the owner of a specific campaign record.
 
 #### update_relationship
 
+Replace the owner of a specific campaign record.
 
 {@request:json_api}
 Example:
