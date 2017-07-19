@@ -59,7 +59,7 @@ class MarketingListProvider
         $dataGrid = $this->getMarketingListDataGrid($marketingList, $mixin);
 
         /** @var OrmDatasource $dataSource */
-        $dataSource = $dataGrid->getAcceptedDatasource();
+        $dataSource = $dataGrid->getDatasource();
         $qb =  $dataSource->getQueryBuilder();
         $this->saveColumnInformation($marketingList, $dataGrid, $qb);
 
@@ -176,7 +176,12 @@ class MarketingListProvider
             if ($mixin) {
                 $gridParameters['grid-mixin'] = $mixin;
             }
-            $this->dataGrid[$resultKey] = $this->dataGridManager->getDatagrid($dataGridName, $gridParameters);
+            $datagrid = $this->dataGridManager->getDatagrid($dataGridName, $gridParameters);
+            /**
+             * Apply accepted extension to datasource ( prepare datagrid to caching )
+             */
+            $datagrid->getAcceptedDatasource();
+            $this->dataGrid[$resultKey] = $datagrid;
         }
 
         return $this->dataGrid[$resultKey];
