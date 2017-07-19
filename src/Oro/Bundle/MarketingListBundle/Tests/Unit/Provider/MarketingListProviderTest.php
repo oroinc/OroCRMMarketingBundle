@@ -216,6 +216,9 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
         $dataGrid->expects($this->once())
             ->method('getAcceptedDatasource')
             ->will($this->returnValue($dataSource));
+        $dataGrid->expects($this->any())
+            ->method('getDatasource')
+            ->will($this->returnValue($dataSource));
 
         $parameters = [
             PagerInterface::PAGER_ROOT_PARAM => [PagerInterface::DISABLED_PARAM => true],
