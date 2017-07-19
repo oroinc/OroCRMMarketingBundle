@@ -9,5 +9,9 @@ oro_behat_extension:
         - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
         - OroQueryDesignerBundle::QueryDesignerContext
         - OroFormBundle::FormContext
+        - OroDataGridBundle::GridContext
+        - OroNavigationBundle::FeatureContext
+        - OroMarketingListBundle::MarketingListContext
+        - OroMarketingListBundle::MarketingListFeatureToggleContext
       paths:
         - '@OroMarketingListBundle/Tests/Behat/Features'
