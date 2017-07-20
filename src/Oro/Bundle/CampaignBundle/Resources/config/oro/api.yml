@@ -1,0 +1,9 @@
+api:
+    entities:
+        Oro\Bundle\CampaignBundle\Entity\Campaign:
+            documentation_resource: '@OroCampaignBundle/Resources/doc/api/campaign.md'
+            fields:
+              combinedName:
+                  exclude: true
+              reportRefreshDate:
+                  exclude: true
