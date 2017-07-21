@@ -214,7 +214,10 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getQueryBuilder')
             ->will($this->returnValue($queryBuilder));
         $dataGrid->expects($this->once())
-            ->method('getAcceptedDatasource')
+            ->method('acceptDatasource')
+            ->will($this->returnValue($dataSource));
+        $dataGrid->expects($this->any())
+            ->method('getDatasource')
             ->will($this->returnValue($dataSource));
 
         $parameters = [
