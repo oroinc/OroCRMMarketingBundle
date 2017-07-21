@@ -2,6 +2,9 @@ oro_behat_extension:
   elements:
     Available contact information fields:
       selector: "div[id='contact-information-fields-list']"
+    Channel entities:
+      selector: '[data-name="field__entities"]'
+      class: Oro\Bundle\FormBundle\Tests\Behat\Element\Select2Entity
 
   suites:
     OroMarketingListBundle:
@@ -13,5 +16,6 @@ oro_behat_extension:
         - OroNavigationBundle::FeatureContext
         - OroMarketingListBundle::MarketingListContext
         - OroMarketingListBundle::MarketingListFeatureToggleContext
+        - OroSalesBundle::FeatureContext
       paths:
         - '@OroMarketingListBundle/Tests/Behat/Features'
