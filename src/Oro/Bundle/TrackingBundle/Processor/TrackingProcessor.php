@@ -246,9 +246,7 @@ class TrackingProcessor implements LoggerAwareInterface
             ->andWhere('entity.parsingCount < :maxRetries')
             ->setParameter('maxRetries', $this->getMaxRetriesCount());
 
-        if (count($this->skipList)) {
-            $queryBuilder->andWhere('entity.id not in(' . implode(',', $this->skipList) . ')');
-        }
+        $this->applySkipList($queryBuilder);
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -269,9 +267,7 @@ class TrackingProcessor implements LoggerAwareInterface
             ->andWhere('entity.parsingCount < :maxRetries')
             ->setParameter('maxRetries', $this->getMaxRetriesCount());
 
-        if (count($this->skipList)) {
-            $queryBuilder->andWhere('entity.id not in(' . implode(',', $this->skipList) . ')');
-        }
+        $this->applySkipList($queryBuilder);
 
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -293,9 +289,7 @@ class TrackingProcessor implements LoggerAwareInterface
             ->setParameter('maxRetries', $this->getMaxRetriesCount())
             ->setMaxResults($this->getBatchSize());
 
-        if (count($this->skipList)) {
-            $queryBuilder->andWhere('entity.id not in(' . implode(',', $this->skipList) . ')');
-        }
+        $this->applySkipList($queryBuilder);
 
         /** @var TrackingVisitEvent[] $entities */
         $entities = $queryBuilder->getQuery()->getResult();
@@ -340,9 +334,7 @@ class TrackingProcessor implements LoggerAwareInterface
             ->setParameter('maxRetries', $this->getMaxRetriesCount())
             ->setMaxResults($this->getBatchSize());
 
-        if (count($this->skipList)) {
-            $queryBuilder->andWhere('entity.id not in(' . implode(',', $this->skipList) . ')');
-        }
+        $this->applySkipList($queryBuilder);
 
         $entities = $queryBuilder->getQuery()->getResult();
         if ($entities) {
@@ -427,7 +419,8 @@ class TrackingProcessor implements LoggerAwareInterface
                     $this->getEntityManager()->createQueryBuilder()
                         ->update(self::TRACKING_VISIT_EVENT_ENTITY, 'event')
                         ->set('event.' . $associationName, ':identifier')
-                        ->where('event.visit in(' . implode(',', $subSelect) . ')')
+                        ->where('event.visit in (:visitIds)')
+                        ->setParameter('visitIds', $subSelect)
                         ->setParameter('identifier', $identifier)
                         ->getQuery()
                         ->execute();
@@ -747,5 +740,18 @@ class TrackingProcessor implements LoggerAwareInterface
     protected function getCurrentUtcDateTime()
     {
         return new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Applies skipped items to query as filter
+     *
+     * @param $queryBuilder
+     */
+    protected function applySkipList(QueryBuilder $queryBuilder)
+    {
+        if (count($this->skipList)) {
+            $queryBuilder->andWhere('entity.id not in (:skipList)');
+            $queryBuilder->setParameter('skipList', $this->skipList);
+        }
     }
 }
