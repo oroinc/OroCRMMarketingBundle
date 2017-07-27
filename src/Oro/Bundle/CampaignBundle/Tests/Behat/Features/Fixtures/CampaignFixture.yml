@@ -1,0 +1,10 @@
+parameters:
+    campaing1_name: 'Campaign 1'
+
+Oro\Bundle\CampaignBundle\Entity\Campaign:
+    campaing1:
+        name: '<{campaing1_name}>'
+        code: '1234567890'
+        reportPeriod: 'month'
+        owner: '@admin'
+        organization: '@organization'
