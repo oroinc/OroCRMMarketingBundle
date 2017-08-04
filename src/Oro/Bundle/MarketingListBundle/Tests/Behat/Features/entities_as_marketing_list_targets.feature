@@ -3,13 +3,19 @@ Feature: System entities should be available as ML targets
   As administrator
   I need to be able to create marketing list based on system entities
 
-  Scenario: Enable Business Customer entity
+  Scenario: Enable entities
     Given I login as administrator
     And I go to System/ Channels
     And I press "Create Channel"
     And I fill form with:
       | Name         | Sales Channel |
       | Channel Type | Sales         |
+    And I select "Magento Customer" from "Channel entities" field
+    And click "Add"
+    And I select "Magento Shopping Cart" from "Channel entities" field
+    And click "Add"
+    And I select "Magento Newsletter Subscriber" from "Channel entities" field
+    And click "Add"
     And I save and close form
 
   Scenario Outline: Successful creating marketing list based on system entities
@@ -26,12 +32,15 @@ Feature: System entities should be available as ML targets
     Then I should see "Marketing list saved" flash message
 
     Examples:
-      | Marketing List Name | Entity Name       |
-      | Account             | Account           |
-      | Order               | Order             |
-      | Quote               | Quote             |
-      | Shopping List       | Shopping List     |
-      | Customer User       | Customer User     |
-      | Contact             | Contact           |
-      | Lead                | Lead              |
-      | Business Customer   | Business Customer |
+      | Marketing List Name           | Entity Name                   |
+      | Account                       | Account                       |
+      | Order                         | Order                         |
+      | Quote                         | Quote                         |
+      | Shopping List                 | Shopping List                 |
+      | Customer User                 | Customer User                 |
+      | Contact                       | Contact                       |
+      | Lead                          | Lead                          |
+      | Business Customer             | Business Customer             |
+      | Magento Customer              | Magento Customer              |
+      | Magento Shopping Cart         | Magento Shopping Cart         |
+      | Magento Newsletter Subscriber | Magento Newsletter Subscriber |
