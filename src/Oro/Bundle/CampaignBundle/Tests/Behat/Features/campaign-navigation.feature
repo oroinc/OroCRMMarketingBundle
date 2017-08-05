@@ -1,3 +1,4 @@
+@regression
 @ticket-CRM-8143
 @fixture-OroCampaignBundle:CampaignFixture.yml
 
