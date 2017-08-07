@@ -1,3 +1,4 @@
+@regression
 @ticket-CRM-8143
 
 Feature: Marketing List Navigation Items
