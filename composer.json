@@ -1,7 +1,7 @@
 {
     "name": "oro/marketing",
     "description": "Oro Marketing Bundles",
-    "homepage": "https://github.com/orocrm/OroCRMMarketingBundle.git",
+    "homepage": "https://github.com/oroinc/OroCRMMarketingBundle.git",
     "keywords": ["Oro", "Marketing", "Campaign", "Tracking"],
     "license": "OSL-3.0",
     "authors": [
