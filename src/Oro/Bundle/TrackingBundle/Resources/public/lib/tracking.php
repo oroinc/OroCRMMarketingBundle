@@ -147,6 +147,8 @@ if ($settings['dynamic_tracking_enabled']) {
     // Add visit to log to file
     $rawData             = $_GET;
     $rawData['loggedAt'] = getLoggedAt();
+    $rawData['cip']      = getClientIp();
+    $rawData['ua']       = $_SERVER['HTTP_USER_AGENT'];
     $data                = json_encode($rawData) . PHP_EOL;
     $fh                  = fopen($trackingFolder . DIRECTORY_SEPARATOR . $fileName, 'a');
     if (flock($fh, LOCK_EX)) {
