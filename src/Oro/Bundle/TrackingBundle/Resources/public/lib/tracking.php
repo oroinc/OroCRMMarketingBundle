@@ -37,6 +37,14 @@ function passDataToUrl($url)
     curl_close($handle);
 }
 
+/** @param array */
+function fillTrackingData(array &$data)
+{
+    $data['loggedAt'] = getLoggedAt();
+    $data['cip']      = getClientIp();
+    $data['ua']       = $_SERVER['HTTP_USER_AGENT'];
+}
+
 /**
  * @param string $url
  *
@@ -89,9 +97,7 @@ function passDataToApplication($url)
 {
     $_SERVER['REQUEST_URI'] = modifyUrl($url);
 
-    $_GET['loggedAt'] = getLoggedAt();
-    $_GET['cip']      = getClientIp();
-    $_GET['ua']       = $_SERVER['HTTP_USER_AGENT'];
+    fillTrackingData($_GET);
 
     require_once __DIR__ . '/../app/bootstrap.php.cache';
     require_once __DIR__ . '/../app/AppKernel.php';
@@ -145,9 +151,8 @@ if ($settings['dynamic_tracking_enabled']) {
     $fileName = $date->format('Ymd-H') . '-' . $rotateInterval . '-' . $currentPart . '.log';
 
     // Add visit to log to file
-    $rawData             = $_GET;
-    $rawData['loggedAt'] = getLoggedAt();
-    $data                = json_encode($rawData) . PHP_EOL;
+    fillTrackingData($_GET);
+    $data                = json_encode($_GET) . PHP_EOL;
     $fh                  = fopen($trackingFolder . DIRECTORY_SEPARATOR . $fileName, 'a');
     if (flock($fh, LOCK_EX)) {
         fwrite($fh, $data);
