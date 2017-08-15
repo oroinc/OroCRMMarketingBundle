@@ -18,7 +18,8 @@ class MarketingActivitiesSectionFilterHelper
                 return !empty($value);
             });
             if (!empty($values)) {
-                $queryBuilder->andWhere($queryBuilder->expr()->in('campaign.id', implode(',', $values)));
+                $queryBuilder->andWhere($queryBuilder->expr()->in('campaign.id', ':campaignsIds'))
+                    ->setParameter('campaignsIds', $values);
             }
         }
     }
