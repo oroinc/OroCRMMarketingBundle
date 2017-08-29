@@ -1,0 +1,11 @@
+oro_behat_extension:
+  suites:
+    OroTrackingBundle:
+      contexts:
+        - OroTrackingBundle::TrackingMainContext
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroFormBundle::FormContext
+        - OroConfigBundle::FeatureContext
+        - OroDataGridBundle::GridContext
+      paths:
+        - '@OroTrackingBundle/Tests/Behat/Features'
