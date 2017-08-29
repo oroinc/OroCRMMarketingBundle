@@ -12,6 +12,5 @@ oro_behat_extension:
         - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
         - OroQueryDesignerBundle::QueryDesignerContext
         - OroFormBundle::FormContext
-        - OroSalesBundle::FeatureContext
       paths:
         - '@OroMarketingListBundle/Tests/Behat/Features'

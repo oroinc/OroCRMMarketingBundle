@@ -10,11 +10,11 @@ Feature: System entities should be available as ML targets
     And I fill form with:
       | Name         | Sales Channel |
       | Channel Type | Sales         |
-    And I select "Magento Customer" from "Channel entities" field
+    And I fill in "Channel entities" with "Magento Customer"
     And click "Add"
-    And I select "Magento Shopping Cart" from "Channel entities" field
+    And I fill in "Channel entities" with "Magento Shopping Cart"
     And click "Add"
-    And I select "Magento Newsletter Subscriber" from "Channel entities" field
+    And I fill in "Channel entities" with "Magento Newsletter Subscriber"
     And click "Add"
     And I save and close form
 
