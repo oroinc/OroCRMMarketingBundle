@@ -255,4 +255,13 @@ class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 
         return $configuration;
     }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Marketing List id not found in "oro_segment_grid_" gridName.
+     */
+    public function testDoNotProcessInvalidSegmentGridName()
+    {
+        $this->provider->getConfiguration(Segment::GRID_PREFIX);
+    }
 }

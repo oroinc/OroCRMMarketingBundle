@@ -68,8 +68,14 @@ class ConfigurationProvider implements ConfigurationProviderInterface
      */
     public function getConfiguration($gridName)
     {
+        $marketingListId = $this->helper->getMarketingListIdByGridName($gridName);
+        if (!$marketingListId) {
+            throw new \RuntimeException(
+                sprintf('Marketing List id not found in "%s" gridName.', $gridName)
+            );
+        }
+
         if (empty($this->configuration[$gridName])) {
-            $marketingListId = $this->helper->getMarketingListIdByGridName($gridName);
             $marketingList = $this->helper->getMarketingList($marketingListId);
             if (!$marketingList) {
                 throw new \RuntimeException(
