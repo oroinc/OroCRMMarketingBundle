@@ -25,9 +25,9 @@ class MarketingListExtension extends AbstractExtension
     protected $marketingListHelper;
 
     /**
-     * @var string[]
+     * @var bool[]
      */
-    protected $appliedFor;
+    protected $applicable = [];
 
     /**
      * @param MarketingListHelper $marketingListHelper
@@ -44,16 +44,19 @@ class MarketingListExtension extends AbstractExtension
     {
         $gridName = $config->getName();
 
-        if (!empty($this->appliedFor[$gridName])) {
-            return false;
+        $cacheKey = $this->getCacheKey($config);
+        if (array_key_exists($cacheKey, $this->applicable)) {
+            return $this->applicable[$cacheKey];
         }
 
         if (!$config->isOrmDatasource()) {
+            $this->applicable[$cacheKey] = false;
             return false;
         }
 
         $marketingListId = $this->marketingListHelper->getMarketingListIdByGridName($gridName);
         if (!$marketingListId) {
+            $this->applicable[$cacheKey] = false;
             return false;
         }
 
@@ -113,7 +116,8 @@ class MarketingListExtension extends AbstractExtension
             );
         }
 
-        $this->appliedFor[$gridName] = true;
+        $cacheKey = $this->getCacheKey($config);
+        $this->applicable[$cacheKey] = false;
     }
 
     /**
@@ -140,5 +144,14 @@ class MarketingListExtension extends AbstractExtension
             ->andWhere('item.marketingList = :marketingListId');
 
         return $itemsQb->expr()->in($qb->getRootAliases()[0], $itemsQb->getDQL());
+    }
+
+    /**
+     * @param DatagridConfiguration $config
+     * @return string
+     */
+    private function getCacheKey(DatagridConfiguration $config): string
+    {
+        return md5(json_encode($config->toArray()));
     }
 }
