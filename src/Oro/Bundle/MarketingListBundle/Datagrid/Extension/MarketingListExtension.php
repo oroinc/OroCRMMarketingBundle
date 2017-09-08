@@ -30,6 +30,12 @@ class MarketingListExtension extends AbstractExtension
     protected $applicable = [];
 
     /**
+     * @var array
+     * @deprecated
+     */
+    protected $appliedFor = [];
+
+    /**
      * @param MarketingListHelper $marketingListHelper
      */
     public function __construct(MarketingListHelper $marketingListHelper)
