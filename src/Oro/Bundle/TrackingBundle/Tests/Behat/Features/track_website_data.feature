@@ -31,7 +31,7 @@ Feature: Track website data
 
   Scenario: Enable dynamic tracking
     Given go to System/ Configuration
-    And I follow "System configuration/General setup/Tracking" on configuration sidebar
+    And I follow "System Configuration/General Setup/Tracking" on configuration sidebar
     And uncheck "Use default" for "Enable dynamic tracking" field
     And I check "Enable dynamic tracking"
     When I save form
