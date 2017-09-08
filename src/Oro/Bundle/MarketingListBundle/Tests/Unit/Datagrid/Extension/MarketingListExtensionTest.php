@@ -352,6 +352,5 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->extension->isApplicable($config));
         $this->assertFalse($this->extension->isApplicable($config));
         $this->assertFalse($this->extension->isApplicable($configChanged));
-
     }
 }
