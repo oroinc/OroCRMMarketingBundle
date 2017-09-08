@@ -150,7 +150,7 @@ class MarketingListExtension extends AbstractExtension
      * @param DatagridConfiguration $config
      * @return string
      */
-    private function getCacheKey(DatagridConfiguration $config): string
+    private function getCacheKey(DatagridConfiguration $config)
     {
         return md5(json_encode($config->toArray()));
     }
