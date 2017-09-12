@@ -2,20 +2,26 @@
 
 namespace Oro\Bundle\MarketingListBundle\Datagrid\Extension;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Func;
 
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use Oro\Component\DoctrineUtils\ORM\HookUnionTrait;
+use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
 /**
  * For segment based marketing lists show not only segment results but also already contacted entities.
  */
 class MarketingListExtension extends AbstractExtension
 {
+    use HookUnionTrait;
+
     /** @deprecated since 1.10. Use config->getName() instead */
     const NAME_PATH = '[name]';
 
@@ -34,6 +40,11 @@ class MarketingListExtension extends AbstractExtension
      * @deprecated
      */
     protected $appliedFor = [];
+
+    /**
+     * @var int
+     */
+    protected $marketingListId;
 
     /**
      * @param MarketingListHelper $marketingListHelper
@@ -60,13 +71,14 @@ class MarketingListExtension extends AbstractExtension
             return false;
         }
 
-        $marketingListId = $this->marketingListHelper->getMarketingListIdByGridName($gridName);
-        if (!$marketingListId) {
+        $this->marketingListId = $this->marketingListHelper->getMarketingListIdByGridName($gridName);
+        if (!$this->marketingListId) {
             $this->applicable[$cacheKey] = false;
+
             return false;
         }
 
-        $marketingList = $this->marketingListHelper->getMarketingList($marketingListId);
+        $marketingList = $this->marketingListHelper->getMarketingList($this->marketingListId);
 
         if (!$marketingList || $marketingList->isManual()) {
             $this->applicable[$cacheKey] = false;
@@ -110,29 +122,24 @@ class MarketingListExtension extends AbstractExtension
             return;
         }
 
+        $entityManager    = $qb->getEntityManager();
+        $itemsQuery       = $this->createItemsQuery($entityManager);
+        $uniqueIdentifier = QueryBuilderUtil::generateParameterName(HookUnionTrait::$walkerHookUnionKey);
+        $walkerHook = " AND '$uniqueIdentifier' = '$uniqueIdentifier'";
+
+        $configuration = $entityManager->getConfiguration();
+        $configuration->setDefaultQueryHint(HookUnionTrait::$walkerHookUnionKey, $walkerHook);
+        $configuration->setDefaultQueryHint(HookUnionTrait::$walkerHookUnionValue, $itemsQuery);
+
         $qb->resetDQLPart('where');
 
-        $addParameter = false;
+        /** @var string|Func $part */
         foreach ($parts as $part) {
             if (!is_string($part)) {
-                $part = $qb->expr()->orX(
-                    $part,
-                    $this->createItemsExpr($qb)
-                );
-
-                $addParameter = true;
+                $part = new Func($part->getName(), $part->getArguments()[0].$walkerHook);
             }
 
             $qb->andWhere($part);
-        }
-
-        $gridName = $config->getName();
-
-        if ($addParameter) {
-            $qb->setParameter(
-                'marketingListId',
-                $this->marketingListHelper->getMarketingListIdByGridName($gridName)
-            );
         }
 
         $cacheKey = $this->getCacheKey($config);
@@ -148,28 +155,26 @@ class MarketingListExtension extends AbstractExtension
     }
 
     /**
-     * @param QueryBuilder $qb
+     * @param EntityManagerInterface $entityManager
      *
-     * @return mixed
+     * @return string
      */
-    protected function createItemsExpr(QueryBuilder $qb)
+    protected function createItemsQuery(EntityManagerInterface $entityManager)
     {
-        $itemsQb = clone $qb;
-        $itemsQb->resetDQLParts();
-
+        $itemsQb = $entityManager->createQueryBuilder();
         $itemsQb
             ->select('item.entityId')
             ->from('OroMarketingListBundle:MarketingListItem', 'item')
-            ->andWhere('item.marketingList = :marketingListId');
+            ->where($itemsQb->expr()->eq('item.marketingList', $this->marketingListId));
 
-        return $itemsQb->expr()->in($qb->getRootAliases()[0], $itemsQb->getDQL());
+        return $itemsQb->getQuery()->getSQL();
     }
 
     /**
      * @param DatagridConfiguration $config
      * @return string
      */
-    private function getCacheKey(DatagridConfiguration $config): string
+    private function getCacheKey(DatagridConfiguration $config)
     {
         return md5(json_encode($config->toArray()));
     }
