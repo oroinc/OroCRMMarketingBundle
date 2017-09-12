@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid\Extension;
 
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
-
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -13,6 +16,7 @@ use Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Component\DoctrineUtils\ORM\HookUnionTrait;
 
 class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,6 +25,12 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
     /** @var \PHPUnit_Framework_MockObject_MockObject|MarketingListHelper */
     protected $marketingListHelper;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject|EntityManager */
+    protected $em;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject|Configuration */
+    protected $emConfiguration;
 
     protected function setUp()
     {
@@ -151,11 +161,10 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $dqlParts
      * @param bool  $expected
-     * @param bool
      *
      * @dataProvider dataSourceDataProvider
      */
-    public function testVisitDatasource($dqlParts, $expected, $isObject = false)
+    public function testVisitDatasource($dqlParts, $expected)
     {
         $marketingListId        = 1;
         $nonManualMarketingList = $this->createMock(MarketingList::class);
@@ -181,15 +190,9 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             $where = $dqlParts['where'];
             $parts = $where->getParts();
 
-            if ($expected && !$isObject) {
-                $qb
-                    ->expects($this->exactly(count($parts)))
-                    ->method('andWhere');
-            } elseif ($expected && $isObject) {
-                $qb
-                    ->expects(static::any())
-                    ->method('andWhere');
-            }
+            $qb
+                ->expects($this->exactly(count($parts)))
+                ->method('andWhere');
 
             $functionParts = array_filter(
                 $parts,
@@ -199,10 +202,13 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             );
 
             if ($functionParts && $expected) {
-                $qb
-                    ->expects($this->once())
-                    ->method('setParameter')
-                    ->with($this->equalTo('marketingListId'), $this->equalTo($marketingListId));
+                $this->emConfiguration
+                    ->expects($this->exactly(2))
+                    ->method('setDefaultQueryHint')
+                    ->withConsecutive(
+                        [HookUnionTrait::$walkerHookUnionKey],
+                        [HookUnionTrait::$walkerHookUnionValue]
+                    );
             }
         }
 
@@ -263,13 +269,11 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getQbMock()
     {
-        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->em = $this->createMock(EntityManager::class);
 
         $qb = $this
             ->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->setConstructorArgs([$em])
+            ->setConstructorArgs([$this->em])
             ->getMock();
 
         $qb
@@ -302,20 +306,22 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('expr')
             ->will($this->returnValue($expr));
 
-        $orX = $this
-            ->getMockBuilder('Doctrine\ORM\Query\Expr')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $qb->expects($this->any())
+            ->method('getEntityManager')
+            ->will($this->returnValue($this->em));
 
-        $expr
-            ->expects($this->any())
-            ->method('orX')
-            ->will($this->returnValue($orX));
+        $query = $this->createMock(AbstractQuery::class);
+        $qb->expects($this->any())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
 
-        $expr
-            ->expects($this->any())
-            ->method('exists')
-            ->will($this->returnValue($orX));
+        $this->emConfiguration = $this->createMock(Configuration::class);
+        $this->em->expects($this->any())
+            ->method('getConfiguration')
+            ->will($this->returnValue($this->emConfiguration));
+        $this->em->expects($this->any())
+            ->method('createQueryBuilder')
+            ->will($this->returnValue($qb));
 
         return $qb;
     }
@@ -329,13 +335,26 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             [['where' => []], true],
             [['where' => new Andx()], true],
             [['where' => new Andx(['test'])], true],
-            [['where' => new Andx([new Func('func condition', ['argument'])])], true, true],
-            [['where' => new Andx(['test', new Func('func condition', ['argument'])])], true, true]
+            [['where' => new Andx([new Func('func condition', ['argument'])])], true],
+            [['where' => new Andx(['test', new Func('func condition', ['argument'])])], true]
         ];
     }
 
     public function testGetPriority()
     {
         $this->assertInternalType('integer', $this->extension->getPriority());
+    }
+
+
+    public function testVisitDatasourceIsNotApplicable()
+    {
+        $config = $this->assertIsApplicable(1, $this->createMock(MarketingList::class), 'test_grid');
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
+        $dataSource = $this->createMock(OrmDatasource::class);
+        $dataSource->expects($this->never())
+            ->method('getQueryBuilder');
+
+        $this->extension->visitDatasource($config, $dataSource);
     }
 }
