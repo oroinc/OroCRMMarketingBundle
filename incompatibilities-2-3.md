@@ -1,13 +1,3 @@
-UPGRADE FROM 2.2 to 2.3
-========================
-
-Table of Contents
------------------
-
-- [CampaignBundle](#campaignbundle)
-- [MarketingListBundle](#marketinglistbundle)
-- [TrackingBundle](#trackingbundle)
-
 CampaignBundle
 --------------
 * The `TransportSettingsEmailTemplateListener::__construct(RegistryInterface $registry, SecurityContextInterface $securityContext)`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/2.2.0/src/Oro/Bundle/CampaignBundle/Form/EventListener/TransportSettingsEmailTemplateListener.php#L33 "Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener")</sup> method was changed to `TransportSettingsEmailTemplateListener::__construct(RegistryInterface $registry, TokenAccessorInterface $tokenAccessor)`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/2.3.0/src/Oro/Bundle/CampaignBundle/Form/EventListener/TransportSettingsEmailTemplateListener.php#L32 "Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener")</sup>
