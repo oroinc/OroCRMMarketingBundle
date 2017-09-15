@@ -15,7 +15,7 @@ Feature: Marketing List Navigation Items
     When I pin page
     And add page to favorites
     Then Marketing Lists link must be in pin holder
-    And Favorites must contain "All - Marketing Lists - Marketing"
+    And Favorites must contain "Marketing Lists - Marketing"
 
   Scenario: Pin and Add to favorites Marketing List View page
     Given I click View Dynamic Marketing List in grid

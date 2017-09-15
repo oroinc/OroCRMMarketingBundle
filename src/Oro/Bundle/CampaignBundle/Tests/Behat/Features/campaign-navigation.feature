@@ -15,7 +15,7 @@ Feature: Campaign Navigation Items
     When I pin page
     And add page to favorites
     Then Campaigns link must be in pin holder
-    And Favorites must contain "All - Campaigns - Marketing"
+    And Favorites must contain "Campaigns - Marketing"
 
   Scenario: Pin and Add to favorites Campaign View page
     Given I click View Campaign 1 in grid
