@@ -11,11 +11,13 @@
 [Show detailed list of changes](file-incompatibilities-2-1-0.md)
 
 ### Changed
-* **MarketingListBundle** class `Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider`
+#### MarketingListBundle
+* class `Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider`
     - changed the return type of `getMarketingListEntitiesIterator` method from `BufferedQueryResultIterator` to `\Iterator`
-* **MarketingListBundle** the `oro_marketing_list.twig.extension.contact_information_fields` service was marked as `private`
+* the `oro_marketing_list.twig.extension.contact_information_fields` service was marked as `private`
 ### Removed
-* **CampaignBundle:** method `getCampaignsByCloseRevenue` was removed from `Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository`. Use `Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider::getCampaignsByCloseRevenueData` instead
-
-* **MarketingListBundle** removed the following parameters from DIC:
+#### CampaignBundle
+* method `getCampaignsByCloseRevenue` was removed from `Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository`. Use `Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider::getCampaignsByCloseRevenueData` instead
+#### MarketingListBundle
+* removed the following parameters from DIC:
     - `oro_marketing_list.twig.extension.contact_information_fields.class`
