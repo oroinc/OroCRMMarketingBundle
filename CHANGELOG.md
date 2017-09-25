@@ -12,12 +12,12 @@
 
 ### Changed
 #### MarketingListBundle
-* class `Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider`
+* class `MarketingListProvider`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/2.1.0/src/Oro/Bundle/MarketingListBundle/Provider/MarketingListProvider.php "Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider")</sup>
     - changed the return type of `getMarketingListEntitiesIterator` method from `BufferedQueryResultIterator` to `\Iterator`
 * the `oro_marketing_list.twig.extension.contact_information_fields` service was marked as `private`
 ### Removed
 #### CampaignBundle
-* method `getCampaignsByCloseRevenue` was removed from `Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository`. Use `Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider::getCampaignsByCloseRevenueData` instead
+* method `getCampaignsByCloseRevenue` was removed from `CampaignRepository`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/2.1.0/src/Oro/Bundle/CampaignBundle/Entity/Repository/CampaignRepository.php "Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository")</sup>. Use `CampaignDataProvider::getCampaignsByCloseRevenueData`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/2.1.0/src/Oro/Bundle/CampaignBundle/Dashboard/CampaignDataProvider.php#L81 "Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider::getCampaignsByCloseRevenueData")</sup> instead
 #### MarketingListBundle
 * removed the following parameters from DIC:
     - `oro_marketing_list.twig.extension.contact_information_fields.class`
