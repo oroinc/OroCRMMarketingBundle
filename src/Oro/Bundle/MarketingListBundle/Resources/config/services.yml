@@ -168,7 +168,6 @@ services:
         class: %oro_marketing_list.provider.virtual_relation.marketing_list.class%
         arguments:
             - "@oro_entity.doctrine_helper"
-            - '@oro.cache.memory_cache_chain'
         tags:
             - { name: oro_entity.virtual_relation_provider, priority: 150 }
 
@@ -188,17 +187,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: beforeValueRender }
 
-    oro_marketing_list.event_listener.on_entity_change:
-        class: Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange
-        arguments:
-            - '@oro_message_queue.message_producer'
-            - '@service_container'
-            - '@logger'
-            - '@oro.cache.memory_cache_chain'
-        tags:
-            - { name: doctrine.event_listener, event: onFlush, connection: default }
-            - { name: doctrine.event_listener, event: postFlush, connection: default }
-
     # Workflow actions and conditions
     oro_marketing_list.workflow.condition.has_contact_information:
         class: 'Oro\Bundle\MarketingListBundle\Model\Condition\HasContactInformation'
@@ -211,13 +199,3 @@ services:
         class: Oro\Bundle\MarketingListBundle\Validator\ColumnDublicateValidator
         tags:
             - { name: validator.constraint_validator, alias: oro_marketing_list.column_dublicate_validator }
-
-    # Processors
-    oro_marketing_list.async.update_marketing_list:
-        class: Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor
-        arguments:
-            - '@oro_entity.doctrine_helper'
-            - '@event_dispatcher'
-            - '@logger'
-        tags:
-            - { name: oro_message_queue.client.message_processor }

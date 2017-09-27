@@ -2,9 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Query\Expr\Join;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 
@@ -12,7 +10,6 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
 {
     const RELATION_NAME = 'marketingList_virtual';
     const MARKETING_LIST_ITEM_RELATION_NAME = 'marketingListItems';
-    const MARKETING_LIST_BY_ENTITY_CACHE_KEY = 'oro_marketing_list.lists_by_entities';
 
     /**
      * @var DoctrineHelper
@@ -20,18 +17,16 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
     protected $doctrineHelper;
 
     /**
-     * @var CacheProvider
+     * @var array|null
      */
-    private $cacheProvider;
+    protected $marketingListByEntity;
 
     /**
      * @param DoctrineHelper $doctrineHelper
-     * @param CacheProvider  $cacheProvider
      */
-    public function __construct(DoctrineHelper $doctrineHelper, CacheProvider $cacheProvider)
+    public function __construct(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;
-        $this->cacheProvider = $cacheProvider;
     }
 
     /**
@@ -92,8 +87,8 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
      */
     public function hasMarketingList($className)
     {
-        if (!$this->cacheProvider->contains(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY)) {
-            $marketingListByEntity = [];
+        if (null === $this->marketingListByEntity) {
+            $this->marketingListByEntity = [];
 
             $repository = $this->doctrineHelper->getEntityRepository('OroMarketingListBundle:MarketingList');
             $qb = $repository->createQueryBuilder('ml')
@@ -102,17 +97,11 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
             $entities = $qb->getQuery()->getArrayResult();
 
             foreach ($entities as $entity) {
-                $marketingListByEntity[$entity['entity']] = true;
+                $this->marketingListByEntity[$entity['entity']] = true;
             }
-
-            $this->cacheProvider->save(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY, $marketingListByEntity);
-
-            return !empty($marketingListByEntity[$className]);
         }
 
-        $marketingListByEntity = $this->cacheProvider->fetch(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY);
-
-        return !empty($marketingListByEntity[$className]);
+        return !empty($this->marketingListByEntity[$className]);
     }
 
     /**
