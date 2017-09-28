@@ -4,6 +4,8 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid\Extension;
 
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -337,5 +339,20 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetPriority()
     {
         $this->assertInternalType('integer', $this->extension->getPriority());
+    }
+
+    public function testIsApplicableSameGridTwiceWithParamsChangedUsingMQ()
+    {
+        $config = DatagridConfiguration::createNamed('grid1', ['param1' => false]);
+        $config->setDatasourceType(OrmDatasource::TYPE);
+
+        $configChanged = DatagridConfiguration::createNamed('grid1', ['param1' => true]);
+        $configChanged->setDatasourceType(OrmDatasource::TYPE);
+
+        $this->marketingListHelper->expects($this->exactly(2))->method('getMarketingListIdByGridName');
+
+        $this->assertFalse($this->extension->isApplicable($config));
+        $this->assertFalse($this->extension->isApplicable($config));
+        $this->assertFalse($this->extension->isApplicable($configChanged));
     }
 }
