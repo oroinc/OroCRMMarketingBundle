@@ -345,6 +345,20 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('integer', $this->extension->getPriority());
     }
 
+    public function testIsApplicableSameGridTwiceWithParamsChangedUsingMQ()
+    {
+        $config = DatagridConfiguration::createNamed('grid1', ['param1' => false]);
+        $config->setDatasourceType(OrmDatasource::TYPE);
+
+        $configChanged = DatagridConfiguration::createNamed('grid1', ['param1' => true]);
+        $configChanged->setDatasourceType(OrmDatasource::TYPE);
+
+        $this->marketingListHelper->expects($this->exactly(2))->method('getMarketingListIdByGridName');
+
+        $this->assertFalse($this->extension->isApplicable($config));
+        $this->assertFalse($this->extension->isApplicable($config));
+        $this->assertFalse($this->extension->isApplicable($configChanged));
+    }
 
     public function testVisitDatasourceIsNotApplicable()
     {

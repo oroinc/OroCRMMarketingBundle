@@ -44,6 +44,8 @@ class MarketingListHelperTest extends \PHPUnit_Framework_TestCase
             ['pre_' . ConfigurationProvider::GRID_PREFIX, null],
             [ConfigurationProvider::GRID_PREFIX . 1, 1],
             [ConfigurationProvider::GRID_PREFIX . '1_suffix', 1],
+            [ConfigurationProvider::GRID_PREFIX . '1_suffix_2', 1],
+            [ConfigurationProvider::GRID_PREFIX . '11_suffix_2', 11],
         ];
     }
 
