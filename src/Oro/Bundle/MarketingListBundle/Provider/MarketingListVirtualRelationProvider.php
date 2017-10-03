@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
+use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Query\Expr\Join;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 
@@ -10,6 +12,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
 {
     const RELATION_NAME = 'marketingList_virtual';
     const MARKETING_LIST_ITEM_RELATION_NAME = 'marketingListItems';
+    const MARKETING_LIST_BY_ENTITY_CACHE_KEY = 'oro_marketing_list.lists_by_entities';
 
     /**
      * @var DoctrineHelper
@@ -18,8 +21,14 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
 
     /**
      * @var array|null
+     * @deprecated This variable is no longer used. Use $cacheProvider instead
      */
     protected $marketingListByEntity;
+
+    /**
+     * @var CacheProvider
+     */
+    private $cacheProvider;
 
     /**
      * @param DoctrineHelper $doctrineHelper
@@ -27,6 +36,17 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
     public function __construct(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;
+    }
+
+    /**
+     * @param CacheProvider $cacheProvider
+     * @return $this
+     */
+    public function setCacheProvider(CacheProvider $cacheProvider)
+    {
+        $this->cacheProvider = $cacheProvider;
+
+        return $this;
     }
 
     /**
@@ -87,8 +107,9 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
      */
     public function hasMarketingList($className)
     {
-        if (null === $this->marketingListByEntity) {
-            $this->marketingListByEntity = [];
+        if ($this->cacheProvider === null
+            ||!$this->cacheProvider->contains(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY)) {
+            $marketingListByEntity = [];
 
             $repository = $this->doctrineHelper->getEntityRepository('OroMarketingListBundle:MarketingList');
             $qb = $repository->createQueryBuilder('ml')
@@ -97,11 +118,19 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
             $entities = $qb->getQuery()->getArrayResult();
 
             foreach ($entities as $entity) {
-                $this->marketingListByEntity[$entity['entity']] = true;
+                $marketingListByEntity[$entity['entity']] = true;
             }
+
+            if ($this->cacheProvider !== null) {
+                $this->cacheProvider->save(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY, $marketingListByEntity);
+            }
+
+            return !empty($marketingListByEntity[$className]);
         }
 
-        return !empty($this->marketingListByEntity[$className]);
+        $marketingListByEntity = $this->cacheProvider->fetch(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY);
+
+        return !empty($marketingListByEntity[$className]);
     }
 
     /**
