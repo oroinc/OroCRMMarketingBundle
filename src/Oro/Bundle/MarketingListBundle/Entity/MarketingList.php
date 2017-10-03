@@ -269,6 +269,10 @@ class MarketingList extends ExtendMarketingList
      */
     public function isManual()
     {
+        if ($this->segment) {
+            return false;
+        }
+
         if ($this->type) {
             return $this->type->getName() === MarketingListType::TYPE_MANUAL;
         }
