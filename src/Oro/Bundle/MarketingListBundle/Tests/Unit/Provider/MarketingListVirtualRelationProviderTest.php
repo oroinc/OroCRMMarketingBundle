@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
+use Doctrine\Common\Cache\ArrayCache;
+
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
 
@@ -11,6 +13,11 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit_Framework_TestCa
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $doctrineHelper;
+
+    /**
+     * @var ArrayCache
+     */
+    protected $arrayCache;
 
     /**
      * @var MarketingListVirtualRelationProvider
@@ -23,7 +30,10 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit_Framework_TestCa
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->arrayCache = new ArrayCache();
+
         $this->provider = new MarketingListVirtualRelationProvider($this->doctrineHelper);
+        $this->provider->setCacheProvider($this->arrayCache);
     }
 
     /**
@@ -178,6 +188,19 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit_Framework_TestCa
             ->method('getEntityRepository')
             ->with('OroMarketingListBundle:MarketingList')
             ->will($this->returnValue($repository));
+    }
+
+    public function testHasMarketingListMethodWithCache()
+    {
+        $this->arrayCache->save(
+            MarketingListVirtualRelationProvider::MARKETING_LIST_BY_ENTITY_CACHE_KEY,
+            [
+                \stdClass::class => true,
+            ]
+        );
+
+        $this->assertTrue($this->provider->hasMarketingList('stdClass'));
+        $this->assertFalse($this->provider->hasMarketingList('nonExistingClass'));
     }
 
     /**
