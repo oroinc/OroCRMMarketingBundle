@@ -3,6 +3,8 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListTest extends \PHPUnit_Framework_TestCase
@@ -158,5 +160,43 @@ class MarketingListTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->entity->{$getMethodName}());
         $this->entity->{$resetMethodName}(array($itemOne, $itemTwo));
         $this->assertCount(2, $this->entity->{$getMethodName}());
+    }
+
+    public function testIsManualWithSegment()
+    {
+        $ml = new MarketingList();
+        $segment = new Segment();
+        $ml->setSegment($segment);
+
+        $this->assertNull($ml->getType());
+        $this->assertFalse($ml->isManual());
+    }
+
+    public function testIsManualWithoutSegmentAndType()
+    {
+        $ml = new MarketingList();
+
+        $this->assertNull($ml->getType());
+        $this->assertFalse($ml->isManual());
+    }
+
+    public function testIsManualWithManualType()
+    {
+        $ml = new MarketingList();
+        $type = new MarketingListType(MarketingListType::TYPE_MANUAL);
+        $ml->setType($type);
+
+        $this->assertNotNull($ml->getType());
+        $this->assertTrue($ml->isManual());
+    }
+
+    public function testIsManualWithNoNManualType()
+    {
+        $ml = new MarketingList();
+        $type = new MarketingListType(MarketingListType::TYPE_DYNAMIC);
+        $ml->setType($type);
+
+        $this->assertNotNull($ml->getType());
+        $this->assertFalse($ml->isManual());
     }
 }
