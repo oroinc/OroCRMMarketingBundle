@@ -195,9 +195,9 @@ services:
             - '@service_container'
             - '@logger'
             - '@oro.cache.memory_cache_chain'
-        tags:
-            - { name: doctrine.event_listener, event: onFlush, connection: default }
-            - { name: doctrine.event_listener, event: postFlush, connection: default }
+#        tags:
+#            - { name: doctrine.event_listener, event: onFlush, connection: default }
+#            - { name: doctrine.event_listener, event: postFlush, connection: default }
 
     # Workflow actions and conditions
     oro_marketing_list.workflow.condition.has_contact_information:
