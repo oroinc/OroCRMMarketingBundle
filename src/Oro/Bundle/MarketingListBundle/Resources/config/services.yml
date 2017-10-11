@@ -164,6 +164,14 @@ services:
         tags:
             - { name: oro_datagrid.configuration.provider, priority: -10 }
 
+    oro_marketing_list.marketing_list.cache_warmer:
+        class: Oro\Bundle\MarketingListBundle\Cache\MarketingListCacheWarmer
+        public: false
+        arguments:
+            - '@oro_marketing_list.provider.marketing_list_allowed_classes'
+        tags:
+            - { name: kernel.cache_warmer }
+
     oro_marketing_list.provider.virtual_relation.marketing_list:
         class: %oro_marketing_list.provider.virtual_relation.marketing_list.class%
         arguments:
@@ -179,6 +187,18 @@ services:
             - "@oro_marketing_list.provider.virtual_relation.marketing_list"
         tags:
             - { name: oro_entity.virtual_field_provider, priority: 150 }
+
+    oro_marketing_list.marketing_list.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_marketing_list' ] ]
+
+    oro_marketing_list.provider.marketing_list_allowed_classes:
+        class: Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider
+        public: false
+        arguments:
+            - '@oro_marketing_list.marketing_list.cache'
+            - '@service_container'
 
     oro_marketing_list.event_listener.user_before_value_render_listener:
         class: %oro_marketing_list.event_listener.before_value_render_listener.class%
@@ -196,6 +216,8 @@ services:
             - '@service_container'
             - '@logger'
             - '@oro.cache.memory_cache_chain'
+        calls:
+            - ['setMarketingListAllowedClassesProvider', ['@oro_marketing_list.provider.marketing_list_allowed_classes']]
         tags:
             - { name: doctrine.event_listener, event: onFlush, connection: default }
             - { name: doctrine.event_listener, event: postFlush, connection: default }

@@ -10,15 +10,13 @@ use Psr\Log\LoggerInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
+use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
 
 class UpdateMarketingListOnEntityChange
 {
-    const MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY = 'oro_marketing_list.allowed_entities';
-
     /**
      * @var object[]
      */
@@ -30,25 +28,20 @@ class UpdateMarketingListOnEntityChange
     private $messageProducer;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * @var CacheProvider
+     * @var MarketingListAllowedClassesProvider
      */
-    private $cacheProvider;
+    private $provider;
 
     /**
      * @param MessageProducerInterface $messageProducer
-     * @param ContainerInterface $container
+     * @param ContainerInterface $container This parameter is not used anymore
      * @param LoggerInterface $logger
-     * @param CacheProvider $cacheProvider
+     * @param CacheProvider $cacheProvider This parameter is not used anymore
      */
     public function __construct(
         MessageProducerInterface $messageProducer,
@@ -57,9 +50,18 @@ class UpdateMarketingListOnEntityChange
         CacheProvider $cacheProvider
     ) {
         $this->messageProducer = $messageProducer;
-        $this->container = $container;
         $this->logger = $logger;
-        $this->cacheProvider = $cacheProvider;
+    }
+
+    /**
+     * @param MarketingListAllowedClassesProvider $provider
+     * @return $this
+     */
+    public function setMarketingListAllowedClassesProvider(MarketingListAllowedClassesProvider $provider)
+    {
+        $this->provider = $provider;
+
+        return $this;
     }
 
     /**
@@ -129,19 +131,19 @@ class UpdateMarketingListOnEntityChange
      */
     private function getAllowedEntities(): array
     {
-        if (!$this->cacheProvider->contains(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY)) {
-            $allowedEntities = $this->getEntityProvider()->getEntities(false);
+        if ($this->provider === null) {
+            $this->logger->error(
+                'Missing provider. Call UpdateMarketingListOnEntityChange::setMarketingListAllowedClassesProvider()',
+                [
+                    'classesScheduledToUpdate' => $this->classesToUpdate,
+                    'class' => self::class,
+                ]
+            );
 
-            foreach ($allowedEntities as $i => $allowedEntity) {
-                $allowedEntities[$i] = $allowedEntity['name'];
-            }
-
-            $this->cacheProvider->save(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY, $allowedEntities);
-
-            return $allowedEntities;
+            return [];
         }
 
-        return $this->cacheProvider->fetch(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY);
+        return $this->provider->getList();
     }
 
     /**
@@ -158,13 +160,5 @@ class UpdateMarketingListOnEntityChange
         }
 
         return false;
-    }
-
-    /**
-     * @return EntityProvider
-     */
-    private function getEntityProvider(): EntityProvider
-    {
-        return $this->container->get('oro_marketing_list.entity_provider.contact_information');
     }
 }
