@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\EventListener;
 
 use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -13,16 +12,19 @@ use Psr\Log\LoggerInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -36,7 +38,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
     private $messageProducer;
 
     /**
-     * @var EntityProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var MarketingListAllowedClassesProvider|\PHPUnit_Framework_MockObject_MockObject
      */
     private $entityProvider;
 
@@ -60,26 +62,17 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
      */
     private $unitOfWork;
 
-    /**
-     * @var CacheProvider
-     */
-    private $cacheProvider;
-
     protected function setUp()
     {
         $this->messageProducer = $this->getMockBuilder(MessageProducerInterface::class)
             ->getMock();
 
-        $this->entityProvider = $this->getMockBuilder(EntityProvider::class)
+        $this->entityProvider = $this->getMockBuilder(MarketingListAllowedClassesProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->container = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
-        $this->container->expects($this->any())
-            ->method('get')
-            ->with('oro_marketing_list.entity_provider.contact_information')
-            ->willReturn($this->entityProvider);
 
         $this->logger = $this->getMockBuilder(LoggerInterface::class)
             ->getMock();
@@ -95,23 +88,21 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
             ->method('getUnitOfWork')
             ->willReturn($this->unitOfWork);
 
-        $this->cacheProvider = new ArrayCache();
-
         $this->listener = new UpdateMarketingListOnEntityChange(
             $this->messageProducer,
             $this->container,
             $this->logger,
-            $this->cacheProvider
+            new ArrayCache()
         );
     }
 
-    public function testFlowWithoutCache()
+    public function testFlow()
     {
         $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
         $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
 
         $this->entityProvider->expects($this->once())
-            ->method('getEntities')
+            ->method('getList')
             ->willReturn($this->getAllowedEntities());
 
         $this->unitOfWork->expects($this->once())
@@ -126,34 +117,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
             ->method('send')
             ->willReturnCallback([$this, 'assertTopicAndMessageAreValid']);
 
-        $this->listener->onFlush($onFlushEventArgs);
-        $this->listener->postFlush($postFlushEventArgs);
-    }
-
-    public function testFlowWithCache()
-    {
-        $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
-        $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
-
-        $this->entityProvider->expects($this->never())
-            ->method('getEntities');
-
-        $this->unitOfWork->expects($this->once())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn($this->getScheduledEntityInsertions());
-
-        $this->unitOfWork->expects($this->once())
-            ->method('getScheduledEntityUpdates')
-            ->willReturn($this->getScheduledEntityUpdates());
-
-        $this->cacheProvider->save(
-            UpdateMarketingListOnEntityChange::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY,
-            $this->getAllowedEntitiesCached()
-        );
-
-        $this->messageProducer->expects($this->exactly(2))
-            ->method('send')
-            ->willReturnCallback([$this, 'assertTopicAndMessageAreValid']);
+        $this->listener->setMarketingListAllowedClassesProvider($this->entityProvider);
 
         $this->listener->onFlush($onFlushEventArgs);
         $this->listener->postFlush($postFlushEventArgs);
@@ -165,7 +129,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
         $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
 
         $this->entityProvider->expects($this->once())
-            ->method('getEntities')
+            ->method('getList')
             ->willReturn($this->getAllowedEntities());
 
         $this->unitOfWork->expects($this->once())
@@ -182,6 +146,31 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
         $this->messageProducer->expects($this->exactly(2))
             ->method('send')
             ->willThrowException(new MessageQueueTransportException());
+
+        $this->listener->setMarketingListAllowedClassesProvider($this->entityProvider);
+
+        $this->listener->onFlush($onFlushEventArgs);
+        $this->listener->postFlush($postFlushEventArgs);
+    }
+
+    public function testMissingProvider()
+    {
+        $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
+        $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
+
+        $this->unitOfWork->expects($this->once())
+            ->method('getScheduledEntityInsertions')
+            ->willReturn($this->getScheduledEntityInsertions());
+
+        $this->unitOfWork->expects($this->once())
+            ->method('getScheduledEntityUpdates')
+            ->willReturn($this->getScheduledEntityUpdates());
+
+        $this->messageProducer->expects($this->never())
+            ->method('send');
+
+        $this->logger->expects($this->once())
+            ->method('error');
 
         $this->listener->onFlush($onFlushEventArgs);
         $this->listener->postFlush($postFlushEventArgs);
@@ -216,7 +205,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($this->getAllowedEntities() as $allowedEntity) {
-            if ($allowedEntity['name'] === $message['class']) {
+            if ($allowedEntity === $message['class']) {
                 return;
             }
         }
@@ -232,7 +221,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
     /**
      * @return object[]
      */
-    private function getScheduledEntityInsertions() : array
+    private function getScheduledEntityInsertions(): array
     {
         return [
             new Segment(),
@@ -243,7 +232,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
     /**
      * @return object[]
      */
-    private function getScheduledEntityUpdates() : array
+    private function getScheduledEntityUpdates(): array
     {
         return [
             new MarketingList(),
@@ -251,15 +240,10 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    private function getAllowedEntities() : array
-    {
-        return [
-            ['name' => User::class],
-            ['name' => Organization::class],
-        ];
-    }
-
-    private function getAllowedEntitiesCached() : array
+    /**
+     * @return string[]
+     */
+    private function getAllowedEntities(): array
     {
         return [
             User::class,
