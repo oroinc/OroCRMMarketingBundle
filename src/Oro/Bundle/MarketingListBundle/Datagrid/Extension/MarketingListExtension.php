@@ -17,6 +17,7 @@ use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
 /**
  * For segment based marketing lists show not only segment results but also already contacted entities.
+ * Each oro_marketing_list_items_grid_1 grid has union to MarketingListItem
  */
 class MarketingListExtension extends AbstractExtension
 {
@@ -75,6 +76,10 @@ class MarketingListExtension extends AbstractExtension
 
         if (!$marketingList || $marketingList->isManual()) {
             $this->applicable[$cacheKey] = false;
+            return false;
+        }
+
+        if (!$marketingList->isUnion()) {
             return false;
         }
 
