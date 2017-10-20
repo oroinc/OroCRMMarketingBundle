@@ -176,6 +176,14 @@ class MarketingList extends ExtendMarketingList
      */
     protected $updatedAt;
 
+    /**
+     * Runtime value to disable union, used to retrieve actual ML entities without MLI/MLRI/MLUI
+     * @see \Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension::isApplicable
+     *
+     * @var bool
+     */
+    protected $union = true;
+
     public function __construct()
     {
         parent::__construct();
@@ -658,5 +666,21 @@ class MarketingList extends ExtendMarketingList
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnion()
+    {
+        return $this->union;
+    }
+
+    /**
+     * @param bool $union
+     */
+    public function setUnion($union)
+    {
+        $this->union = $union;
     }
 }

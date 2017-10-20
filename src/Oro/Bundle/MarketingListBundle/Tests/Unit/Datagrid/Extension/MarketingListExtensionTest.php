@@ -131,11 +131,13 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
         $nonManualMarketingList->expects($this->once())
             ->method('isManual')
             ->will($this->returnValue(false));
+        $nonManualMarketingList->expects($this->any())->method('isUnion')->will($this->returnValue(true));
         $nonManualMarketingList->expects($this->once())
             ->method('getDefinition')
             ->willReturn(json_encode(['filters' => ['filter' => 'dummy']]));
 
         $manualMarketingList = $this->createMock(MarketingList::class);
+        $manualMarketingList->expects($this->any())->method('isUnion')->will($this->returnValue(true));
         $manualMarketingList->expects($this->once())
             ->method('isManual')
             ->will($this->returnValue(true));
@@ -143,6 +145,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition');
 
         $nonManualMarketingListWithoutFilters = $this->createMock(MarketingList::class);
+        $nonManualMarketingListWithoutFilters->expects($this->any())->method('isUnion')->will($this->returnValue(true));
         $nonManualMarketingListWithoutFilters->expects($this->once())
             ->method('isManual')
             ->will($this->returnValue(false));
@@ -168,6 +171,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $marketingListId        = 1;
         $nonManualMarketingList = $this->createMock(MarketingList::class);
+        $nonManualMarketingList->expects($this->any())->method('isUnion')->will($this->returnValue(true));
 
         $nonManualMarketingList->expects($this->once())
             ->method('isManual')
@@ -362,7 +366,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testVisitDatasourceIsNotApplicable()
     {
-        $config = $this->assertIsApplicable(1, $this->createMock(MarketingList::class), 'test_grid');
+        $config = $this->assertIsApplicable(1, new MarketingList(), 'test_grid');
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
