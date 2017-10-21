@@ -25,24 +25,26 @@ class CampaignActionTest extends WebTestCase
         $campaign = $this->getReference('Campaign.Campaign1');
         $campaignId = $campaign->getId();
 
+        $operationName = 'oro_campaign_delete';
+        $entityClass = Campaign::class;
         $this->client->request(
-            'GET',
+            'POST',
             $this->getUrl(
                 'oro_action_operation_execute',
                 [
-                    'operationName' => 'oro_campaign_delete',
+                    'operationName' => $operationName,
                     'entityId' => $campaignId,
-                    'entityClass' => Campaign::class,
+                    'entityClass' => $entityClass,
                 ]
             ),
-            [],
+            $this->getOperationExecuteParams($operationName, $campaignId, $entityClass),
             [],
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
         );
 
         $this->assertJsonResponseStatusCodeEquals($this->client->getResponse(), 200);
 
-        static::getContainer()->get('doctrine')->getManagerForClass(Campaign::class)->clear();
+        self::getContainer()->get('doctrine')->getManagerForClass($entityClass)->clear();
 
         $removedCampaign = static::getContainer()
             ->get('doctrine')
@@ -50,5 +52,30 @@ class CampaignActionTest extends WebTestCase
             ->find($campaignId);
 
         static::assertNull($removedCampaign);
+    }
+
+    /**
+     * @param $operationName
+     * @param $entityId
+     * @param $entityClass
+     *
+     * @return array
+     */
+    protected function getOperationExecuteParams($operationName, $entityId, $entityClass)
+    {
+        $actionContext = [
+            'entityId'    => $entityId,
+            'entityClass' => $entityClass
+        ];
+        $container = self::getContainer();
+        $operation = $container->get('oro_action.operation_registry')->findByName($operationName);
+        $actionData = $container->get('oro_action.helper.context')->getActionData($actionContext);
+
+        $tokenData = $container
+            ->get('oro_action.operation.execution.form_provider')
+            ->createTokenData($operation, $actionData);
+        $container->get('session')->save();
+
+        return $tokenData;
     }
 }
