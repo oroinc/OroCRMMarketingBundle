@@ -17,12 +17,22 @@ use Oro\Bundle\TagBundle\Grid\TagsExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
+/**
+ * Return Marketing list entities iterator or QB. Both contain actual ML state and previously contacted entities.
+ * Use \Oro\Bundle\MarketingListBundle\Entity\MarketingList::$union to remove MLRI\MLUI for runtime when you pass
+ * MarketingList to this provider
+ */
 class MarketingListProvider
 {
+    // entity.id + contactedTimes + lastContactedAt + MLI + MLRI is null + MLUI
     const RESULT_ITEMS_MIXIN = 'oro-marketing-list-items-mixin';
-    const RESULT_ENTITIES_MIXIN = 'oro-marketing-list-entities-mixin';
-    const FULL_ENTITIES_MIXIN = 'oro-marketing-full-mixin';
     const MANUAL_RESULT_ITEMS_MIXIN = 'oro-marketing-list-manual-items-mixin';
+
+    // entity.id + MLI
+    const FULL_ENTITIES_MIXIN = 'oro-marketing-full-mixin';
+
+    // entity.id + MLI + MLRI is null + MLUI is null
+    const RESULT_ENTITIES_MIXIN = 'oro-marketing-list-entities-mixin';
     const MANUAL_RESULT_ENTITIES_MIXIN = 'oro-marketing-list-manual-entities-mixin';
 
     /**
