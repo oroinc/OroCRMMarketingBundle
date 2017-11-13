@@ -11,15 +11,15 @@ Provides:
     - Assigning tracking with platform data objects
     - Ability to create reports based on tracked data
 
-# Notes
+### Notes
 
 In case when Piwik synchronization enabled tracking website's "identifier" fields value should be the same as Piwik website id (integer value).
 
-# TrackingProcessor
+### TrackingProcessor
 
 The main goal of processing(parsing) tracking events is to identify object(s) for which event(s) belongs to. For example, it can be identification of users/customers form any integrated system like eCommerce, blog, project management application, etc.
 
-## How it works.
+#### How it works
 
 - Web events are collected using tracking.php front controller, using another HTTP request to prod application with all request data.
 - TrackingDataController launch new import job "import_request_to_database" with all data from query ($request->query->all())
@@ -38,7 +38,7 @@ The main goal of processing(parsing) tracking events is to identify object(s) fo
 
 - To connect tracking event with your data, provider should have 3 additional methods: **isApplicableVisitEvent**, **processEvent**, **getEventTargets**
 
-## Request parameters expected by tracking
+### Request parameters expected by tracking
 
 Actuall mapping can be seen in `Oro\Bundle\TrackingBundle\ImportExport\DataConverter`,
 can be filled by Piwik automatically, otherwise client should fill them in custom code.
@@ -52,12 +52,12 @@ can be filled by Piwik automatically, otherwise client should fill them in custo
 * _id - visit id, required, should represent unique visit id
 
 
-## Example
+#### Example
 
 Fully working code you can find in OroCRM MarketingCRM Bridge -> Provider -> TrackingCustomerIdentification
 As a simple example, it will looks like this:
 
-### Services:
+##### Services:
 
 ```yaml
 
@@ -67,7 +67,7 @@ As a simple example, it will looks like this:
            - {name: oro_tracking.provider.identification, priority: 10}
 ```
 
-### Code:
+##### Code:
 
 ``` php
 
@@ -180,7 +180,7 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
 }
 ```
 
-# Tracked data in report builder
+### Tracked data in report builder
 
 User can create reports based on tracked event data.
 
@@ -221,7 +221,7 @@ The main entity for this data is **Visitor event** - parsed web event data relat
 Additionally, there is **Tracking Event** table - original web event data recorded from the website
 
 
-# Configuration
+### Configuration
 
 In order to collect information, `Resources/lib/tracking.php` file need to be copied to the application's `/web` folder. This is performed automatically, but if your application has different `/web` folder you need to configure it in `app/config/config.yml`. For example:
 
@@ -230,7 +230,7 @@ oro_tracking:
     web_root: %kernel.root_dir%/../web
 ```
 
-# Security firewalls
+### Security firewalls
 
 TrackingBundle comes with a default firewall configuration, to allow data to be pushed into the system:
 ```yaml
@@ -244,7 +244,7 @@ security:
 
 However, this can be overwritten to fit your needs, in 2 different ways:
 
-### 1. Application's ``security.yml``:
+#### 1. Application's ``security.yml``:
 ```yaml
 security:
     firewalls:
@@ -253,7 +253,7 @@ security:
             pattern:   ^%web_backend_prefix%/tracking/data/create
 ```
 
-### 2. Bundle's ``app.yml`` in ``Resources/config/oro``:
+#### 2. Bundle's ``app.yml`` in ``Resources/config/oro``:
 ```yaml
 security:
     firewalls:
