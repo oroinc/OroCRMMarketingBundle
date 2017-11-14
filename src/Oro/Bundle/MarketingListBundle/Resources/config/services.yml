@@ -78,7 +78,9 @@ services:
     oro_marketing_list.provider.contact_information_exclusion:
         class: %oro_marketing_list.provider.contact_information_exclusion.class%
         arguments:
-            - '@oro_entity.virtual_field_provider.chain'
+            - "@oro_entity.virtual_field_provider.chain"
+            - "@oro_entity_config.provider.entity"
+            - "@doctrine"
 
     oro_marketing_list.provider.chain_exclusion:
         class: %oro_entity.exclusion_provider.chain.class%
