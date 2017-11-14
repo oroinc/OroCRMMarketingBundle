@@ -33,13 +33,18 @@ class ContactInformationExclusionProvider extends AbstractExclusionProvider
     /**
      * @param VirtualFieldProviderInterface $virtualFieldProvider
      */
-    public function __construct(
-        VirtualFieldProviderInterface $virtualFieldProvider,
-        ConfigProvider $entityConfigProvider,
-        ManagerRegistry $managerRegistry
-    ) {
+    public function __construct(VirtualFieldProviderInterface $virtualFieldProvider)
+    {
         $this->virtualFieldProvider = $virtualFieldProvider;
+    }
+
+    public function setEntityConfigProvider(ConfigProvider $entityConfigProvider)
+    {
         $this->entityConfigProvider = $entityConfigProvider;
+    }
+
+    public function setManagerRegistry(ManagerRegistry $managerRegistry)
+    {
         $this->managerRegistry = $managerRegistry;
     }
 
@@ -50,6 +55,11 @@ class ContactInformationExclusionProvider extends AbstractExclusionProvider
     {
         if ($this->virtualFieldProvider->isVirtualField($className, 'contactInformation')) {
             return false;
+        }
+
+        if (empty($this->entityConfigProvider) || empty($this->managerRegistry)) {
+            // for old 2.3 and 2.4 branches the following checks should not break BC
+            return true;
         }
 
         /**
