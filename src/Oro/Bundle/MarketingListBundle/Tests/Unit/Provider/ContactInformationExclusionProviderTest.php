@@ -54,11 +54,9 @@ class ContactInformationExclusionProviderTest extends \PHPUnit_Framework_TestCas
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->provider = new ContactInformationExclusionProvider(
-            $this->virtualFieldProvider,
-            $this->configProvider,
-            $this->registry
-        );
+        $this->provider = new ContactInformationExclusionProvider($this->virtualFieldProvider);
+        $this->provider->setEntityConfigProvider($this->configProvider);
+        $this->provider->setManagerRegistry($this->registry);
     }
 
     public function testIsIgnoredEntityHasContactInformationField()
