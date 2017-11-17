@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Functional\EventListener;
 
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\AccountBundle\Entity\Account;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\DataFixtures\LoadMarketingListData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -32,7 +31,7 @@ class MarketingListEntityListenerTest extends WebTestCase
         /** @var MarketingList $marketingList */
         $marketingList = $this->getReference(LoadMarketingListData::MARKETING_LIST_NAME);
 
-        $marketingList->setEntity(Account::class);
+        $marketingList->setName('some_new_name');
         $this->getEntityManager()->flush();
 
         $this->assertFalse($this->getCacheProvider()->contains(self::CACHE_KEY));
