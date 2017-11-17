@@ -22,7 +22,6 @@ class MarketingListEntityListener
     public function __construct(CacheProvider $cacheProvider)
     {
         $this->cacheProvider = $cacheProvider;
-
     }
 
     /**
