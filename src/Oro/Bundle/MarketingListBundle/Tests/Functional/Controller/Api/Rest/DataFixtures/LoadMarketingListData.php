@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadMarketingListData extends AbstractFixture implements ContainerAwareInterface
 {
+    const MARKETING_LIST_NAME = 'list_name';
+
     /**
      * @var ContainerInterface
      */
@@ -38,11 +40,13 @@ class LoadMarketingListData extends AbstractFixture implements ContainerAwareInt
         $entity = new MarketingList();
         $entity
             ->setType($type)
-            ->setName('list_name')
+            ->setName(self::MARKETING_LIST_NAME)
             ->setEntity('Oro\Bundle\ContactBundle\Entity\Contact')
             ->setOrganization($manager->getRepository('OroOrganizationBundle:Organization')->getFirst());
 
         $manager->persist($entity);
         $manager->flush($entity);
+
+        $this->addReference(self::MARKETING_LIST_NAME, $entity);
     }
 }
