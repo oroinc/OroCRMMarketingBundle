@@ -174,11 +174,26 @@ services:
         tags:
             - { name: kernel.cache_warmer }
 
+    oro_marketing.event_listener.marketing_list_entity_listener:
+        class: 'Oro\Bundle\MarketingListBundle\EventListener\MarketingListEntityListener'
+        public: false
+        arguments:
+            - '@oro_marketing_list.virtual_relation_cache'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: '%oro_marketing_list.entity.class%', event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: '%oro_marketing_list.entity.class%', event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: '%oro_marketing_list.entity.class%', event: postRemove }
+
+    oro_marketing_list.virtual_relation_cache:
+          parent: oro.cache.abstract
+          calls:
+              - [setNamespace, [ 'oro_marketing_list' ] ]
+
     oro_marketing_list.provider.virtual_relation.marketing_list:
         class: %oro_marketing_list.provider.virtual_relation.marketing_list.class%
         arguments:
             - "@oro_entity.doctrine_helper"
-            - '@oro.cache.memory_cache_chain'
+            - 'oro_marketing_list.virtual_relation_cache'
         tags:
             - { name: oro_entity.virtual_relation_provider, priority: 150 }
 
