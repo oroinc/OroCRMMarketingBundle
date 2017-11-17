@@ -193,7 +193,7 @@ services:
         class: %oro_marketing_list.provider.virtual_relation.marketing_list.class%
         arguments:
             - "@oro_entity.doctrine_helper"
-            - 'oro_marketing_list.virtual_relation_cache'
+            - '@oro_marketing_list.virtual_relation_cache'
         tags:
             - { name: oro_entity.virtual_relation_provider, priority: 150 }
 
