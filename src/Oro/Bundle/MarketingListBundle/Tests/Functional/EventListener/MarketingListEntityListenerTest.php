@@ -77,6 +77,5 @@ class MarketingListEntityListenerTest extends WebTestCase
     private function getCacheProvider()
     {
         return self::getContainer()->get('oro_marketing_list.virtual_relation_cache');
-
     }
 }
