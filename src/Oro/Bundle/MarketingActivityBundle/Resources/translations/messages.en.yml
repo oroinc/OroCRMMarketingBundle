@@ -3,16 +3,33 @@ oro:
         feature_enabled:               Enable Marketing Activities Features
         entity_label:                  Marketing Activity
         entity_plural_label:           Marketing Activities
+        entity_description:            The record of marketing activity statistics in context (e.g. orders, customer users).
         id.label:                      Id
         owner.label:                   Owner
-        campaign.label:                Campaign
-        type.label:                    Type
-        entity_id.label:               Entity Id
-        entity_class.label:            Entity Class
-        related_campaign_id.label:     Related Campaign Id
-        related_campaign_class.label:  Related Campaign Class
-        details.label:                 Details
-        action_date.label:             Action Date
+        campaign:
+            label:                     Campaign
+            description:               The marketing campaign that the marketing activity took place within.
+        type:
+            label:                     Type
+            description:               The marketing activity type (click, open, send, unsubscribe, soft_bunce, hard_bounce).
+        entity_id:
+            label:                     Entity Id
+            description:               The unique identifier of the marketing activity.
+        entity_class:
+            label:                     Entity Class
+            description:               The class of the marketing activity.
+        related_campaign_id:
+            label:                     Related Campaign Id
+            description:               The ID of the marketing campaign that the marketing activity took place within.
+        related_campaign_class:
+            label:                     Related Campaign Class
+            description:               The class of the marketing campaign that the marketing activity took place within.
+        details:
+            label:                     Details
+            description:               The extended information about the marketing activity.
+        action_date:
+            label:                     Action Date
+            description:               The date and time when the marketing activity was created.
         email_campaign.label:          Email Campaign
         view_campaign.label:           View Campaign
         email_campaign.label:          Email Campaign Name
@@ -22,16 +39,16 @@ oro:
         last_event_type.label:         Latest Activity
         last_activity_date.label:      Latest Activity Date
         summary:
-            label: Marketing Activity Summary
-            send.label: Send
-            open.label: Open
-            click.label: Click
-            forward.label: Forward
-            soft_bounce.label: Soft Bounce
-            hard_bounce.label: Hard Bounce
-            unsubscribe.label: Unsubscribe
+            label:                     Marketing Activity Summary
+            send.label:                Send
+            open.label:                Open
+            click.label:               Click
+            forward.label:             Forward
+            soft_bounce.label:         Soft Bounce
+            hard_bounce.label:         Hard Bounce
+            unsubscribe.label:         Unsubscribe
         sections:
-            marketingactivities: Marketing Activity
+            marketingactivities:       Marketing Activity
 
     query_designer:
         aggregates:
