@@ -4,16 +4,20 @@ namespace Oro\Bundle\MarketingListBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-
-use Psr\Log\LoggerInterface;
-
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
+use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerInterface;
+use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerTrait;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
+use Psr\Log\LoggerInterface;
 
-class UpdateMarketingListOnEntityChange
+class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
 {
+    use OptionalListenerTrait;
+
+    const MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY = 'oro_marketing_list.allowed_entities';
+
     /**
      * @var object[]
      */
@@ -54,6 +58,10 @@ class UpdateMarketingListOnEntityChange
      */
     public function onFlush(OnFlushEventArgs $args)
     {
+        if (!$this->enabled) {
+            return;
+        }
+
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
 

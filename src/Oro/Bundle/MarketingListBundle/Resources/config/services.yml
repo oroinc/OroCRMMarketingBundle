@@ -235,6 +235,17 @@ services:
             - { name: doctrine.event_listener, event: onFlush, connection: default }
             - { name: doctrine.event_listener, event: postFlush, connection: default }
 
+    oro_marketing_list.migration.demo_data_fixtures_listener.update_marketing_list:
+        class: Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListDemoDataFixturesListener
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+            - '@oro_marketing_list.entity_provider.contact_information'
+            - '@oro_entity.doctrine_helper'
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.data_fixtures.pre_load, method: onPreLoad }
+            - { name: kernel.event_listener, event: oro_migration.data_fixtures.post_load, method: onPostLoad }
+
     # Workflow actions and conditions
     oro_marketing_list.workflow.condition.has_contact_information:
         class: 'Oro\Bundle\MarketingListBundle\Model\Condition\HasContactInformation'
