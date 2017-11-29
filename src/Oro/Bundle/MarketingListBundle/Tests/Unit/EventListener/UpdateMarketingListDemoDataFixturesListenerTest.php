@@ -18,6 +18,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework_TestCase
 {
+    const LISTENERS = [
+        'test_listener_1',
+        'test_listener_2',
+    ];
+
     use EntityTrait;
 
     /** @var OptionalListenerManager|\PHPUnit_Framework_MockObject_MockObject */
@@ -25,9 +30,6 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
 
     /** @var EntityProvider|\PHPUnit_Framework_MockObject_MockObject */
     protected $entityProvider;
-
-    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject */
-    protected $doctrineHelper;
 
     /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $dispatcher;
@@ -51,7 +53,6 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
     {
         $this->listenerManager = $this->createMock(OptionalListenerManager::class);
         $this->entityProvider = $this->createMock(EntityProvider::class);
-        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
         $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
@@ -61,9 +62,10 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
         $this->listener = new UpdateMarketingListDemoDataFixturesListener(
             $this->listenerManager,
             $this->entityProvider,
-            $this->doctrineHelper,
             $this->dispatcher
         );
+        $this->listener->disableListener(self::LISTENERS[0]);
+        $this->listener->disableListener(self::LISTENERS[1]);
     }
 
     public function testOnPreLoad()
@@ -74,7 +76,7 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
 
         $this->listenerManager->expects($this->once())
             ->method('disableListeners')
-            ->with(UpdateMarketingListDemoDataFixturesListener::LISTENERS);
+            ->with(self::LISTENERS);
 
         $this->listener->onPreLoad($this->event);
     }
@@ -101,7 +103,7 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
 
         $this->listenerManager->expects($this->once())
             ->method('enableListeners')
-            ->with(UpdateMarketingListDemoDataFixturesListener::LISTENERS);
+            ->with(self::LISTENERS);
 
         $this->event->expects($this->once())
             ->method('log')
@@ -114,9 +116,8 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
                 ['name' => Item::class],
             ]);
 
-        $this->doctrineHelper->expects($this->once())
-            ->method('getEntityManager')
-            ->with(MarketingList::class)
+        $this->event->expects($this->once())
+            ->method('getObjectManager')
             ->willReturn($this->entityManager);
 
         $this->entityManager->expects($this->once())
@@ -150,7 +151,7 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
 
         $this->listenerManager->expects($this->once())
             ->method('enableListeners')
-            ->with(UpdateMarketingListDemoDataFixturesListener::LISTENERS);
+            ->with(self::LISTENERS);
 
         $this->event->expects($this->once())
             ->method('log')
@@ -160,8 +161,9 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
             ->method('getEntities')
             ->willReturn([]);
 
-        $this->doctrineHelper->expects($this->never())
-            ->method($this->anything());
+        $this->event->expects($this->once())
+            ->method('getObjectManager')
+            ->willReturn($this->entityManager);
 
         $this->entityManager->expects($this->never())
             ->method($this->anything());
@@ -188,9 +190,6 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
             ->method('log');
 
         $this->entityProvider->expects($this->never())
-            ->method($this->anything());
-
-        $this->doctrineHelper->expects($this->never())
             ->method($this->anything());
 
         $this->entityManager->expects($this->never())

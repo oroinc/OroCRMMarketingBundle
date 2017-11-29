@@ -2,29 +2,20 @@
 
 namespace Oro\Bundle\MarketingListBundle\EventListener;
 
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Event\UpdateMarketingListEvent;
 use Oro\Bundle\MigrationBundle\Event\MigrationDataFixturesEvent;
+use Oro\Bundle\PlatformBundle\EventListener\AbstractDemoDataFixturesListener;
 use Oro\Bundle\PlatformBundle\Manager\OptionalListenerManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UpdateMarketingListDemoDataFixturesListener
+class UpdateMarketingListDemoDataFixturesListener extends AbstractDemoDataFixturesListener
 {
-    const LISTENERS = [
-        'oro_marketing_list.event_listener.on_entity_change',
-    ];
-
-    /** @var OptionalListenerManager */
-    protected $listenerManager;
-
     /** @var EntityProvider */
     protected $entityProvider;
-
-    /** @var DoctrineHelper */
-    protected $doctrineHelper;
 
     /** @var EventDispatcherInterface */
     protected $dispatcher;
@@ -32,50 +23,33 @@ class UpdateMarketingListDemoDataFixturesListener
     /**
      * @param OptionalListenerManager $listenerManager
      * @param EntityProvider $entityProvider
-     * @param DoctrineHelper $doctrineHelper
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
         OptionalListenerManager $listenerManager,
         EntityProvider $entityProvider,
-        DoctrineHelper $doctrineHelper,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->listenerManager = $listenerManager;
+        parent::__construct($listenerManager);
+
         $this->entityProvider = $entityProvider;
-        $this->doctrineHelper = $doctrineHelper;
         $this->dispatcher = $dispatcher;
     }
 
     /**
-     * @param MigrationDataFixturesEvent $event
+     * {@inheritDoc}
      */
-    public function onPreLoad(MigrationDataFixturesEvent $event)
+    protected function afterEnableListeners(MigrationDataFixturesEvent $event)
     {
-        if (!$event->isDemoFixtures()) {
-            return;
-        }
+        $event->log('updating marketing lists');
 
-        $this->listenerManager->disableListeners(self::LISTENERS);
+        $this->updateMarketingList($event->getObjectManager());
     }
 
     /**
-     * @param MigrationDataFixturesEvent $event
+     * @param ObjectManager $manager
      */
-    public function onPostLoad(MigrationDataFixturesEvent $event)
-    {
-        if (!$event->isDemoFixtures()) {
-            return;
-        }
-
-        $this->listenerManager->enableListeners(self::LISTENERS);
-
-        $event->log('updating marketing lists');
-
-        $this->updateMarketingList();
-    }
-
-    protected function updateMarketingList()
+    protected function updateMarketingList(ObjectManager $manager)
     {
         $classes = array_map(
             function ($entity) {
@@ -85,7 +59,7 @@ class UpdateMarketingListDemoDataFixturesListener
         );
 
         foreach ($classes as $class) {
-            $marketingLists = $this->findMarketingLists($class);
+            $marketingLists = $this->findMarketingLists($manager, $class);
             if (count($marketingLists)) {
                 $this->dispatch($marketingLists);
             }
@@ -104,14 +78,13 @@ class UpdateMarketingListDemoDataFixturesListener
     }
 
     /**
+     * @param ObjectManager $manager
      * @param string $class
      * @return MarketingList[]
      */
-    protected function findMarketingLists($class)
+    protected function findMarketingLists(ObjectManager $manager, $class)
     {
-        return $this->doctrineHelper
-            ->getEntityManager(MarketingList::class)
-            ->getRepository(MarketingList::class)
+        return $manager->getRepository(MarketingList::class)
             ->findBy([
                 'type' => 'dynamic',
                 'entity' => $class,
