@@ -9,13 +9,12 @@ use Doctrine\ORM\UnitOfWork;
 
 use Psr\Log\LoggerInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerInterface;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
@@ -81,6 +80,19 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
             $this->logger,
             $this->entityProvider
         );
+    }
+
+    public function testOnFlushWithDisabledListener()
+    {
+        $args = $this->createMock(OnFlushEventArgs::class);
+        $args->expects($this->never())
+            ->method('getEntityManager');
+
+        $this->messageProducer->expects($this->never())
+            ->method('send');
+
+        $this->disableListener();
+        $this->listener->onFlush($args);
     }
 
     public function testFlow()
@@ -209,5 +221,11 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
             User::class,
             Organization::class,
         ];
+    }
+
+    protected function disableListener()
+    {
+        $this->assertInstanceOf(OptionalListenerInterface::class, $this->listener);
+        $this->listener->setEnabled(false);
     }
 }
