@@ -22,9 +22,9 @@ oro:
         marketing_list_unsubscribed_items.label: Marketing List Unsubscribed Items
 
         controller:
-            unsubscribed: %entityName% unsubscribed
-            subscribed: %entityName% subscribed
-            removed: %entityName% removed from list
+            unsubscribed: '%entityName% unsubscribed'
+            subscribed: '%entityName% subscribed'
+            removed: '%entityName% removed from list'
             unremoved: Undo was successful
 
         segment: Marketing List %name% segment
