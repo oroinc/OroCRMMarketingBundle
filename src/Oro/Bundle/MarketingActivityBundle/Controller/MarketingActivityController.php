@@ -34,7 +34,7 @@ class MarketingActivityController extends Controller
      *
      * @return array
      */
-    public function summaryAction($campaignId, $entityClass, $entityId)
+    public function summaryAction($campaignId, $entityClass = null, $entityId = null)
     {
         $summaryData = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
