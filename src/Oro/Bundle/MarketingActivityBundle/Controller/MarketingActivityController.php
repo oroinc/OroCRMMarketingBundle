@@ -23,7 +23,8 @@ class MarketingActivityController extends Controller
      * @Route(
      *         "/widget/marketing-activities/summary/{campaignId}",
      *          name="oro_marketing_activity_widget_summary",
-     *          requirements={"campaignId"="\d+"}
+     *          requirements={"campaignId"="\d+"},
+     *          defaults={"entityClass"=null, "entityId"=null}
      * )
      * @AclAncestor("oro_marketing_activity_view")
      * @Template
