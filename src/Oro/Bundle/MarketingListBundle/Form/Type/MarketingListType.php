@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\QueryDesignerBundle\Form\Type\AbstractQueryDesignerType;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -71,6 +71,9 @@ class MarketingListType extends AbstractQueryDesignerType
     public function getDefaultOptions()
     {
         return [
+            'column_column_field_choice_options' => [
+                'exclude_fields' => ['relation_type'],
+            ],
             'column_column_choice_type' => 'hidden',
             'filter_column_choice_type' => 'oro_entity_field_select'
         ];
@@ -79,13 +82,16 @@ class MarketingListType extends AbstractQueryDesignerType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $options = array_merge(
             $this->getDefaultOptions(),
             [
                 'data_class' => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
-                'intention' => 'marketing_list',
+                'intention'  => 'marketing_list',
+                'query_type' => 'segment',
             ]
         );
 
