@@ -1,4 +1,3 @@
-OroCampaignBundle
-===================
+# OroCampaignBundle
 
-Campaigns management able to create & manage campaigns and connect them to other entities.
+Campaigns management is responsible for creating and managing campaigns, as well as connecting them to other entities.

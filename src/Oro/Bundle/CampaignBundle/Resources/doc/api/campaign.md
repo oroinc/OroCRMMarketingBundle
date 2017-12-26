@@ -1,6 +1,6 @@
 # Oro\Bundle\CampaignBundle\Entity\Campaign
 
-## ACTIONS  
+## ACTIONS
 
 ### get
 
@@ -17,11 +17,12 @@ Retrieve a collection of campaign records.
 ### create
 
 Create a new campaign record.
-The created record is returned in the response.
+The created record is returned in response.
 
 {@inheritdoc}
 
 {@request:json_api}
+
 Example:
 
 `</api/campaigns>`
@@ -62,6 +63,7 @@ Edit a specific campaign record.
 {@inheritdoc}
 
 {@request:json_api}
+
 Example:
 
 `</api/campaigns/1>`
@@ -105,7 +107,8 @@ Delete a specific campaign record.
 ### delete_list
 
 Delete a campaign record.
-The list of records to be deleted can be limited by filters.
+
+The list of the records to be deleted can be limited by filters.
 
 {@inheritdoc}
 
@@ -127,23 +130,23 @@ The supported values are `day`, `hour`, `month`.
 
 ### budget
 
-Budget of Marketing Campaign. Minimal value is 0.
+Specify a budget for a marketing campaign. The minimal value is 0.
 
 ### description
 
-Description of Marketing Campaign.
+Provide a description of a marketing campaign.
 
 ### startDate
 
-Campaign starts from this date.
+Specify the date which the campaign starts from.
 
 ### endDate
 
-Campaign finishes on this date.
+Specify the date which the campaign finishes on.
 
 ## SUBRESOURCES
 
-### owner
+### Owner
 
 #### get_subresource
 
@@ -158,6 +161,7 @@ Retrieve the ID of the user who is the owner of a specific campaign record.
 Replace the owner of a specific campaign record.
 
 {@request:json_api}
+
 Example:
 
 `</api/campaigns/{id}/relationships/owner>`
@@ -172,7 +176,7 @@ Example:
 ```
 {@/request}
 
-### organization
+### Organization
 
 #### get_subresource
 
@@ -187,6 +191,7 @@ Retrieve the ID of the organization that a specific campaign record belongs to.
 Replace the organization that a specific campaign record belongs to.
 
 {@request:json_api}
+
 Example:
 
 `</api/campaigns/{id}/relationships/organization>`

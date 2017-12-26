@@ -1,22 +1,20 @@
-OroMarketingActivityBundle
-===================
+# OroMarketingActivityBundle
 
-Bundle responsibilities:
-------------------------
+## Bundle Responsibilities
 
-Bundle provides general storage and UI for various marketing activities (e.g. email campaigns activites like click,
-open etc.). Marketing activities are stored per marketing campaign. 
+Bundle provides a general storage and UI for various marketing activities (e.g. email campaign activities such as click,
+open, etc.). Marketing activities are stored per a marketing campaign. 
 
 UI includes:
 
-    - Marketing activites summary on marketing campaign view page
-    - Marketing activites widget on entity view pages
-    - Ability to create reports based on marketing activities data
+    - Marketing activites summary on the marketing campaign view page;
+    - Marketing activites widget on the entity view pages;
+    - Ability to create reports based on the marketing activities data.
 
-Activity Types
-------------
+## Activity Types
 
 A list of predefined activity types:
+
 - Send
 - Open
 - Click
@@ -24,12 +22,12 @@ A list of predefined activity types:
 - Soft bounce
 - Hard bounce
 
-New activity types can be introduced by adding new options for type (ma_type) enum field.
+New activity types can be introduced by adding new options for the type (ma_type) enum field.
 
-Reporting
-------------
+## Reporting
 
-Additional aggregation functions are available for marketing activity type field:
+Additional aggregation functions are available for the marketing activity type field:
+
 - Send Count
 - Open Count
 - Click Count
@@ -37,4 +35,4 @@ Additional aggregation functions are available for marketing activity type field
 - Soft bounce Count
 - Hard bounce Count
 
-Using these functions may be useful when statistics on several activities should be displayed on a single report grid.
+These functions may be useful when displaying the statistics for several activities on a single report grid.

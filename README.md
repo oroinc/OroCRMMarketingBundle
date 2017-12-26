@@ -1,9 +1,8 @@
-Marketing-related packaged bundles
-======================
+# Marketing-related Packaged Bundles
 
-Marketing-related package comes with specific bundles intended to integrate marketing features into Oro applications.
+Marketing-related package comes with specific bundles intended to integrate marketing features into the Oro applications.
 
-## Use as dependency in composer
+## Use as Dependency in Composer
 
 In order to use the package in your project, it needs to be added as a dependency in the composer.json file:
 

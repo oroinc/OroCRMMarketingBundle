@@ -4,27 +4,28 @@
 
 ### get
 
-Retrieve a specific marketing activity record.
+The **get** action retrieves a specific marketing activity record.
 
 {@inheritdoc}
 
 ### get_list
 
-Retrieve a collection of marketing activity records.
+The **get_list** action retrieves a collection of marketing activity records.
 
-The list of records that will be returned, could be limited by filters.
+A list of the records to be returned is limited by filters.
 
 {@inheritdoc}
 
 ### create
 
-Create a new marketing activity record.
+The action creates a new marketing activity record.
 
-The created record is returned in the response.
+The created record is returned in response.
 
 {@inheritdoc}
 
 {@request:json_api}
+
 Example:
 
 `< /admin/api/marketingactivities>`
@@ -65,13 +66,14 @@ Example:
 
 ### update
 
-Edit a specific marketing activity record.
+The **update** action edits a specific marketing activity record.
 
-The updated record is returned in the response.
+The updated record is returned in response.
 
 {@inheritdoc}
 
 {@request:json_api}
+
 Example:
 
 `</admin/api/marketingactivities/1>`
@@ -106,15 +108,15 @@ Example:
 
 ### delete
 
-Delete a specific marketing activity record.
+The action deletes a specific marketing activity record.
 
 {@inheritdoc}
 
 ### delete_list
 
-Delete a collection of marketing activity records.
+The **delete_list** deletes a collection of marketing activity records.
 
-The list of records that will be deleted, could be limited by filters.
+A list of the records to be deleted is limited by filters.
 
 {@inheritdoc}
 
@@ -182,17 +184,18 @@ The list of records that will be deleted, could be limited by filters.
 
 #### get_subresource
 
-Retrieve the campaign record a specific marketing activity record is assigned to.
+**Get_subresource** retrieves the campaign record which a specific marketing activity record is assigned to.
 
 #### get_relationship
 
-Retrieve the ID of the campaign record which a specific marketing activity record is assigned to.
+**Get_relationship** retrieves the ID of the campaign record which a specific marketing activity record is assigned to.
 
 #### update_relationship
 
-Replace campaign a specific marketing activity record is assigned to.
+**Update_relationship** replaces the campaign which a specific marketing activity record is assigned to.
 
 {@request:json_api}
+
 Example:
 
 `</admin/api/marketingactivities/1/relationships/campaign>`
@@ -211,17 +214,18 @@ Example:
 
 #### get_subresource
 
-Retrieve a record of marketing activity type assigned to a specific marketing activity record.
+The **get_subresource** action retrieves the record of a marketing activity type assigned to a specific marketing activity record.
 
 #### get_relationship
 
-Retrieve ID of marketing activity type record assigned to a specific marketing activity record.
+The **get_relationship** action retrieves the ID of a marketing activity type record assigned to a specific marketing activity record.
 
 #### update_relationship
 
-Replace marketing activity type assigned to a specific marketing activity record.
+The **update_relationship** action replaces the marketing activity type assigned to a specific marketing activity record.
 
 {@request:json_api}
+
 Example:
 
 `</admin/api/marketingactivities/1/relationships/marketingActivityType>`
@@ -240,17 +244,18 @@ Example:
 
 #### get_subresource
 
-Retrieve the record of the organization that is the owner of a specific marketing activity record.
+The **get_subresource** action retrieves the record of the organization that is the owner of a specific marketing activity record.
 
 #### get_relationship
 
-Retrieve the ID of the organization that is the owner of a specific marketing activity record.
+The **get_relationship** action retrieves the ID of the organization that is the owner of a specific marketing activity record.
 
 #### update_relationship
 
-Replace the owner of a specific marketing activity record.
+The **update_relationship** replaces the owner of a specific marketing activity record.
 
 {@request:json_api}
+
 Example:
 
 `</admin/api/marketingactivities/1/relationships/owner>`
@@ -271,14 +276,11 @@ Example:
 
 ### get
 
-Retrieve a specific marketing activity type record.
-
-A type of marketing activities (click, open, send, unsubscribe, soft_bunce, hard_bounce). 
+The **get** action retrieves a specific marketing activity type record, such as click, open, send, unsubscribe, soft_bunce, and hard_bounce. 
 
 ### get_list
 
-Retrieve a collection of marketing activity type records.
+The **get_list** retrieves a collection of marketing activity type records, such as click, open, send, unsubscribe, soft_bunce, and hard_bounce.
 
-The list of records that will be returned, could be limited by filters.
+A list of the records to be returned is limited by filters.
 
-A type of marketing activities (click, open, send, unsubscribe, soft_bunce, hard_bounce). 
