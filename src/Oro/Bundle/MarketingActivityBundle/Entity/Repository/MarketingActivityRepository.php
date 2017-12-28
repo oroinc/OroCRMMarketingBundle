@@ -154,11 +154,15 @@ class MarketingActivityRepository extends EntityRepository
     protected function applyPageFilter(QueryBuilder $queryBuilder, $pageFilter)
     {
         $dateFilter = new \DateTime($pageFilter['date'], new \DateTimeZone('UTC'));
-        $whereComparison = $pageFilter['action'] === 'prev' ? 'gte' : 'lte';
         $orderDirection = $pageFilter['action'] === 'prev' ? 'ASC' : 'DESC';
 
-        $queryBuilder->andWhere($queryBuilder->expr()->notIn('campaign.id', implode(',', $pageFilter['ids'])));
-        $queryBuilder->having($queryBuilder->expr()->{$whereComparison}('eventDate', ':dateFilter'));
+        $queryBuilder->andWhere($queryBuilder->expr()->notIn('campaign.id', ':ids'));
+        $queryBuilder->setParameter('ids', $pageFilter['ids']);
+        if ($pageFilter['action'] === 'prev') {
+            $queryBuilder->having($queryBuilder->expr()->gte('eventDate', ':dateFilter'));
+        } else {
+            $queryBuilder->having($queryBuilder->expr()->lte('eventDate', ':dateFilter'));
+        }
         $queryBuilder->setParameter(':dateFilter', $dateFilter->format('Y-m-d H:i:s'));
         $queryBuilder->orderBy('eventDate', $orderDirection);
 
