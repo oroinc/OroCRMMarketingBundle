@@ -1,7 +1,4 @@
-{% set host = app.request.host %}
-{% if app.request.port is not empty and app.request.port not in ['80', '443'] %}
-    {% set host = host ~ ':' ~ app.request.port %}
-{% endif %}
+{% set hostWithPath = oro_config_value('oro_ui.application_url')|oro_preg_replace('/^https?:\\/\\/?/', '') %}
 <script type="text/javascript">
     var _paq = _paq || [];
     _paq.push(['setUserId', [user_identifier] ]);
@@ -10,7 +7,7 @@
     // Uncomment following line to track custom events
     // _paq.push(['trackEvent', 'OroCRM', 'Tracking', [name], [value] ]);
     (function() {
-        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://" + {{ host ? host|json_encode|raw : "[host]" }} + "/";
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://" + {{ hostWithPath ? hostWithPath|json_encode|raw : "[host]" }} + "/";
         _paq.push(['setTrackerUrl', u+'tracking.php']);
         _paq.push(['setSiteId', '{{ entity.identifier }}']);
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
