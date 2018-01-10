@@ -77,7 +77,7 @@
             'title': 'oro.campaign.tracking_code.label'|trans,
             'subblocks': [
                 {'data' : [
-                    'oro.campaign.tracking_code.info'|trans({'%campaignCode%': entity.code})
+                    'oro.campaign.tracking_code.info'|trans({'%campaignCode%': entity.code|escape})
                 ]}
             ]
         }
