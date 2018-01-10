@@ -29,6 +29,7 @@ system_configuration:
         oro_tracking.log_rotate_interval:
             data_type: integer
             type: choice
+            search_type: choice
             priority: 40
             options:
                 label: oro.tracking.system_configuration.fields.log_rotate_interval.label
@@ -47,6 +48,7 @@ system_configuration:
         oro_tracking.piwik_host:
             data_type: string
             type: text
+            search_type: text
             priority: 20
             options:
                 label: oro.tracking.system_configuration.fields.piwik_host.label
@@ -56,6 +58,7 @@ system_configuration:
         oro_tracking.piwik_token_auth:
             data_type: string
             type: text
+            search_type: text
             priority: 10
             options:
                 label: oro.tracking.system_configuration.fields.piwik_token_auth.label
