@@ -7,7 +7,7 @@
         <div class="responsive-block">
             {{ ui.renderProperty('oro.campaign.name.label'|trans, entity.name) }}
             {{ ui.renderProperty('oro.campaign.code.label'|trans, entity.code) }}
-            {{ ui.renderHtmlProperty('oro.campaign.description.label'|trans, entity.description) }}
+            {{ ui.renderHtmlProperty('oro.campaign.description.label'|trans, entity.description|oro_html_sanitize) }}
         </div>
 
         <div class="responsive-block">
