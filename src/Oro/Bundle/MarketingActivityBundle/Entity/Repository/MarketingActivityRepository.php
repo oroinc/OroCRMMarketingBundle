@@ -121,11 +121,15 @@ class MarketingActivityRepository extends EntityRepository
 
         /** @var Orx $orX */
         $orX = $queryBuilder->expr()->orX();
+        $i = 0;
         foreach ($items as $item) {
+            $i++;
+            $parameterName = 'campaignId' . $i;
             $orX->add($queryBuilder->expr()->andX(
-                $queryBuilder->expr()->eq('ma.campaign', $item['id']),
+                $queryBuilder->expr()->eq('ma.campaign', ':' . $parameterName),
                 $queryBuilder->expr()->eq('ma.actionDate', $queryBuilder->expr()->literal($item['eventDate']))
             ));
+            $queryBuilder->set($parameterName, $item['id']);
         }
         $queryBuilder->andWhere($orX);
 
