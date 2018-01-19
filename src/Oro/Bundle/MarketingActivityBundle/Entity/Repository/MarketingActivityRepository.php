@@ -129,7 +129,7 @@ class MarketingActivityRepository extends EntityRepository
                 $queryBuilder->expr()->eq('ma.campaign', ':' . $parameterName),
                 $queryBuilder->expr()->eq('ma.actionDate', $queryBuilder->expr()->literal($item['eventDate']))
             ));
-            $queryBuilder->set($parameterName, $item['id']);
+            $queryBuilder->setParameter($parameterName, $item['id']);
         }
         $queryBuilder->andWhere($orX);
 
