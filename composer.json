@@ -17,7 +17,7 @@
     },
     "require": {
         "php": "7.1.*",
-        "oro/platform": "2.x-dev"
+        "oro/platform": "2.6.x-dev"
     },
     "repositories": {
         "oro": {
@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-master": "2.6.x-dev"
         }
     }
 }
