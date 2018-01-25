@@ -33,7 +33,7 @@ define(function(require) {
         if (entity) {
             $.ajax({
                 url: routing.generate('oro_api_entity_marketinglist_contact_information_fields'),
-                data: {'entity': entity},
+                data: {entity: entity},
                 success: updateContactInformationFields
             });
         }
@@ -66,8 +66,8 @@ define(function(require) {
             $.ajax({
                 url: routing.generate('oro_api_contact_marketinglist_information_field_type'),
                 data: {
-                    'entity': $entityEl.select2('val'),
-                    'field': fieldName
+                    entity: $entityEl.select2('val'),
+                    field: fieldName
                 },
                 success: function(type) {
                     contactInformationFieldsCache[fieldName] = type;
