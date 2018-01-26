@@ -38,8 +38,8 @@ define(function(require) {
 
             // create and render
             this.campaignTypeFilter = new MultiSelectFilter({
-                'label': __('oro.marketingactivity.widget.filter.campaign.title'),
-                'choices': campaignChoices || {}
+                label: __('oro.marketingactivity.widget.filter.campaign.title'),
+                choices: campaignChoices || {}
             });
 
             this.campaignTypeFilter.render();

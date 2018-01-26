@@ -1,3 +1,6 @@
+## 2.6.0 (Unreleased)
+[Show detailed list of changes](incompatibilities-2-6.md)
+
 ## 2.5.0 (2017-11-30)
 [Show detailed list of changes](incompatibilities-2-5.md)
 
