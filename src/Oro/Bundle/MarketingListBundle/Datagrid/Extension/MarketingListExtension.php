@@ -48,6 +48,10 @@ class MarketingListExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
+        if (!parent::isApplicable($config)) {
+            return false;
+        }
+
         $gridName = $config->getName();
 
         $cacheKey = $this->getCacheKey($config);

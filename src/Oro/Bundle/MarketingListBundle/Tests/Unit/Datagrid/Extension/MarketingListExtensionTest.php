@@ -5,6 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid\Extension;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension;
@@ -12,14 +13,10 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var MarketingListExtension
-     */
+    /** @var MarketingListExtension */
     protected $extension;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|MarketingListHelper */
     protected $marketingListHelper;
 
     protected function setUp()
@@ -30,6 +27,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->extension = new MarketingListExtension($this->marketingListHelper);
+        $this->extension->setParameters(new ParameterBag());
     }
 
     public function testIsApplicableIncorrectDataSource()
