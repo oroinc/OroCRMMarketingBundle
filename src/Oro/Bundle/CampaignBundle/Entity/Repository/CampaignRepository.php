@@ -9,6 +9,7 @@ use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
 class CampaignRepository extends EntityRepository
 {
@@ -92,6 +93,7 @@ class CampaignRepository extends EntityRepository
      */
     public function getCampaignsLeadsQB($leadAlias)
     {
+        QueryBuilderUtil::checkIdentifier($leadAlias);
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select(
             'campaign.name as label',
@@ -140,6 +142,7 @@ class CampaignRepository extends EntityRepository
      */
     public function getCampaignsOpportunitiesQB($opportunitiesAlias)
     {
+        QueryBuilderUtil::checkIdentifier($opportunitiesAlias);
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaign.name as label', sprintf('COUNT(%s.id) as number', $opportunitiesAlias))
             ->from('OroCampaignBundle:Campaign', 'campaign')
@@ -161,6 +164,7 @@ class CampaignRepository extends EntityRepository
         $opportunitiesAlias,
         CurrencyQueryBuilderTransformerInterface $qbTransformer
     ) {
+        QueryBuilderUtil::checkIdentifier($opportunitiesAlias);
         $qb = $this->getEntityManager()->createQueryBuilder();
         $crSelect = $qbTransformer->getTransformSelectQuery('closeRevenue', $qb, $opportunitiesAlias);
         $qb
