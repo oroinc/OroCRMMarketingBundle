@@ -56,9 +56,9 @@ class EmailCampaignTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('oro_email_campaign', $typeName);
     }
 
-    public function testSetDefaultOptions()
+    public function testConfigureOptions()
     {
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
         $resolver
             ->expects($this->once())
             ->method('setDefaults')
@@ -68,6 +68,6 @@ class EmailCampaignTypeTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $this->type->setDefaultOptions($resolver);
+        $this->type->configureOptions($resolver);
     }
 }

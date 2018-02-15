@@ -3,7 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InternalTransportSettingsType extends AbstractTransportSettingsType
 {
@@ -34,7 +34,7 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

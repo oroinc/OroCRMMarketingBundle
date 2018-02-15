@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
 
@@ -21,14 +21,14 @@ class CampaignSelectTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new CampaignSelectType();
     }
 
-    public function testSetDefaultOptions()
+    public function testConfigureOptions()
     {
-        /** @var OptionsResolverInterface $resolver */
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        /** @var OptionsResolver $resolver */
+        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
         $resolver->expects($this->once())
             ->method('setDefaults')
             ->with($this->isType('array'));
-        $this->type->setDefaultOptions($resolver);
+        $this->type->configureOptions($resolver);
     }
 
     public function testGetParent()

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
 
@@ -30,19 +30,19 @@ class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new EmailTransportSelectType($this->emailTransportProvider);
     }
 
-    public function testSetDefaultOptions()
+    public function testConfigureOptions()
     {
         $choices = ['internal' => 'oro.campaign.emailcampaign.transport.internal'];
         $this->emailTransportProvider
             ->expects($this->once())
             ->method('getVisibleTransportChoices')
             ->will($this->returnValue($choices));
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
         $resolver
             ->expects($this->once())
             ->method('setDefaults')
             ->with(['choices' => $choices]);
-        $this->type->setDefaultOptions($resolver);
+        $this->type->configureOptions($resolver);
     }
 
     public function testGetParent()
