@@ -28,16 +28,14 @@ services:
 
     oro_tracking.form.handler.tracking_website:
         class: %oro_tracking.form.handler.tracking_website.class%
-        scope: request
         arguments:
             - '@oro_tracking.form.tracking_website'
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
     oro_tracking.form.tracking_website:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
             - oro_tracking_website
             - oro_tracking_website

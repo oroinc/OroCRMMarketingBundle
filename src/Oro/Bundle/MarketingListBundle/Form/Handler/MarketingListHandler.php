@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -34,9 +34,9 @@ class MarketingListHandler
     protected $form;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var EntityManager
@@ -55,20 +55,20 @@ class MarketingListHandler
 
     /**
      * @param FormInterface $form
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param RegistryInterface $doctrine
      * @param ValidatorInterface $validator
      * @param TranslatorInterface $translator
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack $requestStack,
         RegistryInterface $doctrine,
         ValidatorInterface $validator,
         TranslatorInterface $translator
     ) {
         $this->form = $form;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->manager = $doctrine->getManager();
         $this->validator = $validator;
         $this->translator = $translator;
@@ -84,8 +84,9 @@ class MarketingListHandler
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), ['POST', 'PUT'], true)) {
-            $this->form->submit($this->request);
+        $request = $this->requestStack->getCurrentRequest();
+        if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
+            $this->form->submit($request);
             if (!$entity->isManual()) {
                 $this->processSegment($entity);
             }
@@ -115,7 +116,7 @@ class MarketingListHandler
      */
     protected function processSegment(MarketingList $marketingList)
     {
-        $requestData = $this->request->get($this->form->getName());
+        $requestData = $this->requestStack->getCurrentRequest()->get($this->form->getName());
         $segment = $marketingList->getSegment();
         if (!$segment) {
             $segment = new Segment();

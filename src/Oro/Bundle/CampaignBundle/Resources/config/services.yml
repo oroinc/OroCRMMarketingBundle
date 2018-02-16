@@ -36,8 +36,7 @@ services:
 
     oro_campaign.campaign.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
             - "oro_campaign_form"
             - "oro_campaign_form"
@@ -53,8 +52,7 @@ services:
 
     oro_campaign.email_campaign.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
             - "oro_email_campaign"
             - "oro_email_campaign"
@@ -186,9 +184,8 @@ services:
 
     oro_campaign.form.handler.email_campaign:
         class: %oro_campaign.form.handler.email_campaign.class%
-        scope: request
         arguments:
-            - "@request"
+            - "@request_stack"
             - "@oro_campaign.email_campaign.form"
             - "@doctrine"
 

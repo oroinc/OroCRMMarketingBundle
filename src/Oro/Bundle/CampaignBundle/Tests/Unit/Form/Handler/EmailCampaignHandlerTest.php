@@ -4,6 +4,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Handler;
 
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,13 +31,15 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->request = new Request();
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
         $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
         $this->registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\RegistryInterface')
             ->getMockForAbstractClass();
 
-        $this->handler = new EmailCampaignHandler($this->request, $this->form, $this->registry);
+        $this->handler = new EmailCampaignHandler($requestStack, $this->form, $this->registry);
     }
 
     public function testProcessGet()

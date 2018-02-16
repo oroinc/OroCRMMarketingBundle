@@ -6,6 +6,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -70,6 +71,8 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->request = new Request();
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
 
         $this->validator = $this->createMock('Symfony\Component\Validator\ValidatorInterface');
         $this->translator = $this->createMock('Symfony\Component\Translation\TranslatorInterface');
@@ -77,7 +80,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
         $this->testEntity = new MarketingList();
         $this->handler = new MarketingListHandler(
             $this->form,
-            $this->request,
+            $requestStack,
             $registry,
             $this->validator,
             $this->translator

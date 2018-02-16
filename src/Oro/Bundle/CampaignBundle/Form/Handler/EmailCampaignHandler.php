@@ -2,18 +2,17 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\Handler;
 
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
-
-use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class EmailCampaignHandler
 {
     const UPDATE_MARKER = 'formUpdateMarker';
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RegistryInterface */
     protected $registry;
@@ -22,16 +21,16 @@ class EmailCampaignHandler
     protected $form;
 
     /**
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param FormInterface $form
      * @param RegistryInterface $registry
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         FormInterface $form,
         RegistryInterface $registry
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->form = $form;
         $this->registry = $registry;
     }
@@ -47,9 +46,10 @@ class EmailCampaignHandler
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->form->submit($this->request);
-            if (!$this->request->get(self::UPDATE_MARKER, false) && $this->form->isValid()) {
+        $request = $this->requestStack->getCurrentRequest();
+        if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
+            $this->form->submit($request);
+            if (!$request->get(self::UPDATE_MARKER, false) && $this->form->isValid()) {
                 $em = $this->registry->getManagerForClass('OroCampaignBundle:EmailCampaign');
                 $em->persist($entity);
                 $em->flush();
