@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Util\Codes;
@@ -44,12 +45,13 @@ class MarketingListController extends RestController implements ClassResourceInt
      *     description="Get contact information field type by field name",
      *     resource=true
      * )
+     * @param Request $request
      * @return Response
      */
-    public function contactInformationFieldTypeAction()
+    public function contactInformationFieldTypeAction(Request $request)
     {
-        $entity = $this->getRequest()->get('entity');
-        $field = $this->getRequest()->get('field');
+        $entity = $request->get('entity');
+        $field = $request->get('field');
         /** @var ContactInformationFieldHelper $helper */
         $helper = $this->get('oro_marketing_list.contact_information_field_helper');
         return $this->handleView(
@@ -68,11 +70,12 @@ class MarketingListController extends RestController implements ClassResourceInt
      *     description="Get entity contact information fields",
      *     resource=true
      * )
+     * @param Request $request
      * @return Response
      */
-    public function entityContactInformationFieldsAction()
+    public function entityContactInformationFieldsAction(Request $request)
     {
-        $entity = $this->getRequest()->get('entity');
+        $entity = $request->get('entity');
         /** @var ContactInformationFieldHelper $helper */
         $helper = $this->get('oro_marketing_list.contact_information_field_helper');
 

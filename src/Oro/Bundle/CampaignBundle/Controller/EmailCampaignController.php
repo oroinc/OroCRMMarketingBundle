@@ -125,7 +125,10 @@ class EmailCampaignController extends Controller
      */
     protected function getForm()
     {
-        $isUpdateOnly = $this->get('request')->get(EmailCampaignHandler::UPDATE_MARKER, false);
+        $isUpdateOnly = $this
+            ->get('request_stack')
+            ->getCurrentRequest()
+            ->get(EmailCampaignHandler::UPDATE_MARKER, false);
 
         $form = $this->get('oro_campaign.email_campaign.form');
         if ($isUpdateOnly) {

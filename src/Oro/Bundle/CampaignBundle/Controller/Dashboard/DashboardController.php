@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
 {
@@ -20,13 +21,16 @@ class DashboardController extends Controller
      *      requirements={"widget"="[\w-]+"}
      * )
      * @Template("OroCampaignBundle:Dashboard:campaignLeads.html.twig")
+     * @param Request $request
+     * @param mixed $widget
+     * @return array
      */
-    public function campaignLeadsAction($widget)
+    public function campaignLeadsAction(Request $request, $widget)
     {
         $items                   = $this->get('oro_campaign.dashboard.campaign_data_provider')
             ->getCampaignLeadsData(
                 $this->get('oro_dashboard.widget_configs')
-                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
+                    ->getWidgetOptions($request->query->get('_widgetId', null))
                     ->get('dateRange')
             );
         $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
@@ -54,13 +58,16 @@ class DashboardController extends Controller
      *      requirements={"widget"="[\w-]+"}
      * )
      * @Template("OroCampaignBundle:Dashboard:campaignOpportunity.html.twig")
+     * @param Request $request
+     * @param mixed $widget
+     * @return array
      */
-    public function campaignOpportunityAction($widget)
+    public function campaignOpportunityAction(Request $request, $widget)
     {
         $items = $this->get('oro_campaign.dashboard.campaign_data_provider')
             ->getCampaignOpportunitiesData(
                 $this->get('oro_dashboard.widget_configs')
-                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
+                    ->getWidgetOptions($request->query->get('_widgetId', null))
                     ->get('dateRange')
             );
 
@@ -89,13 +96,16 @@ class DashboardController extends Controller
      *      requirements={"widget"="[\w-]+"}
      * )
      * @Template("OroCampaignBundle:Dashboard:campaignByCloseRevenue.html.twig")
+     * @param Request $request
+     * @param mixed $widget
+     * @return array
      */
-    public function campaignByCloseRevenueAction($widget)
+    public function campaignByCloseRevenueAction(Request $request, $widget)
     {
         $items = $this->get('oro_campaign.dashboard.campaign_data_provider')
             ->getCampaignsByCloseRevenueData(
                 $this->get('oro_dashboard.widget_configs')
-                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
+                    ->getWidgetOptions($request->query->get('_widgetId', null))
                     ->get('dateRange')
             );
 
