@@ -4,7 +4,6 @@ namespace Oro\Bundle\CampaignBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 

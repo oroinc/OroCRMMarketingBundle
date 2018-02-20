@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignSelectTypeTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\TrackingBundle;
 
+use Oro\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingEventIdentificationPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-use Oro\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingEventIdentificationPass;
 
 class OroTrackingBundle extends Bundle
 {

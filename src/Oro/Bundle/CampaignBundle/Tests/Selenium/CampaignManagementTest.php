@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Selenium;
 
-use Oro\Bundle\ReportBundle\Tests\Selenium\Pages\Reports;
-use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 use Oro\Bundle\CampaignBundle\Tests\Selenium\Pages\Campaigns;
 use Oro\Bundle\ChannelBundle\Tests\Selenium\Pages\Channels;
+use Oro\Bundle\ReportBundle\Tests\Selenium\Pages\Reports;
 use Oro\Bundle\SalesBundle\Tests\Selenium\Pages\Leads;
 use Oro\Bundle\SalesBundle\Tests\Selenium\Pages\SalesFunnels;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 
 /**
  * Class Campaign Test

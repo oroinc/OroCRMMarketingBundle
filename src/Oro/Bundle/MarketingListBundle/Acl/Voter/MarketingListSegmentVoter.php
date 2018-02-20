@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Acl\Voter;
 
-use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
 
 class MarketingListSegmentVoter extends AbstractEntityVoter
 {

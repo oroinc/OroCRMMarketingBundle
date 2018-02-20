@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Cache\ArrayCache;
-
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
 

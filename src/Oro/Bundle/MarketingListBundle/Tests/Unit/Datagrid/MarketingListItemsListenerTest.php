@@ -4,9 +4,9 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\MarketingListBundle\Datagrid\MarketingListItemsListener;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class MarketingListItemsListenerTest extends \PHPUnit_Framework_TestCase
 {

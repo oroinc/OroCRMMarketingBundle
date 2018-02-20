@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\DataFixtures\SharedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\TestFrameworkBundle\Entity\TestActivity;

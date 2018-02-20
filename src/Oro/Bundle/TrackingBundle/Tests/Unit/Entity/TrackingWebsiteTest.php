@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Entity;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class TrackingWebsiteTest extends \PHPUnit_Framework_TestCase
 {

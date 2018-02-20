@@ -5,13 +5,12 @@ namespace Oro\Bundle\MarketingListBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\MarketingListBundle\Model\ExtendMarketingList;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\MarketingListBundle\Model\ExtendMarketingList;
 
 /**
  * Marketing list

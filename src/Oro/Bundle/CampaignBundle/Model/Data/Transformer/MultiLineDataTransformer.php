@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\CampaignBundle\Model\Data\Transformer;
 
-use Oro\Component\PhpUtils\ArrayUtil;
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\DataInterface;
 use Oro\Bundle\ChartBundle\Model\Data\MappedData;
 use Oro\Bundle\ChartBundle\Model\Data\Transformer\TransformerInterface;
-
-use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Component\PhpUtils\ArrayUtil;
 
 class MultiLineDataTransformer implements TransformerInterface
 {

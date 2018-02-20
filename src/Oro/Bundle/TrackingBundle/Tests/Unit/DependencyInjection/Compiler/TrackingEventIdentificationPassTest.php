@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
-
 use Oro\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingEventIdentificationPass;
+use Symfony\Component\DependencyInjection\Reference;
 
 class TrackingEventIdentificationPassTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\MarketingListBundle\Model;
 
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class MarketingListItemConnector
 {

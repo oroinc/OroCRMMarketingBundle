@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\Test\FormIntegrationTestCase;
-
 use Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 class TrackingWebsiteTypeTest extends FormIntegrationTestCase
 {

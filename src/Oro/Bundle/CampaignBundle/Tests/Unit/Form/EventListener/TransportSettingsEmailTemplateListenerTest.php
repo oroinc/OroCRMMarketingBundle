@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\EventListener;
 
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class TransportSettingsEmailTemplateListenerTest extends \PHPUnit_Framework_TestCase
 {

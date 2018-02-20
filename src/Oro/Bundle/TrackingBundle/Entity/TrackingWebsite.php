@@ -3,12 +3,11 @@
 namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\TrackingBundle\Model\ExtendTrackingWebsite;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TrackingBundle\Model\ExtendTrackingWebsite;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Table(name="oro_tracking_website")

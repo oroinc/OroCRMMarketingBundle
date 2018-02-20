@@ -4,10 +4,8 @@ namespace Oro\Bundle\TrackingBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
@@ -15,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;

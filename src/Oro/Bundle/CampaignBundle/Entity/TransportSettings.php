@@ -3,7 +3,6 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**

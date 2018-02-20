@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\QueryDesigner;
 
-use Oro\Bundle\QueryDesignerBundle\QueryDesigner\FunctionInterface;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\AbstractQueryConverter;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\FunctionInterface;
 
 abstract class AbstractTypeCountFunction implements FunctionInterface
 {

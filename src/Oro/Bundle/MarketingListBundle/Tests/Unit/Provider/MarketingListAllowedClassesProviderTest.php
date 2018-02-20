@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\CacheProvider;
-
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;

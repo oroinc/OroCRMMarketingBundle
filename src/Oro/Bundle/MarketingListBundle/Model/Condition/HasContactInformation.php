@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\MarketingListBundle\Model\Condition;
 
-use Symfony\Component\PropertyAccess\PropertyPathInterface;
-
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Component\Action\Condition\AbstractCondition;
 use Oro\Component\ConfigExpression\ContextAccessorAwareInterface;
 use Oro\Component\ConfigExpression\ContextAccessorAwareTrait;
 use Oro\Component\ConfigExpression\Exception\InvalidArgumentException;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 /**
  * Check MarketingList for presence of contact information fields of given type

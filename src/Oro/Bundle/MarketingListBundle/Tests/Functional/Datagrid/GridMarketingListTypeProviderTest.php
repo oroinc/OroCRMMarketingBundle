@@ -3,9 +3,8 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Datagrid;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MarketingListBundle\Datagrid\GridMarketingListTypeProvider;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class GridMarketingListTypeProviderTest extends WebTestCase
 {

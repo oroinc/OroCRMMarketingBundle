@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Provider;
 
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Query\Expr\Join;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 

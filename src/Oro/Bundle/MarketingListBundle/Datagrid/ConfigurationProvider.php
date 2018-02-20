@@ -5,8 +5,8 @@ namespace Oro\Bundle\MarketingListBundle\Datagrid;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class ConfigurationProvider implements ConfigurationProviderInterface
 {

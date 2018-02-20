@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContactInformationFieldsExtension extends \Twig_Extension
 {

@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\MarketingListBundle\Validator;
 
+use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
+use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
+use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-
-use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
-use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
-use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
 
 class ContactInformationColumnValidator extends ConstraintValidator
 {

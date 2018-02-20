@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 
-use Symfony\Component\Filesystem\Filesystem;
-
 use Oro\Bundle\TrackingBundle\ImportExport\ContextReader;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ContextReaderTest extends \PHPUnit_Framework_TestCase
 {

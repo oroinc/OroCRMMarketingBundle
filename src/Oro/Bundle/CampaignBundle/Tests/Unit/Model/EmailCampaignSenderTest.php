@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Model;
 
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSender;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class EmailCampaignSenderTest extends \PHPUnit_Framework_TestCase
 {

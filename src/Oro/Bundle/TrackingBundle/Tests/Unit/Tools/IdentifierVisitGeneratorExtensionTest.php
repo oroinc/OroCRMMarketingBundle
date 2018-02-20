@@ -4,10 +4,8 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\Tools;
 
 use CG\Core\DefaultGeneratorStrategy;
 use CG\Generator\PhpClass;
-
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 use Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension;
 

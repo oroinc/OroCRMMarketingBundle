@@ -3,14 +3,13 @@
 namespace Oro\Bundle\MarketingListBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListType as MarketingListTypeEntity;
+use Oro\Bundle\QueryDesignerBundle\Form\Type\AbstractQueryDesignerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\QueryDesignerBundle\Form\Type\AbstractQueryDesignerType;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingListType as MarketingListTypeEntity;
 
 class MarketingListType extends AbstractQueryDesignerType
 {

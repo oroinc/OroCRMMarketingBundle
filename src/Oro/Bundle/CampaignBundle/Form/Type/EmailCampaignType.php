@@ -2,15 +2,14 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
-use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 
 class EmailCampaignType extends AbstractType
 {

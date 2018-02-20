@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator;
 
+use Oro\Bundle\MarketingListBundle\Validator\ColumnDublicateValidator;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Oro\Bundle\SegmentBundle\Entity\Segment;
-use Oro\Bundle\MarketingListBundle\Validator\ColumnDublicateValidator;
 
 class ColumnDublicateValidatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -5,7 +5,6 @@ namespace Oro\Bundle\CampaignBundle\Command;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
-
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

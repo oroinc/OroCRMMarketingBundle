@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Functional\Command;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class CalculateTrackingEventSummaryCommandTest extends WebTestCase
 {

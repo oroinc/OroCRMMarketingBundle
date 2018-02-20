@@ -5,17 +5,16 @@ namespace Oro\Bundle\MarketingListBundle\Provider;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
+use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\QueryDesignerBundle\Grid\QueryDesignerQueryConfiguration;
 use Oro\Bundle\TagBundle\Grid\TagsExtension;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
 /**
  * Return Marketing list entities iterator or QB. Both contain actual ML state and previously contacted entities.

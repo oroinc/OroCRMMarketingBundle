@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Datagrid;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class GridMarketingListTypeProvider
 {

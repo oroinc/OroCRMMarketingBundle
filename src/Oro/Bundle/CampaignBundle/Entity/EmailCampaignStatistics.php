@@ -3,12 +3,11 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Oro\Bundle\CampaignBundle\Model\ExtendEmailCampaignStatistics;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\CampaignBundle\Model\ExtendEmailCampaignStatistics;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 
 /**
  * Email Campaign Statistics.

@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Migrations\Data\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\UpdateWithOrganization;
 
 class UpdateTrackingWebsiteWithOrganization extends UpdateWithOrganization implements DependentFixtureInterface

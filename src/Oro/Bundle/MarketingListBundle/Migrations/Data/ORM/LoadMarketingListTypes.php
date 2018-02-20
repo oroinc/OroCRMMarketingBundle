@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
 class LoadMarketingListTypes extends AbstractFixture

@@ -3,11 +3,9 @@
 namespace Oro\Bundle\TrackingBundle\Tools;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
 use Oro\Bundle\EntityExtendBundle\Tools\AssociationBuilder;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\EntityExtendBundle\Tools\DumperExtensions\AbstractEntityConfigDumperExtension;
-
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider;
 

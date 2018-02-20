@@ -3,9 +3,8 @@
 namespace Oro\Bundle\MarketingListBundle\EventListener;
 
 use Doctrine\Common\Collections\Collection;
-
-use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 
 class ExtendFieldValueBeforeRenderListener
 {

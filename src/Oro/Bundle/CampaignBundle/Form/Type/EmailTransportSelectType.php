@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
+use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
 
 class EmailTransportSelectType extends AbstractType
 {

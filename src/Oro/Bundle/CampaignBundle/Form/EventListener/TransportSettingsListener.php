@@ -2,15 +2,14 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\EventListener;
 
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
+use Oro\Bundle\CampaignBundle\Transport\TransportInterface;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
-use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
-use Oro\Bundle\CampaignBundle\Transport\TransportInterface;
 
 class TransportSettingsListener implements EventSubscriberInterface
 {

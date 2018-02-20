@@ -3,10 +3,8 @@
 namespace Oro\Bundle\MarketingListBundle\Migrations\Schema\v1_5;
 
 use Doctrine\DBAL\Types\Type;
-
-use Psr\Log\LoggerInterface;
-
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
+use Psr\Log\LoggerInterface;
 
 class RemoveContactInformation extends ParametrizedMigrationQuery
 {

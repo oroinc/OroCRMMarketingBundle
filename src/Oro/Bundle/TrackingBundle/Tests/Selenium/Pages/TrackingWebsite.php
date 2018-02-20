@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Selenium\Pages;
 
-use PHPUnit_Framework_Assert;
-
 use Oro\Bundle\TestFrameworkBundle\Pages\AbstractPageEntity;
+use PHPUnit_Framework_Assert;
 
 /**
  * Class TrackingWebsite
@@ -15,10 +14,10 @@ class TrackingWebsite extends AbstractPageEntity
 {
     protected $owner = "//div[starts-with(@id,'s2id_oro_tracking_website_owner')]/a";
 
-     /**
-     * @param string $name
-     * @return $this
-     */
+    /**
+    * @param string $name
+    * @return $this
+    */
     public function setName($name)
     {
         $object = $this->test->byXpath("//*[@data-ftid='oro_tracking_website_name']");

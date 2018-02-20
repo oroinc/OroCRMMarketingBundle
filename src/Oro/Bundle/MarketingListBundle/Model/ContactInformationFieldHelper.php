@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\MarketingListBundle\Model;
 
-use Oro\Component\PhpUtils\ArrayUtil;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\JoinIdentifierHelper;
+use Oro\Component\PhpUtils\ArrayUtil;
 
 class ContactInformationFieldHelper
 {

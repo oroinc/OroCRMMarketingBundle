@@ -6,11 +6,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
-
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
@@ -19,6 +14,9 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 /**
  * Class TrackingProcessor

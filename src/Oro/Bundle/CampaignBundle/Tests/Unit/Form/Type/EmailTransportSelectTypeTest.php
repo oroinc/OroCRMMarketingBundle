@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
 {

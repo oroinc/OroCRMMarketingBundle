@@ -6,12 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-
-use Psr\Log\LoggerInterface;
-
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
-use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerInterface;
@@ -19,6 +16,7 @@ use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
+use Psr\Log\LoggerInterface;
 
 class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
 {

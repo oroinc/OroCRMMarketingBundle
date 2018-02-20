@@ -3,12 +3,11 @@
 namespace Oro\Bundle\MarketingActivityBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-
-use Oro\Bundle\MigrationBundle\Migration\Installation;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MarketingActivityBundle\Migrations\Schema\v1_0;
+use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 class OroMarketingActivityBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {

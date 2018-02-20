@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\ImportExport;
 
-use Symfony\Component\Filesystem\Filesystem;
-
 use Oro\Bundle\TrackingBundle\ImportExport\LogReader;
+use Symfony\Component\Filesystem\Filesystem;
 
 class LogReaderTest extends \PHPUnit_Framework_TestCase
 {

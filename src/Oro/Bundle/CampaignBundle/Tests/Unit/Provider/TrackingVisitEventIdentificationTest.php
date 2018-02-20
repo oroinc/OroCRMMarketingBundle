@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Provider;
 
+use Oro\Bundle\CampaignBundle\Provider\TrackingVisitEventIdentification;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
-use Oro\Bundle\CampaignBundle\Provider\TrackingVisitEventIdentification;
 
 class TrackingVisitEventIdentificationTest extends \PHPUnit_Framework_TestCase
 {

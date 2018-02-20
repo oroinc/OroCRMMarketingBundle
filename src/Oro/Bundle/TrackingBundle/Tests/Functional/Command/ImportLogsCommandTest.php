@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\Command;
 
-use Symfony\Component\Filesystem\Filesystem;
-
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ImportLogsCommandTest extends WebTestCase
 {

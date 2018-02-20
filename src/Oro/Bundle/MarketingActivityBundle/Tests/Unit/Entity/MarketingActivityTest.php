@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
 class MarketingActivityTest extends \PHPUnit_Framework_TestCase

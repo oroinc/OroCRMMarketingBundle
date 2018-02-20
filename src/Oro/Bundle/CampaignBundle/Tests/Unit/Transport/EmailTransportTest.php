@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Model\Data\Transformer;
 
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
-use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\InternalTransportSettings;
 use Oro\Bundle\CampaignBundle\Transport\EmailTransport;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 class EmailTransportTest extends \PHPUnit_Framework_TestCase

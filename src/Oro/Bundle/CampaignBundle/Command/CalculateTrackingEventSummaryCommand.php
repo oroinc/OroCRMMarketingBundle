@@ -3,11 +3,9 @@
 namespace Oro\Bundle\CampaignBundle\Command;
 
 use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository;
-
 use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;

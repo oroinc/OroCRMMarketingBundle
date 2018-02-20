@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\EventListener;
 
-use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsListener;
+use Symfony\Component\Form\FormEvents;
 
 class TransportSettingsListenerTest extends \PHPUnit_Framework_TestCase
 {

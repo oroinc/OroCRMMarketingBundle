@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\EventListener;
 
+use Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticDatagridListener;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
-use Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticDatagridListener;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
 class CampaignStatisticDatagridListenerTest extends \PHPUnit_Framework_TestCase

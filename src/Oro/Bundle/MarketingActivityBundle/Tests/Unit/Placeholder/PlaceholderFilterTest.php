@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\Placeholder;
 
 use Doctrine\Common\Util\ClassUtils;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;

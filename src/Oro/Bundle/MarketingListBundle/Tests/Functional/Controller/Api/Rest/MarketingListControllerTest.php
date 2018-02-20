@@ -3,10 +3,9 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest;
 
 use FOS\RestBundle\Util\Codes;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class MarketingListControllerTest extends WebTestCase
 {

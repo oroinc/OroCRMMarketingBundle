@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Migrations\Data\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\UpdateWithOrganization;
 
 class UpdateCampaignWithOrganization extends UpdateWithOrganization implements DependentFixtureInterface

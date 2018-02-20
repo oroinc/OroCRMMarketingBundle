@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\CampaignBundle\Dashboard;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
+use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\DashboardBundle\Filter\DateFilterProcessor;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CampaignDataProvider
 {

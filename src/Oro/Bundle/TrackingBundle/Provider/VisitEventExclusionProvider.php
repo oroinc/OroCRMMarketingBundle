@@ -3,7 +3,6 @@
 namespace Oro\Bundle\TrackingBundle\Provider;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-
 use Oro\Bundle\EntityBundle\Provider\AbstractExclusionProvider;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;

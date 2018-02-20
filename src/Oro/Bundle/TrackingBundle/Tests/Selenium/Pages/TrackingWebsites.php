@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Selenium\Pages;
 
-use PHPUnit_Framework_Assert;
-
 use Oro\Bundle\TestFrameworkBundle\Pages\AbstractPageFilteredGrid;
+use PHPUnit_Framework_Assert;
 
 /**
  * Class TrackingWebsites

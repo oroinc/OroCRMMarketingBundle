@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Symfony\Component\EventDispatcher\Event;
 
 class UpdateMarketingListEvent extends Event
 {

@@ -3,10 +3,8 @@
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
 use Doctrine\Common\Cache\CacheProvider;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MarketingListAllowedClassesProvider
 {

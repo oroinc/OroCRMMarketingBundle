@@ -4,9 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Async;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -16,6 +13,8 @@ use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Component\Testing\Unit\EntityTrait;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UpdateMarketingListProcessorTest extends \PHPUnit_Framework_TestCase
 {

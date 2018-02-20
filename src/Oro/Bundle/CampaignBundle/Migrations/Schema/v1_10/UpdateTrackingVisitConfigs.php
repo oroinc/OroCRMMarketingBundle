@@ -3,11 +3,10 @@
 namespace Oro\Bundle\CampaignBundle\Migrations\Schema\v1_10;
 
 use Doctrine\DBAL\Schema\Schema;
-
 use Oro\Bundle\EntityConfigBundle\Migration\UpdateEntityConfigFieldValueQuery;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 
 class UpdateTrackingVisitConfigs implements Migration

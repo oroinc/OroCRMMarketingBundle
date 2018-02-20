@@ -3,13 +3,12 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
 
 /**
  * @package Oro\Bundle\OroCampaignBundle\Entity

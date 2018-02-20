@@ -4,10 +4,8 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class LoadCampaignData extends AbstractFixture
 {

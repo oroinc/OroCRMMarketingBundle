@@ -5,8 +5,8 @@ namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\Provider;
 use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
-use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
+use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider;
 
 class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_TestCase
 {

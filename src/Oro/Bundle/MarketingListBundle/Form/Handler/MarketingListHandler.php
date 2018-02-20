@@ -3,7 +3,10 @@
 namespace Oro\Bundle\MarketingListBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManager;
-
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Bundle\SegmentBundle\Entity\SegmentType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
@@ -12,11 +15,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-
-use Oro\Bundle\SegmentBundle\Entity\Segment;
-use Oro\Bundle\SegmentBundle\Entity\SegmentType;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
 class MarketingListHandler
 {

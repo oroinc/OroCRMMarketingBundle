@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Selenium;
 
-use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 use Oro\Bundle\CampaignBundle\Tests\Selenium\Pages\Campaigns;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 
 /**
  * Class Campaign Test

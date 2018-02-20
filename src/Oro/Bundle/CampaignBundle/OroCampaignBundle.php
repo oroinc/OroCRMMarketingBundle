@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\CampaignBundle;
 
+use Oro\Bundle\CampaignBundle\DependencyInjection\Compiler\TransportPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-use Oro\Bundle\CampaignBundle\DependencyInjection\Compiler\TransportPass;
 
 class OroCampaignBundle extends Bundle
 {

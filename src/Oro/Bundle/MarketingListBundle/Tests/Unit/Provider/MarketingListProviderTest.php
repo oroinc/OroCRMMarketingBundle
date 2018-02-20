@@ -3,16 +3,15 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
 use Doctrine\ORM\Query\Expr\Select;
-
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Oro\Bundle\TagBundle\Grid\TagsExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
+use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
-use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
+use Oro\Bundle\TagBundle\Grid\TagsExtension;
 
 class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
 {

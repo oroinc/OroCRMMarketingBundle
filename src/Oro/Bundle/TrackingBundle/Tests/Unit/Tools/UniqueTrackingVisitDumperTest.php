@@ -3,12 +3,12 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Tools;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 use Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery;
 use Oro\Bundle\TrackingBundle\Tools\UniqueTrackingVisitDumper;
 use Psr\Log\LoggerInterface;
-use Doctrine\DBAL\Connection;
 
 class UniqueTrackingVisitDumperTest extends \PHPUnit_Framework_TestCase
 {

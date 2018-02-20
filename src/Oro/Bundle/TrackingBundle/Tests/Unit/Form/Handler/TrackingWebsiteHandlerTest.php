@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Form\Handler;
 
-use Symfony\Component\HttpFoundation\Request;
-
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class TrackingWebsiteHandlerTest extends \PHPUnit_Framework_TestCase

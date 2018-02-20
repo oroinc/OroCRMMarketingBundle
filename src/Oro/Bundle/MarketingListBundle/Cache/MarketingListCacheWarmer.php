@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Cache;
 
-use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
-
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class MarketingListCacheWarmer implements CacheWarmerInterface
 {

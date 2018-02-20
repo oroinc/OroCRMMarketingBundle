@@ -3,9 +3,8 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\ParameterBag;
-
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * @ORM\Entity

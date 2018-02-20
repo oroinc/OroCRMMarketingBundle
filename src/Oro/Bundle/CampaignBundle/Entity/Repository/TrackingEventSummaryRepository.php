@@ -3,7 +3,6 @@
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 
 class TrackingEventSummaryRepository extends EntityRepository

@@ -4,11 +4,9 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\Controller\Api\Rest\DataFix
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 
 class LoadTrackingWebsiteData extends AbstractFixture implements ContainerAwareInterface
 {

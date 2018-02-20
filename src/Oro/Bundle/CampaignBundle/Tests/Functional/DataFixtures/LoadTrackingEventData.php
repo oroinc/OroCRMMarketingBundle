@@ -4,11 +4,9 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class LoadTrackingEventData extends AbstractFixture
 {

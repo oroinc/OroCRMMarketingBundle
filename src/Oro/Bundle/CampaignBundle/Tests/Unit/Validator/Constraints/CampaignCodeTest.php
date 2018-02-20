@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraint;
-
 use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode;
+use Symfony\Component\Validator\Constraint;
 
 class CampaignCodeTest extends \PHPUnit_Framework_TestCase
 {

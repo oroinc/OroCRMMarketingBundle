@@ -3,14 +3,11 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Behat\Context;
 
 use Behat\Symfony2Extension\Context\KernelDictionary;
-
 use Doctrine\Common\Persistence\ObjectRepository;
-
-use Symfony\Component\Filesystem\Filesystem;
-
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Symfony\Component\Filesystem\Filesystem;
 
 class TrackingMainContext extends OroFeatureContext
 {

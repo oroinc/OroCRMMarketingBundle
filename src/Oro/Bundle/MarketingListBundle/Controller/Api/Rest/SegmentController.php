@@ -2,17 +2,14 @@
 
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
-use Symfony\Component\HttpFoundation\Response;
-
-use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-
+use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Rest\RouteResource("marketinglist_segment")

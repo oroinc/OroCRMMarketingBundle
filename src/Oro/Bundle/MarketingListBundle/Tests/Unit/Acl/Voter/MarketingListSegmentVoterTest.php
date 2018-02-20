@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Acl\Voter;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Acl\Voter\MarketingListSegmentVoter;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class MarketingListSegmentVoterTest extends \PHPUnit_Framework_TestCase
 {

@@ -3,12 +3,10 @@
 namespace Oro\Bundle\TrackingBundle\Migrations\Schema\v1_10;
 
 use Doctrine\DBAL\Types\Type;
-
-use Psr\Log\LoggerInterface;
-
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedSqlMigrationQuery;
+use Psr\Log\LoggerInterface;
 
 class PreserveTrackingConfigQuery extends ParametrizedMigrationQuery
 {

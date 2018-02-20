@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Model\Condition;
 
-use Symfony\Component\PropertyAccess\PropertyPath;
-
-use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Bundle\MarketingListBundle\Model\Condition\HasContactInformation;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class HasContactInformationTest extends \PHPUnit_Framework_TestCase
 {

@@ -3,17 +3,15 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Validator;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
-
-use Oro\Component\Testing\Unit\EntityTrait;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator;
+use Oro\Component\Testing\Unit\EntityTrait;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
 {

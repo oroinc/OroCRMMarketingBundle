@@ -2,6 +2,11 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Handler;
 
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler;
+use Oro\Bundle\SegmentBundle\Entity\SegmentType;
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
@@ -10,12 +15,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
-
-use Oro\Bundle\SegmentBundle\Entity\SegmentType;
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
-use Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler;
 
 class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 {

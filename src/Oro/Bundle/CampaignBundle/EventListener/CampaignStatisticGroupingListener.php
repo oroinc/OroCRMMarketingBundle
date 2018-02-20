@@ -4,8 +4,8 @@ namespace Oro\Bundle\CampaignBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Event\PreBuild;
-use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
 
 class CampaignStatisticGroupingListener
 {

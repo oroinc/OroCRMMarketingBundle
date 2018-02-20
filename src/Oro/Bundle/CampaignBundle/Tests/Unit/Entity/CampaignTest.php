@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class CampaignTest extends AbstractEntityTestCase
 {

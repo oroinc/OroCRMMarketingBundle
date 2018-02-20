@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
 {

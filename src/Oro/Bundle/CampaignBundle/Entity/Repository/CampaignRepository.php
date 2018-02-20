@@ -4,11 +4,9 @@ namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
-use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
 class CampaignRepository extends EntityRepository
