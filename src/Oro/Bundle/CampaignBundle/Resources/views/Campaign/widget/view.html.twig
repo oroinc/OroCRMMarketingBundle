@@ -11,13 +11,13 @@
                 {% if codes_history is not empty %} ({{ codes_history|join(', ') }}) {{ ui.tooltip('oro.campaign.code.tooltip'|trans) }}{% endif %}
             {%- endset -%}
             {{ ui.renderHtmlProperty('oro.campaign.code.label'|trans, codesData) }}
-            {{ ui.renderHtmlProperty('oro.campaign.description.label'|trans, entity.description|oro_html_sanitize) }}
+            {{ ui.renderSwitchableHtmlProperty('oro.campaign.description.label'|trans, entity.description) }}
         </div>
 
         <div class="responsive-block">
-            {{ ui.renderHtmlProperty('oro.campaign.budget.label'|trans, entity.budget|oro_format_currency) }}
-            {{ ui.renderHtmlProperty('oro.campaign.start_date.label'|trans, entity.startDate is empty ? 'N/A'|trans : entity.startDate|oro_format_date) }}
-            {{ ui.renderHtmlProperty('oro.campaign.end_date.label'|trans, entity.endDate is empty ? 'N/A'|trans : entity.endDate|oro_format_date) }}
+            {{ ui.renderProperty('oro.campaign.budget.label'|trans, entity.budget|oro_format_currency) }}
+            {{ ui.renderProperty('oro.campaign.start_date.label'|trans, entity.startDate is empty ? 'N/A'|trans : entity.startDate|oro_format_date) }}
+            {{ ui.renderProperty('oro.campaign.end_date.label'|trans, entity.endDate is empty ? 'N/A'|trans : entity.endDate|oro_format_date) }}
             {{ ui.renderProperty('oro.campaign.report_period.label'|trans, ('oro.campaign.report_period.' ~ entity.reportPeriod)|trans) }}
         </div>
 

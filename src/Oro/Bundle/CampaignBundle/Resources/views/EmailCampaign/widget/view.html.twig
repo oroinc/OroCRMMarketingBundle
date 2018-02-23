@@ -18,22 +18,17 @@
             {% endif %}
 
             {%- if entity.campaign is not empty -%}
-                {%- if is_granted('oro_campaign_view') -%}
-                    {% set campaignView = '<a href="' ~ path('oro_campaign_view', {'id': entity.campaign.id}) ~ '">' ~ entity.campaign.name|escape ~ '</a>' %}
-                {%- else -%}
-                    {% set campaignView = entity.campaign.name|escape %}
-                {%- endif -%}
-                {{ ui.renderHtmlProperty('oro.campaign.emailcampaign.campaign.label'|trans, campaignView) }}
+                {{ ui.renderHtmlProperty(
+                    'oro.campaign.emailcampaign.campaign.label'|trans,
+                    ui.entityViewLink(entity.campaign, entity.campaign.name, 'oro_campaign_view')
+                ) }}
             {%- endif -%}
 
-            {%- if entity.marketingList and is_granted('oro_marketing_list_view') -%}
-                {% set marketingListView = '<a href="' ~ path('oro_marketing_list_view', {'id': entity.marketingList.id}) ~ '">' ~ entity.marketingList.name|escape ~ '</a>' %}
-            {%- elseif entity.marketingList -%}
-                {% set marketingListView = entity.marketingList.name|escape %}
-            {%- endif -%}
-
-            {%- if marketingListView is defined -%}
-                {{ ui.renderHtmlProperty('oro.campaign.emailcampaign.marketing_list.label'|trans, marketingListView) }}
+            {%- if entity.marketingList is not empty -%}
+                {{ ui.renderHtmlProperty(
+                    'oro.campaign.emailcampaign.marketing_list.label'|trans,
+                    ui.entityViewLink(entity.marketingList,entity.marketingList.name, 'oro_marketing_list_view')
+                ) }}
             {%- endif -%}
 
             {{ ui.renderHtmlProperty('oro.campaign.emailcampaign.description.label'|trans, entity.description|oro_html_sanitize) }}
