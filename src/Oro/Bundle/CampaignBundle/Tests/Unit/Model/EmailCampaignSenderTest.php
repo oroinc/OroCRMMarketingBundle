@@ -8,6 +8,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmailCampaignSenderTest extends \PHPUnit_Framework_TestCase
 {
@@ -102,7 +103,7 @@ class EmailCampaignSenderTest extends \PHPUnit_Framework_TestCase
             $this->transportProvider
         );
 
-        $this->validator = $this->createMock('Symfony\Component\Validator\ValidatorInterface');
+        $this->validator = $this->createMock(ValidatorInterface::class);
         $this->sender->setValidator($this->validator);
 
         $this->sender->setLogger($this->logger);

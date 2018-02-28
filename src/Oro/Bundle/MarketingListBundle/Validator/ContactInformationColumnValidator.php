@@ -55,7 +55,10 @@ class ContactInformationColumnValidator extends ConstraintValidator
             }
 
             if ($constraint->field) {
-                $this->context->addViolationAt($constraint->field, $message, $parameters);
+                $this->context->buildViolation($message)
+                    ->atPath($constraint->field)
+                    ->setParameters($parameters)
+                    ->addViolation();
             } else {
                 $this->context->addViolation($message, $parameters);
             }

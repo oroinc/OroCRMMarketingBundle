@@ -4,6 +4,8 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator;
 
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
 use Oro\Bundle\MarketingListBundle\Validator\ContactInformationColumnValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ContactInformationColumnValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,8 +31,7 @@ class ContactInformationColumnValidatorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContextInterface')
-            ->getMock();
+        $this->context = $this->createMock(ExecutionContextInterface::class);
 
         $this->validator = new ContactInformationColumnValidator($this->contactInformationFieldHelper);
         $this->validator->initialize($this->context);
@@ -146,9 +147,21 @@ class ContactInformationColumnValidatorTest extends \PHPUnit_Framework_TestCase
             $message = $constraint->message;
         }
 
+        $builder = $this->createMock(ConstraintViolationBuilderInterface::class);
         $this->context->expects($this->once())
-            ->method('addViolationAt')
-            ->with($constraint->field, $message, $parameters);
+            ->method('buildViolation')
+            ->with($message)
+            ->willReturn($builder);
+        $builder->expects($this->once())
+            ->method('atPath')
+            ->with($constraint->field)
+            ->willReturnSelf();
+        $builder->expects($this->once())
+            ->method('setParameters')
+            ->with($parameters)
+            ->willReturnSelf();
+        $builder->expects($this->once())
+            ->method('addViolation');
 
         $this->validator->validate($value, $constraint);
     }

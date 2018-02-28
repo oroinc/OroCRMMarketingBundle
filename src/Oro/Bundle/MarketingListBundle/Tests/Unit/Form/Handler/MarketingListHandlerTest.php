@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
+// TODO: change to Symfony\Component\Validator\Validator\ValidatorInterface in scope of BAP-15236
 use Symfony\Component\Validator\ValidatorInterface;
 
 class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
@@ -73,7 +74,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
 
-        $this->validator = $this->createMock('Symfony\Component\Validator\ValidatorInterface');
+        $this->validator = $this->createMock(ValidatorInterface::class);
         $this->translator = $this->createMock('Symfony\Component\Translation\TranslatorInterface');
 
         $this->testEntity = new MarketingList();
@@ -172,6 +173,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
         $violation->expects($this->once())
             ->method('getMessageTemplate')
             ->will($this->returnValue('message template'));
+        // TODO: change to ::getParameters() and ::getPlural() methods in scope of BAP-15236
         $violation->expects($this->once())
             ->method('getMessageParameters')
             ->will($this->returnValue(['test']));
@@ -182,6 +184,12 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->validator->expects($this->once())
             ->method('validate')
+            /* TODO: change to $this->isInstanceOf(
+                    'Oro\Bundle\SegmentBundle\Entity\Segment'),
+                    null,
+                    ['Default', 'marketing_list']
+                ) in scope of BAP-15236
+            */
             ->with($this->isInstanceOf('Oro\Bundle\SegmentBundle\Entity\Segment'), ['Default', 'marketing_list'])
             ->will($this->returnValue($errors));
 

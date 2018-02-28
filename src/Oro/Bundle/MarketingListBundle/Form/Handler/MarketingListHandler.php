@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+// TODO: change to Symfony\Component\Validator\Validator\ValidatorInterface in scope of BAP-15236
 use Symfony\Component\Validator\ValidatorInterface;
 
 class MarketingListHandler
@@ -158,6 +159,12 @@ class MarketingListHandler
     protected function isValid(MarketingList $marketingList)
     {
         if (!$marketingList->isManual()) {
+            /* TODO: change to $errors = $this->validator->validate(
+                $marketingList->getSegment(),
+                    null,
+                    [Constraint::DEFAULT_GROUP, 'marketing_list']
+                ); in scope of BAP-15236
+            */
             $errors = $this->validator->validate(
                 $marketingList->getSegment(),
                 [Constraint::DEFAULT_GROUP, 'marketing_list']
@@ -169,6 +176,7 @@ class MarketingListHandler
                         new FormError(
                             $error->getMessage(),
                             $error->getMessageTemplate(),
+                            // TODO: change to ::getParameters() and ::getPlural() methods in scope of BAP-15236
                             $error->getMessageParameters(),
                             $error->getMessagePluralization()
                         )
