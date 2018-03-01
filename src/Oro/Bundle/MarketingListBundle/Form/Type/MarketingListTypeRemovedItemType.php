@@ -33,7 +33,7 @@ class MarketingListTypeRemovedItemType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class'         => 'Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem',
-                'intention'          => 'marketing_list_removed_item',
+                'csrf_token_id'      => 'marketing_list_removed_item',
             ]
         );
     }

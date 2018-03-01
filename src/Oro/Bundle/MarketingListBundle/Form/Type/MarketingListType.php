@@ -89,7 +89,7 @@ class MarketingListType extends AbstractQueryDesignerType
             $this->getDefaultOptions(),
             [
                 'data_class' => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
-                'intention'  => 'marketing_list',
+                'csrf_token_id' => 'marketing_list',
                 'query_type' => 'segment',
             ]
         );

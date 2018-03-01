@@ -61,7 +61,7 @@ class TrackingWebsiteType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => $this->dataClass,
-                'intention'  => 'tracking_website',
+                'csrf_token_id' => 'tracking_website',
             ]
         );
     }
