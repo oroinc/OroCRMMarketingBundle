@@ -1,6 +1,6 @@
 datagrids:
     website-grid:
-        extended_entity_name: %oro_tracking.tracking_website.class%
+        extended_entity_name: '%oro_tracking.tracking_website.class%'
         acl_resource: oro_tracking_website_view
         source:
             type: orm
@@ -15,7 +15,7 @@ datagrids:
                     - website.createdAt
                     - website.updatedAt
                 from:
-                    - { table: %oro_tracking.tracking_website.class%, alias: website }
+                    - { table: '%oro_tracking.tracking_website.class%', alias: website }
                 join:
                     left:
                         - { join: website.owner, alias: owner }
@@ -123,7 +123,7 @@ datagrids:
             entity_pagination: true
 
     tracking-events-grid:
-        extended_entity_name: %oro_tracking.tracking_event.class%
+        extended_entity_name: '%oro_tracking.tracking_event.class%'
         acl_resource: oro_tracking_website_view
         source:
             type: orm
@@ -138,7 +138,7 @@ datagrids:
                     - e.code
                     - e.loggedAt
                 from:
-                    - { table: %oro_tracking.tracking_event.class%, alias: e }
+                    - { table: '%oro_tracking.tracking_event.class%', alias: e }
         columns:
             id:
                 label: oro.tracking.trackingevent.id.label

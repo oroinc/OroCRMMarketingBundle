@@ -20,14 +20,14 @@ parameters:
 
 services:
     oro_tracking.form.type.tracking_website:
-        class: %oro_tracking.form.type.tracking_website.class%
+        class: '%oro_tracking.form.type.tracking_website.class%'
         arguments:
-            - %oro_tracking.tracking_website.class%
+            - '%oro_tracking.tracking_website.class%'
         tags:
             - { name: form.type, alias: oro_tracking_website }
 
     oro_tracking.form.handler.tracking_website:
-        class: %oro_tracking.form.handler.tracking_website.class%
+        class: '%oro_tracking.form.handler.tracking_website.class%'
         arguments:
             - '@oro_tracking.form.tracking_website'
             - '@request_stack'
@@ -41,24 +41,24 @@ services:
             - oro_tracking_website
 
     oro_tracking.tracking_website.manager.api:
-        class: %oro_tracking.tracking_website.manager.api.class%
+        class: '%oro_tracking.tracking_website.manager.api.class%'
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - %oro_tracking.tracking_website.class%
+            - '%oro_tracking.tracking_website.class%'
             - '@doctrine.orm.entity_manager'
 
     oro_tracking.importexport.reader.log:
-        class: %oro_tracking.importexport.reader.log.class%
+        class: '%oro_tracking.importexport.reader.log.class%'
         arguments:
             - '@oro_importexport.context_registry'
 
     oro_tracking.importexport.reader.context:
-        class: %oro_tracking.importexport.reader.context.class%
+        class: '%oro_tracking.importexport.reader.context.class%'
         arguments:
             - '@oro_importexport.context_registry'
 
     oro_tracking.importexport.data_converter.data:
-        class: %oro_tracking.importexport.data_converter.data.class%
+        class: '%oro_tracking.importexport.data_converter.data.class%'
         arguments:
             - '@oro_entity.helper.field_helper'
 
@@ -66,10 +66,10 @@ services:
         parent: oro_importexport.strategy.configurable_add_or_replace
 
     oro_tracking.importexport.normalizer.data:
-        class: %oro_tracking.importexport.normalizer.data.class%
+        class: '%oro_tracking.importexport.normalizer.data.class%'
         parent: oro_importexport.serializer.configurable_entity_normalizer
         calls:
-            - [setEntityName, [%oro_tracking.tracking_data.class%]]
+            - [setEntityName, ['%oro_tracking.tracking_data.class%']]
         tags:
             - { name: oro_importexport.normalizer, priority: 10 }
 
@@ -79,14 +79,14 @@ services:
             - [setDataConverter,  ['@oro_tracking.importexport.data_converter.data']]
             - [setStrategy,  ['@oro_tracking.importexport.strategy.data']]
         tags:
-            - { name: oro_importexport.processor, type: import, entity: %oro_tracking.tracking_data.class%, alias: oro_tracking.processor.data }
+            - { name: oro_importexport.processor, type: import, entity: '%oro_tracking.tracking_data.class%', alias: oro_tracking.processor.data }
 
     oro_tracking.config.listener:
-        class: %oro_tracking.config.listener%
+        class: '%oro_tracking.config.listener%'
         arguments:
             - '@oro_config.global'
             - '@router'
-            - %kernel.logs_dir%
+            - '%kernel.logs_dir%'
         tags:
             - { name: kernel.event_listener, event: oro_config.update_after, method: onUpdateAfter }
 
@@ -116,7 +116,7 @@ services:
             - { name: oro_migration.extension, extension_name: visit_event_association }
 
     oro_tracking.entity_config_dumper.visit_identifier.extension:
-        class: %oro_tracking.entity_config_dumper.visit_identifier.extension.class%
+        class: '%oro_tracking.entity_config_dumper.visit_identifier.extension.class%'
         arguments:
             - '@oro_tracking.provider.identifier_provider'
             - '@oro_entity_config.config_manager'
@@ -134,7 +134,7 @@ services:
             - { name: oro_entity_extend.entity_config_dumper_extension }
 
     oro_tracking.entity_generator.visit_identifie.extension:
-        class: %oro_tracking.entity_generator.visit_identifie.extension.class%
+        class: '%oro_tracking.entity_generator.visit_identifie.extension.class%'
         tags:
             - { name: oro_entity_extend.entity_generator_extension }
 
@@ -144,7 +144,7 @@ services:
             - { name: oro_entity_extend.entity_generator_extension }
 
     oro_tracking.processor.tracking_processor:
-        class: %oro_tracking.processor.tracking_processor.class%
+        class: '%oro_tracking.processor.tracking_processor.class%'
         arguments:
             - '@doctrine'
             - '@oro_tracking.provider.identifier_provider'
@@ -165,7 +165,7 @@ services:
     # Chain provider for identicating tracking visit
     #
     oro_tracking.provider.identifier_provider:
-        class: %oro_tracking.provider.identifier_provider.class%
+        class: '%oro_tracking.provider.identifier_provider.class%'
 
     oro_tracking.migration.fill_unique_tracking_visits_query:
         class: Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery
