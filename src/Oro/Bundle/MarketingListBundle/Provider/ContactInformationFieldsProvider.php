@@ -6,7 +6,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 class ContactInformationFieldsProvider
 {

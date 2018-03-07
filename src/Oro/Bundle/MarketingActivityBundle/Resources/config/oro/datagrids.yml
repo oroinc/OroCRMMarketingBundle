@@ -17,7 +17,7 @@ datagrids:
                     left:
                         - { join: ma.type, alias: eventType }
                         -
-                            join: %oro_campaign.email_campaign.entity.class%
+                            join: '%oro_campaign.email_campaign.entity.class%'
                             alias: emailCampaign
                             conditionType: WITH
                             condition: "emailCampaign.id = ma.relatedCampaignId AND ma.relatedCampaignClass = '%oro_campaign.email_campaign.entity.class%'"

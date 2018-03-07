@@ -9,7 +9,7 @@ parameters:
 services:
     # MarketingList
     oro_marketing_list.form.type.marketing_list:
-        class: %oro_marketing_list.form.type.marketing_list.class%
+        class: '%oro_marketing_list.form.type.marketing_list.class%'
         tags:
             - { name: form.type, alias: oro_marketing_list }
 
@@ -21,7 +21,7 @@ services:
             - "oro_marketing_list"
 
     oro_marketing_list.form.type.marketing_list_removed_item:
-        class: %oro_marketing_list.form.type.marketing_list_removed_item.class%
+        class: '%oro_marketing_list.form.type.marketing_list_removed_item.class%'
         tags:
             - { name: form.type, alias: oro_marketing_list_removed_item }
 
@@ -46,7 +46,7 @@ services:
             - [setForm, ['@oro_marketing_list.form.marketing_list_removed_item']]
 
     oro_marketing_list.form.type.marketing_list_unsubscribed_item:
-        class: %oro_marketing_list.form.type.marketing_list_unsubscribed_item.class%
+        class: '%oro_marketing_list.form.type.marketing_list_unsubscribed_item.class%'
         tags:
             - { name: form.type, alias: oro_marketing_list_unsubscribed_item }
 
@@ -71,7 +71,7 @@ services:
             - [setForm,  ["@oro_marketing_list.form.marketing_list_unsubscribed_item"]]
 
     oro_marketing_list.form.handler.marketing_list:
-        class: %oro_marketing_list.form.handler.marketing_list.class%
+        class: '%oro_marketing_list.form.handler.marketing_list.class%'
         arguments:
             - "@oro_marketing_list.form.marketing_list"
             - "@request_stack"
@@ -80,13 +80,13 @@ services:
             - "@translator"
 
     oro_marketing_list.form.type.entity_choice:
-        class: %oro_marketing_list.form.type.entity_choice.class%
+        class: '%oro_marketing_list.form.type.entity_choice.class%'
         arguments:
             - "@oro_marketing_list.entity_provider.contact_information"
         tags:
             - { name: form.type, alias: oro_marketing_list_contact_information_entity_choice }
 
     oro_marketing_list.form.type.marketing_list_select:
-        class: %oro_marketing_list.form.type.marketing_list_select.class%
+        class: '%oro_marketing_list.form.type.marketing_list_select.class%'
         tags:
             - { name: form.type, alias: "oro_marketing_list_select" }
