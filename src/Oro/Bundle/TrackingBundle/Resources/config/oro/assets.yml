@@ -1,4 +1,4 @@
 assets:
     css:
         orotracking:
-            - 'bundles/orotracking/css/less/code.scss'
+            - 'bundles/orotracking/css/scss/code.scss'
