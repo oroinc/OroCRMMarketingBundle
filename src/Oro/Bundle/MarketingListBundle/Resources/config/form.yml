@@ -26,10 +26,7 @@ services:
             - { name: form.type, alias: oro_marketing_list_removed_item }
 
     oro_marketing_list.form.type.marketing_list_removed_item_api:
-        parent: oro_form.type.api
-        arguments:
-            - 'oro_marketing_list_removed_item_api'
-            - "@oro_marketing_list.form.type.marketing_list_removed_item"
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListRemovedItemApiType
         tags:
             - { name: form.type, alias: oro_marketing_list_removed_item_api }
 
@@ -38,7 +35,7 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - ~
-            - 'oro_marketing_list_removed_item_api'
+            - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListRemovedItemApiType
 
     oro_marketing_list.form.handler.marketing_list_removed_item:
         parent: oro_form.form_handler.api
@@ -51,10 +48,7 @@ services:
             - { name: form.type, alias: oro_marketing_list_unsubscribed_item }
 
     oro_marketing_list.form.type.marketing_list_unsubscribed_item_api:
-        parent: oro_form.type.api
-        arguments:
-            - 'oro_marketing_list_unsubscribed_item_api'
-            - "@oro_marketing_list.form.type.marketing_list_unsubscribed_item"
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListUnsubscribedItemApiType
         tags:
             - { name: form.type, alias: oro_marketing_list_unsubscribed_item_api }
 
@@ -63,7 +57,7 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - ~
-            - 'oro_marketing_list_unsubscribed_item_api'
+            - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListUnsubscribedItemApiType
 
     oro_marketing_list.form.handler.marketing_list_unsubscribed_item:
         parent: oro_form.form_handler.api
