@@ -52,7 +52,7 @@ class MarketingListType extends AbstractQueryDesignerType
                         'class' => 'OroMarketingListBundle:MarketingListType',
                         'property' => 'label',
                         'required' => true,
-                        'empty_value' => 'oro.marketinglist.form.choose_marketing_list_type',
+                        'placeholder' => 'oro.marketinglist.form.choose_marketing_list_type',
                         'query_builder' => $qb
                     ]
                 );
