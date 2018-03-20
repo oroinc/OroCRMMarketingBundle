@@ -11,6 +11,13 @@ define(function(require) {
         campaignTypeFilter: null,
 
         /**
+         * @inheritDoc
+         */
+        constructor: function MarketingActivitiesSectionComponent() {
+            MarketingActivitiesSectionComponent.__super__.constructor.apply(this, arguments);
+        },
+
+        /**
          * Returns filter state
          *
          * @returns {{startDateRange: (*|Object), endDateRange: (*|Object)}}
