@@ -94,7 +94,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('submit')
+            ->method('handleRequest')
             ->with($this->request);
 
         $this->assertProcessSegment();
@@ -128,7 +128,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('submit')
+            ->method('handleRequest')
             ->with($this->request);
 
         $this->assertProcessSegment();
@@ -157,7 +157,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('submit')
+            ->method('handleRequest')
             ->with($this->request);
 
         $this->assertProcessSegment();

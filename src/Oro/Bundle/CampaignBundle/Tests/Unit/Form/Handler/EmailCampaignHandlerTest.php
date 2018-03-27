@@ -54,7 +54,7 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('GET');
         $this->form->expects($this->never())
-            ->method('submit');
+            ->method('handleRequest');
 
         $this->assertFalse($this->handler->process($data));
     }
@@ -71,7 +71,7 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('submit')
+            ->method('handleRequest')
             ->with($this->request);
         $this->registry->expects($this->never())
             ->method($this->anything());
@@ -95,7 +95,7 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('PUT');
         $this->form->expects($this->once())
-            ->method('submit')
+            ->method('handleRequest')
             ->with($this->request);
         $this->registry->expects($this->never())
             ->method($this->anything());
@@ -119,7 +119,7 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('submit')
+            ->method('handleRequest')
             ->with($this->request);
 
         $manager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
