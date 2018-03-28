@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class TrackingWebsiteHandlerTest extends \PHPUnit_Framework_TestCase
 {
+    const FORM_DATA = ['field' => 'value'];
+
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -48,12 +50,13 @@ class TrackingWebsiteHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $entity = new TrackingWebsite();
 
+        $this->request->initialize([], self::FORM_DATA);
         $this->request->setMethod($method);
 
         $this->form
             ->expects($this->any())
             ->method('submit')
-            ->with($this->request);
+            ->with(self::FORM_DATA);
 
         $this->form
             ->expects($this->any())

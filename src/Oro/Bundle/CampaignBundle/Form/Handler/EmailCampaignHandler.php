@@ -3,12 +3,15 @@
 namespace Oro\Bundle\CampaignBundle\Form\Handler;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class EmailCampaignHandler
 {
+    use RequestHandlerTrait;
+
     const UPDATE_MARKER = 'formUpdateMarker';
 
     /** @var RequestStack */
@@ -48,7 +51,7 @@ class EmailCampaignHandler
 
         $request = $this->requestStack->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
-            $this->form->handleRequest($request);
+            $this->submitPostPutRequest($this->form, $request);
             if (!$request->get(self::UPDATE_MARKER, false) && $this->form->isValid()) {
                 $em = $this->registry->getManagerForClass('OroCampaignBundle:EmailCampaign');
                 $em->persist($entity);

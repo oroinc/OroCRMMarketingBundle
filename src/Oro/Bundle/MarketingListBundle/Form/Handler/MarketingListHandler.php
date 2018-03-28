@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
@@ -19,6 +20,8 @@ use Symfony\Component\Validator\ValidatorInterface;
 
 class MarketingListHandler
 {
+    use RequestHandlerTrait;
+
     /**
      * @var array
      */
@@ -85,7 +88,7 @@ class MarketingListHandler
 
         $request = $this->requestStack->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
-            $this->form->handleRequest($request);
+            $this->submitPostPutRequest($this->form, $request);
             if (!$entity->isManual()) {
                 $this->processSegment($entity);
             }

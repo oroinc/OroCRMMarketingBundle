@@ -19,6 +19,9 @@ use Symfony\Component\Validator\ValidatorInterface;
 
 class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 {
+    const FORM_DATA = ['definition' => 'test'];
+    const FORM_NAME = 'test_form';
+
     /**
      * @var MarketingListHandler
      */
@@ -92,10 +95,11 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
+        $this->request->initialize([], [self::FORM_NAME => self::FORM_DATA]);
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('handleRequest')
-            ->with($this->request);
+            ->method('submit')
+            ->with(self::FORM_DATA);
 
         $this->assertProcessSegment();
 
@@ -109,9 +113,9 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($this->isType('string'), $this->isType('array'))
             ->will($this->returnValue('Marketing List test segment'));
 
-        $this->form->expects($this->once())
+        $this->form->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('test_form'));
+            ->will($this->returnValue(self::FORM_NAME));
 
         $this->manager->expects($this->once())
             ->method('persist')
@@ -126,13 +130,17 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessInvalidEntity()
     {
+        $this->request->initialize([], [self::FORM_NAME => self::FORM_DATA]);
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('handleRequest')
-            ->with($this->request);
+            ->method('submit')
+            ->with(self::FORM_DATA);
 
         $this->assertProcessSegment();
 
+        $this->form->expects($this->any())
+            ->method('getName')
+            ->willReturn(self::FORM_NAME);
         $this->form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
@@ -155,10 +163,15 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessInvalidSegment()
     {
+        $this->request->initialize([], [self::FORM_NAME => self::FORM_DATA]);
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
-            ->method('handleRequest')
-            ->with($this->request);
+            ->method('submit')
+            ->with(self::FORM_DATA);
+
+        $this->form->expects($this->any())
+            ->method('getName')
+            ->willReturn(self::FORM_NAME);
 
         $this->assertProcessSegment();
 
@@ -222,15 +235,6 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function assertProcessSegment()
     {
-        $formData = [
-            'definition' => 'test'
-        ];
-
-        $this->form->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('test_form'));
-
-        $this->request->request->set('test_form', $formData);
         $businessUnit = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')
             ->disableOriginalConstructor()
             ->getMock();
