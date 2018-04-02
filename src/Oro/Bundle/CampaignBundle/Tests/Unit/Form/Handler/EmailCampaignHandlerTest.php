@@ -111,7 +111,7 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
         $this->registry->expects($this->never())
             ->method($this->anything());
 
-//        $this->request->request->set(EmailCampaignHandler::UPDATE_MARKER, true);
+        $this->request->request->set(EmailCampaignHandler::UPDATE_MARKER, true);
         $this->form->expects($this->never())
             ->method('isValid');
 
