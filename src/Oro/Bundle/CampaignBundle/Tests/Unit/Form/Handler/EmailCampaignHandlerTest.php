@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
 {
+    const FORM_DATA = ['field' => 'value'];
+
     /**
      * @var Request
      */
@@ -69,10 +71,11 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('setData')
             ->with($data);
 
+        $this->request->initialize([], self::FORM_DATA);
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
             ->method('submit')
-            ->with($this->request);
+            ->with(self::FORM_DATA);
         $this->registry->expects($this->never())
             ->method($this->anything());
 
@@ -93,10 +96,18 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('setData')
             ->with($data);
 
+        $this->form->expects($this->any())
+            ->method('getName')
+            ->willReturn('formName');
+
+        $this->request->initialize([], [
+            EmailCampaignHandler::UPDATE_MARKER => true,
+            'formName' => self::FORM_DATA
+        ]);
         $this->request->setMethod('PUT');
         $this->form->expects($this->once())
             ->method('submit')
-            ->with($this->request);
+            ->with(self::FORM_DATA);
         $this->registry->expects($this->never())
             ->method($this->anything());
 
@@ -117,10 +128,11 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('setData')
             ->with($data);
 
+        $this->request->initialize([], self::FORM_DATA);
         $this->request->setMethod('POST');
         $this->form->expects($this->once())
             ->method('submit')
-            ->with($this->request);
+            ->with(self::FORM_DATA);
 
         $manager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
             ->disableOriginalConstructor()
