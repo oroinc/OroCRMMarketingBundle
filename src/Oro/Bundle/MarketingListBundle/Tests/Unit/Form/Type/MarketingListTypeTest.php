@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,7 +54,7 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 'definition',
-                'hidden',
+                HiddenType::class,
                 ['required' => false]
             )
             ->will($this->returnSelf());
