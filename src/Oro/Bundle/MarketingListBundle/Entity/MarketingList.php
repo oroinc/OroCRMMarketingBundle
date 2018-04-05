@@ -38,7 +38,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *              "category"="marketing"
  *          },
  *          "form"={
- *              "form_type"="oro_marketing_list_select",
+ *              "form_type"="Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType",
  *              "grid_name"="oro-marketing-list-select-grid",
  *          },
  *          "grid"={
