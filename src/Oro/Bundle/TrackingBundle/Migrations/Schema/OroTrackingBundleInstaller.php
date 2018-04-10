@@ -21,7 +21,7 @@ class OroTrackingBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_12';
+        return 'v1_13';
     }
 
     /**
