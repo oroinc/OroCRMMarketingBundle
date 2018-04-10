@@ -1,15 +1,8 @@
 # OroMarketingActivityBundle
 
-## Bundle Responsibilities
+OroMarketingActivityBundle adds Marketing Activity entity that represents events data of the marketing campaigns in Oro applications and allows management console administrators to enable and disable this feature in system configuration UI.
 
-Bundle provides a general storage and UI for various marketing activities (e.g. email campaign activities such as click,
-open, etc.). Marketing activities are stored per a marketing campaign. 
-
-UI includes:
-
-    - Marketing activites summary on the marketing campaign view page;
-    - Marketing activites widget on the entity view pages;
-    - Ability to create reports based on the marketing activities data.
+The bundle provides UI for users to see summary events report on the marketing campaign view pages, allows to see detail event lists on the Tracking Website and Email Campaign view pages, and enables users to create reports based on the marketing activities data.
 
 ## Activity Types
 
