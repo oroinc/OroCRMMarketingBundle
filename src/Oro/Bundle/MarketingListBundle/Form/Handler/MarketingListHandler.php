@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-// TODO: change to Symfony\Component\Validator\Validator\ValidatorInterface in scope of BAP-15236
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MarketingListHandler
@@ -179,9 +178,8 @@ class MarketingListHandler
                         new FormError(
                             $error->getMessage(),
                             $error->getMessageTemplate(),
-                            // TODO: change to ::getParameters() and ::getPlural() methods in scope of BAP-15236
-                            $error->getMessageParameters(),
-                            $error->getMessagePluralization()
+                            $error->getParameters(),
+                            $error->getPlural()
                         )
                     );
                 }

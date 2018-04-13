@@ -185,24 +185,17 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
         $violation->expects($this->once())
             ->method('getMessageTemplate')
             ->will($this->returnValue('message template'));
-        // TODO: change to ::getParameters() and ::getPlural() methods in scope of BAP-15236
         $violation->expects($this->once())
-            ->method('getMessageParameters')
+            ->method('getParameters')
             ->will($this->returnValue(['test']));
         $violation->expects($this->once())
-            ->method('getMessagePluralization')
+            ->method('getPlural')
             ->will($this->returnValue('message pluralization'));
         $errors = new ConstraintViolationList([$violation]);
 
         $this->validator->expects($this->once())
             ->method('validate')
-            /* TODO: change to $this->isInstanceOf(
-                    'Oro\Bundle\SegmentBundle\Entity\Segment'),
-                    null,
-                    ['Default', 'marketing_list']
-                ) in scope of BAP-15236
-            */
-            ->with($this->isInstanceOf('Oro\Bundle\SegmentBundle\Entity\Segment'), ['Default', 'marketing_list'])
+            ->with($this->isInstanceOf('Oro\Bundle\SegmentBundle\Entity\Segment'), null, ['Default', 'marketing_list'])
             ->will($this->returnValue($errors));
 
         $this->translator
