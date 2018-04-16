@@ -1,15 +1,8 @@
 # OroTrackingBundle
 
-OroTrackingBundle provides:
+OroTrackingBundle enables management console administrators to set up and configure a tracking code that can be embedded into the Oro application or into a third-party website to enable customer behavior tracking.
 
-    - CRUD for the web tracking configuration
-    - Proxying tracking data to Piwik (in case it is enabled)
-    - Web events tracking functionality
-    - Tracking event data parsing
-    - Finding identifying objects by the provided criteria
-    - Tracking of the identified objects
-    - Tracking of the platform data objects
-    - Ability to create reports based on the tracked data
+The bundle allows to collect this data and provides UI for reporting the collected events and the customer behavior actions.
 
 ### Notes
 

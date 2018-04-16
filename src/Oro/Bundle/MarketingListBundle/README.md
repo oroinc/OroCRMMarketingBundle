@@ -1,10 +1,8 @@
 # OroMarketingListBundle
 
-The goal of `OroMarketingListBundle` is to provide the entities segmentation used in marketing campaigns.
+OroMarketingListBundle adds Marketing Lists entity to the Oro application to enable customer segmentation in the marketing campaigns.
 
-## Overview
-
-`OroMarketingListBundle` improves the possibilities of `OroSegmentBundle`. Read [documentation](https://github.com/orocrm/platform/blob/master/src/Oro/Bundle/SegmentBundle/README.md) about `OroSegmentBundle`.
+The bundle provides UI for users to create and manage marketing lists using the capabilities of [OroSegmentBundle](https://github.com/oroinc/platform/tree/master/src/Oro/Bundle/SegmentBundle).
 
 ## Backend Implementation
 
