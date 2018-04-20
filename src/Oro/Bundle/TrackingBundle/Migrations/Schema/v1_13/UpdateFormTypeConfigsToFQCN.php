@@ -3,13 +3,14 @@
 namespace Oro\Bundle\TrackingBundle\Migrations\Schema\v1_13;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ChannelBundle\Form\Type\ChannelSelectType;
 use Oro\Bundle\EntityConfigBundle\Migration\UpdateEntityConfigFieldValueQuery;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 
-class UpdateFormTypeForExtendDescription implements Migration
+class UpdateFormTypeConfigsToFQCN implements Migration
 {
     /**
      * {@inheritdoc}
@@ -23,6 +24,16 @@ class UpdateFormTypeForExtendDescription implements Migration
                 'form',
                 'type',
                 OroResizeableRichTextType::class
+            )
+        );
+
+        $queries->addQuery(
+            new UpdateEntityConfigFieldValueQuery(
+                TrackingWebsite::class,
+                'channel',
+                'form',
+                'form_type',
+                ChannelSelectType::class
             )
         );
     }
