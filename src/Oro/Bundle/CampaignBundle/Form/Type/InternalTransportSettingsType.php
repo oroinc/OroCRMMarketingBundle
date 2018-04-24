@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
+use Oro\Bundle\EmailBundle\Form\Type\EmailTemplateSelectType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +19,7 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
         $builder
             ->add(
                 'template',
-                'oro_email_template_list',
+                EmailTemplateSelectType::class,
                 [
                     'label' => 'oro.campaign.emailcampaign.template.label',
                     'required' => true,

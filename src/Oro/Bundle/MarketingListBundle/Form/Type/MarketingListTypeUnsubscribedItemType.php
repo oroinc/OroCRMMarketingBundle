@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\MarketingListBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,10 +16,10 @@ class MarketingListTypeUnsubscribedItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('entityId', 'integer', ['required' => true])
+            ->add('entityId', IntegerType::class, ['required' => true])
             ->add(
                 'marketingList',
-                'entity',
+                EntityType::class,
                 [
                     'class'    => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
                     'required' => true
