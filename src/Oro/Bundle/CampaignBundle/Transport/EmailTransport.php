@@ -116,7 +116,7 @@ class EmailTransport implements TransportInterface
      */
     public function getSettingsFormType()
     {
-        return InternalTransportSettingsType::NAME;
+        return InternalTransportSettingsType::class;
     }
 
     /**

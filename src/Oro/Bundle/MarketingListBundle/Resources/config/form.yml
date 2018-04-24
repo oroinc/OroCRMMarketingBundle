@@ -18,7 +18,7 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - "oro_marketing_list_form"
-            - "oro_marketing_list"
+            - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType
 
     oro_marketing_list.form.type.marketing_list_removed_item:
         class: '%oro_marketing_list.form.type.marketing_list_removed_item.class%'
