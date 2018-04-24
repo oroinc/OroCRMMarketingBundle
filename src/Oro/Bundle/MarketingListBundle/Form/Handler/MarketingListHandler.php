@@ -162,14 +162,9 @@ class MarketingListHandler
     protected function isValid(MarketingList $marketingList)
     {
         if (!$marketingList->isManual()) {
-            /* TODO: change to $errors = $this->validator->validate(
-                $marketingList->getSegment(),
-                    null,
-                    [Constraint::DEFAULT_GROUP, 'marketing_list']
-                ); in scope of BAP-15236
-            */
             $errors = $this->validator->validate(
                 $marketingList->getSegment(),
+                null,
                 [Constraint::DEFAULT_GROUP, 'marketing_list']
             );
             if (count($errors) > 0) {
