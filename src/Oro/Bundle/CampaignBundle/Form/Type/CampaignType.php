@@ -3,7 +3,12 @@
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
+use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +23,7 @@ class CampaignType extends AbstractType
         $builder
             ->add(
                 'name',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'oro.campaign.name.label',
                     'required' => true,
@@ -27,7 +32,7 @@ class CampaignType extends AbstractType
             )
             ->add(
                 'code',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'oro.campaign.code.label',
                     'required' => true,
@@ -36,7 +41,7 @@ class CampaignType extends AbstractType
             )
             ->add(
                 'startDate',
-                'oro_date',
+                OroDateType::class,
                 [
                     'label'    => 'oro.campaign.start_date.label',
                     'required' => false,
@@ -44,14 +49,14 @@ class CampaignType extends AbstractType
             )
             ->add(
                 'endDate',
-                'oro_date',
+                OroDateType::class,
                 [
                     'label'    => 'oro.campaign.end_date.label',
                     'required' => false,
                 ]
             )->add(
                 'description',
-                'oro_resizeable_rich_text',
+                OroResizeableRichTextType::class,
                 [
                     'label'    => 'oro.campaign.description.label',
                     'required' => false,
@@ -59,7 +64,7 @@ class CampaignType extends AbstractType
             )
             ->add(
                 'budget',
-                'oro_money',
+                OroMoneyType::class,
                 [
                     'label'    => 'oro.campaign.budget.label',
                     'required' => false,
@@ -67,7 +72,7 @@ class CampaignType extends AbstractType
             )
             ->add(
                 'reportPeriod',
-                'choice',
+                ChoiceType::class,
                 [
                     'label'   => 'oro.campaign.report_period.label',
                     'choices' => [

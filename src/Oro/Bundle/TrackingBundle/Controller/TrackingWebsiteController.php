@@ -93,7 +93,7 @@ class TrackingWebsiteController extends Controller
     {
         return $this->get('oro_form.model.update_handler')->update(
             $trackingWebsite,
-            $this->createForm(TrackingWebsiteType::NAME),
+            $this->createForm(TrackingWebsiteType::class),
             $this->getTranslator()->trans('oro.tracking.trackingwebsite.saved_message')
         );
     }

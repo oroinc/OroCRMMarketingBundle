@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType;
 
 class MarketingListSelectTypeTest extends \PHPUnit_Framework_TestCase
@@ -34,13 +35,8 @@ class MarketingListSelectTypeTest extends \PHPUnit_Framework_TestCase
         $this->type->configureOptions($resolver);
     }
 
-    public function testGetName()
-    {
-        $this->assertEquals('oro_marketing_list_select', $this->type->getName());
-    }
-
     public function testGetParent()
     {
-        $this->assertEquals('oro_entity_create_or_select_inline', $this->type->getParent());
+        $this->assertEquals(OroEntitySelectOrCreateInlineType::class, $this->type->getParent());
     }
 }
