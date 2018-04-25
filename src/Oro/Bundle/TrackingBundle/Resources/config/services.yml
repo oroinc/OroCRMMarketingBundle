@@ -38,7 +38,7 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - oro_tracking_website
-            - oro_tracking_website
+            - Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
 
     oro_tracking.tracking_website.manager.api:
         class: '%oro_tracking.tracking_website.manager.api.class%'

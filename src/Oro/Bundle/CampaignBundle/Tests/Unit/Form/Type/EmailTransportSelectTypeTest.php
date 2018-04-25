@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
@@ -46,11 +47,6 @@ class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('choice', $this->type->getParent());
-    }
-
-    public function testGetName()
-    {
-        $this->assertEquals('oro_campaign_email_transport_select', $this->type->getName());
+        $this->assertEquals(ChoiceType::class, $this->type->getParent());
     }
 }

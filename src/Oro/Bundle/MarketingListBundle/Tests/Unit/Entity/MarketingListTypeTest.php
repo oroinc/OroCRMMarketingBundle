@@ -22,11 +22,6 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
         unset($this->entity);
     }
 
-    public function testGetName()
-    {
-        $this->assertEquals(MarketingListType::TYPE_DYNAMIC, $this->entity->getName());
-    }
-
     /**
      * @dataProvider propertiesDataProvider
      * @param string $property
