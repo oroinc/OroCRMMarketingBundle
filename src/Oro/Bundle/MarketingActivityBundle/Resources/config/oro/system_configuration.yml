@@ -2,7 +2,7 @@ system_configuration:
     fields:
         oro_marketing_activity.feature_enabled:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: oro.marketingactivity.feature_enabled
 

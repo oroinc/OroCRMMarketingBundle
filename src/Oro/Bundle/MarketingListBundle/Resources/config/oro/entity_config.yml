@@ -6,7 +6,7 @@ entity_config:
                     options:
                         allowed_type: [string, text]
                     form:
-                        type: choice
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
                         options:
                             choices:
                                 # each contact_information type requires own template
