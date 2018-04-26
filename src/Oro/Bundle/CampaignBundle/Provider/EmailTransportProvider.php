@@ -58,7 +58,7 @@ class EmailTransportProvider
         $choices = [];
         foreach ($this->getTransports() as $transport) {
             if ($this->isVisibleInForm($transport)) {
-                $choices[$transport->getName()] = $transport->getLabel();
+                $choices[$transport->getLabel()] = $transport->getName();
             }
         }
         return $choices;

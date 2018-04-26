@@ -3,9 +3,16 @@
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
+use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
 use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
+use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
+use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -52,12 +59,12 @@ class EmailCampaignType extends AbstractType
         $builder
             ->add(
                 'name',
-                'text',
+                TextType::class,
                 ['label' => 'oro.campaign.emailcampaign.name.label']
             )
             ->add(
                 'senderEmail',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'oro.campaign.emailcampaign.sender_email.label',
                     'required' => false
@@ -65,7 +72,7 @@ class EmailCampaignType extends AbstractType
             )
             ->add(
                 'senderName',
-                'text',
+                TextType::class,
                 [
                     'label'    => 'oro.campaign.emailcampaign.sender_name.label',
                     'required' => false
@@ -73,18 +80,20 @@ class EmailCampaignType extends AbstractType
             )
             ->add(
                 'schedule',
-                'choice',
+                ChoiceType::class,
                 [
+                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                    'choices_as_values' => true,
                     'choices' => [
-                        EmailCampaign::SCHEDULE_MANUAL   => 'oro.campaign.emailcampaign.schedule.manual',
-                        EmailCampaign::SCHEDULE_DEFERRED => 'oro.campaign.emailcampaign.schedule.deferred'
+                        'oro.campaign.emailcampaign.schedule.manual' => EmailCampaign::SCHEDULE_MANUAL,
+                        'oro.campaign.emailcampaign.schedule.deferred' => EmailCampaign::SCHEDULE_DEFERRED,
                     ],
                     'label'   => 'oro.campaign.emailcampaign.schedule.label',
                 ]
             )
             ->add(
                 'scheduledFor',
-                'oro_datetime',
+                OroDateTimeType::class,
                 [
                     'label'    => 'oro.campaign.emailcampaign.scheduled_for.label',
                     'required' => false,
@@ -92,17 +101,17 @@ class EmailCampaignType extends AbstractType
             )
             ->add(
                 'campaign',
-                'oro_campaign_select',
+                CampaignSelectType::class,
                 ['label' => 'oro.campaign.emailcampaign.campaign.label']
             )
             ->add(
                 'marketingList',
-                'oro_marketing_list_select',
+                MarketingListSelectType::class,
                 ['label' => 'oro.campaign.emailcampaign.marketing_list.label', 'required' => true]
             )
             ->add(
                 'description',
-                'oro_resizeable_rich_text',
+                OroResizeableRichTextType::class,
                 [
                     'label'    => 'oro.campaign.emailcampaign.description.label',
                     'required' => false,
@@ -148,6 +157,8 @@ class EmailCampaignType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 $options = [
+                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                    'choices_as_values' => true,
                     'label' => 'oro.campaign.emailcampaign.transport.label',
                     'required' => true,
                     'mapped' => false
@@ -161,13 +172,13 @@ class EmailCampaignType extends AbstractType
                     if (!array_key_exists($currentTransportName, $choices)) {
                         $currentTransport = $this->emailTransportProvider
                             ->getTransportByName($currentTransportName);
-                        $choices[$currentTransport->getName()] = $currentTransport->getLabel();
+                        $choices[$currentTransport->getLabel()] = $currentTransport->getName();
                         $options['choices'] = $choices;
                     }
                 }
 
                 $form = $event->getForm();
-                $form->add('transport', 'oro_campaign_email_transport_select', $options);
+                $form->add('transport', EmailTransportSelectType::class, $options);
             }
         );
     }

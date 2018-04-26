@@ -53,14 +53,16 @@ datagrids:
                     data_name: ml.entity
                     options:
                         field_options:
-                            multiple:          true
-                            choices:           '@oro_entity.datagrid_helper->getEntityNames'
+                            multiple: true
+                            choices_as_values: true
+                            choices: '@oro_entity.datagrid_helper->getEntityNames'
                             translatable_options: false
                 listType:
                     type:               choice
                     data_name:          ml.type
                     options:
                         field_options:
+                            choices_as_values: true
                             choices:    '@oro_marketing_list.datagrid.marketing_list_type.provider->getListTypeChoices'
                 createdAt:
                     type:       datetime

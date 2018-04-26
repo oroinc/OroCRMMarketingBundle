@@ -39,7 +39,7 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - "oro_campaign_form"
-            - "oro_campaign_form"
+            - Oro\Bundle\CampaignBundle\Form\Type\CampaignType
 
     oro_campaign.email_campaign.form.type:
         class: '%oro_campaign.form.type.email_campaign.class%'
@@ -55,7 +55,7 @@ services:
         factory: ['@form.factory', createNamed]
         arguments:
             - "oro_email_campaign"
-            - "oro_email_campaign"
+            - Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType
 
     oro_campaign.campaign.manager.api:
         class: '%oro_campaign.campaign.manager.api.class%'

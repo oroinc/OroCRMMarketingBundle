@@ -19,7 +19,7 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
      */
     public function getMigrationVersion()
     {
-        return 'v1_10';
+        return 'v1_11';
     }
 
     /** @var VisitEventAssociationExtension */
