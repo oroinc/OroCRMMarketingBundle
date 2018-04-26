@@ -37,13 +37,15 @@ system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
+                # TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                choices_as_values: true
                 choices:
-                    60: oro.tracking.system_configuration.fields.log_rotate_interval.choices.60
-                    30: oro.tracking.system_configuration.fields.log_rotate_interval.choices.30
-                    20: oro.tracking.system_configuration.fields.log_rotate_interval.choices.20
-                    15: oro.tracking.system_configuration.fields.log_rotate_interval.choices.15
-                    10: oro.tracking.system_configuration.fields.log_rotate_interval.choices.10
-                    5:  oro.tracking.system_configuration.fields.log_rotate_interval.choices.5
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.60: 60
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.30: 30
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.20: 20
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.15: 15
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.10: 10
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.5: 5
 
         oro_tracking.piwik_host:
             data_type: string

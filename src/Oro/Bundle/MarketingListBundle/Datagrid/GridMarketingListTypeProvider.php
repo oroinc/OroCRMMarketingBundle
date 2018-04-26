@@ -33,11 +33,11 @@ class GridMarketingListTypeProvider
         $types = $this->registry
             ->getManagerForClass(self::MARKETING_LIST_TYPE)
             ->getRepository(self::MARKETING_LIST_TYPE)
-            ->findBy(array(), array('name' => 'ASC'));
+            ->findBy([], ['name' => 'ASC']);
 
-        $results = array();
+        $results = [];
         foreach ($types as $type) {
-            $results[$type->getName()] = $type->getLabel();
+            $results[$type->getLabel()] = $type->getName();
         }
 
         return $results;
