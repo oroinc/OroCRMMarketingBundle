@@ -20,11 +20,6 @@ class InternalTransportSettingsTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new InternalTransportSettingsType();
     }
 
-    public function testGetName()
-    {
-        $this->assertEquals(InternalTransportSettingsType::NAME, $this->type->getName());
-    }
-
     public function testConfigureOptions()
     {
         $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');

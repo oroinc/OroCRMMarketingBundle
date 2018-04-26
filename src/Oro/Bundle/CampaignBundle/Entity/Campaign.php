@@ -38,7 +38,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *              "category"="marketing"
  *          },
  *          "form"={
- *              "form_type"="oro_campaign_select",
+ *              "form_type"="Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType",
  *              "grid_name"="oro-campaign-grid",
  *          },
  *          "grid"={

@@ -5,6 +5,7 @@ namespace Oro\Bundle\TrackingBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\TrackingBundle\Migrations\Schema\v1_4\OroTrackerBundle;
@@ -20,7 +21,7 @@ class OroTrackingBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_12';
+        return 'v1_13';
     }
 
     /**
@@ -119,7 +120,7 @@ class OroTrackingBundleInstaller implements Installation
                     'datagrid'  => ['is_visible' => DatagridScope::IS_VISIBLE_FALSE],
                     'merge'     => ['display' => true],
                     'dataaudit' => ['auditable' => true],
-                    'form'      => ['type' => 'oro_resizeable_rich_text'],
+                    'form'      => ['type' => OroResizeableRichTextType::class],
                     'view'      => ['type' => 'html'],
                 ]
             ]

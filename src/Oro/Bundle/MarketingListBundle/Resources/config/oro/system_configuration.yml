@@ -16,7 +16,7 @@ system_configuration:
     fields:
         oro_marketing_list.feature_enabled:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: oro.marketinglist.feature_enabled
 

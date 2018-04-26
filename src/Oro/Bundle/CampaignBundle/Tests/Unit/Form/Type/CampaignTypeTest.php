@@ -3,6 +3,10 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Form\Type\CampaignType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
+use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CampaignTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,27 +31,27 @@ class CampaignTypeTest extends \PHPUnit_Framework_TestCase
 
         $builder->expects($this->at(0))
             ->method('add')
-            ->with('name', 'text')
+            ->with('name', TextType::class)
             ->will($this->returnSelf());
         $builder->expects($this->at(1))
             ->method('add')
-            ->with('code', 'text')
+            ->with('code', TextType::class)
             ->will($this->returnSelf());
         $builder->expects($this->at(2))
             ->method('add')
-            ->with('startDate', 'oro_date')
+            ->with('startDate', OroDateType::class)
             ->will($this->returnSelf());
         $builder->expects($this->at(3))
             ->method('add')
-            ->with('endDate', 'oro_date')
+            ->with('endDate', OroDateType::class)
             ->will($this->returnSelf());
         $builder->expects($this->at(4))
             ->method('add')
-            ->with('description', 'oro_resizeable_rich_text')
+            ->with('description', OroResizeableRichTextType::class)
             ->will($this->returnSelf());
         $builder->expects($this->at(5))
             ->method('add')
-            ->with('budget', 'oro_money')
+            ->with('budget', OroMoneyType::class)
             ->will($this->returnSelf());
 
         $this->type->buildForm($builder, []);

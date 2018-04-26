@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignSelectTypeTest extends \PHPUnit_Framework_TestCase
@@ -32,11 +33,6 @@ class CampaignSelectTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('oro_entity_create_or_select_inline', $this->type->getParent());
-    }
-
-    public function testGetName()
-    {
-        $this->assertEquals('oro_campaign_select', $this->type->getName());
+        $this->assertEquals(OroEntitySelectOrCreateInlineType::class, $this->type->getParent());
     }
 }

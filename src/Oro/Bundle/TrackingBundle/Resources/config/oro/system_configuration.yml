@@ -10,7 +10,7 @@ system_configuration:
     fields:
         oro_tracking.precalculated_statistic_enabled:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             priority: 60
             options:
                 label: oro.tracking.system_configuration.fields.precalculated_statistic_enabled.label
@@ -19,7 +19,7 @@ system_configuration:
 
         oro_tracking.dynamic_tracking_enabled:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             priority: 50
             options:
                 label: oro.tracking.system_configuration.fields.dynamic_tracking_enabled.label
@@ -28,7 +28,7 @@ system_configuration:
 
         oro_tracking.log_rotate_interval:
             data_type: integer
-            type: choice
+            type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
             search_type: choice
             priority: 40
             options:
@@ -37,17 +37,19 @@ system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
+                # TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                choices_as_values: true
                 choices:
-                    60: oro.tracking.system_configuration.fields.log_rotate_interval.choices.60
-                    30: oro.tracking.system_configuration.fields.log_rotate_interval.choices.30
-                    20: oro.tracking.system_configuration.fields.log_rotate_interval.choices.20
-                    15: oro.tracking.system_configuration.fields.log_rotate_interval.choices.15
-                    10: oro.tracking.system_configuration.fields.log_rotate_interval.choices.10
-                    5:  oro.tracking.system_configuration.fields.log_rotate_interval.choices.5
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.60: 60
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.30: 30
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.20: 20
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.15: 15
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.10: 10
+                    oro.tracking.system_configuration.fields.log_rotate_interval.choices.5: 5
 
         oro_tracking.piwik_host:
             data_type: string
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             search_type: text
             priority: 20
             options:
@@ -57,7 +59,7 @@ system_configuration:
 
         oro_tracking.piwik_token_auth:
             data_type: string
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             search_type: text
             priority: 10
             options:
@@ -67,7 +69,7 @@ system_configuration:
 
         oro_tracking.wesite_configuration:
             ui_only: true
-            type: oro_link_type # @todo BAP-4696 use template
+            type: Oro\Bundle\FormBundle\Form\Type\LinkType # @todo BAP-4696 use template
             priority: 0
             options:
                 label: false
@@ -79,7 +81,7 @@ system_configuration:
 
         oro_tracking.feature_enabled:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: oro.tracking.feature_enabled
 
