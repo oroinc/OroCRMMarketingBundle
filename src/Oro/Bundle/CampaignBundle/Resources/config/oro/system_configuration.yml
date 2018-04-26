@@ -6,19 +6,19 @@ system_configuration:
     fields:
         oro_campaign.campaign_sender_email:
             data_type: string
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             search_type: text
             options:
                 label: oro.campaign.emailcampaign.system_configuration.campaign_sender_email
         oro_campaign.campaign_sender_name:
             data_type: string
             search_type: text
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             options:
                 label: oro.campaign.emailcampaign.system_configuration.campaign_sender_name
         oro_campaign.feature_enabled:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: oro.campaign.feature_enabled
 

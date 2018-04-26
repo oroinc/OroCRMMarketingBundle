@@ -82,9 +82,11 @@ class EmailCampaignType extends AbstractType
                 'schedule',
                 ChoiceType::class,
                 [
+                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                    'choices_as_values' => true,
                     'choices' => [
-                        EmailCampaign::SCHEDULE_MANUAL   => 'oro.campaign.emailcampaign.schedule.manual',
-                        EmailCampaign::SCHEDULE_DEFERRED => 'oro.campaign.emailcampaign.schedule.deferred'
+                        'oro.campaign.emailcampaign.schedule.manual' => EmailCampaign::SCHEDULE_MANUAL,
+                        'oro.campaign.emailcampaign.schedule.deferred' => EmailCampaign::SCHEDULE_DEFERRED,
                     ],
                     'label'   => 'oro.campaign.emailcampaign.schedule.label',
                 ]
@@ -155,6 +157,8 @@ class EmailCampaignType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 $options = [
+                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                    'choices_as_values' => true,
                     'label' => 'oro.campaign.emailcampaign.transport.label',
                     'required' => true,
                     'mapped' => false
@@ -168,7 +172,7 @@ class EmailCampaignType extends AbstractType
                     if (!array_key_exists($currentTransportName, $choices)) {
                         $currentTransport = $this->emailTransportProvider
                             ->getTransportByName($currentTransportName);
-                        $choices[$currentTransport->getName()] = $currentTransport->getLabel();
+                        $choices[$currentTransport->getLabel()] = $currentTransport->getName();
                         $options['choices'] = $choices;
                     }
                 }

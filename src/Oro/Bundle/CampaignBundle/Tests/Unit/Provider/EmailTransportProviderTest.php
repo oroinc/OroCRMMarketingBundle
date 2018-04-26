@@ -26,7 +26,7 @@ class EmailTransportProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testTransportActualChoices()
     {
-        $choices = ['t1' => 'Transport 1', 't2' => 'Transport 2'];
+        $choices = ['Transport 1' => 't1', 'Transport 2' => 't2'];
         $provider = new EmailTransportProvider();
         $transportOne = $this->createMock('Oro\Bundle\CampaignBundle\Transport\TransportInterface');
         $transportOne->expects($this->exactly(2))
