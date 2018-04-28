@@ -37,8 +37,6 @@ system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
-                # TODO: remove 'choices_as_values' option below in scope of BAP-15236
-                choices_as_values: true
                 choices:
                     oro.tracking.system_configuration.fields.log_rotate_interval.choices.60: 60
                     oro.tracking.system_configuration.fields.log_rotate_interval.choices.30: 30

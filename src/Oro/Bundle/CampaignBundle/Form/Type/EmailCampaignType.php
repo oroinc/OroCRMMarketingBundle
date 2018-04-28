@@ -82,8 +82,6 @@ class EmailCampaignType extends AbstractType
                 'schedule',
                 ChoiceType::class,
                 [
-                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
-                    'choices_as_values' => true,
                     'choices' => [
                         'oro.campaign.emailcampaign.schedule.manual' => EmailCampaign::SCHEDULE_MANUAL,
                         'oro.campaign.emailcampaign.schedule.deferred' => EmailCampaign::SCHEDULE_DEFERRED,
@@ -157,8 +155,6 @@ class EmailCampaignType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 $options = [
-                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
-                    'choices_as_values' => true,
                     'label' => 'oro.campaign.emailcampaign.transport.label',
                     'required' => true,
                     'mapped' => false

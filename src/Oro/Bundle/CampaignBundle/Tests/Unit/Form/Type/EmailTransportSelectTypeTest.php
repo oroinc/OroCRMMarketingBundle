@@ -42,7 +42,6 @@ class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('setDefaults')
             ->with([
-                'choices_as_values' => true,
                 'choices' => $choices,
             ]);
         $this->type->configureOptions($resolver);

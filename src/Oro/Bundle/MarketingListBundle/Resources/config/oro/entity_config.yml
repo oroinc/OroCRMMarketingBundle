@@ -8,8 +8,6 @@ entity_config:
                     form:
                         type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
                         options:
-                            # TODO: remove 'choices_as_values' option below in scope of BAP-15236
-                            choices_as_values: true
                             choices:
                                 # each contact_information type requires own template
                                 # e.g. phone => "OroMarketingListBundle:MarketingList/ExtendField:phone.html.twig"
