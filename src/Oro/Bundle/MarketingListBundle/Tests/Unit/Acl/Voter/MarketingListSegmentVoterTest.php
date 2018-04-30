@@ -57,9 +57,7 @@ class MarketingListSegmentVoterTest extends \PHPUnit_Framework_TestCase
             ->with($object, false)
             ->will($this->returnValue(1));
 
-        if ($this->voter->supportsAttribute($attributes[0])) {
-            $this->assertMarketingListLoad($marketingList);
-        }
+        $this->assertMarketingListLoad($marketingList);
 
         /** @var TokenInterface $token */
         $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
@@ -103,12 +101,12 @@ class MarketingListSegmentVoterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $repository
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('findOneBy')
             ->will($this->returnValue($marketingList));
 
         $this->doctrineHelper
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getEntityRepository')
             ->will($this->returnValue($repository));
     }

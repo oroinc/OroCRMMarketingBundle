@@ -51,10 +51,6 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit_Framework_Test
             ->will($this->returnValue([]));
 
         $type = $this->createMock('Symfony\Component\Form\ResolvedFormTypeInterface');
-        $type
-            ->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('string'));
         $config
             ->expects($this->any())
             ->method('getType')
