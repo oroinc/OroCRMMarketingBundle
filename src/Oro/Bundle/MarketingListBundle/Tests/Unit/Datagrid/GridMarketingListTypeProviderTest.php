@@ -79,8 +79,8 @@ class GridMarketingListTypeProviderTest extends \PHPUnit_Framework_TestCase
                     $this->getMarketingListType(MarketingListType::TYPE_MANUAL, 'label2'),
                 ],
                 [
-                    MarketingListType::TYPE_DYNAMIC => 'label1',
-                    MarketingListType::TYPE_MANUAL  => 'label2',
+                    'label1' => MarketingListType::TYPE_DYNAMIC,
+                    'label2' => MarketingListType::TYPE_MANUAL,
                 ]
             ]
         ];

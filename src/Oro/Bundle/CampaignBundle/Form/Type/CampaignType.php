@@ -75,10 +75,12 @@ class CampaignType extends AbstractType
                 ChoiceType::class,
                 [
                     'label'   => 'oro.campaign.report_period.label',
+                    // TODO: remove 'choices_as_values' option below in scope of BAP-15236
+                    'choices_as_values' => true,
                     'choices' => [
-                        Campaign::PERIOD_HOURLY  => 'oro.campaign.report_period.hour',
-                        Campaign::PERIOD_DAILY   => 'oro.campaign.report_period.day',
-                        Campaign::PERIOD_MONTHLY => 'oro.campaign.report_period.month',
+                        'oro.campaign.report_period.hour' => Campaign::PERIOD_HOURLY,
+                        'oro.campaign.report_period.day' => Campaign::PERIOD_DAILY,
+                        'oro.campaign.report_period.month' => Campaign::PERIOD_MONTHLY,
                     ],
                     'tooltip' => 'oro.campaign.report_period.description'
                 ]
