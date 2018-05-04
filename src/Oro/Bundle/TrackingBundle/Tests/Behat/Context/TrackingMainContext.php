@@ -16,6 +16,22 @@ class TrackingMainContext extends OroFeatureContext
     const TRACKING_FILENAME_KEY = 'tracking';
 
     /**
+     * Removes "app/logs/tracking/settings.ser" file which is generated on tracking configuration save
+     * This prevents outdated configuration taken from this file in test
+     *
+     * Example: Given I reset tracking settings file
+     *
+     * @When /^(?:|I )reset tracking settings file$/
+     */
+    public function removeTrackingSettingsFile()
+    {
+        $filePath = $this->getKernel()->getRootDir() . '/../app/logs/tracking/settings.ser';
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    /**
      * This step used for generating static HTML page and add tracking code to it
      * It used in case when we need to check tracking data
      *
@@ -27,6 +43,11 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function generateHtmlPageWithTrackingCode($identifier)
     {
+        $filePath = $this->getKernel()->getRootDir() . '/../web/' . $this->getHtmlFilename($identifier);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
         $website = $this->getRepository(TrackingWebsite::class)->findOneBy(['identifier' => $identifier]);
         self::assertNotNull($website, sprintf('Could not found tracking website "%s",', $identifier));
 
@@ -45,7 +66,7 @@ class TrackingMainContext extends OroFeatureContext
         $filesystem = $this->getContainer()->get('filesystem');
 
         $filesystem->dumpFile(
-            $this->getKernel()->getRootDir() . '/../web/' . $this->getHtmlFilename($identifier),
+            $filePath,
             $this->getHtmlContent($trackingCode)
         );
     }
@@ -60,8 +81,6 @@ class TrackingMainContext extends OroFeatureContext
     public function openPageWithTrackingCode($identifier)
     {
         $this->visitPath('/' . $this->getHtmlFilename($identifier));
-
-        unlink($this->getKernel()->getRootDir() . '/../web/' . $this->getHtmlFilename($identifier));
     }
 
     /**
