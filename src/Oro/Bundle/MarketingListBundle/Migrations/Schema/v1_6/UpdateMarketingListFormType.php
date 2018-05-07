@@ -21,7 +21,8 @@ class UpdateMarketingListFormType implements Migration
                 MarketingList::class,
                 'form',
                 'form_type',
-                MarketingListSelectType::class
+                MarketingListSelectType::class,
+                'oro_marketing_list_select'
             )
         );
     }

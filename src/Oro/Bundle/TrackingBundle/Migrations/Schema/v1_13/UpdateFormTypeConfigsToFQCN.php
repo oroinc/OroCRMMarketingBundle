@@ -23,7 +23,8 @@ class UpdateFormTypeConfigsToFQCN implements Migration
                 'extend_description',
                 'form',
                 'type',
-                OroResizeableRichTextType::class
+                OroResizeableRichTextType::class,
+                'oro_resizeable_rich_text'
             )
         );
 
@@ -33,7 +34,8 @@ class UpdateFormTypeConfigsToFQCN implements Migration
                 'channel',
                 'form',
                 'form_type',
-                ChannelSelectType::class
+                ChannelSelectType::class,
+                'oro_channel_select_type'
             )
         );
     }

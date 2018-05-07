@@ -21,7 +21,8 @@ class UpdateCampaignFormType implements Migration
                 Campaign::class,
                 'form',
                 'form_type',
-                CampaignSelectType::class
+                CampaignSelectType::class,
+                'oro_campaign_select'
             )
         );
     }
