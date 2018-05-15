@@ -100,10 +100,9 @@ function passDataToApplication($url)
     fillTrackingData($_GET);
 
     require_once __DIR__ . '/../vendor/autoload.php';
-    require_once __DIR__ . '/../var/bootstrap.php.cache';
-    require_once __DIR__ . '/../app/AppKernel.php';
+    require_once __DIR__ . '/../src/AppKernel.php';
     $kernel = new AppKernel('prod', false);
-    $kernel->loadClassCache();
+
     $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
     $kernel->handle($request);

@@ -91,7 +91,7 @@ class ConfigListener
         }
 
         if (!empty($configuration['dynamic_tracking_enabled'])) {
-            /** This fix remove app.php or other entry point from url if they are present. @see CRM-8338 */
+            /** This fix remove index.php or other entry point from url if they are present. @see CRM-8338 */
             $baseUrl = $this->router->getContext()->getBaseUrl();
             $configuration['dynamic_tracking_endpoint'] = $this->router->generate($this->dynamicTrackingRouteName);
             $configuration['dynamic_tracking_base_url'] = $baseUrl;

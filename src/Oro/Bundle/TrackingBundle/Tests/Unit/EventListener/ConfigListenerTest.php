@@ -228,14 +228,14 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             [
-                new RequestContext('app.php'),
+                new RequestContext('index.php'),
                 [
                     'dynamic_tracking_enabled' => true,
                     'log_rotate_interval' => 'default',
                     'piwik_host' => 'default',
                     'piwik_token_auth' => 'default',
-                    'dynamic_tracking_endpoint' => '/app.php/test/url',
-                    'dynamic_tracking_base_url' => 'app.php'
+                    'dynamic_tracking_endpoint' => '/index.php/test/url',
+                    'dynamic_tracking_base_url' => 'index.php'
                 ]
             ]
         ];
