@@ -16,7 +16,7 @@ class TrackingMainContext extends OroFeatureContext
     const TRACKING_FILENAME_KEY = 'tracking';
 
     /**
-     * Removes "app/logs/tracking/settings.ser" file which is generated on tracking configuration save
+     * Removes "var/logs/tracking/settings.ser" file which is generated on tracking configuration save
      * This prevents outdated configuration taken from this file in test
      *
      * Example: Given I reset tracking settings file
@@ -25,7 +25,7 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function removeTrackingSettingsFile()
     {
-        $filePath = $this->getKernel()->getRootDir() . '/../app/logs/tracking/settings.ser';
+        $filePath = $this->getKernel()->getProjectDir() . '/var/logs/tracking/settings.ser';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -43,7 +43,7 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function generateHtmlPageWithTrackingCode($identifier)
     {
-        $filePath = $this->getKernel()->getRootDir() . '/../web/' . $this->getHtmlFilename($identifier);
+        $filePath = $this->getKernel()->getProjectDir() . '/public/' . $this->getHtmlFilename($identifier);
         if (file_exists($filePath)) {
             unlink($filePath);
         }
