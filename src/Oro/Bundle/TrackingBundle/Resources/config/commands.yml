@@ -1,0 +1,12 @@
+services:
+    Oro\Bundle\TrackingBundle\Command\ImportLogsCommand:
+        public: false
+        class: Oro\Bundle\TrackingBundle\Command\ImportLogsCommand
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\TrackingBundle\Command\TrackCommand:
+        public: false
+        class: Oro\Bundle\TrackingBundle\Command\TrackCommand
+        tags:
+            - { name: console.command }

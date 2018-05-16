@@ -1,0 +1,12 @@
+services:
+    Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand:
+        public: false
+        class: Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand
+        tags:
+            - { name: console.command }
+
+    Oro\Bundle\CampaignBundle\Command\SendEmailCampaignsCommand:
+        public: false
+        class: Oro\Bundle\CampaignBundle\Command\SendEmailCampaignsCommand
+        tags:
+            - { name: console.command }
