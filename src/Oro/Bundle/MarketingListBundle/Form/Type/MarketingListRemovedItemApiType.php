@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Form\Type;
 
-use Oro\Bundle\ApiBundle\Form\Type\AbstractPatchableApiType;
+use Oro\Bundle\SoapBundle\Form\Type\AbstractPatchableApiType;
 
 class MarketingListRemovedItemApiType extends AbstractPatchableApiType
 {
