@@ -16,7 +16,7 @@ Retrieve a collection of marketing activity records.
 
 ### create
 
-The action creates a new marketing activity record.
+Create a new marketing activity record.
 
 The created record is returned in response.
 
@@ -100,7 +100,7 @@ Example:
 
 ### delete
 
-The action deletes a specific marketing activity record.
+Delete a specific marketing activity record.
 
 {@inheritdoc}
 
@@ -174,15 +174,15 @@ Delete a collection of marketing activity records.
 
 #### get_subresource
 
-**Get_subresource** retrieves the campaign record which a specific marketing activity record is assigned to.
+Retrieve the campaign record which a specific marketing activity record is assigned to.
 
 #### get_relationship
 
-**Get_relationship** retrieves the ID of the campaign record which a specific marketing activity record is assigned to.
+Retrieve the ID of the campaign record which a specific marketing activity record is assigned to.
 
 #### update_relationship
 
-**Update_relationship** replaces the campaign which a specific marketing activity record is assigned to.
+Replace the campaign which a specific marketing activity record is assigned to.
 
 {@request:json_api}
 Example:
