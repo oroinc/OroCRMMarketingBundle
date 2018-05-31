@@ -22,10 +22,7 @@ The created record is returned in response.
 {@inheritdoc}
 
 {@request:json_api}
-
 Example:
-
-`</api/campaigns>`
 
 ```JSON
 {
@@ -63,10 +60,7 @@ Edit a specific campaign record.
 {@inheritdoc}
 
 {@request:json_api}
-
 Example:
-
-`</api/campaigns/1>`
 
 ```JSON
 {
@@ -107,8 +101,6 @@ Delete a specific campaign record.
 ### delete_list
 
 Delete a campaign record.
-
-The list of the records to be deleted can be limited by filters.
 
 {@inheritdoc}
 
@@ -161,10 +153,7 @@ Retrieve the ID of the user who is the owner of a specific campaign record.
 Replace the owner of a specific campaign record.
 
 {@request:json_api}
-
 Example:
-
-`</api/campaigns/{id}/relationships/owner>`
 
 ```JSON
 {
@@ -191,10 +180,7 @@ Retrieve the ID of the organization that a specific campaign record belongs to.
 Replace the organization that a specific campaign record belongs to.
 
 {@request:json_api}
-
 Example:
-
-`</api/campaigns/{id}/relationships/organization>`
 
 ```JSON
 {

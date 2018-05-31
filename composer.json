@@ -16,7 +16,6 @@
         }
     },
     "require": {
-        "php": "7.1.*",
         "oro/platform": "2.x-dev"
     },
     "repositories": {
