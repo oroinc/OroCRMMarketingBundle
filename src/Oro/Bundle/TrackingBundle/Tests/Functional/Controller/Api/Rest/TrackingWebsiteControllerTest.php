@@ -4,9 +4,6 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\Controller\Api\Rest;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class TrackingWebsiteControllerTest extends WebTestCase
 {
     protected function setUp()
