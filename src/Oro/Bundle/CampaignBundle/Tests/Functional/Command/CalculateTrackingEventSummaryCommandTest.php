@@ -5,10 +5,6 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\Command;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand;
 
-/**
- * @outputBuffering enabled
- * @dbIsolation
- */
 class CalculateTrackingEventSummaryCommandTest extends WebTestCase
 {
     protected function setUp()
@@ -34,10 +30,7 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
             'Finished campaigns statistic calculation'
         ];
 
-        $this->assertEquals(
-            implode(PHP_EOL, $expectedMessages) . PHP_EOL,
-            $result
-        );
+        $this->assertEquals(implode(' ', $expectedMessages), $result);
 
         $timezone = new \DateTimeZone('UTC');
         $dateOne = new \DateTime('-1 day', $timezone);

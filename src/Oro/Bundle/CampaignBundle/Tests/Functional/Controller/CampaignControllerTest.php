@@ -4,10 +4,6 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @outputBuffering enabled
- * @dbIsolation
- */
 class CampaignControllerTest extends WebTestCase
 {
     const TEST_CODE         = 'code-1234';
