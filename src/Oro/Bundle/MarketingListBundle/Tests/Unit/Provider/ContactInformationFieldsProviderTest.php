@@ -92,7 +92,7 @@ class ContactInformationFieldsProviderTest extends \PHPUnit_Framework_TestCase
                 ['email' => 'email'],
                 json_encode([]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
-                ['email']
+                ['email' => 'email']
             ],
             [
                 ['email' => 'email'],
@@ -116,7 +116,7 @@ class ContactInformationFieldsProviderTest extends \PHPUnit_Framework_TestCase
                 ['email' => 'email'],
                 json_encode(['columns' => [['name' => 'email'], ['name' => 'phone']]]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
-                ['email']
+                ['email' => 'email']
             ],
         ];
     }
@@ -182,7 +182,7 @@ class ContactInformationFieldsProviderTest extends \PHPUnit_Framework_TestCase
             [
                 ['email' => 'email'],
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
-                ['email']
+                ['email' => 'email']
             ],
         ];
     }
