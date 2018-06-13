@@ -18,54 +18,34 @@ use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 
 class EmailCampaignSender
 {
-    /**
-     * @var MarketingListProvider
-     */
+    /** @var MarketingListProvider */
     protected $marketingListProvider;
 
-    /**
-     * @var ConfigManager
-     */
+    /** @var ConfigManager */
     protected $configManager;
 
-    /**
-     * @var EmailCampaignStatisticsConnector
-     */
+    /** @var EmailCampaignStatisticsConnector */
     protected $statisticsConnector;
 
-    /**
-     * @var ContactInformationFieldsProvider
-     */
+    /** @var ContactInformationFieldsProvider */
     protected $contactInformationFieldsProvider;
 
-    /**
-     * @var ManagerRegistry
-     */
+    /** @var ManagerRegistry */
     protected $registry;
 
-    /**
-     * @var EmailTransportProvider
-     */
+    /** @var EmailTransportProvider */
     protected $emailTransportProvider;
 
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     protected $logger;
 
-    /**
-     * @var TransportInterface
-     */
+    /** @var TransportInterface */
     protected $transport;
 
-    /**
-     * @var EmailCampaign
-     */
+    /** @var EmailCampaign */
     protected $emailCampaign;
 
-    /**
-     * @var ValidatorInterface
-     */
+    /** @var ValidatorInterface */
     protected $validator;
 
     /**
@@ -129,11 +109,11 @@ class EmailCampaignSender
 
         /** @var EntityManager $manager */
         $manager     = $this->registry->getManager();
-        $emailFields = $this->contactInformationFieldsProvider
-            ->getMarketingListTypedFields(
-                $marketingList,
-                ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL
-            );
+        $emailFields = array_keys($this->contactInformationFieldsProvider->getMarketingListTypedFields(
+            $marketingList,
+            ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL
+        ));
+
         foreach ($iterator as $entity) {
             $to = $this->contactInformationFieldsProvider->getTypedFieldsValues($emailFields, $entity);
             $to = array_unique($to);

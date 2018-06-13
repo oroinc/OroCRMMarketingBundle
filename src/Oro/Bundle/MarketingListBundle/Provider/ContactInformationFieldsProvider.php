@@ -14,9 +14,7 @@ class ContactInformationFieldsProvider
     const CONTACT_INFORMATION_SCOPE_EMAIL = 'email';
     const CONTACT_INFORMATION_SCOPE_PHONE = 'phone';
 
-    /**
-     * @var ContactInformationFieldHelper
-     */
+    /** @var ContactInformationFieldHelper */
     protected $contactInformationFieldHelper;
 
     /**
@@ -28,6 +26,8 @@ class ContactInformationFieldsProvider
     }
 
     /**
+     * Returns contact information fields that exists in query designer column definition.
+     *
      * @param AbstractQueryDesigner $queryDesigner
      * @param string|null $type
      *
@@ -53,7 +53,8 @@ class ContactInformationFieldsProvider
         }
 
         if (!empty($definitionColumns)) {
-            $typedFields = array_intersect($typedFields, $definitionColumns);
+            $filteredTypedFieldsKeys = array_intersect(array_keys($typedFields), $definitionColumns);
+            $typedFields = array_intersect_key($typedFields, array_flip($filteredTypedFieldsKeys));
         }
 
         return $typedFields;
@@ -129,19 +130,18 @@ class ContactInformationFieldsProvider
     }
 
     /**
-     * @param array $contactInformationFields
+     * @param array  $contactInformationFields
      * @param string $type
+     *
      * @return array
      */
     protected function filterByType(array $contactInformationFields, $type)
     {
-        return array_keys(
-            array_filter(
-                $contactInformationFields,
-                function ($contactInformationField) use ($type) {
-                    return $contactInformationField === $type;
-                }
-            )
+        return array_filter(
+            $contactInformationFields,
+            function ($contactInformationField) use ($type) {
+                return $contactInformationField === $type;
+            }
         );
     }
 }
