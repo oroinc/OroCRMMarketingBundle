@@ -5,9 +5,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Behat\Context;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
-use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
-use Symfony\Component\Filesystem\Filesystem;
 
 class TrackingMainContext extends OroFeatureContext
 {
@@ -43,7 +41,7 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function generateHtmlPageWithTrackingCode($identifier)
     {
-        $filePath = $this->getKernel()->getProjectDir() . '/public/' . $this->getHtmlFilename($identifier);
+        $filePath = $this->getKernel()->getProjectDir() . '/public/uploads/' . $this->getHtmlFilename($identifier);
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -80,7 +78,7 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function openPageWithTrackingCode($identifier)
     {
-        $this->visitPath('/' . $this->getHtmlFilename($identifier));
+        $this->visitPath('/uploads/' . $this->getHtmlFilename($identifier));
     }
 
     /**
