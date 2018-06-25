@@ -6,7 +6,7 @@ use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\ContactBundle\Entity\ContactEmail;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
-class ContactInformationFieldsProviderTest extends \PHPUnit_Framework_TestCase
+class ContactInformationFieldsProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContactInformationFieldsProvider
@@ -14,7 +14,7 @@ class ContactInformationFieldsProviderTest extends \PHPUnit_Framework_TestCase
     protected $provider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $helper;
 
@@ -53,7 +53,7 @@ class ContactInformationFieldsProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \PHPUnit_Framework_MockObject_MockObject$queryDesigner
+     * @param \PHPUnit\Framework\MockObject\MockObject$queryDesigner
      * @param array $definition
      * @param array $contactInfoFields
      */

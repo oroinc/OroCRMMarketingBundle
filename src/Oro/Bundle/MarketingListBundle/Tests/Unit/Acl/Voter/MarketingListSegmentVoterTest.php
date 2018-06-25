@@ -6,7 +6,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Acl\Voter\MarketingListSegmentVoter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class MarketingListSegmentVoterTest extends \PHPUnit_Framework_TestCase
+class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListSegmentVoter
@@ -14,7 +14,7 @@ class MarketingListSegmentVoterTest extends \PHPUnit_Framework_TestCase
     protected $voter;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper
+     * @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper
      */
     protected $doctrineHelper;
 

@@ -7,7 +7,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider;
 use Oro\Bundle\TrackingBundle\Tests\Unit\Fixture\TestProvider;
 
-class TrackingEventIdentificationProviderTest extends \PHPUnit_Framework_TestCase
+class TrackingEventIdentificationProviderTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingEventIdentificationProvider */
     protected $provider;

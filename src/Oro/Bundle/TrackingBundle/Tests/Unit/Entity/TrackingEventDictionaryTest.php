@@ -6,7 +6,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class TrackingEventDictionaryTest extends \PHPUnit_Framework_TestCase
+class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingEventDictionary */
     protected $trackingEvents;

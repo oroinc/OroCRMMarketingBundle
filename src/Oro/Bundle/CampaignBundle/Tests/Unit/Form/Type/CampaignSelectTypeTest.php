@@ -6,7 +6,7 @@ use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CampaignSelectTypeTest extends \PHPUnit_Framework_TestCase
+class CampaignSelectTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CampaignSelectType

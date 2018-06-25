@@ -4,7 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\TrackingBundle\Processor\DeviceDetectorFactory;
 
-class DeviceDetectorFactoryTest extends \PHPUnit_Framework_TestCase
+class DeviceDetectorFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testDeviceDetector()
     {

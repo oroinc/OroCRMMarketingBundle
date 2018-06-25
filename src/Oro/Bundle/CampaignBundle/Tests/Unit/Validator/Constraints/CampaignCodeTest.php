@@ -5,10 +5,10 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Validator\Constraints;
 use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode;
 use Symfony\Component\Validator\Constraint;
 
-class CampaignCodeTest extends \PHPUnit_Framework_TestCase
+class CampaignCodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var |\PHPUnit_Framework_MockObject_MockObject
+     * @var |\PHPUnit\Framework\MockObject\MockObject
      */
     protected $options;
 

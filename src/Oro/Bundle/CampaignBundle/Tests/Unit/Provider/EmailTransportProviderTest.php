@@ -4,7 +4,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
 
-class EmailTransportProviderTest extends \PHPUnit_Framework_TestCase
+class EmailTransportProviderTest extends \PHPUnit\Framework\TestCase
 {
     public function testProviderMethods()
     {

@@ -10,20 +10,20 @@ use Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery;
 use Oro\Bundle\TrackingBundle\Tools\UniqueTrackingVisitDumper;
 use Psr\Log\LoggerInterface;
 
-class UniqueTrackingVisitDumperTest extends \PHPUnit_Framework_TestCase
+class UniqueTrackingVisitDumperTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     private $registry;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
     /**
-     * @var FillUniqueTrackingVisitsQuery|\PHPUnit_Framework_MockObject_MockObject
+     * @var FillUniqueTrackingVisitsQuery|\PHPUnit\Framework\MockObject\MockObject
      */
     private $fillQuery;
 

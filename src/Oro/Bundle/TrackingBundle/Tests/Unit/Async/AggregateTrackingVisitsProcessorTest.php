@@ -10,20 +10,20 @@ use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Psr\Log\LoggerInterface;
 
-class AggregateTrackingVisitsProcessorTest extends \PHPUnit_Framework_TestCase
+class AggregateTrackingVisitsProcessorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var UniqueTrackingVisitDumper|\PHPUnit_Framework_MockObject_MockObject
+     * @var UniqueTrackingVisitDumper|\PHPUnit\Framework\MockObject\MockObject
      */
     private $trackingVisitDumper;
 
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     private $configManager;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
@@ -47,9 +47,9 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessException()
     {
-        /** @var MessageInterface|\PHPUnit_Framework_MockObject_MockObject $message */
+        /** @var MessageInterface|\PHPUnit\Framework\MockObject\MockObject $message */
         $message = $this->createMock(MessageInterface::class);
-        /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var SessionInterface|\PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->createMock(SessionInterface::class);
 
         $this->configManager->expects($this->once())
@@ -71,9 +71,9 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        /** @var MessageInterface|\PHPUnit_Framework_MockObject_MockObject $message */
+        /** @var MessageInterface|\PHPUnit\Framework\MockObject\MockObject $message */
         $message = $this->createMock(MessageInterface::class);
-        /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var SessionInterface|\PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->createMock(SessionInterface::class);
 
 
@@ -93,9 +93,9 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessDisabled()
     {
-        /** @var MessageInterface|\PHPUnit_Framework_MockObject_MockObject $message */
+        /** @var MessageInterface|\PHPUnit\Framework\MockObject\MockObject $message */
         $message = $this->createMock(MessageInterface::class);
-        /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var SessionInterface|\PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->createMock(SessionInterface::class);
 
 

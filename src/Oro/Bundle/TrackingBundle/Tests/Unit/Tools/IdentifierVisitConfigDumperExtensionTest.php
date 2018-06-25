@@ -9,18 +9,18 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 use Oro\Bundle\TrackingBundle\Tools\IdentifierVisitConfigDumperExtension;
 
-class IdentifierVisitConfigDumperExtensionTest extends \PHPUnit_Framework_TestCase
+class IdentifierVisitConfigDumperExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var IdentifierVisitConfigDumperExtension */
     protected $extension;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $configManager;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $identifyProvider;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $associationBuilder;
 
     /**

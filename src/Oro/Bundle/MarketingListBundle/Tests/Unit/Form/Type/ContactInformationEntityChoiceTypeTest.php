@@ -4,10 +4,10 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType;
 
-class ContactInformationEntityChoiceTypeTest extends \PHPUnit_Framework_TestCase
+class ContactInformationEntityChoiceTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $provider;
 

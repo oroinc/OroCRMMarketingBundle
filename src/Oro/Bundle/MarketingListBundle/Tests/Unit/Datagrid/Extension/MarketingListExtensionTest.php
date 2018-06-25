@@ -18,18 +18,18 @@ use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Component\DoctrineUtils\ORM\HookUnionTrait;
 
-class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
+class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var MarketingListExtension */
     protected $extension;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|MarketingListHelper */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|MarketingListHelper */
     protected $marketingListHelper;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|EntityManager */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|EntityManager */
     protected $em;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|Configuration */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|Configuration */
     protected $emConfiguration;
 
     protected function setUp()
@@ -42,7 +42,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsApplicableIncorrectDataSource()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DatagridConfiguration $config */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DatagridConfiguration $config */
         $config = $this->createMock(DatagridConfiguration::class);
         $config
             ->expects($this->once())
@@ -59,7 +59,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsApplicableVisitTwice()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DatagridConfiguration $config */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DatagridConfiguration $config */
         $config = $this->createMock(DatagridConfiguration::class);
         $config
             ->expects($this->atLeastOnce())
@@ -88,7 +88,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
 
         $qb = $this->getQbMock();
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
 
         $condition = new Andx();
@@ -185,7 +185,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
         $gridName = 'test_grid';
         $config   = $this->assertIsApplicable($marketingListId, $nonManualMarketingList, $gridName);
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
 
         $qb = $this->getQbMock();
@@ -237,7 +237,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
      * @param object|null $marketingList
      * @param string      $gridName
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|DatagridConfiguration
+     * @return \PHPUnit\Framework\MockObject\MockObject|DatagridConfiguration
      */
     protected function assertIsApplicable($marketingListId, $marketingList, $gridName)
     {
@@ -270,7 +270,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|QueryBuilder
+     * @return \PHPUnit\Framework\MockObject\MockObject|QueryBuilder
      */
     protected function getQbMock()
     {
@@ -369,7 +369,7 @@ class MarketingListExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $config = $this->assertIsApplicable(1, new MarketingList(), 'test_grid');
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|OrmDatasource $dataSource */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
         $dataSource->expects($this->never())
             ->method('getQueryBuilder');

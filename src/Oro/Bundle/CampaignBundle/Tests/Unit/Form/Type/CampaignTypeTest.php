@@ -8,7 +8,7 @@ use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class CampaignTypeTest extends \PHPUnit_Framework_TestCase
+class CampaignTypeTest extends \PHPUnit\Framework\TestCase
 {
     /** @var CampaignType */
     protected $type;

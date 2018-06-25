@@ -16,7 +16,7 @@ use Oro\Component\Testing\Unit\EntityTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UpdateMarketingListProcessorTest extends \PHPUnit_Framework_TestCase
+class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
 {
     use EntityTrait;
 
@@ -26,22 +26,22 @@ class UpdateMarketingListProcessorTest extends \PHPUnit_Framework_TestCase
     private $processor;
 
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     private $doctrineHelper;
 
     /**
-     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $eventDispatcher;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
     /**
-     * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $repository;
 
@@ -99,7 +99,7 @@ class UpdateMarketingListProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return SessionInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return SessionInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getSessionInterface()
     {
@@ -110,7 +110,7 @@ class UpdateMarketingListProcessorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $body
-     * @return MessageInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return MessageInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getMessage($body)
     {

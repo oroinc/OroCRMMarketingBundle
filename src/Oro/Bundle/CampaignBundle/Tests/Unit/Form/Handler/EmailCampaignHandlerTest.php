@@ -6,7 +6,7 @@ use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
+class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
 {
     const FORM_DATA = ['field' => 'value'];
 
@@ -16,12 +16,12 @@ class EmailCampaignHandlerTest extends \PHPUnit_Framework_TestCase
     protected $request;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $form;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 

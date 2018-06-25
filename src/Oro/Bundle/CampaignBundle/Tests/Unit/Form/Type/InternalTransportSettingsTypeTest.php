@@ -5,7 +5,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 use Oro\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType;
 use Symfony\Component\Form\FormEvents;
 
-class InternalTransportSettingsTypeTest extends \PHPUnit_Framework_TestCase
+class InternalTransportSettingsTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InternalTransportSettingsType

@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationExclusionProvider;
 
-class ContactInformationExclusionProviderTest extends \PHPUnit_Framework_TestCase
+class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContactInformationExclusionProvider
@@ -19,22 +19,22 @@ class ContactInformationExclusionProviderTest extends \PHPUnit_Framework_TestCas
     protected $provider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $configProvider;
 
     /**
-     * @var VirtualFieldProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var VirtualFieldProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $virtualFieldProvider;
 
     /**
-     * @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $metadata;
 

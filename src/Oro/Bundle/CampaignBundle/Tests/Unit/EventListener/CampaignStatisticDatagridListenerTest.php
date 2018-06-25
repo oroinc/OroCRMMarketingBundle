@@ -9,7 +9,7 @@ use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
-class CampaignStatisticDatagridListenerTest extends \PHPUnit_Framework_TestCase
+class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CampaignStatisticDatagridListener
@@ -17,12 +17,12 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $marketingListHelper;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 

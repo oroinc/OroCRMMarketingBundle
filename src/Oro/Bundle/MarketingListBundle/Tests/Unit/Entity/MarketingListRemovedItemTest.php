@@ -5,7 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class MarketingListRemovedItemTest extends \PHPUnit_Framework_TestCase
+class MarketingListRemovedItemTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListRemovedItem

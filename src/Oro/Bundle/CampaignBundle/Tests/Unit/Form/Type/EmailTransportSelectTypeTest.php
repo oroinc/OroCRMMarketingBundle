@@ -6,7 +6,7 @@ use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
+class EmailTransportSelectTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var EmailTransportSelectType
@@ -14,7 +14,7 @@ class EmailTransportSelectTypeTest extends \PHPUnit_Framework_TestCase
     protected $type;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $emailTransportProvider;
 

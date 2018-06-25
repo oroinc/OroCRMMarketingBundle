@@ -5,7 +5,7 @@ use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeRemovedItemType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-class MarketingListTypeRemovedItemTypeTest extends \PHPUnit_Framework_TestCase
+class MarketingListTypeRemovedItemTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListTypeRemovedItemType

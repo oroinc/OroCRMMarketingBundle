@@ -5,7 +5,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\ImportExport;
 use Oro\Bundle\TrackingBundle\ImportExport\LogReader;
 use Symfony\Component\Filesystem\Filesystem;
 
-class LogReaderTest extends \PHPUnit_Framework_TestCase
+class LogReaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string
@@ -18,17 +18,17 @@ class LogReaderTest extends \PHPUnit_Framework_TestCase
     protected $fs;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $contextRegistry;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $context;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $stepExecution;
 

@@ -8,25 +8,25 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 
-class ContactInformationFieldHelperTest extends \PHPUnit_Framework_TestCase
+class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ConfigProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $configProvider;
 
     /**
-     * @var AbstractQueryDesigner|\PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractQueryDesigner|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $queryDesigner;
 
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 
     /**
-     * @var EntityFieldProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $fieldProvider;
 
@@ -310,7 +310,7 @@ class ContactInformationFieldHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $key
      * @param mixed $data
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getConfig($key, $data)
     {

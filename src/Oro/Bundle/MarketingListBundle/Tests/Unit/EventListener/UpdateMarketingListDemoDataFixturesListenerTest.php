@@ -16,7 +16,7 @@ use Oro\Bundle\TestFrameworkBundle\Entity\Item;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework_TestCase
+class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit\Framework\TestCase
 {
     const LISTENERS = [
         'test_listener_1',
@@ -25,22 +25,22 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit_Framework
 
     use EntityTrait;
 
-    /** @var OptionalListenerManager|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var OptionalListenerManager|\PHPUnit\Framework\MockObject\MockObject */
     protected $listenerManager;
 
-    /** @var EntityProvider|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject */
     protected $entityProvider;
 
-    /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $dispatcher;
 
-    /** @var MigrationDataFixturesEvent|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var MigrationDataFixturesEvent|\PHPUnit\Framework\MockObject\MockObject */
     protected $event;
 
-    /** @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $entityManager;
 
-    /** @var EntityRepository|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject */
     protected $entityRepository;
 
     /** @var UpdateMarketingListDemoDataFixturesListener */

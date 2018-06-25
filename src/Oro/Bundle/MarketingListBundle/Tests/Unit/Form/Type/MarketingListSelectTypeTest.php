@@ -5,7 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType;
 
-class MarketingListSelectTypeTest extends \PHPUnit_Framework_TestCase
+class MarketingListSelectTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListSelectType

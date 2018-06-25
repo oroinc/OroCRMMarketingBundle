@@ -4,7 +4,7 @@ namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer;
 
-class MarketingActivitySectionDataNormalizerTest extends \PHPUnit_Framework_TestCase
+class MarketingActivitySectionDataNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetNormalizedData()
     {

@@ -8,15 +8,15 @@ use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider;
 
-class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_TestCase
+class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 
     /**
-     * @var EntityProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $entityProvider;
 
@@ -40,7 +40,7 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
      * @dataProvider fieldDataProvider
      * @param string $className
      * @param string $fieldName
-     * @param MarketingActivity|\PHPUnit_Framework_MockObject_MockObject $marketingActivity
+     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
      * @param bool $expected
      */
     public function testIsVirtualRelation($className, $fieldName, $marketingActivity, $expected)
@@ -53,7 +53,7 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
      * @dataProvider fieldDataProvider
      * @param string $className
      * @param string $fieldName
-     * @param MarketingActivity|\PHPUnit_Framework_MockObject_MockObject $marketingActivity
+     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
      * @param bool $expected
      */
     public function testGetVirtualRelationQuery($className, $fieldName, $marketingActivity, $expected)
@@ -88,7 +88,7 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
     /**
      * @dataProvider relationsDataProvider
      * @param string $className
-     * @param MarketingActivity|\PHPUnit_Framework_MockObject_MockObject $marketingActivity
+     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
      * @param bool $expected
      */
     public function testGetVirtualRelations($className, $marketingActivity, $expected)
@@ -152,7 +152,7 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
 
     /**
      * @param string $className
-     * @param MarketingActivity|\PHPUnit_Framework_MockObject_MockObject $marketingActivity
+     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
      */
     protected function assertEntityProviderCall($className, $marketingActivity)
     {

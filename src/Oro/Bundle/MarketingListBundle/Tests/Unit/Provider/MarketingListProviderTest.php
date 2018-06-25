@@ -13,10 +13,10 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 use Oro\Bundle\TagBundle\Grid\TagsExtension;
 
-class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
+class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Manager
+     * @var \PHPUnit\Framework\MockObject\MockObject|Manager
      */
     protected $dataGridManager;
 
@@ -43,7 +43,7 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
      * Gets mock object for query builder
      *
      * @param array $dqlParts
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getQueryBuilder(array $dqlParts = [])
     {
@@ -164,7 +164,7 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \PHPUnit_Framework_MockObject_MockObject $queryBuilder
+     * @param \PHPUnit\Framework\MockObject\MockObject $queryBuilder
      * @param MarketingList $marketingList
      * @param string $alias
      */
@@ -200,8 +200,8 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param MarketingList $marketingList
-     * @param \PHPUnit_Framework_MockObject_MockObject $queryBuilder
-     * @param \PHPUnit_Framework_MockObject_MockObject $dataGrid
+     * @param \PHPUnit\Framework\MockObject\MockObject $queryBuilder
+     * @param \PHPUnit\Framework\MockObject\MockObject $dataGrid
      * @param null|string $mixin
      */
     protected function assertGetQueryBuilder(MarketingList $marketingList, $queryBuilder, $dataGrid, $mixin = null)
@@ -234,7 +234,7 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $typeName
-     * @return \PHPUnit_Framework_MockObject_MockObject|MarketingList
+     * @return \PHPUnit\Framework\MockObject\MockObject|MarketingList
      */
     protected function getMarketingList($typeName)
     {
@@ -262,7 +262,7 @@ class MarketingListProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|DatagridInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|DatagridInterface
      */
     protected function getDataGrid()
     {

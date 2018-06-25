@@ -9,7 +9,7 @@ use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
+class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListType

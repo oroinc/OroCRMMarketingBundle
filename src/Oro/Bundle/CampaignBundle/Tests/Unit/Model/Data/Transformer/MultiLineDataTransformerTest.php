@@ -7,7 +7,7 @@ use Oro\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer;
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\MappedData;
 
-class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
+class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MultiLineDataTransformer

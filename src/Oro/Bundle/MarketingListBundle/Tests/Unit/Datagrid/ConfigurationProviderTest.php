@@ -5,20 +5,20 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
-class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
+class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $chainConfigurationProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $configProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $helper;
 

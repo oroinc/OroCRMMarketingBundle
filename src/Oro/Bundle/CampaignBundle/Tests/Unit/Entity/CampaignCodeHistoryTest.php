@@ -6,7 +6,7 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class CampaignCodeHistoryTest extends \PHPUnit_Framework_TestCase
+class CampaignCodeHistoryTest extends \PHPUnit\Framework\TestCase
 {
     use EntityTestCaseTrait;
 

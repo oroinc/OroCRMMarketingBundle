@@ -10,7 +10,7 @@ use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EmailCampaignSenderTest extends \PHPUnit_Framework_TestCase
+class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
 {
     const ENTITY_ID = 1;
 
@@ -20,47 +20,47 @@ class EmailCampaignSenderTest extends \PHPUnit_Framework_TestCase
     protected $sender;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $marketingListProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $statisticsConnector;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $contactInformationFieldsProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $logger;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $transport;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $transportProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $validator;
 

@@ -7,12 +7,12 @@ use Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class TrackingWebsiteHandlerTest extends \PHPUnit_Framework_TestCase
+class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
 {
     const FORM_DATA = ['field' => 'value'];
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $form;
 
@@ -22,7 +22,7 @@ class TrackingWebsiteHandlerTest extends \PHPUnit_Framework_TestCase
     protected $request;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $manager;
 

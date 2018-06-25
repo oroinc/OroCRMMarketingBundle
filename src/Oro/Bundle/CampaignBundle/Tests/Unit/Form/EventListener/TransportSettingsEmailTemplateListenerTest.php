@@ -9,18 +9,18 @@ use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class TransportSettingsEmailTemplateListenerTest extends \PHPUnit_Framework_TestCase
+class TransportSettingsEmailTemplateListenerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TransportSettingsEmailTemplateListener */
     protected $listener;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $registry;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $tokenAccessor;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $form;
 
     protected function setUp()

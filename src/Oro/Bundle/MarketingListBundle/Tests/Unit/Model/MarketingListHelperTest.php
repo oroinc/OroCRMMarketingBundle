@@ -5,10 +5,10 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Model;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 
-class MarketingListHelperTest extends \PHPUnit_Framework_TestCase
+class MarketingListHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $managerRegistry;
 

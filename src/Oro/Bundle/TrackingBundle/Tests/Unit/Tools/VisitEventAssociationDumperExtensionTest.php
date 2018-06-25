@@ -9,18 +9,18 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Tools\VisitEventAssociationDumperExtension;
 
-class VisitEventAssociationDumperExtensionTest extends \PHPUnit_Framework_TestCase
+class VisitEventAssociationDumperExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var VisitEventAssociationDumperExtension */
     protected $extension;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $configManager;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $identifyProvider;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $associationBuilder;
 
     /**

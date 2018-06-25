@@ -6,10 +6,10 @@ use Doctrine\Common\Cache\ArrayCache;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
 
-class MarketingListVirtualRelationProviderTest extends \PHPUnit_Framework_TestCase
+class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 

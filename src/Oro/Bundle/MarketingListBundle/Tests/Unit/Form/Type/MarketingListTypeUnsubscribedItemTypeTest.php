@@ -5,7 +5,7 @@ use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeUnsubscribedItemTy
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-class MarketingListTypeUnsubscribedItemTypeTest extends \PHPUnit_Framework_TestCase
+class MarketingListTypeUnsubscribedItemTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListTypeUnsubscribedItemType

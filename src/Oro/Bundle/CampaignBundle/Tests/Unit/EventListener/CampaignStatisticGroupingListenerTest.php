@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 
-class CampaignStatisticGroupingListenerTest extends \PHPUnit_Framework_TestCase
+class CampaignStatisticGroupingListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CampaignStatisticGroupingListener
@@ -16,12 +16,12 @@ class CampaignStatisticGroupingListenerTest extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $marketingListHelper;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $groupByHelper;
 

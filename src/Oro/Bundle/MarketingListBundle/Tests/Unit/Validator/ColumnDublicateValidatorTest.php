@@ -7,10 +7,10 @@ use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class ColumnDublicateValidatorTest extends \PHPUnit_Framework_TestCase
+class ColumnDublicateValidatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Constraint|\PHPUnit_Framework_MockObject_MockObject
+     * @var Constraint|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $constraint;
 
@@ -20,7 +20,7 @@ class ColumnDublicateValidatorTest extends \PHPUnit_Framework_TestCase
     protected $validator;
 
     /**
-     * @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $context;
 

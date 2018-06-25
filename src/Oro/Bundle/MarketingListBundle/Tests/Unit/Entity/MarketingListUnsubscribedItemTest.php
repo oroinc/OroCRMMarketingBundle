@@ -5,7 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class MarketingListUnsubscribedItemTest extends \PHPUnit_Framework_TestCase
+class MarketingListUnsubscribedItemTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListUnsubscribedItem

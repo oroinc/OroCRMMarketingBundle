@@ -16,7 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
+class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
 {
     const FORM_DATA = ['definition' => 'test'];
     const FORM_NAME = 'test_form';
@@ -27,7 +27,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
     protected $handler;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Form
+     * @var \PHPUnit\Framework\MockObject\MockObject|Form
      */
     protected $form;
 
@@ -37,17 +37,17 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
     protected $request;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $manager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|ValidatorInterface
      */
     protected $validator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TranslatorInterface
      */
     protected $translator;
 
@@ -58,7 +58,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|RegistryInterface $registry */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|RegistryInterface $registry */
         $registry = $this->getMockForAbstractClass('Symfony\Bridge\Doctrine\RegistryInterface');
 
         $this->manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
@@ -231,7 +231,7 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|User $owner */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|User $owner */
         $owner = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->disableOriginalConstructor()
             ->getMock();

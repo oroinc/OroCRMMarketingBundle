@@ -6,7 +6,7 @@ use Oro\Bundle\TrackingBundle\EventListener\ConfigListener;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RequestContext;
 
-class ConfigListenerTest extends \PHPUnit_Framework_TestCase
+class ConfigListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Filesystem
@@ -29,12 +29,12 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
     protected $settingsFile;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $router;
 

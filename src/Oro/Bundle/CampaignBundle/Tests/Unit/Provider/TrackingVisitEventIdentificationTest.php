@@ -7,12 +7,12 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 
-class TrackingVisitEventIdentificationTest extends \PHPUnit_Framework_TestCase
+class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingVisitEventIdentification */
     protected $provider;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $em;
 
     public function setUp()

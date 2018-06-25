@@ -6,7 +6,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class UniqueTrackingVisitTest extends \PHPUnit_Framework_TestCase
+class UniqueTrackingVisitTest extends \PHPUnit\Framework\TestCase
 {
     use EntityTestCaseTrait;
 

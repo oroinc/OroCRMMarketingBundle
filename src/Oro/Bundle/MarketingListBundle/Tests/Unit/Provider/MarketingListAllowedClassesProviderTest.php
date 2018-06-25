@@ -10,7 +10,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class MarketingListAllowedClassesProviderTest extends \PHPUnit_Framework_TestCase
+class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CacheProvider
@@ -23,7 +23,7 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit_Framework_TestCas
     private $entityProvider;
 
     /**
-     * @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $container;
 

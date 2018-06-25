@@ -6,15 +6,15 @@ use Oro\Bundle\MarketingListBundle\Model\Condition\HasContactInformation;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
-class HasContactInformationTest extends \PHPUnit_Framework_TestCase
+class HasContactInformationTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $contextAccessor;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $fieldsProvider;
 
