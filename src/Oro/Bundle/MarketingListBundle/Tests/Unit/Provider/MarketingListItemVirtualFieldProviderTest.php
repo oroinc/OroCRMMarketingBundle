@@ -43,7 +43,7 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
     {
         $className = 'stdClass';
 
-        $this->relationProvider->expects($this->once())
+        $this->relationProvider->expects($this->any())
             ->method('hasMarketingList')
             ->with($className)
             ->will($this->returnValue($hasMarketingList));

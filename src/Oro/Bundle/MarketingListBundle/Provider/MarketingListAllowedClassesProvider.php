@@ -6,6 +6,9 @@ use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * The provider that can be used to get a list of entities are allowed to be used in marketing lists.
+ */
 class MarketingListAllowedClassesProvider
 {
     const MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY = 'oro_marketing_list.allowed_entities';
@@ -37,11 +40,13 @@ class MarketingListAllowedClassesProvider
      */
     public function getList(): array
     {
-        if (!$this->cacheProvider->contains(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY)) {
-            $this->warmUpCache();
+        $entitiesList = $this->cacheProvider->fetch(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY);
+        if (false === $entitiesList) {
+            $entitiesList = $this->getEntitiesList();
+            $this->cacheProvider->save(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY, $entitiesList);
         }
 
-        return $this->cacheProvider->fetch(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY);
+        return $entitiesList;
     }
 
     public function warmUpCache()
