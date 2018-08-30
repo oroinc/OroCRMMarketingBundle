@@ -4,6 +4,9 @@ namespace Oro\Bundle\MarketingListBundle\Provider;
 
 use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;
 
+/**
+ * The provider to get marketing list item virtual fields.
+ */
 class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInterface
 {
     const FIELD_CONTACTED_TIMES = 'mlContactedTimes';
@@ -32,8 +35,9 @@ class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInter
      */
     public function isVirtualField($className, $fieldName)
     {
-        return $this->relationProvider->hasMarketingList($className)
-            && in_array($fieldName, [self::FIELD_CONTACTED_TIMES, self::FIELD_LAST_CONTACTED_AT]);
+        return
+            (self::FIELD_CONTACTED_TIMES === $fieldName || self::FIELD_LAST_CONTACTED_AT === $fieldName)
+            && $this->relationProvider->hasMarketingList($className);
     }
 
     /**
