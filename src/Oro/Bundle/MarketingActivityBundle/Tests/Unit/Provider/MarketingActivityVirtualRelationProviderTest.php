@@ -150,6 +150,15 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
         );
     }
 
+    public function testHasMarketingActivityCachedResultOnSecondCallSameClass()
+    {
+        $marketingActivity = new MarketingActivity();
+        $this->assertEntityProviderCall(\stdClass::class, $marketingActivity);
+
+        $this->provider->hasMarketingActivity(\stdClass::class);
+        $this->provider->hasMarketingActivity(\stdClass::class);
+    }
+
     /**
      * @param string $className
      * @param MarketingActivity|\PHPUnit_Framework_MockObject_MockObject $marketingActivity
@@ -162,7 +171,13 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit_Framework_Te
         }
 
         $this->entityProvider->expects($this->once())
-            ->method('getEntities')
+            ->method('isIgnoredEntity')
+            ->with($className)
+            ->willReturn(false);
+
+        $this->entityProvider->expects($this->once())
+            ->method('getEntity')
+            ->with($className)
             ->will($this->returnValue($results));
     }
 }

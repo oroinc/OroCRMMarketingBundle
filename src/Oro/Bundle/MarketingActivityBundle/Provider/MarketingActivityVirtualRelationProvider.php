@@ -25,7 +25,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
     /**
      * @var array|null
      */
-    protected $marketingActivityByEntity;
+    protected $marketingActivityByEntity = [];
 
     /**
      * @param DoctrineHelper $doctrineHelper
@@ -86,16 +86,15 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
      */
     public function hasMarketingActivity($className)
     {
-        if (null === $this->marketingActivityByEntity) {
-            $this->marketingActivityByEntity = [];
-
-            $entities = $this->entityProvider->getEntities();
-            foreach ($entities as $entity) {
-                $this->marketingActivityByEntity[$entity['name']] = true;
+        if (!array_key_exists($className, $this->marketingActivityByEntity)) {
+            if (!$this->entityProvider->isIgnoredEntity($className)) {
+                $this->marketingActivityByEntity[$className] = !empty($this->entityProvider->getEntity($className));
+            } else {
+                $this->marketingActivityByEntity[$className] = false;
             }
         }
 
-        return !empty($this->marketingActivityByEntity[$className]);
+        return $this->marketingActivityByEntity[$className];
     }
 
     /**
