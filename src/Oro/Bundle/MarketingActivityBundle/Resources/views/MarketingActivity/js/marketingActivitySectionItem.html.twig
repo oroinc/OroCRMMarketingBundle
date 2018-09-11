@@ -26,10 +26,10 @@
                 {% set actions = [action] %}
 
                 <% var togglerId = _.uniqueId('dropdown-') %>
-                <div class="dropdown vertical-actions activity-actions">
+                <div class="dropleft vertical-actions activity-actions">
                     <a href="#" role="button" id="<%- togglerId %>" data-toggle="dropdown" class="dropdown-toggle activity-item"
                        aria-haspopup="true" aria-expanded="false" aria-label="{{ 'oro.marketingactivity.actions.label'|trans }}">...</a>
-                    <ul class="dropdown-menu activity-item pull-right" role="menu" aria-labelledby="<%- togglerId %>">
+                    <ul class="dropdown-menu activity-item" role="menu" aria-labelledby="<%- togglerId %>">
                         {% for action in actions|default([]) %}
                             <li class="activity-action">{{ action|raw }}</li>
                         {% endfor %}
