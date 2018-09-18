@@ -16,6 +16,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Marketing list form type
+ * Used for creating marketing lists, extends abstract query designer
+ */
 class MarketingListType extends AbstractQueryDesignerType
 {
     /**
@@ -28,7 +32,6 @@ class MarketingListType extends AbstractQueryDesignerType
             ->add('entity', ContactInformationEntityChoiceType::class, ['required' => true])
             ->add('description', OroResizeableRichTextType::class, ['required' => false]);
 
-        // TODO: remove this listener after full support of manual marketing lists CRM-1878
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
@@ -76,7 +79,7 @@ class MarketingListType extends AbstractQueryDesignerType
     {
         return [
             'column_column_field_choice_options' => [
-                'exclude_fields' => ['relation_type'],
+                'exclude_fields' => ['relationType'],
             ],
             'column_column_choice_type' => HiddenType::class,
             'filter_column_choice_type' => EntityFieldSelectType::class
