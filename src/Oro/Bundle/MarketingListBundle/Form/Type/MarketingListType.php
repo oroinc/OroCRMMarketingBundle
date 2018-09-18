@@ -12,6 +12,10 @@ use Oro\Bundle\QueryDesignerBundle\Form\Type\AbstractQueryDesignerType;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType as MarketingListTypeEntity;
 
+/**
+ * Marketing list form type
+ * Used for creating marketing lists, extends abstract query designer
+ */
 class MarketingListType extends AbstractQueryDesignerType
 {
     /**
@@ -24,7 +28,6 @@ class MarketingListType extends AbstractQueryDesignerType
             ->add('entity', 'oro_marketing_list_contact_information_entity_choice', ['required' => true])
             ->add('description', 'oro_resizeable_rich_text', ['required' => false]);
 
-        // TODO: remove this listener after full support of manual marketing lists CRM-1878
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
@@ -72,7 +75,7 @@ class MarketingListType extends AbstractQueryDesignerType
     {
         return [
             'column_column_field_choice_options' => [
-                'exclude_fields' => ['relation_type'],
+                'exclude_fields' => ['relationType'],
             ],
             'column_column_choice_type' => 'hidden',
             'filter_column_choice_type' => 'oro_entity_field_select'
