@@ -23,8 +23,7 @@ class MarketingActivityController extends Controller
      * @Route(
      *         "/widget/marketing-activities/summary/{campaignId}",
      *          name="oro_marketing_activity_widget_summary",
-     *          requirements={"campaignId"="\d+"},
-     *          defaults={"entityClass"=null, "entityId"=null}
+     *          requirements={"campaignId"="\d+"}
      * )
      * @AclAncestor("oro_marketing_activity_view")
      * @Template
@@ -35,7 +34,7 @@ class MarketingActivityController extends Controller
      *
      * @return array
      */
-    public function summaryAction($campaignId, $entityClass, $entityId)
+    public function summaryAction($campaignId, $entityClass = null, $entityId = null)
     {
         $summaryData = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
