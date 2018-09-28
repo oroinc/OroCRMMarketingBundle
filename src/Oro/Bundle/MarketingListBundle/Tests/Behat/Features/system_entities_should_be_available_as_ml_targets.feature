@@ -7,7 +7,7 @@ Feature: System entities should be available as ML targets
   Scenario: Enable entities
     Given I login as administrator
     And I go to System/ Channels
-    And I press "Create Channel"
+    And I click "Create Channel"
     And I fill form with:
       | Name         | Sales Channel |
       | Channel Type | Sales         |
@@ -21,7 +21,7 @@ Feature: System entities should be available as ML targets
 
   Scenario Outline: Successful creating marketing list based on system entities
     And I go to Marketing/ Marketing Lists
-    And I press "Create Marketing List"
+    And I click "Create Marketing List"
     When I fill form with:
       | Name   | <Marketing List Name> |
       | Entity | <Entity Name>         |
