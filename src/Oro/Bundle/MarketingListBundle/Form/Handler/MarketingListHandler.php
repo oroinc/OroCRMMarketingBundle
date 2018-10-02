@@ -17,6 +17,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * The handler for the marketing list form.
+ */
 class MarketingListHandler
 {
     use RequestHandlerTrait;
@@ -88,10 +91,6 @@ class MarketingListHandler
         $request = $this->requestStack->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
             $this->submitPostPutRequest($this->form, $request);
-            if (!$entity->isManual()) {
-                $this->processSegment($entity);
-            }
-
             if ($this->isValid($entity)) {
                 $this->onSuccess($entity);
                 return true;
@@ -160,7 +159,9 @@ class MarketingListHandler
      */
     protected function isValid(MarketingList $marketingList)
     {
-        if (!$marketingList->isManual()) {
+        $isValid = $this->form->isValid();
+        if ($isValid && !$marketingList->isManual()) {
+            $this->processSegment($marketingList);
             $errors = $this->validator->validate(
                 $marketingList->getSegment(),
                 null,
@@ -179,8 +180,9 @@ class MarketingListHandler
                     );
                 }
             }
+            $isValid = $this->form->isValid();
         }
 
-        return $this->form->isValid();
+        return $isValid;
     }
 }
