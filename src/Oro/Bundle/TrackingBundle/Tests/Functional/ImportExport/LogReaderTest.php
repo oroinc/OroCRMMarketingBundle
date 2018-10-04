@@ -2,9 +2,11 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\ImportExport;
 
-use Symfony\Component\Filesystem\Filesystem;
-
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\TrackingBundle\ImportExport\LogReader;
+use Symfony\Component\Filesystem\Filesystem;
 
 class LogReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,28 +40,24 @@ class LogReaderTest extends \PHPUnit_Framework_TestCase
      */
     protected $reader;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tracking';
-
+        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'oro_tracking';
         $this->fs = new Filesystem();
-
         $this->fs->mkdir($this->directory);
 
-        $this->contextRegistry = $this
-            ->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->context = $this
-            ->createMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
-
-        $this->stepExecution = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->contextRegistry = $this->createMock(ContextRegistry::class);
+        $this->context = $this->createMock(ContextInterface::class);
+        $this->stepExecution = $this->createMock(StepExecution::class);
 
         $this->reader = new LogReader($this->contextRegistry);
+    }
+
+    protected function tearDown()
+    {
+        if ($this->fs->exists($this->directory)) {
+            $this->fs->remove($this->directory);
+        }
     }
 
     public function testRead()
