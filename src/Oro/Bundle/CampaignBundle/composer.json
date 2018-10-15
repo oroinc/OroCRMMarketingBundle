@@ -1,7 +1,7 @@
 {
     "name": "orocrm/campaign-bundle",
     "type": "symfony-bundle",
-    "description": "Oro CRM Campaign",
+    "description": "OroCRM Campaign",
     "keywords": ["CRM", "Campaign"],
     "homepage": "https://github.com/orocrm/CampaignBundle",
     "license": "MIT",

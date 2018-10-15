@@ -1,7 +1,7 @@
 {
     "name": "orocrm/marketing-activity-bundle",
     "type": "symfony-bundle",
-    "description": "Oro CRM Mareting Activity",
+    "description": "OroCRM Marketing Activity",
     "keywords": ["CRM", "Marketing Activity"],
     "homepage": "https://github.com/orocrm/OroCRMMarketingBundle",
     "license": "MIT",
