@@ -7,8 +7,11 @@ use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\JoinIdentifierHelper;
-use Oro\Component\PhpUtils\ArrayUtil;
 
+/**
+ * Uses entityFields config and entityFields fetched from dbSource
+ * to get ContactInformation fields by given entity className
+ */
 class ContactInformationFieldHelper
 {
     /** @var ConfigProvider */
@@ -154,7 +157,7 @@ class ContactInformationFieldHelper
 
             if ($entityContactInformation) {
                 foreach ($entityContactInformation as $contactInfoType => $contactInfoFields) {
-                    $entityColumns = ArrayUtil::arrayColumn($contactInfoFields, 'fieldName');
+                    $entityColumns = \array_column($contactInfoFields, 'fieldName');
                     foreach ($entityColumns as $entityColumn) {
                         $result[$entityColumn] = $contactInfoType;
                     }
