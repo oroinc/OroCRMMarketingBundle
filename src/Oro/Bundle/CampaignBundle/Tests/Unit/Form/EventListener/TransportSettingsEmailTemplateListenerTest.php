@@ -6,6 +6,7 @@ use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -55,6 +56,9 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit\Framework\Test
             ->expects($this->any())
             ->method('getType')
             ->will($this->returnValue($type));
+        $type->expects($this->any())
+            ->method('getInnerType')
+            ->willReturn(new SubmitType());
 
         $this->form
             ->expects($this->any())
