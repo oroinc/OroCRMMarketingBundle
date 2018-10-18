@@ -121,6 +121,10 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
             ->with($this->testEntity);
         $this->manager->expects($this->once())
             ->method('flush');
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->with($this->isInstanceOf(Segment::class), null, ['Default', 'marketing_list'])
+            ->will($this->returnValue([]));
 
         $this->assertTrue($this->handler->process($this->testEntity));
 
