@@ -8,6 +8,9 @@ use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
+/**
+ * Handles marketingActivity relation
+ */
 class MarketingActivityVirtualRelationProvider implements VirtualRelationProviderInterface
 {
     const RELATION_NAME = 'marketingActivity';
