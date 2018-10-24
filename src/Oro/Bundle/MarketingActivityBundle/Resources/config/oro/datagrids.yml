@@ -30,6 +30,8 @@ datagrids:
                 - id
                 - entityClass
                 - entityId
+            hints:
+                - HINT_TRANSLATABLE
         columns:
             emailCampaignName:
                 label: oro.marketingactivity.email_campaign.label
