@@ -6,19 +6,12 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\TrackingBundle\ImportExport\LogReader;
+use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
 
 class LogReaderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var string
-     */
-    protected $directory;
-
-    /**
-     * @var Filesystem
-     */
-    protected $fs;
+    use TempDirExtension;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject
@@ -42,10 +35,6 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'oro_tracking';
-        $this->fs = new Filesystem();
-        $this->fs->mkdir($this->directory);
-
         $this->contextRegistry = $this->createMock(ContextRegistry::class);
         $this->context = $this->createMock(ContextInterface::class);
         $this->stepExecution = $this->createMock(StepExecution::class);
@@ -53,11 +42,12 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
         $this->reader = new LogReader($this->contextRegistry);
     }
 
-    protected function tearDown()
+    /**
+     * @return Filesystem
+     */
+    private function getFilesystem()
     {
-        if ($this->fs->exists($this->directory)) {
-            $this->fs->remove($this->directory);
-        }
+        return new Filesystem();
     }
 
     public function testRead()
@@ -67,8 +57,8 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
             'value' => 'done'
         ];
 
-        $filename = $this->directory . DIRECTORY_SEPARATOR . 'valid.log';
-        $this->fs->dumpFile($filename, json_encode($data));
+        $filename = $this->getTempDir('tracking') . DIRECTORY_SEPARATOR . 'valid.log';
+        $this->getFilesystem()->dumpFile($filename, json_encode($data));
 
         $this->context
             ->expects($this->once())
@@ -114,8 +104,8 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testReadFileNotValid()
     {
-        $filename = $this->directory . DIRECTORY_SEPARATOR . 'not_valid.log';
-        $this->fs->touch($filename);
+        $filename = $this->getTempDir('tracking') . DIRECTORY_SEPARATOR . 'not_valid.log';
+        $this->getFilesystem()->touch($filename);
 
         $this->context
             ->expects($this->once())
