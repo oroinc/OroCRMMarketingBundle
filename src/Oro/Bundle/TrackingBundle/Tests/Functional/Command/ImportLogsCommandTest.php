@@ -4,10 +4,13 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\Command;
 
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ImportLogsCommandTest extends WebTestCase
 {
+    use TempDirExtension;
+
     /**
      * @var Filesystem
      */
@@ -29,13 +32,7 @@ class ImportLogsCommandTest extends WebTestCase
 
         $this->fs = new Filesystem();
 
-        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . time();
-    }
-
-    protected function tearDown()
-    {
-        $this->fs->remove($this->directory);
-        parent::tearDown();
+        $this->directory = $this->getTempDir('tracking', false);
     }
 
     public function testDirectoryEmpty()
