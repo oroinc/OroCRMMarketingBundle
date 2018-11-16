@@ -97,10 +97,10 @@
         {% set removedItemsMixin = 'oro-marketing-list-manual-removed-items-mixin' %}
     {% endif %}
     {%- set listData -%}
-        {{ dataGrid.renderGrid(itemsGridName, {'grid-mixin': itemsMixin}) }}
+        {{ dataGrid.renderGrid(itemsGridName, {'grid-mixin': itemsMixin}, {cssClass: 'inner-grid'}) }}
     {%- endset -%}
     {%- set removedItemsGrid -%}
-        {{  dataGrid.renderGrid(removedItemsGridName, {'grid-mixin': removedItemsMixin}) }}
+        {{  dataGrid.renderGrid(removedItemsGridName, {'grid-mixin': removedItemsMixin}, {cssClass: 'inner-grid'}) }}
     {%- endset -%}
 
     {% set generalSectionBlocks = [{'data' : [listInformation]}]%}

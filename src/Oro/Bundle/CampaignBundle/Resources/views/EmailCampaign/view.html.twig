@@ -63,6 +63,9 @@
                 constant('Oro\\Bundle\\MarketingListBundle\\Datagrid\\ConfigurationProvider::GRID_PREFIX') ~ entity.marketingList.id,
                 {
                     'emailCampaign': entity.id
+                },
+                {
+                    cssClass: 'inner-grid'
                 }
             ) }}
         {% endif %}
