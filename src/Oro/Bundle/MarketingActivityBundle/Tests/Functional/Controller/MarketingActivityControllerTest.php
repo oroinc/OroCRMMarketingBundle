@@ -37,7 +37,7 @@ class MarketingActivityControllerTest extends WebTestCase
             "Unsubscribe" => '2',
         ];
         foreach ($expectedTypes as $type => $value) {
-            $typeXpath = '//div[contains(@class, "control-group")]/label[text() = "' . $type . '"]/'
+            $typeXpath = '//div[contains(@class, "attribute-item")]/label[text() = "' . $type . '"]/'
                 . 'following-sibling::div/div[contains(@class, "control-label")]';
             $this->assertEquals($value, $crawler->filterXPath($typeXpath)->text());
         }
@@ -119,7 +119,7 @@ class MarketingActivityControllerTest extends WebTestCase
             "Click" => '1',
         ];
         foreach ($expectedTypes as $type => $value) {
-            $typeXpath = '//div[contains(@class, "control-group")]/label[text() = "' . $type . '"]/'
+            $typeXpath = '//div[contains(@class, "attribute-item")]/label[text() = "' . $type . '"]/'
                 . 'following-sibling::div/div[contains(@class, "control-label")]';
             $this->assertEquals($value, $crawler->filterXPath($typeXpath)->text());
         }
