@@ -76,7 +76,11 @@
     {%- endset -%}
 
     {% set trackingEventsGrid %}
-        {{ dataGrid.renderGrid('website-tracking-events-grid', {websiteIdentifier: entity.identifier}) }}
+        {{
+            dataGrid.renderGrid('website-tracking-events-grid',
+            {websiteIdentifier: entity.identifier},
+            {cssClass: 'inner-grid'})
+        }}
     {% endset %}
 
     {% set dataBlocks = [

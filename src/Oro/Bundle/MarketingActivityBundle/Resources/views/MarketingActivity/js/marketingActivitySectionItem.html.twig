@@ -10,7 +10,7 @@
                data-collapsed-title="{{ 'Expand'|trans }}"
                data-expanded-title="{{ 'Collapse'|trans }}"></a>
             <div class="icon">
-                <i class="fa-volume-up"></i>
+                <span class="fa-volume-up" aria-hidden="true"></span>
             </div>
             <div class="campaign-name" id="<%- labelId %>">
                 <strong><%= campaignName %></strong>
@@ -27,7 +27,7 @@
 
                 <% var togglerId = _.uniqueId('dropdown-') %>
                 <div class="vertical-actions activity-actions">
-                    <a href="#" role="button" id="<%- togglerId %>" data-placement="left-start" data-toggle="dropdown" class="dropdown-toggle activity-item"
+                    <a href="#" role="button" id="<%- togglerId %>" data-placement="left-start" data-toggle="dropdown" class="btn btn-icon btn-lighter dropdown-toggle activity-item"
                        aria-haspopup="true" aria-expanded="false" aria-label="{{ 'oro.marketingactivity.actions.label'|trans }}">...</a>
                     <ul class="dropdown-menu activity-item" role="menu" aria-labelledby="<%- togglerId %>">
                         {% for action in actions|default([]) %}
@@ -48,8 +48,10 @@
         <div id="<%- regionId %>" role="region" aria-labelledby="<%- labelId %>" class="accordion-body collapse<% if (!collapsed) { %> show<% } %>">
             <div class="message">
                 {% block activityContent %}
-                    {# Do NOT remove. Placeholder for activity view #}
-                    <div class="info responsive-cell clearfix"></div>
+                    <div class="activity-item-content">
+                        {# Do NOT remove. Placeholder for activity view #}
+                        <div class="info responsive-cell"></div>
+                    </div>
                 {% endblock %}
             </div>
         </div>
