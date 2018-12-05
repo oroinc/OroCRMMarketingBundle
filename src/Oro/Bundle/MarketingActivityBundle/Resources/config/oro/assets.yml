@@ -1,4 +1,4 @@
 assets:
     css:
-        oromarketingactivity:
+        inputs:
             - 'bundles/oromarketingactivity/css/scss/main.scss'

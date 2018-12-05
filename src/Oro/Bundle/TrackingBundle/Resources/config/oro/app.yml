@@ -5,9 +5,3 @@ security:
             provider:  chain_provider
             anonymous: true
             logout_on_user_change: true
-assetic:
-    assets:
-        tracking_lib:
-            inputs:
-                - 'bundles/orotracking/lib/tracking.php'
-            output: 'tracking.php'
