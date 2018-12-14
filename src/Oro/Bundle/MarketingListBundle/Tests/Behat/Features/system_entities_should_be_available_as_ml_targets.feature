@@ -11,12 +11,6 @@ Feature: System entities should be available as ML targets
     And I fill form with:
       | Name         | Sales Channel |
       | Channel Type | Sales         |
-    And I fill in "Channel entities" with "Magento Customer"
-    And click "Add"
-    And I fill in "Channel entities" with "Magento Shopping Cart"
-    And click "Add"
-    And I fill in "Channel entities" with "Magento Newsletter Subscriber"
-    And click "Add"
     And I save and close form
 
   Scenario Outline: Successful creating marketing list based on system entities
@@ -42,7 +36,3 @@ Feature: System entities should be available as ML targets
       | Contact                       | Contact                       |
       | Lead                          | Lead                          |
       | Business Customer             | Business Customer             |
-# Magento integration is disabled in CRM-9202
-#      | Magento Customer              | Magento Customer              |
-#      | Magento Shopping Cart         | Magento Shopping Cart         |
-#      | Magento Newsletter Subscriber | Magento Newsletter Subscriber |
