@@ -4,14 +4,14 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 
 use Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer;
 
-class DataNormalizerTest extends \PHPUnit_Framework_TestCase
+class DataNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DataNormalizer
      */
     protected $normalizer;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $fieldHelper;
 

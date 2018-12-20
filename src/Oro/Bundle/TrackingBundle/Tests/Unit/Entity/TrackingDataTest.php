@@ -6,7 +6,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingData;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class TrackingDataTest extends \PHPUnit_Framework_TestCase
+class TrackingDataTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TrackingData

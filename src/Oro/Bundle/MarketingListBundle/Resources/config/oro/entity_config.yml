@@ -6,13 +6,13 @@ entity_config:
                     options:
                         allowed_type: [string, text]
                     form:
-                        type: choice
+                        type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
                         options:
                             choices:
                                 # each contact_information type requires own template
                                 # e.g. phone => "OroMarketingListBundle:MarketingList/ExtendField:phone.html.twig"
-                                email: oro.marketinglist.entity_config.choices.email
-                                phone: oro.marketinglist.entity_config.choices.phone
+                                oro.marketinglist.entity_config.choices.email: email
+                                oro.marketinglist.entity_config.choices.phone: phone
                             block: other
                             label: oro.marketinglist.entity_config.contact_information.label
                             required: false

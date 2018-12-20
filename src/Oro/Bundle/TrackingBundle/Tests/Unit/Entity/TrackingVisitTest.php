@@ -6,7 +6,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class TrackingVisitTest extends \PHPUnit_Framework_TestCase
+class TrackingVisitTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TrackingVisit

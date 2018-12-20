@@ -108,7 +108,7 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
                     );
                 },
             ],
-            ['choice_list', 'choices']
+            ['choices']
         );
     }
 }

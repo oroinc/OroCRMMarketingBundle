@@ -7,6 +7,9 @@ use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 
+/**
+ * The provider to get virtual relations between an entity and a marketing list that is based on this entity.
+ */
 class MarketingListVirtualRelationProvider implements VirtualRelationProviderInterface
 {
     const RELATION_NAME = 'marketingList_virtual';
@@ -91,25 +94,21 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
      */
     public function hasMarketingList($className)
     {
-        if (!$this->cacheProvider->contains(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY)) {
+        $marketingListByEntity = $this->cacheProvider->fetch(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY);
+        if (false === $marketingListByEntity) {
             $marketingListByEntity = [];
 
             $repository = $this->doctrineHelper->getEntityRepository('OroMarketingListBundle:MarketingList');
             $qb = $repository->createQueryBuilder('ml')
                 ->select('ml.entity')
-                ->distinct(true);
+                ->distinct();
             $entities = $qb->getQuery()->getArrayResult();
-
             foreach ($entities as $entity) {
                 $marketingListByEntity[$entity['entity']] = true;
             }
 
             $this->cacheProvider->save(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY, $marketingListByEntity);
-
-            return !empty($marketingListByEntity[$className]);
         }
-
-        $marketingListByEntity = $this->cacheProvider->fetch(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY);
 
         return !empty($marketingListByEntity[$className]);
     }

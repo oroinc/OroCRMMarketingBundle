@@ -18,7 +18,7 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
 use Psr\Log\LoggerInterface;
 
-class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
+class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var UpdateMarketingListOnEntityChange
@@ -26,27 +26,27 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit_Framework_TestCase
     private $listener;
 
     /**
-     * @var MessageProducerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $messageProducer;
 
     /**
-     * @var MarketingListAllowedClassesProvider|\PHPUnit_Framework_MockObject_MockObject
+     * @var MarketingListAllowedClassesProvider|\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityProvider;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $logger;
 
     /**
-     * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private $entityManager;
 
     /**
-     * @var UnitOfWork|\PHPUnit_Framework_MockObject_MockObject
+     * @var UnitOfWork|\PHPUnit\Framework\MockObject\MockObject
      */
     private $unitOfWork;
 

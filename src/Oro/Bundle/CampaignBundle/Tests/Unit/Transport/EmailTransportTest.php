@@ -9,7 +9,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
-class EmailTransportTest extends \PHPUnit_Framework_TestCase
+class EmailTransportTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var EmailTransport
@@ -17,22 +17,22 @@ class EmailTransportTest extends \PHPUnit_Framework_TestCase
     protected $transport;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $processor;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $renderer;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $helper;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $emailHelper;
 

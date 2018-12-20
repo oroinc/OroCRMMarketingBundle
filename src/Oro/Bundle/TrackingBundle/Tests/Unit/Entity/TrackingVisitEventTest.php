@@ -9,7 +9,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class TrackingVisitEventTest extends \PHPUnit_Framework_TestCase
+class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingVisitEvent */
     protected $trackingVisitEvent;

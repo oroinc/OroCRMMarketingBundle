@@ -36,11 +36,6 @@ class TrackingWebsiteTypeTest extends FormIntegrationTestCase
         $this->type->buildForm($builder, []);
     }
 
-    public function testGetName()
-    {
-        $this->assertEquals('oro_tracking_website', $this->type->getName());
-    }
-
     public function testConfigureOptions()
     {
         $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');

@@ -5,10 +5,10 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 use Oro\Bundle\MarketingListBundle\Datagrid\GridMarketingListTypeProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
-class GridMarketingListTypeProviderTest extends \PHPUnit_Framework_TestCase
+class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 
@@ -79,8 +79,8 @@ class GridMarketingListTypeProviderTest extends \PHPUnit_Framework_TestCase
                     $this->getMarketingListType(MarketingListType::TYPE_MANUAL, 'label2'),
                 ],
                 [
-                    MarketingListType::TYPE_DYNAMIC => 'label1',
-                    MarketingListType::TYPE_MANUAL  => 'label2',
+                    'label1' => MarketingListType::TYPE_DYNAMIC,
+                    'label2' => MarketingListType::TYPE_MANUAL,
                 ]
             ]
         ];

@@ -11,7 +11,7 @@
  * @codingStandardsIgnoreFile
  */
 
-$trackingFolder = '../app/logs/tracking';
+$trackingFolder = PUBLIC_DIR . '/../var/logs/tracking';
 $settingsFile   = $trackingFolder . DIRECTORY_SEPARATOR . 'settings.ser';
 $settings       = [
     'dynamic_tracking_enabled'  => false,
@@ -99,11 +99,10 @@ function passDataToApplication($url)
 
     fillTrackingData($_GET);
 
-    require_once __DIR__ . '/../app/autoload.php';
-    require_once __DIR__ . '/../app/bootstrap.php.cache';
-    require_once __DIR__ . '/../app/AppKernel.php';
+    require_once PUBLIC_DIR . '/../vendor/autoload.php';
+    require_once PUBLIC_DIR . '/../src/AppKernel.php';
     $kernel = new AppKernel('prod', false);
-    $kernel->loadClassCache();
+
     $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
     $kernel->handle($request);

@@ -5,10 +5,10 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Model;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 
-class EmailCampaignSenderBuilderTest extends \PHPUnit_Framework_TestCase
+class EmailCampaignSenderBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $campaignSender;
 

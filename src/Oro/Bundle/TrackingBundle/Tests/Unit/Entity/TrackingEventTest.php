@@ -7,7 +7,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class TrackingEventTest extends \PHPUnit_Framework_TestCase
+class TrackingEventTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingEvent */
     protected $event;

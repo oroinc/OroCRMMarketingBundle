@@ -5,7 +5,7 @@ namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\QueryDesigner;
 use Oro\Bundle\MarketingActivityBundle\QueryDesigner\AbstractTypeCountFunction;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\AbstractQueryConverter;
 
-abstract class AbstractTypeCountFunctionTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTypeCountFunctionTestCase extends \PHPUnit\Framework\TestCase
 {
     /** @var AbstractTypeCountFunction */
     protected $function;

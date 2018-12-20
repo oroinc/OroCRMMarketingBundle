@@ -9,7 +9,7 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Tools\VisitEventAssociationGeneratorExtension;
 
-class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
+class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var VisitEventAssociationGeneratorExtension */
     protected $extension;

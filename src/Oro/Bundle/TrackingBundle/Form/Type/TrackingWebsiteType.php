@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,14 +32,14 @@ class TrackingWebsiteType extends AbstractType
         $builder
             ->add(
                 'name',
-                'text',
+                TextType::class,
                 [
                     'label' => 'oro.tracking.trackingwebsite.name.label'
                 ]
             )
             ->add(
                 'identifier',
-                'text',
+                TextType::class,
                 [
                     'label'   => 'oro.tracking.trackingwebsite.identifier.label',
                     'tooltip' => 'oro.tracking.form.tooltip.identifier',
@@ -46,7 +47,7 @@ class TrackingWebsiteType extends AbstractType
             )
             ->add(
                 'url',
-                'text',
+                TextType::class,
                 [
                     'label' => 'oro.tracking.trackingwebsite.url.label'
                 ]

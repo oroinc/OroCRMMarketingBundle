@@ -4,7 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator\Constraints;
 
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
 
-class ContactInformationColumnConstraintTest extends \PHPUnit_Framework_TestCase
+class ContactInformationColumnConstraintTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContactInformationColumnConstraint

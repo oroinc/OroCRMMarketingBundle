@@ -37,6 +37,7 @@ oro:
         no_marketing_activities_exist: No marketing activities found
         last_event_type.label:         Latest Activity
         last_activity_date.label:      Latest Activity Date
+        actions.label:                 Activity actions
         summary:
             label:                     Marketing Activity Summary
             send.label:                Send

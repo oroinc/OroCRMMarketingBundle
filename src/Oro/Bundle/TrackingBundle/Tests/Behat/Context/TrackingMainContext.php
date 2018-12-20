@@ -5,15 +5,29 @@ namespace Oro\Bundle\TrackingBundle\Tests\Behat\Context;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
-use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
-use Symfony\Component\Filesystem\Filesystem;
 
 class TrackingMainContext extends OroFeatureContext
 {
     use KernelDictionary;
 
     const TRACKING_FILENAME_KEY = 'tracking';
+
+    /**
+     * Removes "var/logs/tracking/settings.ser" file which is generated on tracking configuration save
+     * This prevents outdated configuration taken from this file in test
+     *
+     * Example: Given I reset tracking settings file
+     *
+     * @When /^(?:|I )reset tracking settings file$/
+     */
+    public function removeTrackingSettingsFile()
+    {
+        $filePath = $this->getKernel()->getProjectDir() . '/var/logs/tracking/settings.ser';
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
 
     /**
      * This step used for generating static HTML page and add tracking code to it
@@ -27,6 +41,11 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function generateHtmlPageWithTrackingCode($identifier)
     {
+        $filePath = $this->getKernel()->getProjectDir() . '/public/uploads/' . $this->getHtmlFilename($identifier);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
         $website = $this->getRepository(TrackingWebsite::class)->findOneBy(['identifier' => $identifier]);
         self::assertNotNull($website, sprintf('Could not found tracking website "%s",', $identifier));
 
@@ -45,7 +64,7 @@ class TrackingMainContext extends OroFeatureContext
         $filesystem = $this->getContainer()->get('filesystem');
 
         $filesystem->dumpFile(
-            $this->getKernel()->getRootDir() . '/../web/' . $this->getHtmlFilename($identifier),
+            $filePath,
             $this->getHtmlContent($trackingCode)
         );
     }
@@ -59,9 +78,7 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function openPageWithTrackingCode($identifier)
     {
-        $this->visitPath('/' . $this->getHtmlFilename($identifier));
-
-        unlink($this->getKernel()->getRootDir() . '/../web/' . $this->getHtmlFilename($identifier));
+        $this->visitPath('/uploads/' . $this->getHtmlFilename($identifier));
     }
 
     /**

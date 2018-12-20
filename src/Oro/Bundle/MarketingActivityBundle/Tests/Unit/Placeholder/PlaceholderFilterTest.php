@@ -10,18 +10,18 @@ use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Oro\Bundle\MarketingActivityBundle\Placeholder\PlaceholderFilter;
 use Oro\Bundle\MarketingActivityBundle\Tests\Unit\Stub\EntityStub;
 
-class PlaceholderFilterTest extends \PHPUnit_Framework_TestCase
+class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper */
     protected $doctrineHelper;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|EntityProvider */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|EntityProvider */
     protected $entityProvider;
 
     /** @var  PlaceholderFilter */
     protected $filter;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $featureChecker;
 
     public function setUp()

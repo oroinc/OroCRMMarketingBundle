@@ -1,13 +1,13 @@
 {
     "name": "orocrm/marketing-list-bundle",
     "type": "symfony-bundle",
-    "description": "Oro CRM Mareting List",
+    "description": "OroCRM Marketing List",
     "keywords": ["CRM", "Marketing List"],
     "homepage": "https://github.com/orocrm/MarketingListBundle",
     "license": "MIT",
     "require": {
         "php": "7.1.*",
-        "symfony/symfony": "2.8.*, !=2.8.10",
+        "symfony/symfony": "^3.4",
         "oro/user-bundle": "dev-master",
         "oro/segment-bundle": "dev-master",
         "oro/ui-bundle": "dev-master"

@@ -3,15 +3,13 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\TrackingBundle\EventListener\ConfigListener;
+use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RequestContext;
 
-class ConfigListenerTest extends \PHPUnit_Framework_TestCase
+class ConfigListenerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Filesystem
-     */
-    protected $fs;
+    use TempDirExtension;
 
     /**
      * @var string
@@ -29,12 +27,12 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
     protected $settingsFile;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $configManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $router;
 
@@ -45,13 +43,10 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->fs = new Filesystem();
-
-        $this->logsDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . time();
-        $this->fs->mkdir($this->logsDir);
-
+        $this->logsDir = $this->getTempDir('tracking_log');
         $this->trackingDir = $this->logsDir . DIRECTORY_SEPARATOR . 'tracking';
-        $this->fs->mkdir($this->logsDir);
+        $fs = new Filesystem();
+        $fs->mkdir($this->logsDir);
 
         $this->settingsFile = $this->trackingDir . DIRECTORY_SEPARATOR . 'settings.ser';
 
@@ -67,11 +62,6 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
             $this->router,
             $this->logsDir
         );
-    }
-
-    protected function tearDown()
-    {
-        $this->fs->remove($this->logsDir);
     }
 
     public function testOnUpdateAfterNoChanges()
@@ -228,14 +218,14 @@ class ConfigListenerTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             [
-                new RequestContext('app.php'),
+                new RequestContext('index.php'),
                 [
                     'dynamic_tracking_enabled' => true,
                     'log_rotate_interval' => 'default',
                     'piwik_host' => 'default',
                     'piwik_token_auth' => 'default',
-                    'dynamic_tracking_endpoint' => '/app.php/test/url',
-                    'dynamic_tracking_base_url' => 'app.php'
+                    'dynamic_tracking_endpoint' => '/index.php/test/url',
+                    'dynamic_tracking_base_url' => 'index.php'
                 ]
             ]
         ];

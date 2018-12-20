@@ -15,9 +15,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-// TODO: change to Symfony\Component\Validator\Validator\ValidatorInterface in scope of BAP-15236
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * The handler for the marketing list form.
+ */
 class MarketingListHandler
 {
     use RequestHandlerTrait;
@@ -89,10 +91,6 @@ class MarketingListHandler
         $request = $this->requestStack->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
             $this->submitPostPutRequest($this->form, $request);
-            if (!$entity->isManual()) {
-                $this->processSegment($entity);
-            }
-
             if ($this->isValid($entity)) {
                 $this->onSuccess($entity);
                 return true;
@@ -161,15 +159,12 @@ class MarketingListHandler
      */
     protected function isValid(MarketingList $marketingList)
     {
-        if (!$marketingList->isManual()) {
-            /* TODO: change to $errors = $this->validator->validate(
-                $marketingList->getSegment(),
-                    null,
-                    [Constraint::DEFAULT_GROUP, 'marketing_list']
-                ); in scope of BAP-15236
-            */
+        $isValid = $this->form->isValid();
+        if ($isValid && !$marketingList->isManual()) {
+            $this->processSegment($marketingList);
             $errors = $this->validator->validate(
                 $marketingList->getSegment(),
+                null,
                 [Constraint::DEFAULT_GROUP, 'marketing_list']
             );
             if (count($errors) > 0) {
@@ -179,15 +174,15 @@ class MarketingListHandler
                         new FormError(
                             $error->getMessage(),
                             $error->getMessageTemplate(),
-                            // TODO: change to ::getParameters() and ::getPlural() methods in scope of BAP-15236
-                            $error->getMessageParameters(),
-                            $error->getMessagePluralization()
+                            $error->getParameters(),
+                            $error->getPlural()
                         )
                     );
                 }
             }
+            $isValid = $this->form->isValid();
         }
 
-        return $this->form->isValid();
+        return $isValid;
     }
 }

@@ -8,7 +8,7 @@ use Oro\Bundle\MarketingListBundle\Datagrid\MarketingListItemsListener;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
-class MarketingListItemsListenerTest extends \PHPUnit_Framework_TestCase
+class MarketingListItemsListenerTest extends \PHPUnit\Framework\TestCase
 {
     const MIXIN_NAME = 'new-mixin-for-test-grid';
 
@@ -18,7 +18,7 @@ class MarketingListItemsListenerTest extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $marketingListHelper;
 

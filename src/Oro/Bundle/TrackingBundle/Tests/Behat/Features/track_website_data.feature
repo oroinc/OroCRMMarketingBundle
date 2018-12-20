@@ -9,7 +9,8 @@ Feature: Track website data
       | User  | second_session |
 
   Scenario: Add website tracking
-    Given I proceed as the Admin
+    Given I reset tracking settings file
+    And I proceed as the Admin
     And login as administrator
     And go to Marketing/ Tracking Websites
     And I click "Create Tracking Website"
@@ -41,7 +42,6 @@ Feature: Track website data
   @skipWait
   Scenario: Collect tracking data with dynamic tracking
     Given I proceed as the User
-    And I generate html page with tracking code from website "default"
     When I open html page with tracking code for website "default"
     And I proceed as the Admin
 

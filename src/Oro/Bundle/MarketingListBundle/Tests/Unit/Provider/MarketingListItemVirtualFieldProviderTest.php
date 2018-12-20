@@ -5,10 +5,10 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListItemVirtualFieldProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
 
-class MarketingListItemVirtualFieldProviderTest extends \PHPUnit_Framework_TestCase
+class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $relationProvider;
 
@@ -43,7 +43,7 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit_Framework_TestC
     {
         $className = 'stdClass';
 
-        $this->relationProvider->expects($this->once())
+        $this->relationProvider->expects($this->any())
             ->method('hasMarketingList')
             ->with($className)
             ->will($this->returnValue($hasMarketingList));

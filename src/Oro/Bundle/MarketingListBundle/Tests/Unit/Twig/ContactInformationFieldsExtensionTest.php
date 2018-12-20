@@ -6,11 +6,11 @@ use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\MarketingListBundle\Twig\ContactInformationFieldsExtension;
 use Oro\Component\Testing\Unit\TwigExtensionTestCaseTrait;
 
-class ContactInformationFieldsExtensionTest extends \PHPUnit_Framework_TestCase
+class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
 {
     use TwigExtensionTestCaseTrait;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $helper;
 
     /** @var ContactInformationFieldsExtension */

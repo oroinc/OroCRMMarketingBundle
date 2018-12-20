@@ -7,7 +7,7 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class MarketingActivityTest extends \PHPUnit_Framework_TestCase
+class MarketingActivityTest extends \PHPUnit\Framework\TestCase
 {
     use EntityTestCaseTrait;
 

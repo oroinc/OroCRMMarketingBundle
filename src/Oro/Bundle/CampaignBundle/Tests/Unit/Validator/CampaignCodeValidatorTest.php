@@ -13,22 +13,22 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
+class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
 {
     use EntityTrait;
 
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 
     /**
-     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $translator;
 
     /**
-     * @var Constraint|\PHPUnit_Framework_MockObject_MockObject $constraint
+     * @var Constraint|\PHPUnit\Framework\MockObject\MockObject $constraint
      */
     protected $constraint;
 
@@ -83,7 +83,7 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->willReturn('1');
 
-        /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+        /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
         $context = $this->createMock(ExecutionContextInterface::class);
         $context->expects($this->never())
             ->method($this->anything());
@@ -118,7 +118,7 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->willReturn('2');
 
-        /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+        /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
         $context = $this->createMock(ExecutionContextInterface::class);
         $violation = $this->createMock(ConstraintViolationBuilderInterface::class);
         $context->expects($this->once())
@@ -157,7 +157,7 @@ class CampaignCodeValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getCode')
             ->willReturn('test');
 
-        /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
+        /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
         $context = $this->createMock(ExecutionContextInterface::class);
         $context->expects($this->never())
             ->method($this->anything());

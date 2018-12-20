@@ -4,7 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 
 use Oro\Bundle\MarketingListBundle\Datagrid\ActionPermissionProvider;
 
-class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
+class ActionPermissionProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ActionPermissionProvider

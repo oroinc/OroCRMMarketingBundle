@@ -3,14 +3,23 @@
 namespace Oro\Bundle\MarketingListBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\EntityBundle\Form\Type\EntityFieldSelectType;
+use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType as MarketingListTypeEntity;
 use Oro\Bundle\QueryDesignerBundle\Form\Type\AbstractQueryDesignerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Marketing list form type
+ * Used for creating marketing lists, extends abstract query designer
+ */
 class MarketingListType extends AbstractQueryDesignerType
 {
     /**
@@ -19,11 +28,10 @@ class MarketingListType extends AbstractQueryDesignerType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', ['required' => true])
-            ->add('entity', 'oro_marketing_list_contact_information_entity_choice', ['required' => true])
-            ->add('description', 'oro_resizeable_rich_text', ['required' => false]);
+            ->add('name', TextType::class, ['required' => true])
+            ->add('entity', ContactInformationEntityChoiceType::class, ['required' => true])
+            ->add('description', OroResizeableRichTextType::class, ['required' => false]);
 
-        // TODO: remove this listener after full support of manual marketing lists CRM-1878
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
@@ -47,10 +55,10 @@ class MarketingListType extends AbstractQueryDesignerType
 
                 $form->add(
                     'type',
-                    'entity',
+                    EntityType::class,
                     [
                         'class' => 'OroMarketingListBundle:MarketingListType',
-                        'property' => 'label',
+                        'choice_label' => 'label',
                         'required' => true,
                         'placeholder' => 'oro.marketinglist.form.choose_marketing_list_type',
                         'query_builder' => $qb
@@ -71,10 +79,10 @@ class MarketingListType extends AbstractQueryDesignerType
     {
         return [
             'column_column_field_choice_options' => [
-                'exclude_fields' => ['relation_type'],
+                'exclude_fields' => ['relationType'],
             ],
-            'column_column_choice_type' => 'hidden',
-            'filter_column_choice_type' => 'oro_entity_field_select'
+            'column_column_choice_type' => HiddenType::class,
+            'filter_column_choice_type' => EntityFieldSelectType::class
         ];
     }
 

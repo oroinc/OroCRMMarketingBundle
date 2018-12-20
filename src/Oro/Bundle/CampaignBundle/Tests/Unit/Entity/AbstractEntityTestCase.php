@@ -4,7 +4,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Entity;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractEntityTestCase extends \PHPUnit\Framework\TestCase
 {
     /** @var Object */
     protected $entity;

@@ -9,7 +9,7 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 use Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension;
 
-class IdentifierVisitGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
+class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var IdentifierVisitGeneratorExtension */
     protected $extension;

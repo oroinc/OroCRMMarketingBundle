@@ -2,33 +2,29 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\ImportExport;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\TrackingBundle\ImportExport\LogReader;
+use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
 
-class LogReaderTest extends \PHPUnit_Framework_TestCase
+class LogReaderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var string
-     */
-    protected $directory;
+    use TempDirExtension;
 
     /**
-     * @var Filesystem
-     */
-    protected $fs;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $contextRegistry;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $context;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $stepExecution;
 
@@ -37,28 +33,21 @@ class LogReaderTest extends \PHPUnit_Framework_TestCase
      */
     protected $reader;
 
-    public function setUp()
+    protected function setUp()
     {
-        $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tracking';
-
-        $this->fs = new Filesystem();
-
-        $this->fs->mkdir($this->directory);
-
-        $this->contextRegistry = $this
-            ->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->context = $this
-            ->createMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
-
-        $this->stepExecution = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->contextRegistry = $this->createMock(ContextRegistry::class);
+        $this->context = $this->createMock(ContextInterface::class);
+        $this->stepExecution = $this->createMock(StepExecution::class);
 
         $this->reader = new LogReader($this->contextRegistry);
+    }
+
+    /**
+     * @return Filesystem
+     */
+    private function getFilesystem()
+    {
+        return new Filesystem();
     }
 
     public function testRead()
@@ -68,8 +57,8 @@ class LogReaderTest extends \PHPUnit_Framework_TestCase
             'value' => 'done'
         ];
 
-        $filename = $this->directory . DIRECTORY_SEPARATOR . 'valid.log';
-        $this->fs->dumpFile($filename, json_encode($data));
+        $filename = $this->getTempDir('tracking') . DIRECTORY_SEPARATOR . 'valid.log';
+        $this->getFilesystem()->dumpFile($filename, json_encode($data));
 
         $this->context
             ->expects($this->once())
@@ -115,8 +104,8 @@ class LogReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testReadFileNotValid()
     {
-        $filename = $this->directory . DIRECTORY_SEPARATOR . 'not_valid.log';
-        $this->fs->touch($filename);
+        $filename = $this->getTempDir('tracking') . DIRECTORY_SEPARATOR . 'not_valid.log';
+        $this->getFilesystem()->touch($filename);
 
         $this->context
             ->expects($this->once())

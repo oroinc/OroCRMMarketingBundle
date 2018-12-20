@@ -5,15 +5,15 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Model;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignStatisticsConnector;
 
-class EmailCampaignStatisticsConnectorTest extends \PHPUnit_Framework_TestCase
+class EmailCampaignStatisticsConnectorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $marketingListItemConnector;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 

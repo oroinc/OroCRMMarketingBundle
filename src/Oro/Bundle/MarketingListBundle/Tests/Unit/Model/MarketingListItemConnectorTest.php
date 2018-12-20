@@ -4,15 +4,15 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Model;
 
 use Oro\Bundle\MarketingListBundle\Model\MarketingListItemConnector;
 
-class MarketingListItemConnectorTest extends \PHPUnit_Framework_TestCase
+class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $registry;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 

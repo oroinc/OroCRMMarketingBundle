@@ -224,11 +224,11 @@ Additionally, there is a **Tracking Event** table - the original web event data 
 
 ### Configuration
 
-In order to collect the information, you need to copy the `Resources/lib/tracking.php` file to the application's `/web` folder. This is performed automatically, but if your application has different `/web` folder, you need to configure it in `app/config/config.yml`. For example:
+In order to collect the information, you need to copy the `Resources/lib/tracking.php` file to the application's `/web` folder. This is performed automatically, but if your application has different `/web` folder, you need to configure it in `config/config.yml`. For example:
 
 ```yaml
 oro_tracking:
-    web_root: %kernel.root_dir%/../web
+    web_root: %kernel.project_dir%/public
 ```
 
 ### Security firewalls

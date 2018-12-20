@@ -10,15 +10,15 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 use Oro\Bundle\TrackingBundle\EventListener\TrackingVisitEntityListener;
 
-class TrackingVisitEntityListenerTest extends \PHPUnit_Framework_TestCase
+class TrackingVisitEntityListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
      */
     private $configManager;
 
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
      */
     private $registry;
 

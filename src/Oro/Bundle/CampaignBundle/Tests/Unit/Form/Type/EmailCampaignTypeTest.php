@@ -5,7 +5,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
 use Symfony\Component\Form\FormEvents;
 
-class EmailCampaignTypeTest extends \PHPUnit_Framework_TestCase
+class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
 {
     /** @var EmailCampaignType */
     protected $type;

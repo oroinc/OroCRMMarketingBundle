@@ -330,8 +330,8 @@ datagrids:
                     options:
                         field_options:
                             choices:
-                                manual: Manual
-                                deferred: Deferred
+                                Manual: manual
+                                Deferred: deferred
                 scheduledFor:
                     type:        datetime
                     data_name:   ec.scheduledFor

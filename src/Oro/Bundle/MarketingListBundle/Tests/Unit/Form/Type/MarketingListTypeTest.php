@@ -2,10 +2,14 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\EntityBundle\Form\Type\EntityFieldSelectType;
+use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
+use Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType;
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
+class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MarketingListType
@@ -27,7 +31,7 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 'name',
-                'text',
+                TextType::class,
                 ['required' => true]
             )
             ->will($this->returnSelf());
@@ -36,7 +40,7 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 'entity',
-                'oro_marketing_list_contact_information_entity_choice',
+                ContactInformationEntityChoiceType::class,
                 ['required' => true]
             )
             ->will($this->returnSelf());
@@ -45,7 +49,7 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 'description',
-                'oro_resizeable_rich_text',
+                OroResizeableRichTextType::class,
                 ['required' => false]
             )
             ->will($this->returnSelf());
@@ -70,10 +74,10 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
             ->with(
                 [
                     'column_column_field_choice_options' => [
-                        'exclude_fields' => ['relation_type'],
+                        'exclude_fields' => ['relationType'],
                     ],
-                    'column_column_choice_type'   => 'hidden',
-                    'filter_column_choice_type'   => 'oro_entity_field_select',
+                    'column_column_choice_type'   => HiddenType::class,
+                    'filter_column_choice_type'   => EntityFieldSelectType::class,
                     'data_class'                  => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
                     'csrf_token_id'               => 'marketing_list',
                     'query_type'                  => 'segment',
@@ -81,10 +85,5 @@ class MarketingListTypeTest extends \PHPUnit_Framework_TestCase
             );
 
         $this->type->configureOptions($resolver);
-    }
-
-    public function testGetName()
-    {
-        $this->assertEquals('oro_marketing_list', $this->type->getName());
     }
 }

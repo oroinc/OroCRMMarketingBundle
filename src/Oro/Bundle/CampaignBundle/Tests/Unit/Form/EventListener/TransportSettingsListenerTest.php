@@ -5,15 +5,15 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\EventListener;
 use Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsListener;
 use Symfony\Component\Form\FormEvents;
 
-class TransportSettingsListenerTest extends \PHPUnit_Framework_TestCase
+class TransportSettingsListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $emailTransportProvider;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected $doctrineHelper;
 
