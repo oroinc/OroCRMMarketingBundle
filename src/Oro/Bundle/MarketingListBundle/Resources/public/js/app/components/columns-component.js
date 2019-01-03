@@ -50,10 +50,13 @@ define(function(require) {
 
             var item = element.find('[data-cid="' + model.cid + '"] .name-cell');
 
-            if (!item.hasClass('has-icon')) {
+            if (!item.hasClass('has-icon') && icon) {
                 item
                     .addClass('has-icon')
-                    .prepend($('<i/>').addClass(icon));
+                    .prepend($('<span></span>', {
+                        'aria-hidden': 'true',
+                        'class': 'icon ' + icon
+                    }));
             }
         }
     };
@@ -77,7 +80,7 @@ define(function(require) {
         }
     };
 
-    return function(options) {
+    function ColumnsComponent(options) {
         var $form = $(options.formSelector);
         $entityEl = $form.find(options.entityChoiceSelector);
         $fieldsListEl = $form.find(options.fieldsChoiceSelector);
@@ -90,8 +93,13 @@ define(function(require) {
             loadEntityContactInformationFields(e.val);
         });
 
-        mediator.on('items-manager:table:add:item-container', function(collection, model, element) {
-            getFieldContactInformationType(model, element);
-        });
+        mediator.on(
+            'items-manager:table:add:item-container items-manager:table:change:item-container',
+            function(collection, model, element) {
+                getFieldContactInformationType(model, element);
+            }
+        );
     };
+
+    return ColumnsComponent;
 });

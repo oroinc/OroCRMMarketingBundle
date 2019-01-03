@@ -1,0 +1,33 @@
+/* @theme: admin.oro; */
+
+@import "oroui/css/scss/variables";
+@import "oroui/css/scss/mixins";
+
+#oro_marketing_list-column-list {
+    .icon {
+        min-width: $dropdown-item-icon-fa-size;
+        height: $dropdown-item-icon-fa-size;
+        margin-#{$end}: $dropdown-item-icon-fa-offset;
+
+        text-align: center;
+    }
+}
+
+#oro_marketing_list-column-list .name-cell {
+    &:not(.has-icon) {
+        padding-#{$start}: $content-padding-medium + $dropdown-item-icon-fa-size + $dropdown-item-icon-fa-offset;
+    }
+}
+
+#column-information-notice {
+    &:not(.has-fields) .column-information-fields-notice {
+        display: none;
+    }
+
+    ul {
+        margin-bottom: 0;
+        margin-#{$start}: 8px;
+
+        @include list-unstyled();
+    }
+}
