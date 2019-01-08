@@ -33,13 +33,13 @@
 
 {% block breadcrumbs %}
     {{ parent() }}
-    <div class="status-enabled pull-left">
+    <span class="page-title__status">
         {% if entity.sent %}
-            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled fa-circle"></i>{{ 'oro.campaign.emailcampaign.status.sent'|trans }}</div>
+            {{ UI.badge('oro.campaign.emailcampaign.status.sent'|trans, 'enabled') }}
         {% else %}
-            <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled fa-circle"></i>{{ 'oro.campaign.emailcampaign.status.not_sent'|trans }}</div>
+            {{ UI.badge('oro.campaign.emailcampaign.status.not_sent'|trans, 'disabled') }}
         {% endif %}
-    </div>
+    </span>
 {% endblock breadcrumbs %}
 
 {% block content_data %}
