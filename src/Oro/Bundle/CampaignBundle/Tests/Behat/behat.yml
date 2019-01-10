@@ -1,4 +1,10 @@
 oro_behat_extension:
+  elements:
+    Campaign Section:
+      selector:
+        type: 'xpath'
+        locator: '//h5/span[text()="Campaign"]/ancestor::fieldset'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
   suites:
     OroCampaignBundle:
       contexts:
@@ -7,5 +13,7 @@ oro_behat_extension:
         - OroNavigationBundle::FeatureContext
         - OroNavigationBundle::PinbarContext
         - OroCampaignBundle::CampaignFeatureToggleContext
+        - OroConfigBundle::FeatureContext
+        - OroFormBundle::FormContext
       paths:
         - '@OroCampaignBundle/Tests/Behat/Features'

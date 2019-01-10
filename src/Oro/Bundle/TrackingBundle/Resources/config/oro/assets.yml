@@ -1,4 +1,3 @@
-assets:
-    css:
-        inputs:
-            - 'bundles/orotracking/css/scss/code.scss'
+css:
+    inputs:
+        - 'bundles/orotracking/css/scss/code.scss'

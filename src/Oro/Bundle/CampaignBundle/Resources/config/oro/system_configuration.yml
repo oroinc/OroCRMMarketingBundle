@@ -10,12 +10,19 @@ system_configuration:
             search_type: text
             options:
                 label: oro.campaign.emailcampaign.system_configuration.campaign_sender_email
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Email: ~
         oro_campaign.campaign_sender_name:
             data_type: string
             search_type: text
             type: Symfony\Component\Form\Extension\Core\Type\TextType
             options:
                 label: oro.campaign.emailcampaign.system_configuration.campaign_sender_name
+                required: true
+                constraints:
+                    - NotBlank: ~
         oro_campaign.feature_enabled:
             data_type: boolean
             type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
