@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
-use Oro\Bundle\ContactBundle\Entity\Contact;
-use Oro\Bundle\ContactBundle\Entity\ContactEmail;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
 class ContactInformationFieldsProviderTest extends \PHPUnit\Framework\TestCase

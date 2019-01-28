@@ -4,7 +4,6 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\UserBundle\Entity\User;
 

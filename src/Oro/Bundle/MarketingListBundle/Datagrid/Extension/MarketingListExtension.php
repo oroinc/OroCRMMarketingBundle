@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Datagrid\Extension;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;

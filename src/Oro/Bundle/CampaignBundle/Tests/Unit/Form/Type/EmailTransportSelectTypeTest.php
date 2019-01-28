@@ -4,7 +4,6 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailTransportSelectTypeTest extends \PHPUnit\Framework\TestCase
 {

@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;

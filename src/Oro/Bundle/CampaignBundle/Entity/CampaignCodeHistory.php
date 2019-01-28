@@ -3,7 +3,6 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\CampaignBundle\Entity\Campaign;
 
 /**
  * @ORM\Entity

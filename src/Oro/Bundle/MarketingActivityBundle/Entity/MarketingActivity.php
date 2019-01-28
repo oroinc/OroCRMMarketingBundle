@@ -5,7 +5,6 @@ namespace Oro\Bundle\MarketingActivityBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\MarketingActivityBundle\Model\ExtendMarketingActivity;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 

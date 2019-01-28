@@ -3,8 +3,6 @@
 namespace Oro\Bundle\CampaignBundle\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
-use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
-use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
 use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;

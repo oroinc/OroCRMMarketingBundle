@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
-use Oro\Bundle\FilterBundle\Filter\DateTimeRangeFilter;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;

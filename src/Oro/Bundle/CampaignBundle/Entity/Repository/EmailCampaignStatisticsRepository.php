@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 
