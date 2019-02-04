@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\EventListener;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -60,6 +61,9 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit_Framework_Test
             ->expects($this->any())
             ->method('getType')
             ->will($this->returnValue($type));
+        $type->expects($this->any())
+            ->method('getInnerType')
+            ->willReturn(new SubmitType());
 
         $this->form
             ->expects($this->any())

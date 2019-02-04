@@ -115,6 +115,9 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($this->testEntity);
         $this->manager->expects($this->once())
             ->method('flush');
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->will($this->returnValue([]));
 
         $this->assertTrue($this->handler->process($this->testEntity));
 
@@ -144,6 +147,9 @@ class MarketingListHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('persist');
         $this->manager->expects($this->never())
             ->method('flush');
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->will($this->returnValue([]));
 
         $this->assertFalse($this->handler->process($this->testEntity));
 
