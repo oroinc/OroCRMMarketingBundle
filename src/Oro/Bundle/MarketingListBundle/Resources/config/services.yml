@@ -26,9 +26,6 @@ parameters:
 
     oro_marketing_list.datagrid.configuration.provider.class: Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider
 
-    oro_marketing_list.provider.virtual_relation.marketing_list.class: Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider
-    oro_marketing_list.provider.virtual_field.marketing_list_item.class: Oro\Bundle\MarketingListBundle\Provider\MarketingListItemVirtualFieldProvider
-
     #event listeners
     oro_marketing_list.event_listener.before_value_render_listener.class: Oro\Bundle\MarketingListBundle\EventListener\ExtendFieldValueBeforeRenderListener
 
@@ -190,7 +187,8 @@ services:
               - [setNamespace, [ 'oro_marketing_list' ] ]
 
     oro_marketing_list.provider.virtual_relation.marketing_list:
-        class: '%oro_marketing_list.provider.virtual_relation.marketing_list.class%'
+        class: Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider
+        public: false
         arguments:
             - "@oro_entity.doctrine_helper"
             - '@oro_marketing_list.virtual_relation_cache'
@@ -198,7 +196,8 @@ services:
             - { name: oro_entity.virtual_relation_provider, priority: 150 }
 
     oro_marketing_list.provider.virtual_field.marketing_list_item:
-        class: '%oro_marketing_list.provider.virtual_field.marketing_list_item.class%'
+        class: Oro\Bundle\MarketingListBundle\Provider\MarketingListItemVirtualFieldProvider
+        public: false
         arguments:
             - "@oro_marketing_list.provider.virtual_relation.marketing_list"
         tags:
