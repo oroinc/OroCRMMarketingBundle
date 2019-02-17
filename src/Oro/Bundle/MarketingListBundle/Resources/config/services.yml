@@ -164,7 +164,7 @@ services:
             - { name: oro_datagrid.configuration.provider, priority: -10 }
 
     oro_marketing_list.marketing_list.cache_warmer:
-        class: Oro\Bundle\MarketingListBundle\Cache\MarketingListCacheWarmer
+        class: Oro\Component\Config\Cache\ConfigCacheWarmer
         public: false
         arguments:
             - '@oro_marketing_list.provider.marketing_list_allowed_classes'

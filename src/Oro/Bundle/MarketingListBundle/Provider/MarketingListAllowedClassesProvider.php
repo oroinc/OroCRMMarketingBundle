@@ -4,12 +4,13 @@ namespace Oro\Bundle\MarketingListBundle\Provider;
 
 use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
+use Oro\Component\Config\Cache\WarmableConfigCacheInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The provider that can be used to get a list of entities are allowed to be used in marketing lists.
  */
-class MarketingListAllowedClassesProvider
+class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterface
 {
     const MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY = 'oro_marketing_list.allowed_entities';
 
@@ -49,7 +50,10 @@ class MarketingListAllowedClassesProvider
         return $entitiesList;
     }
 
-    public function warmUpCache()
+    /**
+     * {@inheritdoc}
+     */
+    public function warmUpCache(): void
     {
         $this->cacheProvider->save(
             static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY,
