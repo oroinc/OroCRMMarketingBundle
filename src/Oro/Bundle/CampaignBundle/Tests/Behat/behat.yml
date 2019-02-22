@@ -11,6 +11,7 @@ oro_behat_extension:
         - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
         - OroDataGridBundle::GridContext
         - OroNavigationBundle::FeatureContext
+        - OroNavigationBundle::PinbarContext
         - OroCampaignBundle::CampaignFeatureToggleContext
         - OroConfigBundle::FeatureContext
         - OroFormBundle::FormContext
