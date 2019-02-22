@@ -11,6 +11,8 @@ use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * API controller for EmailTemplate entity.
+ *
  * @RouteResource("emailcampaign_email_template")
  * @NamePrefix("oro_api_")
  */
@@ -53,7 +55,7 @@ class EmailTemplateController extends RestController
         $templatesQueryBuilder = $this
             ->getDoctrine()
             ->getRepository('OroEmailBundle:EmailTemplate')
-            ->getEntityTemplatesQueryBuilder($marketingList->getEntity(), $organization, true);
+            ->getEntityTemplatesQueryBuilder($marketingList->getEntity(), $organization);
 
         $templates = $templatesQueryBuilder->getQuery()->getArrayResult();
         return $this->handleView(
