@@ -4,6 +4,7 @@ namespace Oro\Bundle\CampaignBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
+use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -133,7 +134,7 @@ class EmailCampaignController extends Controller
             // substitute submitted form with new not submitted instance to ignore validation errors
             // on form after transport field was changed
             $form = $this->get('form.factory')
-                ->createNamed('oro_email_campaign', 'oro_email_campaign', $form->getData());
+                ->createNamed('oro_email_campaign', EmailCampaignType::class, $form->getData());
         }
 
         return $form;
