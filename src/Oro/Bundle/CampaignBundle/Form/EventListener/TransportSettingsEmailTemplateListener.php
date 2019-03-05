@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * The listener for setting email template choices based on EmailCampaign{MarketingList} entity class.
+ */
 class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 {
     /**
@@ -46,7 +49,7 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
     }
 
     /**
-     * Fill template choices based on Existing EmailCampaign{MarketingList} entity class.
+     * Fill template choices based on existing EmailCampaign{MarketingList} entity class.
      *
      * @param FormEvent $event
      */
@@ -103,10 +106,9 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
                 'query_builder'  => function (EmailTemplateRepository $templateRepository) use ($entityName) {
                     return $templateRepository->getEntityTemplatesQueryBuilder(
                         $entityName,
-                        $this->tokenAccessor->getOrganization(),
-                        true
+                        $this->tokenAccessor->getOrganization()
                     );
-                },
+                }
             ],
             ['choices']
         );
