@@ -1,3 +1,13 @@
+## 2.6.40
+### Changed
+#### MarketingListBundle
+* In `Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::removeAction` 
+ (`/marketinglist/{marketingList}/remove/{id}` path)
+ action the request method was changed to POST. 
+* In `Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::unremoveAction` 
+ (`/marketinglist/{marketingList}/unremove/{id}` path)
+ action the request method was changed to POST. 
+ 
 ## 2.6.0 (2018-01-31)
 [Show detailed list of changes](incompatibilities-2-6.md)
 

@@ -19,6 +19,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
 
 /**
+ * REST API Marketing List Removed Item Controller
  * @Rest\RouteResource("marketinglist_removeditem")
  * @Rest\NamePrefix("oro_api_")
  */
@@ -62,7 +63,7 @@ class MarketingListRemovedItemController extends RestController implements Class
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
+     * @Rest\Post(
      *      "/marketinglist/{marketingList}/remove/{id}"
      * )
      * @ApiDoc(description="Remove marketing list entity item", resource=true)
@@ -112,7 +113,7 @@ class MarketingListRemovedItemController extends RestController implements Class
      * @param MarketingList $marketingList
      * @param int           $id
      *
-     * @Rest\Get(
+     * @Rest\Post(
      *      "/marketinglist/{marketingList}/unremove/{id}"
      * )
      * @ApiDoc(
