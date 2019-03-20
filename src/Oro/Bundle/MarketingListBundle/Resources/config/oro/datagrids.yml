@@ -251,6 +251,7 @@ datagrids:
         actions:
             remove:
                 type:         ajaxdelete
+                requestType:  POST
                 label:        oro.marketinglist.action.remove
                 link:         remove_link
                 icon:         remove
@@ -277,6 +278,7 @@ datagrids:
         actions:
             unremove:
                 type:         ajaxdelete
+                requestType:  POST
                 label:        oro.marketinglist.action.unremove
                 link:         unremove_link
                 icon:         undo
@@ -427,6 +429,7 @@ datagrids:
         actions:
             remove:
                 type:         ajaxdelete
+                requestType:  POST
                 label:        oro.marketinglist.action.remove
                 link:         remove_link
                 icon:         remove
@@ -453,6 +456,7 @@ datagrids:
         actions:
             unremove:
                 type:         ajaxdelete
+                requestType:  POST
                 label:        oro.marketinglist.action.unremove
                 link:         unremove_link
                 icon:         undo
