@@ -15,6 +15,7 @@ use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * REST API Marketing List Unsubscribed Item Controller
  * @Rest\RouteResource("marketinglist_unsubscribeditem")
  * @Rest\NamePrefix("oro_api_")
  */
@@ -58,7 +59,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
+     * @Rest\Post(
      *      "/marketinglist/{marketingList}/unsubscribe/{id}"
      * )
      * @ApiDoc(description="Unsubscribe marketing list entity item", resource=true)
@@ -108,7 +109,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      * @param MarketingList $marketingList
      * @param int           $id
      *
-     * @Rest\Get(
+     * @Rest\Post(
      *      "/marketinglist/{marketingList}/subscribe/{id}"
      * )
      * @ApiDoc(
