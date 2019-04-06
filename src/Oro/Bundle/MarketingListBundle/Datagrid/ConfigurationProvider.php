@@ -8,11 +8,12 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
+/**
+ * The provider for configuration of datagrids for marketing lists.
+ */
 class ConfigurationProvider implements ConfigurationProviderInterface
 {
-    const GRID_PREFIX = 'oro_marketing_list_items_grid_';
-    /** @deprecated since 1.10. Use config->getName() instead */
-    const GRID_NAME_OFFSET = '[name]';
+    public const GRID_PREFIX = 'oro_marketing_list_items_grid_';
 
     /**
      * @var ConfigurationProviderInterface
@@ -52,7 +53,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function isApplicable($gridName)
+    public function isApplicable(string $gridName): bool
     {
         return (bool)$this->helper->getMarketingListIdByGridName($gridName);
     }
@@ -66,7 +67,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
      * @param string $gridName
      * @return DatagridConfiguration
      */
-    public function getConfiguration($gridName)
+    public function getConfiguration(string $gridName): DatagridConfiguration
     {
         $marketingListId = $this->helper->getMarketingListIdByGridName($gridName);
         if (!$marketingListId) {
