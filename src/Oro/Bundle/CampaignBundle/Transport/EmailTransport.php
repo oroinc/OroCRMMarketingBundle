@@ -11,6 +11,9 @@ use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
+/**
+ * Implements the transport to send campaigns emails.
+ */
 class EmailTransport implements TransportInterface
 {
     const NAME = 'internal';
@@ -58,8 +61,9 @@ class EmailTransport implements TransportInterface
      */
     public function send(EmailCampaign $campaign, $entity, array $from, array $to)
     {
-        $entityId      = $this->doctrineHelper->getSingleEntityIdentifier($entity);
+        $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
         $marketingList = $campaign->getMarketingList();
+        $fromAddress = $this->buildFullEmailAddress($from);
 
         /** @var EmailTemplate $template */
         $template = $campaign->getTransportSettings()->getSettingsBag()->get('template');
@@ -71,13 +75,13 @@ class EmailTransport implements TransportInterface
         $emailModel = new Email();
         $emailModel
             ->setType($template->getType())
-            ->setFrom($this->buildFullEmailAddress($from))
+            ->setFrom($fromAddress)
             ->setEntityClass($marketingList->getEntity())
             ->setEntityId($entityId)
             ->setTo($to)
             ->setSubject($subjectRendered)
             ->setBody($templateRendered);
-        
+
         $this->processor->process($emailModel, null, false);
     }
 

@@ -15,6 +15,7 @@ use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * REST API Marketing List Removed Item Controller
  * @Rest\RouteResource("marketinglist_removeditem")
  * @Rest\NamePrefix("oro_api_")
  */
@@ -58,7 +59,7 @@ class MarketingListRemovedItemController extends RestController implements Class
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Get(
+     * @Rest\Post(
      *      "/marketinglist/{marketingList}/remove/{id}"
      * )
      * @ApiDoc(description="Remove marketing list entity item", resource=true)
@@ -108,7 +109,7 @@ class MarketingListRemovedItemController extends RestController implements Class
      * @param MarketingList $marketingList
      * @param int           $id
      *
-     * @Rest\Get(
+     * @Rest\Post(
      *      "/marketinglist/{marketingList}/unremove/{id}"
      * )
      * @ApiDoc(

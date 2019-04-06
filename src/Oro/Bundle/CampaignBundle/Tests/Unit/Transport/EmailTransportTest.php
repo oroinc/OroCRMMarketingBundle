@@ -187,6 +187,10 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setMarketingList($marketingList)
             ->setTransportSettings($settings);
 
+        $this->renderer
+            ->expects($this->never())
+            ->method('compileMessage');
+
         $this->transport->send($campaign, $entity, [], []);
     }
 }
