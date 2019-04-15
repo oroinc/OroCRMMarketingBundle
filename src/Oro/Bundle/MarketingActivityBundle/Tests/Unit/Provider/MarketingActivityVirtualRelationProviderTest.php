@@ -45,7 +45,12 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
      */
     public function testIsVirtualRelation($className, $fieldName, $marketingActivity, $expected)
     {
-        $this->assertEntityProviderCall($className, $marketingActivity);
+        if ('marketingActivity' === $fieldName) {
+            $this->assertEntityProviderCall($className, $marketingActivity);
+        } else {
+            $this->entityProvider->expects($this->never())
+                ->method('isIgnoredEntity');
+        }
         $this->assertEquals($expected, $this->provider->isVirtualRelation($className, $fieldName));
     }
 

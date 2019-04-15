@@ -6,9 +6,10 @@ use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 /**
- * The provider to get virtual relations between an entity and a marketing list that is based on this entity.
+ * Provides virtual relations between an entity and a marketing list that is based on this entity.
  */
 class MarketingListVirtualRelationProvider implements VirtualRelationProviderInterface
 {
@@ -41,7 +42,9 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
      */
     public function isVirtualRelation($className, $fieldName)
     {
-        return $this->hasMarketingList($className) && $fieldName === self::RELATION_NAME;
+        return
+            $fieldName === self::RELATION_NAME
+            && $this->hasMarketingList($className);
     }
 
     /**
@@ -98,7 +101,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         if (false === $marketingListByEntity) {
             $marketingListByEntity = [];
 
-            $repository = $this->doctrineHelper->getEntityRepository('OroMarketingListBundle:MarketingList');
+            $repository = $this->doctrineHelper->getEntityRepository(MarketingList::class);
             $qb = $repository->createQueryBuilder('ml')
                 ->select('ml.entity')
                 ->distinct();

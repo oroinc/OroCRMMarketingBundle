@@ -43,7 +43,12 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
      */
     public function testIsVirtualRelation($className, $fieldName, $marketingList, $supported)
     {
-        $this->assertRepositoryCall($className, $marketingList);
+        if ('marketingList_virtual' === $fieldName) {
+            $this->assertRepositoryCall($className, $marketingList);
+        } else {
+            $this->doctrineHelper->expects($this->never())
+                ->method('getEntityRepository');
+        }
         $this->assertEquals($supported, $this->provider->isVirtualRelation($className, $fieldName));
     }
 
@@ -184,7 +189,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
 
         $this->doctrineHelper->expects($this->once())
             ->method('getEntityRepository')
-            ->with('OroMarketingListBundle:MarketingList')
+            ->with(MarketingList::class)
             ->will($this->returnValue($repository));
     }
 
