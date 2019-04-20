@@ -26,7 +26,6 @@ parameters:
 
     oro_marketing_list.datagrid.configuration.provider.class: Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider
 
-    #event listeners
     oro_marketing_list.event_listener.before_value_render_listener.class: Oro\Bundle\MarketingListBundle\EventListener\ExtendFieldValueBeforeRenderListener
 
 services:

@@ -9,7 +9,7 @@ use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
 /**
- * Handles marketingActivity relation
+ * Provides "marketingActivity" virtual relation.
  */
 class MarketingActivityVirtualRelationProvider implements VirtualRelationProviderInterface
 {
@@ -45,7 +45,9 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
      */
     public function isVirtualRelation($className, $fieldName)
     {
-        return $this->hasMarketingActivity($className) && $fieldName === self::RELATION_NAME;
+        return
+            $fieldName === self::RELATION_NAME
+            && $this->hasMarketingActivity($className);
     }
 
     /**
