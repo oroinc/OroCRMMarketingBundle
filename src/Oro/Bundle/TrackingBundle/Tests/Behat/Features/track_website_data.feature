@@ -23,7 +23,6 @@ Feature: Track website data
     Then I should see "Tracking Website saved" flash message
 
   #Todo: replace after #BAP-15242 done, merge scenarios
-  @skipWait
   Scenario: Collect tracking data
     Given I proceed as the User
     And I generate html page with tracking code from website "default"
@@ -39,7 +38,6 @@ Feature: Track website data
     Then the "Enable dynamic tracking" checkbox should be checked
 
   #Todo: replace after #BAP-15242 done, merge scenarios
-  @skipWait
   Scenario: Collect tracking data with dynamic tracking
     Given I proceed as the User
     When I open html page with tracking code for website "default"
