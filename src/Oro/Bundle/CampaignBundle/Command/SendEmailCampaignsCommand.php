@@ -2,19 +2,50 @@
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command to send scheduled email campaigns
  */
-class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCommandInterface
+class SendEmailCampaignsCommand extends Command implements CronCommandInterface
 {
+    /** @var string */
+    protected static $defaultName = 'oro:cron:send-email-campaigns';
+
+    /** @var ManagerRegistry */
+    private $registry;
+
+    /** @var FeatureChecker */
+    private $featureChecker;
+
+    /** @var EmailCampaignSenderBuilder */
+    private $emailCampaignSenderBuilder;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param FeatureChecker $featureChecker
+     * @param EmailCampaignSenderBuilder $emailCampaignSenderBuilder
+     */
+    public function __construct(
+        ManagerRegistry $registry,
+        FeatureChecker $featureChecker,
+        EmailCampaignSenderBuilder $emailCampaignSenderBuilder
+    ) {
+        parent::__construct();
+
+        $this->registry = $registry;
+        $this->featureChecker = $featureChecker;
+        $this->emailCampaignSenderBuilder = $emailCampaignSenderBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,7 +70,6 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
     protected function configure()
     {
         $this
-            ->setName('oro:cron:send-email-campaigns')
             ->setDescription('Send email campaigns');
     }
 
@@ -48,8 +78,7 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        if (!$featureChecker->isFeatureEnabled('campaign')) {
+        if (!$this->featureChecker->isFeatureEnabled('campaign')) {
             $output->writeln('The campaign feature is disabled. The command will not run.');
 
             return 0;
@@ -59,7 +88,7 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
 
         if (!$emailCampaigns) {
             $output->writeln('<info>No email campaigns to send</info>');
-            return;
+            return 0;
         }
 
         $output->writeln(
@@ -68,6 +97,8 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
 
         $this->send($output, $emailCampaigns);
         $output->writeln(sprintf('<info>Finished email campaigns sending</info>'));
+
+        return 0;
     }
 
     /**
@@ -78,22 +109,12 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
      */
     protected function send($output, array $emailCampaigns)
     {
-        $senderFactory = $this->getSenderFactory();
-
         foreach ($emailCampaigns as $emailCampaign) {
             $output->writeln(sprintf('<info>Sending email campaign</info>: %s', $emailCampaign->getName()));
 
-            $sender = $senderFactory->getSender($emailCampaign);
-            $sender->send($emailCampaign);
+            $sender = $this->emailCampaignSenderBuilder->getSender($emailCampaign);
+            $sender->send();
         }
-    }
-
-    /**
-     * @return EmailCampaignSenderBuilder
-     */
-    protected function getSenderFactory()
-    {
-        return $this->getContainer()->get('oro_campaign.email_campaign.sender.builder');
     }
 
     /**
@@ -101,6 +122,6 @@ class SendEmailCampaignsCommand extends ContainerAwareCommand implements CronCom
      */
     protected function getEmailCampaignRepository()
     {
-        return $this->getContainer()->get('doctrine')->getRepository('OroCampaignBundle:EmailCampaign');
+        return $this->registry->getRepository('OroCampaignBundle:EmailCampaign');
     }
 }

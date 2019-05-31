@@ -5,7 +5,6 @@ namespace Oro\Bundle\MarketingListBundle\Provider;
 use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Component\Config\Cache\WarmableConfigCacheInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The provider that can be used to get a list of entities are allowed to be used in marketing lists.
@@ -20,20 +19,20 @@ class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterfac
     private $cacheProvider;
 
     /**
-     * @var ContainerInterface
+     * @var EntityProvider
      */
-    private $container;
+    private $entityProvider;
 
     /**
      * @param CacheProvider $cacheProvider
-     * @param ContainerInterface $container
+     * @param EntityProvider $entityProvider
      */
     public function __construct(
         CacheProvider $cacheProvider,
-        ContainerInterface $container
+        EntityProvider $entityProvider
     ) {
         $this->cacheProvider = $cacheProvider;
-        $this->container = $container;
+        $this->entityProvider = $entityProvider;
     }
 
     /**
@@ -66,7 +65,7 @@ class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterfac
      */
     private function getEntitiesList(): array
     {
-        $entities = $this->getEntityProvider()->getEntities(false, true, false);
+        $entities = $this->entityProvider->getEntities(false, true, false);
 
         return $this->extractEntitiesNames($entities);
     }
@@ -80,15 +79,5 @@ class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterfac
         return array_map(function ($entity) {
             return $entity['name'];
         }, $entities);
-    }
-
-    /**
-     * Unable to inject it because of circular references
-     *
-     * @return EntityProvider
-     */
-    private function getEntityProvider(): EntityProvider
-    {
-        return $this->container->get('oro_marketing_list.entity_provider.contact_information');
     }
 }

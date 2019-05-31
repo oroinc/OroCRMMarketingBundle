@@ -212,7 +212,7 @@ services:
         public: false
         arguments:
             - '@oro_marketing_list.marketing_list.cache'
-            - '@service_container'
+            - '@oro_marketing_list.entity_provider.contact_information'
 
     oro_marketing_list.event_listener.user_before_value_render_listener:
         class: '%oro_marketing_list.event_listener.before_value_render_listener.class%'

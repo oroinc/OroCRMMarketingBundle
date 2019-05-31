@@ -1,12 +1,15 @@
 services:
-    Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand:
+    _defaults:
         public: false
-        class: Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand
+
+    Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand:
         tags:
             - { name: console.command }
 
     Oro\Bundle\CampaignBundle\Command\SendEmailCampaignsCommand:
-        public: false
-        class: Oro\Bundle\CampaignBundle\Command\SendEmailCampaignsCommand
+        arguments:
+            - '@doctrine'
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_campaign.email_campaign.sender.builder'
         tags:
             - { name: console.command }

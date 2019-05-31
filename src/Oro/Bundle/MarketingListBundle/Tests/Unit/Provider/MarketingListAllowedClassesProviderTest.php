@@ -8,7 +8,6 @@ use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCase
 {
@@ -22,32 +21,18 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
      */
     private $entityProvider;
 
-    /**
-     * @var ContainerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $container;
-
     protected function setUp()
     {
         $this->cacheProvider = new ArrayCache();
 
-        $this->entityProvider = $this->getMockBuilder(EntityProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->entityProvider = $this->createMock(EntityProvider::class);
         $this->entityProvider->expects($this->any())
             ->method('getEntities')
             ->willReturn($this->getAllowedEntities());
 
-        $this->container = $this->getMockBuilder(ContainerInterface::class)
-            ->getMock();
-        $this->container->expects($this->any())
-            ->method('get')
-            ->with('oro_marketing_list.entity_provider.contact_information')
-            ->willReturn($this->entityProvider);
-
         $this->provider = new MarketingListAllowedClassesProvider(
             $this->cacheProvider,
-            $this->container
+            $this->entityProvider
         );
     }
 

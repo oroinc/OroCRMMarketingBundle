@@ -4,18 +4,82 @@ namespace Oro\Bundle\CampaignBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
+use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * Serve CRUD of EmailCampaign entity.
+ *
  * @Route("/campaign/email")
  */
 class EmailCampaignController extends Controller
 {
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var TranslatorInterface */
+    private $translator;
+
+    /** @var Session */
+    private $session;
+
+    /** @var FormFactoryInterface */
+    private $formFactory;
+
+    /** @var Router */
+    private $router;
+
+    /** @var Form */
+    private $form;
+
+    /** @var EmailCampaignHandler */
+    private $formHandler;
+
+    /** @var EmailCampaignSenderBuilder */
+    private $emailCampaignSenderBuilder;
+
+    /**
+     * @param ValidatorInterface $validator
+     * @param TranslatorInterface $translator
+     * @param Session $session
+     * @param FormFactoryInterface $formFactory
+     * @param Router $router
+     * @param Form $form
+     * @param EmailCampaignHandler $formHandler
+     * @param EmailCampaignSenderBuilder $emailCampaignSenderBuilder
+     */
+    public function __construct(
+        ValidatorInterface $validator,
+        TranslatorInterface $translator,
+        Session $session,
+        FormFactoryInterface $formFactory,
+        Router $router,
+        Form $form,
+        EmailCampaignHandler $formHandler,
+        EmailCampaignSenderBuilder $emailCampaignSenderBuilder
+    ) {
+        $this->validator = $validator;
+        $this->translator = $translator;
+        $this->session = $session;
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->form = $form;
+        $this->formHandler = $formHandler;
+        $this->emailCampaignSenderBuilder = $emailCampaignSenderBuilder;
+    }
+
     /**
      * @Route("/", name="oro_email_campaign_index")
      * @AclAncestor("oro_email_campaign_view")
@@ -24,7 +88,7 @@ class EmailCampaignController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('oro_campaign.email_campaign.entity.class')
+            'entity_class' => EmailCampaign::class
         ];
     }
 
@@ -100,13 +164,13 @@ class EmailCampaignController extends Controller
      */
     protected function update(EmailCampaign $entity)
     {
-        if ($this->get('oro_campaign.form.handler.email_campaign')->process($entity)) {
-            $this->get('session')->getFlashBag()->add(
+        if ($this->formHandler->process($entity)) {
+            $this->session->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('oro.campaign.emailcampaign.controller.saved.message')
+                $this->translator->trans('oro.campaign.emailcampaign.controller.saved.message')
             );
 
-            return $this->get('oro_ui.router')->redirect($entity);
+            return $this->router->redirect($entity);
         }
         $form = $this->getForm();
 
@@ -128,11 +192,11 @@ class EmailCampaignController extends Controller
             ->getCurrentRequest()
             ->get(EmailCampaignHandler::UPDATE_MARKER, false);
 
-        $form = $this->get('oro_campaign.email_campaign.form');
+        $form = $this->form;
         if ($isUpdateOnly) {
             // substitute submitted form with new not submitted instance to ignore validation errors
             // on form after transport field was changed
-            $form = $this->get('form.factory')
+            $form = $this->formFactory
                 ->createNamed('oro_email_campaign', 'oro_email_campaign', $form->getData());
         }
 
@@ -151,23 +215,22 @@ class EmailCampaignController extends Controller
      * )
      *
      * @param EmailCampaign $entity
-     * @return array
+     * @return RedirectResponse
      */
     public function sendAction(EmailCampaign $entity)
     {
         if ($this->isManualSendAllowed($entity)) {
-            $senderFactory = $this->get('oro_campaign.email_campaign.sender.builder');
-            $sender = $senderFactory->getSender($entity);
-            $sender->send($entity);
+            $sender = $this->emailCampaignSenderBuilder->getSender($entity);
+            $sender->send();
 
-            $this->get('session')->getFlashBag()->add(
+            $this->session->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('oro.campaign.emailcampaign.controller.sent')
+                $this->translator->trans('oro.campaign.emailcampaign.controller.sent')
             );
         } else {
-            $this->get('session')->getFlashBag()->add(
+            $this->session->getFlashBag()->add(
                 'error',
-                $this->get('translator')->trans('oro.campaign.emailcampaign.controller.send_disallowed')
+                $this->translator->trans('oro.campaign.emailcampaign.controller.send_disallowed')
             );
         }
 
@@ -192,8 +255,7 @@ class EmailCampaignController extends Controller
         if ($sendAllowed) {
             $transportSettings = $entity->getTransportSettings();
             if ($transportSettings) {
-                $validator = $this->get('validator');
-                $errors = $validator->validate($transportSettings);
+                $errors = $this->validator->validate($transportSettings);
                 $sendAllowed = count($errors) === 0;
             }
         }
