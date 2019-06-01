@@ -4,18 +4,19 @@ namespace Oro\Bundle\CampaignBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
+use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Form;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -24,62 +25,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @Route("/campaign/email")
  */
-class EmailCampaignController extends Controller
+class EmailCampaignController extends AbstractController
 {
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /** @var Session */
-    private $session;
-
-    /** @var FormFactoryInterface */
-    private $formFactory;
-
-    /** @var Router */
-    private $router;
-
-    /** @var Form */
-    private $form;
-
-    /** @var EmailCampaignHandler */
-    private $formHandler;
-
-    /** @var EmailCampaignSenderBuilder */
-    private $emailCampaignSenderBuilder;
-
-    /**
-     * @param ValidatorInterface $validator
-     * @param TranslatorInterface $translator
-     * @param Session $session
-     * @param FormFactoryInterface $formFactory
-     * @param Router $router
-     * @param Form $form
-     * @param EmailCampaignHandler $formHandler
-     * @param EmailCampaignSenderBuilder $emailCampaignSenderBuilder
-     */
-    public function __construct(
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        Session $session,
-        FormFactoryInterface $formFactory,
-        Router $router,
-        Form $form,
-        EmailCampaignHandler $formHandler,
-        EmailCampaignSenderBuilder $emailCampaignSenderBuilder
-    ) {
-        $this->validator = $validator;
-        $this->translator = $translator;
-        $this->session = $session;
-        $this->formFactory = $formFactory;
-        $this->router = $router;
-        $this->form = $form;
-        $this->formHandler = $formHandler;
-        $this->emailCampaignSenderBuilder = $emailCampaignSenderBuilder;
-    }
-
     /**
      * @Route("/", name="oro_email_campaign_index")
      * @AclAncestor("oro_email_campaign_view")
@@ -160,47 +107,37 @@ class EmailCampaignController extends Controller
      * Process save email campaign entity
      *
      * @param EmailCampaign $entity
-     * @return array
+     * @return array|Response
      */
     protected function update(EmailCampaign $entity)
     {
-        if ($this->formHandler->process($entity)) {
-            $this->session->getFlashBag()->add(
+        $factory = $this->get(FormFactoryInterface::class);
+        $form = $factory->createNamed('oro_email_campaign', EmailCampaignType::class);
+
+        $requestStack = $this->get(RequestStack::class);
+        $handler = new EmailCampaignHandler($requestStack, $form, $this->getDoctrine());
+
+        if ($handler->process($entity)) {
+            $this->get(SessionInterface::class)->getFlashBag()->add(
                 'success',
-                $this->translator->trans('oro.campaign.emailcampaign.controller.saved.message')
+                $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.saved.message')
             );
 
-            return $this->router->redirect($entity);
+            return $this->get(Router::class)->redirect($entity);
         }
-        $form = $this->getForm();
+
+        $isUpdateOnly = $requestStack->getCurrentRequest()->get(EmailCampaignHandler::UPDATE_MARKER, false);
+
+        // substitute submitted form with new not submitted instance to ignore validation errors
+        // on form after transport field was changed
+        if ($isUpdateOnly) {
+            $form = $factory->createNamed('oro_email_campaign', EmailCampaignType::class, $form->getData());
+        }
 
         return [
             'entity' => $entity,
             'form'   => $form->createView()
         ];
-    }
-
-    /**
-     * Returns form instance
-     *
-     * @return FormInterface
-     */
-    protected function getForm()
-    {
-        $isUpdateOnly = $this
-            ->get('request_stack')
-            ->getCurrentRequest()
-            ->get(EmailCampaignHandler::UPDATE_MARKER, false);
-
-        $form = $this->form;
-        if ($isUpdateOnly) {
-            // substitute submitted form with new not submitted instance to ignore validation errors
-            // on form after transport field was changed
-            $form = $this->formFactory
-                ->createNamed('oro_email_campaign', 'oro_email_campaign', $form->getData());
-        }
-
-        return $form;
     }
 
     /**
@@ -220,17 +157,18 @@ class EmailCampaignController extends Controller
     public function sendAction(EmailCampaign $entity)
     {
         if ($this->isManualSendAllowed($entity)) {
-            $sender = $this->emailCampaignSenderBuilder->getSender($entity);
+            $senderFactory = $this->get(EmailCampaignSenderBuilder::class);
+            $sender = $senderFactory->getSender($entity);
             $sender->send();
 
-            $this->session->getFlashBag()->add(
+            $this->get(SessionInterface::class)->getFlashBag()->add(
                 'success',
-                $this->translator->trans('oro.campaign.emailcampaign.controller.sent')
+                $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.sent')
             );
         } else {
-            $this->session->getFlashBag()->add(
+            $this->get(SessionInterface::class)->getFlashBag()->add(
                 'error',
-                $this->translator->trans('oro.campaign.emailcampaign.controller.send_disallowed')
+                $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.send_disallowed')
             );
         }
 
@@ -255,11 +193,31 @@ class EmailCampaignController extends Controller
         if ($sendAllowed) {
             $transportSettings = $entity->getTransportSettings();
             if ($transportSettings) {
-                $errors = $this->validator->validate($transportSettings);
+                $validator = $this->get(ValidatorInterface::class);
+                $errors = $validator->validate($transportSettings);
                 $sendAllowed = count($errors) === 0;
             }
         }
 
         return $sendAllowed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                FormFactoryInterface::class,
+                EmailCampaignSenderBuilder::class,
+                RequestStack::class,
+                Router::class,
+                SessionInterface::class,
+                TranslatorInterface::class,
+                ValidatorInterface::class,
+            ]
+        );
     }
 }

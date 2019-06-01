@@ -2,13 +2,12 @@ services:
     _defaults:
         public: true
 
+    oro_campaign.controller.email_campaign:
+        class: Oro\Bundle\CampaignBundle\Controller\EmailCampaignController
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - { name: container.service_subscriber }
+
     Oro\Bundle\CampaignBundle\Controller\EmailCampaignController:
-        arguments:
-            - '@validator'
-            - '@translator'
-            - '@session'
-            - '@form.factory'
-            - '@oro_ui.router'
-            - '@oro_campaign.email_campaign.form'
-            - '@oro_campaign.form.handler.email_campaign'
-            - '@oro_campaign.email_campaign.sender.builder'
+        alias: oro_campaign.controller.email_campaign

@@ -22,7 +22,6 @@ parameters:
     oro_campaign.form.type.internal_transport_settings.class: Oro\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType
     oro_campaign.form.subscriber.transport_settings.class: Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsListener
     oro_campaign.form.subscriber.transport_settings_email_template.class: Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener
-    oro_campaign.form.handler.email_campaign.class: Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler
 
     oro_campaign.email_campaign.statistics_connector.class: Oro\Bundle\CampaignBundle\Model\EmailCampaignStatisticsConnector
 
@@ -133,6 +132,9 @@ services:
         arguments:
             - "@oro_campaign.email_campaign.sender"
 
+    Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder:
+        alias: oro_campaign.email_campaign.sender.builder
+
     oro_campaign.listener.email_campaign_statistic:
         class: '%oro_campaign.listener.email_campaign_statistic.class%'
         arguments:
@@ -181,13 +183,6 @@ services:
         arguments:
             - "@doctrine"
             - "@oro_security.token_accessor"
-
-    oro_campaign.form.handler.email_campaign:
-        class: '%oro_campaign.form.handler.email_campaign.class%'
-        arguments:
-            - "@request_stack"
-            - "@oro_campaign.email_campaign.form"
-            - "@doctrine"
 
     oro_campaign.group_by_helper:
         alias: oro_query_designer.group_by_helper

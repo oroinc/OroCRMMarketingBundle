@@ -2,12 +2,15 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\Handler;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * Handles EmailCampaign form type.
+ */
 class EmailCampaignHandler
 {
     use RequestHandlerTrait;
@@ -17,7 +20,7 @@ class EmailCampaignHandler
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var RegistryInterface */
+    /** @var ManagerRegistry */
     protected $registry;
 
     /** @var FormInterface */
@@ -26,12 +29,12 @@ class EmailCampaignHandler
     /**
      * @param RequestStack $requestStack
      * @param FormInterface $form
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
     public function __construct(
         RequestStack $requestStack,
         FormInterface $form,
-        RegistryInterface $registry
+        ManagerRegistry $registry
     ) {
         $this->requestStack = $requestStack;
         $this->form = $form;
