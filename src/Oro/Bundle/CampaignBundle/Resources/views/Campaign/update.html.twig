@@ -6,6 +6,8 @@
 {% set formAction = entityId ? path('oro_campaign_update', { 'id': entityId}) : path('oro_campaign_create') %}
 
 {% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     {% placeholder update_navButtons with {entity: entity} %}
     {{ UI.cancelButton(path('oro_campaign_index')) }}
     {% set html = UI.saveAndCloseButton({

@@ -4,6 +4,8 @@
 {% oro_title_set({params : {"%entity.name%": entity.name|default('N/A') }}) %}
 
 {% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     {% if send_allowed %}
         {{ UI.button({
             'path' : path('oro_email_campaign_send', { id: entity.id }),
@@ -32,6 +34,8 @@
 {% endblock pageHeader %}
 
 {% block breadcrumbs %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     {{ parent() }}
     <span class="page-title__status">
         {% if entity.sent %}

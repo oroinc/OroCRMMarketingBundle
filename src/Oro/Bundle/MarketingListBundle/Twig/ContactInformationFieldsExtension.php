@@ -4,8 +4,14 @@ namespace Oro\Bundle\MarketingListBundle\Twig;
 
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ContactInformationFieldsExtension extends \Twig_Extension
+/**
+ * Provides a Twig function to extract contact information from an entity:
+ *   - get_contact_information_fields_info
+ */
+class ContactInformationFieldsExtension extends AbstractExtension
 {
     const NAME = 'oro_marketing_list_contact_information_fields';
 
@@ -34,7 +40,7 @@ class ContactInformationFieldsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'get_contact_information_fields_info',
                 [$this, 'getContactInformationFieldsInfo']
             )

@@ -6,6 +6,8 @@
 {% oro_title_set({params : {"%entity.name%": entity.name|default('N/A') }}) %}
 
 {% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     {% if is_granted('EDIT', entity) %}
         {{ UI.editButton({
             'path' : path('oro_tracking_website_update', { id: entity.id }),
@@ -35,6 +37,8 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     {%- set generalInformation -%}
     <div class="row-fluid">
         <div class="responsive-block">

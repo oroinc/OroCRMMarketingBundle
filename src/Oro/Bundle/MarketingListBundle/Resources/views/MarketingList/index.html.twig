@@ -5,6 +5,8 @@
 {% set pageTitle = 'oro.marketinglist.entity_plural_label'|trans %}
 
 {% block navButtons %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     {% if isDesktopVersion() and is_granted('oro_marketing_list_create') %}
         {{ UI.addButton({
             'path':          path('oro_marketing_list_create'),
