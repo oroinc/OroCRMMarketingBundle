@@ -5,6 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Controller;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,6 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
+ * CRUD controller for MarketingList entity
+ *
  * @Route("/marketing-list")
  */
 class MarketingListController extends Controller
@@ -111,7 +114,7 @@ class MarketingListController extends Controller
                 $response,
                 [
                     'entities' => $this->get('oro_entity.entity_provider')->getEntities(),
-                    'metadata' => $this->get('oro_query_designer.query_designer.manager')->getMetadata('segment')
+                    'metadata' => $this->get(Manager::class)->getMetadata('segment')
                 ]
             );
         }
