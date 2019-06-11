@@ -2,12 +2,8 @@ services:
     _defaults:
         public: true
 
-    oro_campaign.controller.email_campaign:
-        class: Oro\Bundle\CampaignBundle\Controller\EmailCampaignController
+    Oro\Bundle\CampaignBundle\Controller\EmailCampaignController:
         calls:
             - [setContainer, ['@Psr\Container\ContainerInterface']]
         tags:
             - { name: container.service_subscriber }
-
-    Oro\Bundle\CampaignBundle\Controller\EmailCampaignController:
-        alias: oro_campaign.controller.email_campaign
