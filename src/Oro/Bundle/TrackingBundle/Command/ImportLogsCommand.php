@@ -6,10 +6,13 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oro\Bundle\TrackingBundle\Entity\TrackingData;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,8 +20,51 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInterface
+/**
+ * Imports tracking logs
+ */
+class ImportLogsCommand extends Command implements CronCommandInterface
 {
+    /** @var string */
+    protected static $defaultName = 'oro:cron:import-tracking';
+
+    /** @var DoctrineJobRepository */
+    private $akeneoJobRepository;
+
+    /** @var FeatureChecker */
+    private $featureChecker;
+
+    /** var JobExecutor **/
+    private $jobExecutor;
+
+    /** @var ConfigManager */
+    private $configManager;
+
+    /** @var string */
+    private $kernelLogsDir;
+
+    /**
+     * @param DoctrineJobRepository $akeneoJobRepository
+     * @param FeatureChecker $featureChecker
+     * @param JobExecutor $jobExecutor
+     * @param ConfigManager $configManager
+     * @param string $kernelLogsDir
+     */
+    public function __construct(
+        DoctrineJobRepository $akeneoJobRepository,
+        FeatureChecker $featureChecker,
+        JobExecutor $jobExecutor,
+        ConfigManager $configManager,
+        string $kernelLogsDir
+    ) {
+        $this->akeneoJobRepository = $akeneoJobRepository;
+        $this->featureChecker = $featureChecker;
+        $this->jobExecutor = $jobExecutor;
+        $this->configManager = $configManager;
+        $this->kernelLogsDir = $kernelLogsDir;
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,9 +80,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
     {
         $fs     = new Filesystem();
         $finder = new Finder();
-        $directory = $this
-                ->getContainer()
-                ->getParameter('kernel.logs_dir') . DIRECTORY_SEPARATOR . 'tracking';
+        $directory = $this->kernelLogsDir . DIRECTORY_SEPARATOR . 'tracking';
 
         if (!$fs->exists($directory)) {
             return false;
@@ -62,7 +106,6 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
     protected function configure()
     {
         $this
-            ->setName('oro:cron:import-tracking')
             ->setDescription('Import tracking logs')
             ->addOption(
                 'directory',
@@ -77,8 +120,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        if (!$featureChecker->isFeatureEnabled('tracking')) {
+        if (!$this->featureChecker->isFeatureEnabled('tracking')) {
             $output->writeln('The tracking feature is disabled. The command will not run.');
 
             return 0;
@@ -88,9 +130,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
         $finder = new Finder();
 
         if (!$directory = $input->getOption('directory')) {
-            $directory = $this
-                    ->getContainer()
-                    ->getParameter('kernel.logs_dir') . DIRECTORY_SEPARATOR . 'tracking';
+            $directory = $this->kernelLogsDir . DIRECTORY_SEPARATOR . 'tracking';
         }
 
         if (!$fs->exists($directory)) {
@@ -98,7 +138,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
 
             $output->writeln('<info>Logs not found</info>');
 
-            return;
+            return 0;
         }
 
         $finder
@@ -110,7 +150,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
         if (!$finder->count()) {
             $output->writeln('<info>Logs not found</info>');
 
-            return;
+            return 0;
         }
 
         /** @var SplFileInfo $file */
@@ -120,7 +160,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
 
             $options = [
                 ProcessorRegistry::TYPE_IMPORT => [
-                    'entityName' => $this->getContainer()->getParameter('oro_tracking.tracking_data.class'),
+                    'entityName' => TrackingData::class,
                     'processorAlias' => 'oro_tracking.processor.data',
                     'file' => $pathName,
                 ],
@@ -132,7 +172,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
                 continue;
             }
 
-            $jobResult = $this->getJobExecutor()->executeJob(
+            $jobResult = $this->jobExecutor->executeJob(
                 ProcessorRegistry::TYPE_IMPORT,
                 'import_log_to_database',
                 $options
@@ -157,23 +197,12 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
     }
 
     /**
-     * @return JobExecutor
-     */
-    protected function getJobExecutor()
-    {
-        return $this->getContainer()->get('oro_importexport.job_executor');
-    }
-
-    /**
      * @param array $options
      * @return bool
      */
     protected function isFileProcessed(array $options)
     {
-        /** @var DoctrineJobRepository $repo */
-        $repo = $this->getContainer()->get('akeneo_batch.job_repository');
-
-        $manager = $repo->getJobManager();
+        $manager = $this->akeneoJobRepository->getJobManager();
 
         $qb = $manager
             ->getRepository('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
@@ -201,8 +230,7 @@ class ImportLogsCommand extends ContainerAwareCommand implements CronCommandInte
      */
     protected function getIgnoredFilename()
     {
-        $config            = $this->getContainer()->get('oro_config.user');
-        $logRotateInterval = $config->get('oro_tracking.log_rotate_interval');
+        $logRotateInterval = $this->configManager->get('oro_tracking.log_rotate_interval');
 
         $rotateInterval = 60;
         $currentPart    = 1;
