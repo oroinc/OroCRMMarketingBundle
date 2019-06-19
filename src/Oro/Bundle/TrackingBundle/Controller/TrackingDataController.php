@@ -4,16 +4,19 @@ namespace Oro\Bundle\TrackingBundle\Controller;
 
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
+use Oro\Bundle\TrackingBundle\Entity\TrackingData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Provides create action for the TrackingData entity.
+ *
  * @Route("/tracking/data")
  */
-class TrackingDataController extends Controller
+class TrackingDataController extends AbstractController
 {
     /**
      * @Route("/create", name="oro_tracking_data_create")
@@ -28,7 +31,7 @@ class TrackingDataController extends Controller
             'import_request_to_database',
             [
                 ProcessorRegistry::TYPE_IMPORT => [
-                    'entityName'     => $this->container->getParameter('oro_tracking.tracking_data.class'),
+                    'entityName'     => TrackingData::class,
                     'processorAlias' => 'oro_tracking.processor.data',
                     'data'           => $request->query->all(),
                 ]
@@ -59,6 +62,16 @@ class TrackingDataController extends Controller
      */
     protected function getJobExecutor()
     {
-        return $this->container->get('oro_importexport.job_executor');
+        return $this->container->get(JobExecutor::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return [
+            JobExecutor::class,
+        ];
     }
 }
