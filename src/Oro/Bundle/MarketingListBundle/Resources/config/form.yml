@@ -2,7 +2,6 @@ parameters:
     oro_marketing_list.form.type.marketing_list.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType
     oro_marketing_list.form.type.marketing_list_removed_item.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeRemovedItemType
     oro_marketing_list.form.type.marketing_list_unsubscribed_item.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeUnsubscribedItemType
-    oro_marketing_list.form.handler.marketing_list.class: Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler
     oro_marketing_list.form.type.entity_choice.class: Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType
     oro_marketing_list.form.type.marketing_list_select.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType
 
@@ -12,13 +11,6 @@ services:
         class: '%oro_marketing_list.form.type.marketing_list.class%'
         tags:
             - { name: form.type, alias: oro_marketing_list }
-
-    oro_marketing_list.form.marketing_list:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', createNamed]
-        arguments:
-            - "oro_marketing_list_form"
-            - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType
 
     oro_marketing_list.form.type.marketing_list_removed_item:
         class: '%oro_marketing_list.form.type.marketing_list_removed_item.class%'
@@ -65,13 +57,14 @@ services:
             - [setForm,  ["@oro_marketing_list.form.marketing_list_unsubscribed_item"]]
 
     oro_marketing_list.form.handler.marketing_list:
-        class: '%oro_marketing_list.form.handler.marketing_list.class%'
+        class: Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler
         arguments:
-            - "@oro_marketing_list.form.marketing_list"
-            - "@request_stack"
             - "@doctrine"
             - "@validator"
             - "@translator"
+
+    Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler:
+        alias: oro_marketing_list.form.handler.marketing_list
 
     oro_marketing_list.form.type.entity_choice:
         class: '%oro_marketing_list.form.type.entity_choice.class%'

@@ -2,16 +2,16 @@
 
 namespace Oro\Bundle\MarketingListBundle\Form\Handler;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * The handler for the marketing list form.
  */
-class MarketingListHandler
+class MarketingListHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
@@ -33,19 +33,9 @@ class MarketingListHandler
     ];
 
     /**
-     * @var FormInterface
+     * @var ManagerRegistry
      */
-    protected $form;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var EntityManager
-     */
-    protected $manager;
+    protected $registry;
 
     /**
      * @var ValidatorInterface
@@ -58,41 +48,31 @@ class MarketingListHandler
     protected $translator;
 
     /**
-     * @param FormInterface $form
-     * @param RequestStack $requestStack
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $registry
      * @param ValidatorInterface $validator
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        FormInterface $form,
-        RequestStack $requestStack,
-        RegistryInterface $doctrine,
+        ManagerRegistry $registry,
         ValidatorInterface $validator,
         TranslatorInterface $translator
     ) {
-        $this->form = $form;
-        $this->requestStack = $requestStack;
-        $this->manager = $doctrine->getManager();
+        $this->registry = $registry;
         $this->validator = $validator;
         $this->translator = $translator;
     }
 
     /**
-     * Process form
-     *
-     * @param  MarketingList $entity
-     * @return bool True on successful processing, false otherwise
+     * {@inheritdoc}
      */
-    public function process(MarketingList $entity)
+    public function process($data, FormInterface $form, Request $request)
     {
-        $this->form->setData($entity);
+        $form->setData($data);
 
-        $request = $this->requestStack->getCurrentRequest();
         if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
-            $this->submitPostPutRequest($this->form, $request);
-            if ($this->isValid($entity)) {
-                $this->onSuccess($entity);
+            $this->submitPostPutRequest($form, $request);
+            if ($this->isValid($data, $form, $request)) {
+                $this->onSuccess($data);
                 return true;
             }
         }
@@ -107,16 +87,19 @@ class MarketingListHandler
      */
     protected function onSuccess(MarketingList $entity)
     {
-        $this->manager->persist($entity);
-        $this->manager->flush();
+        $manager = $this->registry->getManagerForClass(MarketingList::class);
+        $manager->persist($entity);
+        $manager->flush();
     }
 
     /**
      * @param MarketingList $marketingList
+     * @param FormInterface $form
+     * @param Request $request
      */
-    protected function processSegment(MarketingList $marketingList)
+    protected function processSegment(MarketingList $marketingList, FormInterface $form, Request $request)
     {
-        $requestData = $this->requestStack->getCurrentRequest()->get($this->form->getName());
+        $requestData = $request->get($form->getName());
         $segment = $marketingList->getSegment();
         if (!$segment) {
             $segment = new Segment();
@@ -148,20 +131,24 @@ class MarketingListHandler
     {
         $segmentTypeName = $this->marketingListTypeToSegmentTypeMap[$marketingListType->getName()];
 
-        return $this->manager->find('OroSegmentBundle:SegmentType', $segmentTypeName);
+        $manager = $this->registry->getManagerForClass(SegmentType::class);
+
+        return $manager->find('OroSegmentBundle:SegmentType', $segmentTypeName);
     }
 
     /**
      * Validate Marketing List.
      *
      * @param MarketingList $marketingList
+     * @param FormInterface $form
+     * @param Request $request
      * @return bool
      */
-    protected function isValid(MarketingList $marketingList)
+    protected function isValid(MarketingList $marketingList, FormInterface $form, Request $request)
     {
-        $isValid = $this->form->isValid();
+        $isValid = $form->isValid();
         if ($isValid && !$marketingList->isManual()) {
-            $this->processSegment($marketingList);
+            $this->processSegment($marketingList, $form, $request);
             $errors = $this->validator->validate(
                 $marketingList->getSegment(),
                 null,
@@ -170,7 +157,7 @@ class MarketingListHandler
             if (count($errors) > 0) {
                 /** @var ConstraintViolationInterface $error */
                 foreach ($errors as $error) {
-                    $this->form->addError(
+                    $form->addError(
                         new FormError(
                             $error->getMessage(),
                             $error->getMessageTemplate(),
@@ -180,7 +167,7 @@ class MarketingListHandler
                     );
                 }
             }
-            $isValid = $this->form->isValid();
+            $isValid = $form->isValid();
         }
 
         return $isValid;

@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -66,23 +65,19 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $registry = $this->createMock(RegistryInterface::class);
 
         $this->manager = $this->createMock(EntityManager::class);
-        $registry->expects($this->once())
-            ->method('getManager')
+        $registry->expects($this->any())
+            ->method('getManagerForClass')
             ->will($this->returnValue($this->manager));
 
         $this->form = $this->createMock(Form::class);
 
         $this->request = new Request();
-        $requestStack = new RequestStack();
-        $requestStack->push($this->request);
 
         $this->validator = $this->createMock(ValidatorInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
 
         $this->testEntity = new MarketingList();
         $this->handler = new MarketingListHandler(
-            $this->form,
-            $requestStack,
             $registry,
             $this->validator,
             $this->translator
@@ -126,7 +121,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
             ->with($this->isInstanceOf(Segment::class), null, ['Default', 'marketing_list'])
             ->will($this->returnValue([]));
 
-        $this->assertTrue($this->handler->process($this->testEntity));
+        $this->assertTrue($this->handler->process($this->testEntity, $this->form, $this->request));
 
         $this->assertSegmentData();
     }
@@ -156,7 +151,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $this->manager->expects($this->never())
             ->method('flush');
 
-        $this->assertFalse($this->handler->process($this->testEntity));
+        $this->assertFalse($this->handler->process($this->testEntity, $this->form, $this->request));
 
         $this->assertNull($this->testEntity->getSegment());
     }
@@ -221,7 +216,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $this->manager->expects($this->never())
             ->method('flush');
 
-        $this->assertFalse($this->handler->process($this->testEntity));
+        $this->assertFalse($this->handler->process($this->testEntity, $this->form, $this->request));
 
         $this->assertSegmentData();
     }
@@ -261,6 +256,6 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
     public function testProcessWrongRequest()
     {
         $this->request->setMethod('GET');
-        $this->assertFalse($this->handler->process($this->testEntity));
+        $this->assertFalse($this->handler->process($this->testEntity, $this->form, $this->request));
     }
 }

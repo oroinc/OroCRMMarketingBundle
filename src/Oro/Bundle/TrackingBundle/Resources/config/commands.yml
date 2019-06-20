@@ -1,7 +1,8 @@
 services:
-    Oro\Bundle\TrackingBundle\Command\ImportLogsCommand:
+    _defaults:
         public: false
-        class: Oro\Bundle\TrackingBundle\Command\ImportLogsCommand
+
+    Oro\Bundle\TrackingBundle\Command\ImportLogsCommand:
         arguments:
             - '@akeneo_batch.job_repository'
             - '@oro_featuretoggle.checker.feature_checker'
@@ -12,7 +13,8 @@ services:
             - { name: console.command }
 
     Oro\Bundle\TrackingBundle\Command\TrackCommand:
-        public: false
-        class: Oro\Bundle\TrackingBundle\Command\TrackCommand
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_tracking.processor.tracking_processor'
         tags:
             - { name: console.command }

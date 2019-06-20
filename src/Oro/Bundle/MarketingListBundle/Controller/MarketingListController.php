@@ -2,22 +2,28 @@
 
 namespace Oro\Bundle\MarketingListBundle\Controller;
 
+use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler;
+use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * CRUD controller for MarketingList entity
  *
  * @Route("/marketing-list")
  */
-class MarketingListController extends Controller
+class MarketingListController extends AbstractController
 {
     /**
      * @Route("/", name="oro_marketing_list_index")
@@ -27,7 +33,7 @@ class MarketingListController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('oro_marketing_list.entity.class')
+            'entity_class' => MarketingList::class
         ];
     }
 
@@ -49,7 +55,7 @@ class MarketingListController extends Controller
     {
         $this->checkMarketingList($entity);
 
-        $entityConfig = $this->get('oro_marketing_list.entity_provider')->getEntity($entity->getEntity());
+        $entityConfig = $this->get(EntityProvider::class)->getEntity($entity->getEntity());
 
         return [
             'entity'   => $entity,
@@ -102,18 +108,22 @@ class MarketingListController extends Controller
      */
     protected function update(MarketingList $entity)
     {
-        $response = $this->get('oro_form.model.update_handler')->update(
+        $form = $this->get('form.factory')
+            ->createNamed('oro_marketing_list_form', MarketingListType::class);
+
+        $response = $this->get(UpdateHandlerFacade::class)->update(
             $entity,
-            $this->get('oro_marketing_list.form.marketing_list'),
-            $this->get('translator')->trans('oro.marketinglist.entity.saved'),
-            $this->get('oro_marketing_list.form.handler.marketing_list')
+            $form,
+            $this->get(TranslatorInterface::class)->trans('oro.marketinglist.entity.saved'),
+            null,
+            $this->get(MarketingListHandler::class)
         );
 
         if (is_array($response)) {
             return array_merge(
                 $response,
                 [
-                    'entities' => $this->get('oro_entity.entity_provider')->getEntities(),
+                    'entities' => $this->get(EntityProvider::class)->getEntities(),
                     'metadata' => $this->get(Manager::class)->getMetadata('segment')
                 ]
             );
@@ -139,6 +149,25 @@ class MarketingListController extends Controller
      */
     protected function getFeatureChecker()
     {
-        return $this->get('oro_featuretoggle.checker.feature_checker');
+        return $this->get(FeatureChecker::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TranslatorInterface::class,
+                FeatureChecker::class,
+                EntityProvider::class,
+                UpdateHandlerFacade::class,
+                ValidatorInterface::class,
+                Manager::class,
+                MarketingListHandler::class,
+            ]
+        );
     }
 }

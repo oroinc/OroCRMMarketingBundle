@@ -3,6 +3,9 @@ services:
         public: false
 
     Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand:
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_entity.doctrine_helper'
         tags:
             - { name: console.command }
 

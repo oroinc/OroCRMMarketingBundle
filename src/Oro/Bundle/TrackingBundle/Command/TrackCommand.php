@@ -3,17 +3,41 @@
 namespace Oro\Bundle\TrackingBundle\Command;
 
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\TrackingBundle\Processor\TrackingProcessor;
 use Oro\Component\Log\OutputLogger;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TrackCommand extends ContainerAwareCommand implements CronCommandInterface
+/**
+ * Parse tracking logs
+ */
+class TrackCommand extends Command implements CronCommandInterface
 {
     const STATUS_SUCCESS = 0;
-    const COMMAND_NAME   = 'oro:cron:tracking:parse';
+
+    /** @var string */
+    protected static $defaultName = 'oro:cron:tracking:parse';
+
+    /** @var FeatureChecker */
+    private $featureChecker;
+
+    /** @var TrackingProcessor */
+    private $trackingProcessor;
+
+    /**
+     * @param FeatureChecker $featureChecker
+     * @param TrackingProcessor $trackingProcessor
+     */
+    public function __construct(FeatureChecker $featureChecker, TrackingProcessor $trackingProcessor)
+    {
+        parent::__construct();
+
+        $this->featureChecker = $featureChecker;
+        $this->trackingProcessor = $trackingProcessor;
+    }
 
     /**
      * {@inheritdoc}
@@ -23,16 +47,16 @@ class TrackCommand extends ContainerAwareCommand implements CronCommandInterface
         return '*/5 * * * *';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isActive()
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        if (!$featureChecker->isFeatureEnabled('tracking')) {
+        if (!$this->featureChecker->isFeatureEnabled('tracking')) {
             return false;
         }
-        /** @var TrackingProcessor $processor */
-        $processor = $this->getContainer()->get('oro_tracking.processor.tracking_processor');
 
-        return  $processor->hasEntitiesToProcess();
+        return $this->trackingProcessor->hasEntitiesToProcess();
     }
 
     /**
@@ -41,7 +65,6 @@ class TrackCommand extends ContainerAwareCommand implements CronCommandInterface
     protected function configure()
     {
         $this
-            ->setName(self::COMMAND_NAME)
             ->setDescription('Parse tracking logs')
             ->addOption(
                 'max-execution-time',
@@ -56,8 +79,7 @@ class TrackCommand extends ContainerAwareCommand implements CronCommandInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        if (!$featureChecker->isFeatureEnabled('tracking')) {
+        if (!$this->featureChecker->isFeatureEnabled('tracking')) {
             $output->writeln('The tracking feature is disabled. The command will not run.');
 
             return 0;
@@ -65,16 +87,13 @@ class TrackCommand extends ContainerAwareCommand implements CronCommandInterface
 
         $logger = new OutputLogger($output);
 
-        /** @var TrackingProcessor $processor */
-        $processor = $this->getContainer()->get('oro_tracking.processor.tracking_processor');
-
         $maxExecutionTime = $input->getOption('max-execution-time');
         if ($maxExecutionTime && is_numeric($maxExecutionTime)) {
-            $processor->setMaxExecutionTime($maxExecutionTime);
+            $this->trackingProcessor->setMaxExecutionTime($maxExecutionTime);
         }
 
-        $processor->setLogger($logger);
-        $processor->process();
+        $this->trackingProcessor->setLogger($logger);
+        $this->trackingProcessor->process();
 
         return self::STATUS_SUCCESS;
     }

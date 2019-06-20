@@ -20,7 +20,7 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
 
     public function testReportUpdate()
     {
-        $result = $this->runCommand(CalculateTrackingEventSummaryCommand::NAME);
+        $result = $this->runCommand(CalculateTrackingEventSummaryCommand::getDefaultName());
 
         $expectedMessages = [
             'Campaigns to calculate: 3',

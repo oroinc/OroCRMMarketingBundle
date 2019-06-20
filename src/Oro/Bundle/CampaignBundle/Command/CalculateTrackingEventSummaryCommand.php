@@ -2,38 +2,46 @@
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
-use Doctrine\ORM\EntityManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository;
 use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Calculate Tracking Event Summary
  */
-class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand implements CronCommandInterface
+class CalculateTrackingEventSummaryCommand extends Command implements CronCommandInterface
 {
-    const NAME = 'oro:cron:calculate-tracking-event-summary';
+    /** @var string */
+    protected static $defaultName = 'oro:cron:calculate-tracking-event-summary';
+
+    /** @var FeatureChecker */
+    private $featureChecker;
+
+    /** @var DoctrineHelper */
+    private $doctrineHelper;
+
+    /** @var TrackingEventSummaryRepository */
+    private $trackingEventRepository;
 
     /**
-     * @var TrackingEventSummaryRepository
+     * @param FeatureChecker $featureChecker
+     * @param DoctrineHelper $doctrineHelper
      */
-    protected $trackingEventRepository;
+    public function __construct(FeatureChecker $featureChecker, DoctrineHelper $doctrineHelper)
+    {
+        parent::__construct();
 
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
-     * @var string
-     */
-    protected $trackingWebsiteEntityClass;
+        $this->featureChecker = $featureChecker;
+        $this->doctrineHelper = $doctrineHelper;
+    }
 
     /**
      * Run command at 00:01 every day.
@@ -60,8 +68,7 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
      */
     protected function configure()
     {
-        $this->setName(self::NAME)
-            ->setDescription('Calculate Tracking Event Summary');
+        $this->setDescription('Calculate Tracking Event Summary');
     }
 
     /**
@@ -69,8 +76,9 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-        if (!$featureChecker->isFeatureEnabled('tracking') || !$featureChecker->isFeatureEnabled('campaign')) {
+        if (!$this->featureChecker->isFeatureEnabled('tracking') ||
+            !$this->featureChecker->isFeatureEnabled('campaign')
+        ) {
             $output->writeln('This feature is disabled. The command will not run.');
 
             return 0;
@@ -81,7 +89,7 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
         if (!$campaigns) {
             $output->writeln('<info>No campaigns found</info>');
 
-            return;
+            return 0;
         }
 
         $output->writeln(
@@ -90,6 +98,8 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
 
         $this->calculate($output, $campaigns);
         $output->writeln(sprintf('<info>Finished campaigns statistic calculation</info>'));
+
+        return 0;
     }
 
     /**
@@ -100,7 +110,7 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
      */
     protected function calculate($output, array $campaigns)
     {
-        $em = $this->getEntityManager($this->getCampaignEntityClass());
+        $em = $this->doctrineHelper->getEntityManagerForClass(Campaign::class);
         foreach ($campaigns as $campaign) {
             $output->writeln(sprintf('<info>Calculating statistic for campaign</info>: %s', $campaign->getName()));
 
@@ -122,13 +132,13 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
         $trackingEventRepository = $this->getTrackingEventSummaryRepository();
         $events = $trackingEventRepository->getSummarizedStatistic($campaign);
 
-        $em = $this->getEntityManager($this->getTrackingEventSummaryEntityClass());
+        $em = $this->doctrineHelper->getEntityManagerForClass(TrackingEventSummary::class);
         foreach ($events as $event) {
-            $website = $this->getDoctrineHelper()
-                ->getEntityReference(
-                    $this->getTrackingWebsiteEntityClass(),
-                    $event['websiteId']
-                );
+            /** @var TrackingWebsite $website */
+            $website = $this->doctrineHelper->getEntityReference(
+                TrackingWebsite::class,
+                $event['websiteId']
+            );
 
             $summary = new TrackingEventSummary();
             $summary->setCode($event['code']);
@@ -148,7 +158,7 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
      */
     protected function getCampaignRepository()
     {
-        return $this->getDoctrineHelper()->getEntityRepository($this->getCampaignEntityClass());
+        return $this->doctrineHelper->getEntityRepository(Campaign::class);
     }
 
     /**
@@ -157,61 +167,9 @@ class CalculateTrackingEventSummaryCommand extends ContainerAwareCommand impleme
     protected function getTrackingEventSummaryRepository()
     {
         if (!$this->trackingEventRepository) {
-            $this->trackingEventRepository = $this
-                ->getDoctrineHelper()
-                ->getEntityRepository($this->getTrackingEventSummaryEntityClass());
+            $this->trackingEventRepository = $this->doctrineHelper->getEntityRepository(TrackingEventSummary::class);
         }
 
         return $this->trackingEventRepository;
-    }
-
-    /**
-     * @param string $class
-     * @return EntityManager
-     */
-    protected function getEntityManager($class)
-    {
-        return $this->getDoctrineHelper()->getEntityManager($class);
-    }
-
-    /**
-     * @return DoctrineHelper
-     */
-    protected function getDoctrineHelper()
-    {
-        if (!$this->doctrineHelper) {
-            $this->doctrineHelper = $this->getContainer()->get('oro_entity.doctrine_helper');
-        }
-
-        return $this->doctrineHelper;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getCampaignEntityClass()
-    {
-        return $this->getContainer()->getParameter('oro_campaign.entity.class');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getTrackingEventSummaryEntityClass()
-    {
-        return $this->getContainer()->getParameter('oro_campaign.tracking_event_summary.class');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getTrackingWebsiteEntityClass()
-    {
-        if (!$this->trackingWebsiteEntityClass) {
-            $this->trackingWebsiteEntityClass = $this->getContainer()
-                ->getParameter('oro_tracking.tracking_website.class');
-        }
-
-        return $this->trackingWebsiteEntityClass;
     }
 }
