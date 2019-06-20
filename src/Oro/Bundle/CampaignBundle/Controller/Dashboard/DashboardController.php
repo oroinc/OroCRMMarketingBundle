@@ -2,16 +2,34 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller\Dashboard;
 
+use Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider;
+use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
+use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends Controller
+/**
+ * Adds charts for campaign leads, campaign opportunity, campaign by close revenue
+ */
+class DashboardController extends AbstractController
 {
     const CAMPAIGN_LEAD_COUNT          = 5;
     const CAMPAIGN_OPPORTUNITY_COUNT   = 5;
     const CAMPAIGN_CLOSE_REVENUE_COUNT = 5;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            CampaignDataProvider::class,
+            WidgetConfigs::class,
+            ChartViewBuilder::class,
+        ]);
+    }
 
     /**
      * @Route(
@@ -26,14 +44,15 @@ class DashboardController extends Controller
      */
     public function campaignLeadsAction(Request $request, $widget)
     {
-        $items                   = $this->get('oro_campaign.dashboard.campaign_data_provider')
+        $widgetConfigs =  $this->get(WidgetConfigs::class);
+        $items = $this->get(CampaignDataProvider::class)
             ->getCampaignLeadsData(
-                $this->get('oro_dashboard.widget_configs')
+                $widgetConfigs
                     ->getWidgetOptions($request->query->get('_widgetId', null))
                     ->get('dateRange')
             );
-        $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [
@@ -63,15 +82,16 @@ class DashboardController extends Controller
      */
     public function campaignOpportunityAction(Request $request, $widget)
     {
-        $items = $this->get('oro_campaign.dashboard.campaign_data_provider')
+        $widgetConfigs =  $this->get(WidgetConfigs::class);
+        $items = $this->get(CampaignDataProvider::class)
             ->getCampaignOpportunitiesData(
-                $this->get('oro_dashboard.widget_configs')
+                $widgetConfigs
                     ->getWidgetOptions($request->query->get('_widgetId', null))
                     ->get('dateRange')
             );
 
-        $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [
@@ -101,15 +121,16 @@ class DashboardController extends Controller
      */
     public function campaignByCloseRevenueAction(Request $request, $widget)
     {
-        $items = $this->get('oro_campaign.dashboard.campaign_data_provider')
+        $widgetConfigs =  $this->get(WidgetConfigs::class);
+        $items = $this->get(CampaignDataProvider::class)
             ->getCampaignsByCloseRevenueData(
-                $this->get('oro_dashboard.widget_configs')
+                $widgetConfigs
                     ->getWidgetOptions($request->query->get('_widgetId', null))
                     ->get('dateRange')
             );
 
-        $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
+        $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
+        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [

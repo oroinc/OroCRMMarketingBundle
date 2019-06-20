@@ -3,18 +3,34 @@
 namespace Oro\Bundle\CampaignBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
+use Oro\Bundle\ChartBundle\Model\ConfigProvider;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
+ * Adds chart widget with campaign tracking detailed report grid
  * @Route("/campaign/event")
  */
-class CampaignEventController extends Controller
+class CampaignEventController extends AbstractController
 {
     const PRECALCULATED_SUFFIX = '-precalculated';
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            Manager::class,
+            ChartViewBuilder::class,
+            ConfigProvider::class
+        ]);
+    }
 
     /**
      * @param string $period
@@ -55,7 +71,7 @@ class CampaignEventController extends Controller
         ];
 
         $datagrid = $this
-            ->get('oro_datagrid.datagrid.manager')
+            ->get(Manager::class)
             ->getDatagridByRequestParams(
                 $gridName,
                 $gridParameters
@@ -63,7 +79,7 @@ class CampaignEventController extends Controller
 
         $chartName = 'campaign_line_chart';
         $chartView = $this
-            ->get('oro_chart.view_builder')
+            ->get(ChartViewBuilder::class)
             ->setDataGrid($datagrid)
             ->setOptions(
                 array_merge_recursive(
@@ -74,7 +90,7 @@ class CampaignEventController extends Controller
                         ]
                     ],
                     $this
-                        ->get('oro_chart.config_provider')
+                        ->get(ConfigProvider::class)
                         ->getChartConfig($chartName)
                 )
             )

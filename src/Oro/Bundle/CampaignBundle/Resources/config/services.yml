@@ -207,6 +207,9 @@ services:
             - '@oro_dashboard.filter.date_filter_processor'
             - '@oro_currency.query.currency_transformer'
 
+    Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider:
+        alias: oro_campaign.dashboard.campaign_data_provider
+
     oro_campaign.validator.campaign_code:
         class: Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator
         arguments:
