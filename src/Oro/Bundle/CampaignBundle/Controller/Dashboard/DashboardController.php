@@ -44,7 +44,7 @@ class DashboardController extends AbstractController
      */
     public function campaignLeadsAction(Request $request, $widget)
     {
-        $widgetConfigs =  $this->get(WidgetConfigs::class);
+        $widgetConfigs = $this->get(WidgetConfigs::class);
         $items = $this->get(CampaignDataProvider::class)
             ->getCampaignLeadsData(
                 $widgetConfigs
@@ -82,7 +82,7 @@ class DashboardController extends AbstractController
      */
     public function campaignOpportunityAction(Request $request, $widget)
     {
-        $widgetConfigs =  $this->get(WidgetConfigs::class);
+        $widgetConfigs = $this->get(WidgetConfigs::class);
         $items = $this->get(CampaignDataProvider::class)
             ->getCampaignOpportunitiesData(
                 $widgetConfigs
@@ -121,7 +121,7 @@ class DashboardController extends AbstractController
      */
     public function campaignByCloseRevenueAction(Request $request, $widget)
     {
-        $widgetConfigs =  $this->get(WidgetConfigs::class);
+        $widgetConfigs = $this->get(WidgetConfigs::class);
         $items = $this->get(CampaignDataProvider::class)
             ->getCampaignsByCloseRevenueData(
                 $widgetConfigs
