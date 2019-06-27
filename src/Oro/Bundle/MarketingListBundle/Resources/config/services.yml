@@ -144,7 +144,7 @@ services:
         class: Oro\Bundle\MarketingListBundle\Twig\ContactInformationFieldsExtension
         public: false
         arguments:
-            - "@service_container"
+            - "@oro_platform.twig.service_locator"
         tags:
             - { name: twig.extension }
 
