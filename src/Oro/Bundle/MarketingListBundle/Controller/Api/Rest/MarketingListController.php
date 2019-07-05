@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Handles api requests related to the marketing lists.
+ *
  * @Rest\RouteResource("marketinglist")
  * @Rest\NamePrefix("oro_api_")
  */
@@ -77,7 +79,9 @@ class MarketingListController extends RestController implements ClassResourceInt
         /** @var ContactInformationFieldHelper $helper */
         $helper = $this->get('oro_marketing_list.contact_information_field_helper');
 
-        return $this->handleView($this->view($helper->getEntityContactInformationFieldsInfo($entity), Response::HTTP_OK));
+        return $this->handleView(
+            $this->view($helper->getEntityContactInformationFieldsInfo($entity), Response::HTTP_OK)
+        );
     }
 
     /**
