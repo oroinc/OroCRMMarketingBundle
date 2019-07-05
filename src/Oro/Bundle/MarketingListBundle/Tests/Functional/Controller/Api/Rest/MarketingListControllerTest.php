@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest;
 
-use FOS\RestBundle\Util\Codes;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class MarketingListControllerTest extends WebTestCase
 {
@@ -41,6 +41,6 @@ class MarketingListControllerTest extends WebTestCase
             $this->generateWsseAuthHeader()
         );
         $result = $this->client->getResponse();
-        $this->assertEmptyResponseStatusCodeEquals($result, Codes::HTTP_NO_CONTENT);
+        $this->assertEmptyResponseStatusCodeEquals($result, Response::HTTP_NO_CONTENT);
     }
 }

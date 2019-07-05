@@ -4,7 +4,6 @@ namespace Oro\Bundle\CampaignBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
@@ -35,7 +34,7 @@ class EmailTemplateController extends RestController
     {
         if (!$id) {
             return $this->handleView(
-                $this->view(null, Codes::HTTP_NOT_FOUND)
+                $this->view(null, Response::HTTP_NOT_FOUND)
             );
         }
 
@@ -46,7 +45,7 @@ class EmailTemplateController extends RestController
 
         if (!$marketingList) {
             return $this->handleView(
-                $this->view(null, Codes::HTTP_NOT_FOUND)
+                $this->view(null, Response::HTTP_NOT_FOUND)
             );
         }
 
@@ -59,7 +58,7 @@ class EmailTemplateController extends RestController
 
         $templates = $templatesQueryBuilder->getQuery()->getArrayResult();
         return $this->handleView(
-            $this->view($templates, Codes::HTTP_OK)
+            $this->view($templates, Response::HTTP_OK)
         );
     }
 

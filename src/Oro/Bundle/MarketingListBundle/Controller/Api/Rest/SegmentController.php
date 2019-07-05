@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
@@ -32,14 +31,14 @@ class SegmentController extends RestController implements ClassResourceInterface
         /** @var Segment $segment */
         $segment = $this->getManager()->find($id);
         if (!$segment) {
-            return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+            return $this->handleView($this->view(null, Response::HTTP_NOT_FOUND));
         }
 
         try {
             $this->get('oro_segment.static_segment_manager')->run($segment);
-            return $this->handleView($this->view(null, Codes::HTTP_NO_CONTENT));
+            return $this->handleView($this->view(null, Response::HTTP_NO_CONTENT));
         } catch (\LogicException $e) {
-            return $this->handleView($this->view(null, Codes::HTTP_BAD_REQUEST));
+            return $this->handleView($this->view(null, Response::HTTP_BAD_REQUEST));
         }
     }
 

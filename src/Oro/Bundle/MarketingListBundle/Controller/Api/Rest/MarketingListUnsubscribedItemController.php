@@ -5,7 +5,6 @@ namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
@@ -79,7 +78,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
 
         $violations = $this->get('validator')->validate($item);
         if ($violations->count()) {
-            return $this->handleView($this->view($violations, Codes::HTTP_BAD_REQUEST));
+            return $this->handleView($this->view($violations, Response::HTTP_BAD_REQUEST));
         }
 
         $em = $this->getManager()->getObjectManager();
@@ -100,7 +99,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
                         ['%entityName%' => $this->get('translator')->trans($entityName)]
                     )
                 ),
-                Codes::HTTP_OK
+                Response::HTTP_OK
             )
         );
     }
@@ -135,10 +134,10 @@ class MarketingListUnsubscribedItemController extends RestController implements 
                 $item = $forRemove[0];
                 $this->getDeleteHandler()->handleDelete($item->getId(), $this->getManager());
             } catch (EntityNotFoundException $notFoundEx) {
-                return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+                return $this->handleView($this->view(null, Response::HTTP_NOT_FOUND));
             } catch (ForbiddenException $forbiddenEx) {
                 return $this->handleView(
-                    $this->view(['reason' => $forbiddenEx->getReason()], Codes::HTTP_FORBIDDEN)
+                    $this->view(['reason' => $forbiddenEx->getReason()], Response::HTTP_FORBIDDEN)
                 );
             }
         }
@@ -157,7 +156,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
                         ['%entityName%' => $this->get('translator')->trans($entityName)]
                     )
                 ),
-                Codes::HTTP_OK
+                Response::HTTP_OK
             )
         );
     }

@@ -4,7 +4,6 @@ namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -56,7 +55,7 @@ class MarketingListController extends RestController implements ClassResourceInt
         return $this->handleView(
             $this->view(
                 $helper->getContactInformationFieldType($entity, $field),
-                Codes::HTTP_OK
+                Response::HTTP_OK
             )
         );
     }
@@ -78,7 +77,7 @@ class MarketingListController extends RestController implements ClassResourceInt
         /** @var ContactInformationFieldHelper $helper */
         $helper = $this->get('oro_marketing_list.contact_information_field_helper');
 
-        return $this->handleView($this->view($helper->getEntityContactInformationFieldsInfo($entity), Codes::HTTP_OK));
+        return $this->handleView($this->view($helper->getEntityContactInformationFieldsInfo($entity), Response::HTTP_OK));
     }
 
     /**

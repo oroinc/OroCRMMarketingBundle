@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest;
 
-use FOS\RestBundle\Util\Codes;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class MarketingListRemovedItemControllerTest extends WebTestCase
 {
@@ -35,7 +35,7 @@ class MarketingListRemovedItemControllerTest extends WebTestCase
 
         $marketingListRemovedItem = $this->getJsonResponseContent(
             $this->client->getResponse(),
-            Codes::HTTP_CREATED
+            Response::HTTP_CREATED
         );
 
         return $marketingListRemovedItem['id'];
@@ -55,7 +55,7 @@ class MarketingListRemovedItemControllerTest extends WebTestCase
 
         $this->assertEmptyResponseStatusCodeEquals(
             $this->client->getResponse(),
-            Codes::HTTP_NO_CONTENT
+            Response::HTTP_NO_CONTENT
         );
     }
 }
