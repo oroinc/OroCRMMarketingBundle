@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -186,7 +186,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(['test']));
         $violation->expects($this->once())
             ->method('getPlural')
-            ->will($this->returnValue('message pluralization'));
+            ->will($this->returnValue(1));
         $errors = new ConstraintViolationList([$violation]);
 
         $this->validator->expects($this->once())
@@ -207,7 +207,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
                     'message',
                     'message template',
                     ['test'],
-                    'message pluralization'
+                    1
                 )
             );
 
