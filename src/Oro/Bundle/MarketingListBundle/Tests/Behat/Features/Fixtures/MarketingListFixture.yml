@@ -6,16 +6,16 @@ Oro\Bundle\SegmentBundle\Entity\Segment:
     contact_segment:
         name: 'Some segment name'
         type: '@segment_dynamic_type'
-        entity: 'Oro\Bundle\ContactBundle\Entity\Contact'
-        definition: '{"columns":[{"name":"contactInformation","label":"Contact Information","sorting":"","func":null}]}'
+        entity: 'Oro\\Bundle\\ContactBundle\\Entity\\Contact'
+        definition: <('{"columns":[{"name":"contactInformation","label":"Contact Information","sorting":"","func":null}]}')>
         organization: '@organization'
         owner: '@business_unit'
 
     contact_email_segment:
         name: 'Contact email segment'
         type: '@segment_dynamic_type'
-        entity: 'Oro\Bundle\ContactBundle\Entity\Contact'
-        definition: '{"columns":[{"name":"primaryEmail","label":"Contact Email","sorting":"","func":null}]}'
+        entity: 'Oro\\Bundle\\ContactBundle\\Entity\\Contact'
+        definition: <('{"columns":[{"name":"primaryEmail","label":"Contact Email","sorting":"","func":null}]}')>
         organization: '@organization'
         owner: '@business_unit'
 
@@ -25,7 +25,7 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
         name: '<{dynamic_marketinglist_name}>'
         organization: '@organization'
         type: '@marketing_list_dynamic_type'
-        entity: 'Oro\Bundle\ContactBundle\Entity\Contact'
+        entity: 'Oro\\Bundle\\ContactBundle\\Entity\\Contact'
         segment: '@contact_segment'
 
     contact_email_segment_marketinglist:
@@ -33,5 +33,5 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
         name: '<{contact_email_marketinglist_name}>'
         organization: '@organization'
         type: '@marketing_list_dynamic_type'
-        entity: 'Oro\Bundle\ContactBundle\Entity\Contact'
+        entity: 'Oro\\Bundle\\ContactBundle\\Entity\\Contact'
         segment: '@contact_email_segment'
