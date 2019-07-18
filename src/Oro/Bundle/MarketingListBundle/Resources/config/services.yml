@@ -34,6 +34,7 @@ services:
 
     oro_marketing_list.datagrid.marketing_list_type.provider:
         class: '%oro_marketing_list.datagrid.marketing_list_type.provider.class%'
+        public: true
         arguments: [ "@doctrine" ]
 
     oro_marketing_list.marketing_list.manager.api:

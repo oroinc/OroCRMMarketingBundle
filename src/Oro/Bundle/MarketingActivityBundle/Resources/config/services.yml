@@ -13,6 +13,7 @@ services:
 
     oro_marketing_activity.placeholder.filter:
         class: 'Oro\Bundle\MarketingActivityBundle\Placeholder\PlaceholderFilter'
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@oro_marketing_list.entity_provider.contact_information'
