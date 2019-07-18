@@ -5,6 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Datagrid\Extension;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -98,6 +99,7 @@ class MarketingListExtension extends AbstractExtension
     }
 
     /**
+     * @param OrmDatasource $datasource
      * {@inheritdoc}
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
@@ -106,7 +108,7 @@ class MarketingListExtension extends AbstractExtension
             return;
         }
 
-        /** @var OrmDatasource $datasource */
+        /** @var QueryBuilder $qb */
         $qb = $datasource->getQueryBuilder();
         $dqlParts = $qb->getDQLParts();
 
