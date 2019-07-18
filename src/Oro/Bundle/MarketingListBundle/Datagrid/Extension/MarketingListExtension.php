@@ -3,14 +3,13 @@
 namespace Oro\Bundle\MarketingListBundle\Datagrid\Extension;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
-
-use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Component\DoctrineUtils\ORM\HookUnionTrait;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
@@ -100,6 +99,7 @@ class MarketingListExtension extends AbstractExtension
     }
 
     /**
+     * @param OrmDatasource $datasource
      * {@inheritdoc}
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
@@ -108,7 +108,7 @@ class MarketingListExtension extends AbstractExtension
             return;
         }
 
-        /** @var OrmDatasource $datasource */
+        /** @var QueryBuilder $qb */
         $qb = $datasource->getQueryBuilder();
         $dqlParts = $qb->getDQLParts();
 
