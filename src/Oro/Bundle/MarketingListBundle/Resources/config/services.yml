@@ -108,6 +108,7 @@ services:
 
     oro_marketing_list.datagrid.action_permission_provider:
         class: '%oro_marketing_list.datagrid.action_permission_provider.class%'
+        public: true
 
     oro_marketing_list.security.acl.voter.segment:
         class: '%oro_marketing_list.security.acl.voter.segment.class%'
