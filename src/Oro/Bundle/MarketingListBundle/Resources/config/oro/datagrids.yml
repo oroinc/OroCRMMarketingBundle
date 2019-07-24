@@ -251,7 +251,7 @@ datagrids:
         actions:
             remove:
                 type:         ajaxdelete
-                requestType:  POST
+                requestType:  DELETE
                 label:        oro.marketinglist.action.remove
                 link:         remove_link
                 icon:         remove
@@ -429,7 +429,7 @@ datagrids:
         actions:
             remove:
                 type:         ajaxdelete
-                requestType:  POST
+                requestType:  DELETE
                 label:        oro.marketinglist.action.remove
                 link:         remove_link
                 icon:         remove
