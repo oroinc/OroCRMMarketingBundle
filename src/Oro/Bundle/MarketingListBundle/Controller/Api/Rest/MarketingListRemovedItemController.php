@@ -58,7 +58,7 @@ class MarketingListRemovedItemController extends RestController implements Class
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Post(
+     * @Rest\Delete(
      *      "/marketinglist/{marketingList}/remove/{id}"
      * )
      * @ApiDoc(description="Remove marketing list entity item", resource=true)
