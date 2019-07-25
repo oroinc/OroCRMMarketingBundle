@@ -4,10 +4,10 @@ namespace Oro\Bundle\CampaignBundle\Validator;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CampaignCodeValidator extends ConstraintValidator
 {

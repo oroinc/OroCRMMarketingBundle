@@ -31,6 +31,7 @@ parameters:
 services:
     oro_marketing_list.entity_provider:
         alias: oro_entity.entity_provider
+        public: true
 
     oro_marketing_list.datagrid.marketing_list_type.provider:
         class: '%oro_marketing_list.datagrid.marketing_list_type.provider.class%'
