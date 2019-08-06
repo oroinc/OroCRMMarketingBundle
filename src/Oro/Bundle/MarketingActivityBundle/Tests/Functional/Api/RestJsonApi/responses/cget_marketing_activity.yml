@@ -1,0 +1,53 @@
+data:
+    -
+        type: marketingactivities
+        id: '<toString(@oro_marketing_activity_0->id)>'
+        attributes:
+            details: null
+            actionDate: '2017-01-03T01:00:00Z'
+        relationships:
+            owner:
+                data:
+                    type: organizations
+                    id: '<toString(@organization->id)>'
+            campaign:
+                data:
+                    type: campaigns
+                    id: '<toString(@Campaign.Campaign1->id)>'
+            marketingActivityType:
+                data:
+                    type: matypes
+                    id: send
+            entity:
+                data:
+                    type: testactivities
+                    id: '<toString(@test_entity_1->id)>'
+            relatedCampaign:
+                data: null
+    -
+        type: marketingactivities
+        id: '<toString(@oro_marketing_activity_1->id)>'
+        attributes:
+            details: null
+            actionDate: '2017-01-04T01:00:00Z'
+        relationships:
+            owner:
+                data:
+                    type: organizations
+                    id: '<toString(@organization->id)>'
+            campaign:
+                data:
+                    type: campaigns
+                    id: '<toString(@Campaign.Campaign1->id)>'
+            marketingActivityType:
+                data:
+                    type: matypes
+                    id: open
+            entity:
+                data:
+                    type: testactivities
+                    id: '<toString(@test_entity_1->id)>'
+            relatedCampaign:
+                data:
+                    type: campaigns
+                    id: '<toString(@Campaign.Campaign2->id)>'

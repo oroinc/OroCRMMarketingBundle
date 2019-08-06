@@ -14,7 +14,7 @@ oro:
             description:               The marketing activity type (click, open, send, unsubscribe, soft_bunce, hard_bounce).
         entity_id:
             label:                     Entity Id
-            description:               The unique identifier of the marketing activity.
+            description:               The ID of the marketing activity.
         entity_class:
             label:                     Entity Class
             description:               The class of the marketing activity.

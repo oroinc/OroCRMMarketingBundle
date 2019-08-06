@@ -2,5 +2,33 @@ api:
     entities:
         Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity:
             documentation_resource: '@OroMarketingActivityBundle/Resources/doc/api/marketing_activity.md'
+            fields:
+                actionDate:
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+                marketingActivityType:
+                    property_path: type
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+                entity:
+                    data_type: nestedAssociation
+                    fields:
+                        __class__:
+                            property_path: entityClass
+                        id:
+                            property_path: entityId
+                    form_options:
+                        constraints:
+                            - NotBlank: ~
+                relatedCampaign:
+                    data_type: nestedAssociation
+                    fields:
+                        __class__:
+                            property_path: relatedCampaignClass
+                        id:
+                            property_path: relatedCampaignId
+
         Extend\Entity\EV_Ma_Type:
             documentation_resource: '@OroMarketingActivityBundle/Resources/doc/api/marketing_activity.md'

@@ -30,8 +30,6 @@ Example:
   "data": {
     "type": "marketingactivities",
     "attributes": {
-      "entityId": "2",
-      "entityClass": "Oro\\Bundle\\EmailBundle\\Entity\\Email",
       "actionDate": "2017-08-21T17:27:14Z"
     },
     "relationships": {
@@ -39,6 +37,12 @@ Example:
         "data": {
           "type": "organizations",
           "id": "1"
+        }
+      },
+      "entity": {
+        "data": {
+          "type": "emails",
+          "id": "2"
         }
       },
       "campaign": {
@@ -75,15 +79,11 @@ Example:
   "data": {
     "type": "marketingactivities",
     "id": "1", 
-    "attributes": {
-      "entityId": "2",
-      "entityClass": "Oro\\Bundle\\EmailBundle\\Entity\\Email"
-    },
     "relationships": {
-      "owner": {
+      "entity": {
         "data": {
-          "type": "organizations",
-          "id": "1"
+          "type": "emails",
+          "id": "2"
         }
       },
       "marketingActivityType": {
@@ -128,23 +128,9 @@ Delete a collection of marketing activity records.
 
 *This field is **required** and must remain defined.*
 
-### entityClass
+### entity
 
-#### create
-
-{@inheritdoc}
-
-**The required field**
-
-#### update
-
-{@inheritdoc}
-
-**Please note:**
-
-*This field is **required** and must remain defined.*
-
-### entityId
+The entity to which this marketing activity record is related.
 
 #### create
 
@@ -167,6 +153,10 @@ Delete a collection of marketing activity records.
 {@inheritdoc}
 
 **The required field**
+
+### relatedCampaign
+
+The marketing campaign that the marketing activity took place within.
 
 ## SUBRESOURCES
 
@@ -192,6 +182,33 @@ Example:
   "data": {
     "type": "campaigns",
     "id": "1"
+  }
+}
+```
+{@/request}
+
+### entity
+
+#### get_subresource
+
+Retrieve the entity to which this marketing activity record is related.
+
+#### get_relationship
+
+Retrieve the ID of the entity to which this marketing activity record is related.
+
+#### update_relationship
+
+Retrieve the entity to which this marketing activity record is related.
+
+{@request:json_api}
+Example:
+
+```JSON
+{
+  "data": {
+    "type": "emails",
+    "id": "2"
   }
 }
 ```
@@ -245,6 +262,33 @@ Example:
 {
   "data": {
     "type": "organizations",
+    "id": "1"
+  }
+}
+```
+{@/request}
+
+### relatedCampaign
+
+#### get_subresource
+
+Retrieve the marketing campaign that the marketing activity took place within.
+
+#### get_relationship
+
+Retrieve the ID of the marketing campaign that the marketing activity took place within.
+
+#### update_relationship
+
+Retrieve the marketing campaign that the marketing activity took place within.
+
+{@request:json_api}
+Example:
+
+```JSON
+{
+  "data": {
+    "type": "emailcampaigns",
     "id": "1"
   }
 }

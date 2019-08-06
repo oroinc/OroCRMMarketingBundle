@@ -1,0 +1,13 @@
+data:
+    type: marketingactivities
+    attributes:
+        actionDate: '2019-01-02T10:30:00Z'
+    relationships:
+        marketingActivityType:
+            data:
+                type: matypes
+                id: 'open'
+        entity:
+            data:
+                type: testactivities
+                id: '<toString(@test_entity_1->id)>'

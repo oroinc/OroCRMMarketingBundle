@@ -3,35 +3,33 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class LoadCampaignData extends AbstractFixture
+class LoadCampaignData extends AbstractFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array
-     */
-    protected $data = [
-        'campaign1' => [
+    /** @var array */
+    private const DATA = [
+        'Campaign.Campaign1' => [
             'name' => 'Campaign1',
             'code' => 'cmp1',
-            'reportPeriod' => Campaign::PERIOD_DAILY,
-            'reference' => 'Campaign.Campaign1'
+            'reportPeriod' => Campaign::PERIOD_DAILY
         ],
-        'campaign2' => [
+        'Campaign.Campaign2' => [
             'name' => 'Campaign2',
             'code' => 'cmp2',
             'reportPeriod' => Campaign::PERIOD_HOURLY,
-            'reportRefreshDate' => '-1 day',
-            'reference' => 'Campaign.Campaign2'
+            'reportRefreshDate' => '-1 day'
         ],
-        'campaign3' => [
+        'Campaign.Campaign3' => [
             'name' => 'Campaign3',
             'code' => 'cmp3',
             'reportPeriod' => Campaign::PERIOD_MONTHLY,
-            'reportRefreshDate' => '-2 day',
-            'reference' => 'Campaign.Campaign3'
+            'reportRefreshDate' => '-2 day'
         ]
     ];
 
@@ -40,24 +38,34 @@ class LoadCampaignData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        foreach ($this->data as $data) {
+        $organization = $this->getReference('organization');
+        $user = $this->getReference('user');
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        foreach (self::DATA as $reference => $data) {
             $entity = new Campaign();
+            $entity->setOrganization($organization);
+            $entity->setOwner($user);
             if (isset($data['reportRefreshDate'])) {
                 $data['reportRefreshDate'] = new \DateTime($data['reportRefreshDate'], new \DateTimeZone('UTC'));
             }
-
-            $excludeProperties = ['reference'];
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
             foreach ($data as $property => $value) {
-                if (in_array($property, $excludeProperties)) {
-                    continue;
-                }
                 $propertyAccessor->setValue($entity, $property, $value);
             }
 
-            $this->setReference($data['reference'], $entity);
+            $this->setReference($reference, $entity);
             $manager->persist($entity);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            LoadOrganization::class,
+            LoadUser::class
+        ];
     }
 }
