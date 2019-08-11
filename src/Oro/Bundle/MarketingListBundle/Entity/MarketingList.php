@@ -428,7 +428,8 @@ class MarketingList extends ExtendMarketingList
      */
     public function beforeSave()
     {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = clone $this->createdAt;
     }
 
     /**
