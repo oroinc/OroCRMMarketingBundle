@@ -9,9 +9,9 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * REST API Marketing List Removed Item Controller
@@ -133,12 +133,10 @@ class MarketingListRemovedItemController extends RestController implements Class
             try {
                 $item = $forRemove[0];
                 $this->getDeleteHandler()->handleDelete($item->getId(), $this->getManager());
-            } catch (EntityNotFoundException $notFoundEx) {
+            } catch (EntityNotFoundException $e) {
                 return $this->handleView($this->view(null, Response::HTTP_NOT_FOUND));
-            } catch (ForbiddenException $forbiddenEx) {
-                return $this->handleView(
-                    $this->view(['reason' => $forbiddenEx->getReason()], Response::HTTP_FORBIDDEN)
-                );
+            } catch (AccessDeniedException $e) {
+                return $this->handleView($this->view(['reason' => $e->getMessage()], Response::HTTP_FORBIDDEN));
             }
         }
 
