@@ -136,8 +136,10 @@ class MarketingListProvider
     }
 
     /**
+     * @deprecated since 3.1 and will be removed in 4.1, please use getEntitiesIterator instead
+     *
      * @param MarketingList $marketingList
-     * @param string $mixin
+     * @param string|null $mixin
      *
      * @return \Iterator
      */
@@ -147,6 +149,22 @@ class MarketingListProvider
             $this->getMarketingListEntitiesQueryBuilder($marketingList, $mixin),
             false
         );
+    }
+
+    /**
+     * @param MarketingList $marketingList
+     * @param string|null $mixin
+     * @return \Iterator
+     */
+    public function getEntitiesIterator(MarketingList $marketingList, $mixin = null)
+    {
+        $queryBuilder = $this->getMarketingListEntitiesQueryBuilder($marketingList, $mixin);
+        $columnInformation = $this->getColumnInformation($marketingList);
+        foreach ($columnInformation as $alias => $expr) {
+            $queryBuilder->addSelect(sprintf('%s as %s', $expr, $alias));
+        }
+
+        return new BufferedIdentityQueryResultIterator($queryBuilder, false);
     }
 
     /**
