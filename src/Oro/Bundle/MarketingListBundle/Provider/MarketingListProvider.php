@@ -137,16 +137,18 @@ class MarketingListProvider
 
     /**
      * @param MarketingList $marketingList
-     * @param string $mixin
-     *
+     * @param string|null $mixin
      * @return \Iterator
      */
-    public function getMarketingListEntitiesIterator(MarketingList $marketingList, $mixin = null)
+    public function getEntitiesIterator(MarketingList $marketingList, $mixin = null)
     {
-        return new BufferedIdentityQueryResultIterator(
-            $this->getMarketingListEntitiesQueryBuilder($marketingList, $mixin),
-            false
-        );
+        $queryBuilder = $this->getMarketingListEntitiesQueryBuilder($marketingList, $mixin);
+        $columnInformation = $this->getColumnInformation($marketingList);
+        foreach ($columnInformation as $alias => $expr) {
+            $queryBuilder->addSelect(sprintf('%s as %s', $expr, $alias));
+        }
+
+        return new BufferedIdentityQueryResultIterator($queryBuilder, false);
     }
 
     /**

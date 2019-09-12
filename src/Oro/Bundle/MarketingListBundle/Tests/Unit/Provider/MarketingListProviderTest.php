@@ -147,7 +147,7 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
      * @dataProvider queryBuilderDataProvider
      * @param string $type
      */
-    public function testGetMarketingListEntitiesIterator($type)
+    public function testGetEntitiesIterator($type)
     {
         $marketingList = $this->getMarketingList($type);
 
@@ -158,9 +158,12 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
             ->method('getAlias')
             ->will($this->returnValue('alias'));
         $queryBuilder = $this->getQueryBuilder([['from', [$from]]]);
+        $queryBuilder->expects($this->once())
+            ->method('addSelect')
+            ->with('t0.test as testField');
         $this->assertEntitiesQueryBuilder($queryBuilder, $marketingList, 'alias');
 
-        $this->assertInstanceOf('\Iterator', $this->provider->getMarketingListEntitiesIterator($marketingList));
+        $this->assertInstanceOf('\Iterator', $this->provider->getEntitiesIterator($marketingList));
     }
 
     /**

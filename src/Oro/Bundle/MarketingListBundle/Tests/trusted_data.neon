@@ -4,6 +4,9 @@ trusted_data:
         Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider:
             getMarketingListEntitiesQueryBuilder:
                 entityAlias: true
+            getEntitiesIterator:
+                expr: true
+                alias: true
         Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension:
             visitDatasource:
                 part: true
@@ -11,3 +14,5 @@ trusted_data:
         Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension:
             createItemsQuery:
                 marketingListId: true
+    safe_methods:
+        Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider:
