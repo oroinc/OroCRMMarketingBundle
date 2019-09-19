@@ -11,8 +11,12 @@ use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Sends email campaign for each entity from marketing list.
+ */
 class EmailCampaignSender
 {
     /**
@@ -120,20 +124,23 @@ class EmailCampaignSender
         }
 
         $iterator = $this->getIterator();
-        if (is_null($iterator)) {
-            return;
-        }
-
         /** @var EntityManager $manager */
-        $manager     = $this->registry->getManager();
+        $manager = $this->registry->getManager();
         $emailFields = $this->contactInformationFieldsProvider
             ->getMarketingListTypedFields(
                 $marketingList,
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL
             );
-        foreach ($iterator as $entity) {
-            $to = $this->contactInformationFieldsProvider->getTypedFieldsValues($emailFields, $entity);
-            $to = array_unique($to);
+        foreach ($iterator as $item) {
+            $entity = array_shift($item);
+
+            $toFromFields = $this->contactInformationFieldsProvider->getTypedFieldsValues($emailFields, $item);
+            try {
+                $toFromEntity = $this->contactInformationFieldsProvider->getTypedFieldsValues($emailFields, $entity);
+            } catch (NoSuchPropertyException $e) {
+                $toFromEntity = [];
+            }
+            $to = array_filter(array_unique(array_merge($toFromFields, $toFromEntity)));
 
             try {
                 $manager->beginTransaction();
@@ -219,11 +226,11 @@ class EmailCampaignSender
     }
 
     /**
-     * @return \Iterator|null
+     * @return \Iterator
      */
     protected function getIterator()
     {
-        return $this->marketingListProvider->getMarketingListEntitiesIterator(
+        return $this->marketingListProvider->getEntitiesIterator(
             $this->emailCampaign->getMarketingList()
         );
     }

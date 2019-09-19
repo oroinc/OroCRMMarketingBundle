@@ -164,6 +164,29 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @dataProvider queryBuilderDataProvider
+     * @param string $type
+     */
+    public function testGetEntitiesIterator($type)
+    {
+        $marketingList = $this->getMarketingList($type);
+
+        $from = $this->getMockBuilder('Doctrine\ORM\Query\Expr\From')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $from->expects($this->once())
+            ->method('getAlias')
+            ->will($this->returnValue('alias'));
+        $queryBuilder = $this->getQueryBuilder([['from', [$from]]]);
+        $queryBuilder->expects($this->once())
+            ->method('addSelect')
+            ->with('t0.test as testField');
+        $this->assertEntitiesQueryBuilder($queryBuilder, $marketingList, 'alias');
+
+        $this->assertInstanceOf('\Iterator', $this->provider->getEntitiesIterator($marketingList));
+    }
+
+    /**
      * @param \PHPUnit\Framework\MockObject\MockObject $queryBuilder
      * @param MarketingList $marketingList
      * @param string $alias
