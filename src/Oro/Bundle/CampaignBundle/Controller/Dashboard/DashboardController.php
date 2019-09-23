@@ -5,10 +5,10 @@ namespace Oro\Bundle\CampaignBundle\Controller\Dashboard;
 use Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider;
 use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
 use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Adds charts for campaign leads, campaign opportunity, campaign by close revenue
