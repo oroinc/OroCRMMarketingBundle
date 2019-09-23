@@ -118,7 +118,7 @@ Delete a collection of marketing activity records.
 
 {@inheritdoc}
 
-**The required field**
+**The required field.**
 
 #### update
 
@@ -136,7 +136,7 @@ The entity to which this marketing activity record is related.
 
 {@inheritdoc}
 
-**The required field**
+**The required field.**
 
 #### update
 
@@ -152,7 +152,7 @@ The entity to which this marketing activity record is related.
 
 {@inheritdoc}
 
-**The required field**
+**The required field.**
 
 ### relatedCampaign
 
