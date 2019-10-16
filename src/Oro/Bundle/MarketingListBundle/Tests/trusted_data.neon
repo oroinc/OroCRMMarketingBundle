@@ -14,5 +14,3 @@ trusted_data:
         Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension:
             createItemsQuery:
                 marketingListId: true
-    safe_methods:
-        Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider:
