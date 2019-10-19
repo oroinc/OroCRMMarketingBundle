@@ -1,0 +1,3 @@
+dynamic-imports:
+    oromarketingactivity:
+        - oromarketingactivity/js/app/components/marketing-activities-section-component

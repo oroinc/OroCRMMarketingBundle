@@ -1,0 +1,4 @@
+dynamic-imports:
+    oromarketinglist:
+        - oromarketinglist/js/app/components/columns-component
+        - oromarketinglist/js/app/components/grid-linker

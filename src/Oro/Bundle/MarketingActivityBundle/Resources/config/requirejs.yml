@@ -1,3 +1,0 @@
-config:
-    paths:
-        'oromarketingactivity/js/app/components/marketing-activities-section-component': 'bundles/oromarketingactivity/js/app/components/marketing-activities-section-component.js'
