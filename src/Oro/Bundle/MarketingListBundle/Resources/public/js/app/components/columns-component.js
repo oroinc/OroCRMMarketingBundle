@@ -1,22 +1,22 @@
 define(function(require) {
     'use strict';
 
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
-    var routing = require('routing');
-    var contactInformationFieldsCache = {};
-    var $entityEl;
-    var $fieldsListEl;
+    const $ = require('jquery');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
+    const routing = require('routing');
+    const contactInformationFieldsCache = {};
+    let $entityEl;
+    let $fieldsListEl;
 
-    var fillContactInformationFieldsCache = function(contactInformationFields) {
+    const fillContactInformationFieldsCache = function(contactInformationFields) {
         _.each(contactInformationFields, function(field) {
             contactInformationFieldsCache[field.name] = field.contact_information_type;
         });
     };
 
-    var updateContactInformationFieldsInfo = function(contactInformationFields) {
-        var list = $('<ul/>');
+    const updateContactInformationFieldsInfo = function(contactInformationFields) {
+        const list = $('<ul/>');
         _.each(contactInformationFields, function(field) {
             list.append($('<li/>').html(field.label));
         });
@@ -24,12 +24,12 @@ define(function(require) {
             .closest('.alert').toggleClass('has-fields', contactInformationFields.length > 0);
     };
 
-    var updateContactInformationFields = function(contactInformationFields) {
+    const updateContactInformationFields = function(contactInformationFields) {
         updateContactInformationFieldsInfo(contactInformationFields);
         fillContactInformationFieldsCache(contactInformationFields);
     };
 
-    var loadEntityContactInformationFields = function(entity) {
+    const loadEntityContactInformationFields = function(entity) {
         if (entity) {
             $.ajax({
                 url: routing.generate('oro_api_entity_marketinglist_contact_information_fields'),
@@ -39,8 +39,8 @@ define(function(require) {
         }
     };
 
-    var contactInformationRender = function(model, element, type) {
-        var icon;
+    const contactInformationRender = function(model, element, type) {
+        let icon;
         if (type) {
             if (type === 'phone') {
                 icon = 'fa-phone';
@@ -48,7 +48,7 @@ define(function(require) {
                 icon = 'fa-envelope';
             }
 
-            var item = element.find('[data-cid="' + model.cid + '"] .name-cell');
+            const item = element.find('[data-cid="' + model.cid + '"] .name-cell');
 
             if (!item.hasClass('has-icon') && icon) {
                 item
@@ -61,8 +61,8 @@ define(function(require) {
         }
     };
 
-    var getFieldContactInformationType = function(model, element) {
-        var fieldName = model.get('name');
+    const getFieldContactInformationType = function(model, element) {
+        const fieldName = model.get('name');
         if (contactInformationFieldsCache.hasOwnProperty(fieldName)) {
             contactInformationRender(model, element, contactInformationFieldsCache[fieldName]);
         } else if (fieldName.indexOf(':') > -1) {
@@ -81,7 +81,7 @@ define(function(require) {
     };
 
     function ColumnsComponent(options) {
-        var $form = $(options.formSelector);
+        const $form = $(options.formSelector);
         $entityEl = $form.find(options.entityChoiceSelector);
         $fieldsListEl = $form.find(options.fieldsChoiceSelector);
 

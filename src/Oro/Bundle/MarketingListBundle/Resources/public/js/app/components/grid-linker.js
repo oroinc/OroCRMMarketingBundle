@@ -1,8 +1,8 @@
 define(function(require) {
     'use strict';
 
-    var _ = require('underscore');
-    var mediator = require('oroui/js/mediator');
+    const _ = require('underscore');
+    const mediator = require('oroui/js/mediator');
 
     return function(options) {
         _.each(options, function(grids) {
