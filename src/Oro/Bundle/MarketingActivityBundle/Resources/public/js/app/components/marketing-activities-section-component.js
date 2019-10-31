@@ -1,20 +1,19 @@
 define(function(require) {
     'use strict';
 
-    var MarketingActivitiesSectionComponent;
-    var ActivityListComponent = require('oroactivitylist/js/app/components/activity-list-component');
-    var __ = require('orotranslation/js/translator');
-    var MultiSelectFilter = require('oro/filter/multiselect-filter');
+    const ActivityListComponent = require('oroactivitylist/js/app/components/activity-list-component');
+    const __ = require('orotranslation/js/translator');
+    const MultiSelectFilter = require('oro/filter/multiselect-filter');
 
-    MarketingActivitiesSectionComponent = ActivityListComponent.extend({
+    const MarketingActivitiesSectionComponent = ActivityListComponent.extend({
         /** @type MultiSelectFilter */
         campaignTypeFilter: null,
 
         /**
          * @inheritDoc
          */
-        constructor: function MarketingActivitiesSectionComponent() {
-            MarketingActivitiesSectionComponent.__super__.constructor.apply(this, arguments);
+        constructor: function MarketingActivitiesSectionComponent(options) {
+            MarketingActivitiesSectionComponent.__super__.constructor.call(this, options);
         },
 
         /**
@@ -38,10 +37,10 @@ define(function(require) {
          * @param $el
          */
         renderFilters: function($el) {
-            var $filterContainer = $el.find('.filter-container');
+            const $filterContainer = $el.find('.filter-container');
 
             // prepare choices
-            var campaignChoices = this.options.activityListOptions.campaignFilterValues;
+            const campaignChoices = this.options.activityListOptions.campaignFilterValues;
 
             // create and render
             this.campaignTypeFilter = new MultiSelectFilter({

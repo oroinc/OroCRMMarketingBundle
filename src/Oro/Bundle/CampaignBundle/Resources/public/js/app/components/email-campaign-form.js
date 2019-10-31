@@ -1,27 +1,27 @@
 define(function(require) {
     'use strict';
 
-    var _ = require('underscore');
-    var $ = require('jquery');
-    var mediator = require('oroui/js/mediator');
+    const _ = require('underscore');
+    const $ = require('jquery');
+    const mediator = require('oroui/js/mediator');
 
     return function(options) {
-        var $schedule = options._sourceElement.find(options.scheduleEl);
-        var $scheduledFor = options._sourceElement.find(options.scheduledForEl);
-        var $transportEl = options._sourceElement.find(options.transportEl);
-        var $label = $scheduledFor.find('label');
-        var hideOn = options.hideOn || [];
-        var showOn = options.showOn || [];
+        const $schedule = options._sourceElement.find(options.scheduleEl);
+        const $scheduledFor = options._sourceElement.find(options.scheduledForEl);
+        const $transportEl = options._sourceElement.find(options.transportEl);
+        const $label = $scheduledFor.find('label');
+        const hideOn = options.hideOn || [];
+        const showOn = options.showOn || [];
 
         $transportEl.on('change', function() {
             mediator.execute('showLoading');
 
-            var $form = $transportEl.closest('form');
-            var data = $form.serializeArray();
-            var url = $form.attr('action');
+            const $form = $transportEl.closest('form');
+            const data = $form.serializeArray();
+            const url = $form.attr('action');
             data.push({name: 'formUpdateMarker', value: 1});
 
-            var event = {formEl: $form, data: data, reloadManually: true};
+            const event = {formEl: $form, data: data, reloadManually: true};
             mediator.trigger('integrationFormReload:before', event);
 
             if (event.reloadManually) {
