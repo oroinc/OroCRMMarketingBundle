@@ -3,33 +3,10 @@ parameters:
     oro_campaign.tracking_event_summary.class:  Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary
     oro_campaign.email_campaign_statistics.class: Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics
     oro_campaign.email_campaign.entity.class:   Oro\Bundle\CampaignBundle\Entity\EmailCampaign
-    oro_campaign.campaign.form.type.class:      Oro\Bundle\CampaignBundle\Form\Type\CampaignType
-    oro_campaign.campaign.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_campaign.email_campaign.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
-    oro_campaign.data_transformer.multi_line.class: Oro\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer
-    oro_campaign.form.type.campaign_select.class: Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType
-    oro_campaign.form.type.email_campaign.class: Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType
-    oro_campaign.form.type.email_transport_select.class: Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType
-    oro_campaign.transport.email.class: Oro\Bundle\CampaignBundle\Transport\EmailTransport
-    oro_campaign.email_campaign.sender.class: Oro\Bundle\CampaignBundle\Model\EmailCampaignSender
-    oro_campaign.email_transport.provider.class: Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider
-    oro_campaign.email_campaign.sender.builder.class: Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder
-
-    oro_campaign.listener.email_campaign_statistic_groupping.class: Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticGroupingListener
-    oro_campaign.listener.email_campaign_statistic.class: Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticDatagridListener
-    oro_campaign.listener.email_campaign_statistic_connector.cache_clear.class: Oro\Bundle\CampaignBundle\EventListener\EmailCampaignStatisticConnectorCacheClearListener
-    oro_campaign.form.type.internal_transport_settings.class: Oro\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType
-    oro_campaign.form.subscriber.transport_settings.class: Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsListener
-    oro_campaign.form.subscriber.transport_settings_email_template.class: Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener
-
-    oro_campaign.email_campaign.statistics_connector.class: Oro\Bundle\CampaignBundle\Model\EmailCampaignStatisticsConnector
-
-    oro_campaign.provider.tracking_identificator.class: Oro\Bundle\CampaignBundle\Provider\TrackingVisitEventIdentification
-    oro_campaign.provider.privilege_category_provider.class: Oro\Bundle\CampaignBundle\Provider\PrivilegeCategoryProvider
 services:
     oro_campaign.campaign.form.type:
-        class: '%oro_campaign.campaign.form.type.class%'
+        class: Oro\Bundle\CampaignBundle\Form\Type\CampaignType
         tags:
             - { name: form.type, alias: oro_campaign_form }
 
@@ -43,7 +20,7 @@ services:
             - Oro\Bundle\CampaignBundle\Form\Type\CampaignType
 
     oro_campaign.email_campaign.form.type:
-        class: '%oro_campaign.form.type.email_campaign.class%'
+        class: Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType
         calls:
             - [addSubscriber,  ["@oro_campaign.form.subscriber.transport_settings"]]
         tags:
@@ -59,21 +36,21 @@ services:
             - Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType
 
     oro_campaign.campaign.manager.api:
-        class: '%oro_campaign.campaign.manager.api.class%'
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - '%oro_campaign.entity.class%'
             - "@doctrine.orm.entity_manager"
 
     oro_campaign.email_campaign.manager.api:
-        class: '%oro_campaign.email_campaign.manager.api.class%'
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - '%oro_campaign.email_campaign.entity.class%'
             - "@doctrine.orm.entity_manager"
 
     oro_campaign.data_transformer.multi_line:
-        class: '%oro_campaign.data_transformer.multi_line.class%'
+        class: Oro\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer
 
     oro_campaign.form.autocomplete.campaign.search_handler:
         parent: oro_form.autocomplete.search_handler
@@ -84,19 +61,19 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: campaigns, acl_resource: oro_campaign_view }
 
     oro_campaign.form.type.campaign_select:
-        class: '%oro_campaign.form.type.campaign_select.class%'
+        class: Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType
         tags:
             - { name: form.type, alias: "oro_campaign_select" }
 
     oro_campaign.form.type.email_transport_select:
-        class: '%oro_campaign.form.type.email_transport_select.class%'
+        class: Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType
         arguments:
             - "@oro_campaign.email_transport.provider"
         tags:
             - { name: form.type, alias: "oro_campaign_email_transport_select" }
 
     oro_campaign.transport.email:
-        class: '%oro_campaign.transport.email.class%'
+        class: Oro\Bundle\CampaignBundle\Transport\EmailTransport
         arguments:
             - "@oro_email.mailer.processor"
             - "@oro_email.email_renderer"
@@ -106,7 +83,7 @@ services:
             - { name: "oro_campaign.email_transport" }
 
     oro_campaign.email_campaign.statistics_connector:
-        class: '%oro_campaign.email_campaign.statistics_connector.class%'
+        class: Oro\Bundle\CampaignBundle\Model\EmailCampaignStatisticsConnector
         arguments:
             - "@oro_marketing_list.model.marketing_list_item_connector"
             - "@oro_entity.doctrine_helper"
@@ -114,7 +91,7 @@ services:
             - [setEntityName, ['%oro_campaign.email_campaign_statistics.class%']]
 
     oro_campaign.email_campaign.sender:
-        class: '%oro_campaign.email_campaign.sender.class%'
+        class: Oro\Bundle\CampaignBundle\Model\EmailCampaignSender
         arguments:
             - "@oro_marketing_list.provider.marketing_list"
             - "@oro_config.user"
@@ -127,10 +104,10 @@ services:
             - [setValidator,  ["@validator"]]
 
     oro_campaign.email_transport.provider:
-        class: '%oro_campaign.email_transport.provider.class%'
+        class: Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider
 
     oro_campaign.email_campaign.sender.builder:
-        class: '%oro_campaign.email_campaign.sender.builder.class%'
+        class: Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder
         arguments:
             - "@oro_campaign.email_campaign.sender"
 
@@ -138,7 +115,7 @@ services:
         alias: oro_campaign.email_campaign.sender.builder
 
     oro_campaign.listener.email_campaign_statistic:
-        class: '%oro_campaign.listener.email_campaign_statistic.class%'
+        class: Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticDatagridListener
         arguments:
             - "@oro_marketing_list.model.helper"
             - "@doctrine"
@@ -146,7 +123,7 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre, method: onPreBuild, priority: 300 }
 
     oro_campaign.listener.email_campaign_statistic_groupping:
-        class: '%oro_campaign.listener.email_campaign_statistic_groupping.class%'
+        class: Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticGroupingListener
         arguments:
             - "@oro_marketing_list.model.helper"
             - "@oro_campaign.group_by_helper"
@@ -154,7 +131,7 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre, method: onPreBuild, priority: -10 }
 
     oro_campaign.listener.email_campaign_statistic_connector.cache_clear:
-        class: '%oro_campaign.listener.email_campaign_statistic_connector.cache_clear.class%'
+        class: Oro\Bundle\CampaignBundle\EventListener\EmailCampaignStatisticConnectorCacheClearListener
         arguments:
             - "@oro_campaign.email_campaign.statistics_connector"
         tags:
@@ -166,7 +143,7 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
 
     oro_campaign.form.type.internal_transport_settings:
-        class: '%oro_campaign.form.type.internal_transport_settings.class%'
+        class: Oro\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType
         arguments:
             - "@doctrine"
         calls:
@@ -175,13 +152,13 @@ services:
             - { name: form.type, alias: "oro_campaign_internal_transport_settings" }
 
     oro_campaign.form.subscriber.transport_settings:
-        class: '%oro_campaign.form.subscriber.transport_settings.class%'
+        class: Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsListener
         arguments:
             - "@oro_campaign.email_transport.provider"
             - "@oro_entity.doctrine_helper"
 
     oro_campaign.form.subscriber.transport_settings_email_template:
-        class: '%oro_campaign.form.subscriber.transport_settings_email_template.class%'
+        class: Oro\Bundle\CampaignBundle\Form\EventListener\TransportSettingsEmailTemplateListener
         arguments:
             - "@doctrine"
             - "@oro_security.token_accessor"
@@ -190,14 +167,14 @@ services:
         alias: oro_query_designer.group_by_helper
 
     oro_campaign.provider.tracking_identificator:
-        class: '%oro_campaign.provider.tracking_identificator.class%'
+        class: Oro\Bundle\CampaignBundle\Provider\TrackingVisitEventIdentification
         arguments:
            - "@doctrine"
         tags:
            - {name: oro_tracking.provider.identification, priority: 10}
 
     oro_campaign.provider.privilege_category_provider:
-        class: '%oro_campaign.provider.privilege_category_provider.class%'
+        class: Oro\Bundle\CampaignBundle\Provider\PrivilegeCategoryProvider
         tags:
             - { name: oro_user.privilege_category}
 

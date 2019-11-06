@@ -4,28 +4,17 @@ parameters:
     oro_tracking.tracking_data.class:                    Oro\Bundle\TrackingBundle\Entity\TrackingData
     oro_tracking.tracking_visit_event.class:             Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent
     oro_tracking.tracking_visit.class:                   Oro\Bundle\TrackingBundle\Entity\TrackingVisit
-    oro_tracking.form.type.tracking_website.class:       Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
-    oro_tracking.form.handler.tracking_website.class:    Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler
-    oro_tracking.tracking_website.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_tracking.importexport.reader.log.class:          Oro\Bundle\TrackingBundle\ImportExport\LogReader
-    oro_tracking.importexport.reader.context.class:      Oro\Bundle\TrackingBundle\ImportExport\ContextReader
-    oro_tracking.importexport.normalizer.data.class:     Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer
-    oro_tracking.importexport.data_converter.data.class: Oro\Bundle\TrackingBundle\ImportExport\DataConverter
-    oro_tracking.config.listener:                        Oro\Bundle\TrackingBundle\EventListener\ConfigListener
-    oro_tracking.entity_config_dumper.visit_identifier.extension.class: Oro\Bundle\TrackingBundle\Tools\IdentifierVisitConfigDumperExtension
-    oro_tracking.entity_generator.visit_identifie.extension.class:     Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension
-    oro_tracking.provider.identifier_provider.class: Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider
 
 services:
     oro_tracking.form.type.tracking_website:
-        class: '%oro_tracking.form.type.tracking_website.class%'
+        class: Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
         arguments:
             - '%oro_tracking.tracking_website.class%'
         tags:
             - { name: form.type, alias: oro_tracking_website }
 
     oro_tracking.form.handler.tracking_website:
-        class: '%oro_tracking.form.handler.tracking_website.class%'
+        class: Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler
         # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         arguments:
@@ -43,7 +32,7 @@ services:
             - Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
 
     oro_tracking.tracking_website.manager.api:
-        class: '%oro_tracking.tracking_website.manager.api.class%'
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         parent: oro_soap.manager.entity_manager.abstract
@@ -52,17 +41,17 @@ services:
             - '@doctrine.orm.entity_manager'
 
     oro_tracking.importexport.reader.log:
-        class: '%oro_tracking.importexport.reader.log.class%'
+        class: Oro\Bundle\TrackingBundle\ImportExport\LogReader
         arguments:
             - '@oro_importexport.context_registry'
 
     oro_tracking.importexport.reader.context:
-        class: '%oro_tracking.importexport.reader.context.class%'
+        class: Oro\Bundle\TrackingBundle\ImportExport\ContextReader
         arguments:
             - '@oro_importexport.context_registry'
 
     oro_tracking.importexport.data_converter.data:
-        class: '%oro_tracking.importexport.data_converter.data.class%'
+        class: Oro\Bundle\TrackingBundle\ImportExport\DataConverter
         arguments:
             - '@oro_entity.helper.field_helper'
 
@@ -70,7 +59,7 @@ services:
         parent: oro_importexport.strategy.configurable_add_or_replace
 
     oro_tracking.importexport.normalizer.data:
-        class: '%oro_tracking.importexport.normalizer.data.class%'
+        class: Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer
         parent: oro_importexport.serializer.configurable_entity_normalizer
         calls:
             - [setEntityName, ['%oro_tracking.tracking_data.class%']]
@@ -86,7 +75,7 @@ services:
             - { name: oro_importexport.processor, type: import, entity: '%oro_tracking.tracking_data.class%', alias: oro_tracking.processor.data }
 
     oro_tracking.config.listener:
-        class: '%oro_tracking.config.listener%'
+        class: Oro\Bundle\TrackingBundle\EventListener\ConfigListener
         arguments:
             - '@oro_config.global'
             - '@router'
@@ -120,7 +109,7 @@ services:
             - { name: oro_migration.extension, extension_name: visit_event_association }
 
     oro_tracking.entity_config_dumper.visit_identifier.extension:
-        class: '%oro_tracking.entity_config_dumper.visit_identifier.extension.class%'
+        class: Oro\Bundle\TrackingBundle\Tools\IdentifierVisitConfigDumperExtension
         arguments:
             - '@oro_tracking.provider.identifier_provider'
             - '@oro_entity_config.config_manager'
@@ -138,7 +127,7 @@ services:
             - { name: oro_entity_extend.entity_config_dumper_extension }
 
     oro_tracking.entity_generator.visit_identifie.extension:
-        class: '%oro_tracking.entity_generator.visit_identifie.extension.class%'
+        class: Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension
         tags:
             - { name: oro_entity_extend.entity_generator_extension }
 
@@ -165,11 +154,8 @@ services:
         tags:
             - { name: oro_entity.exclusion_provider.api }
 
-    #
-    # Chain provider for identicating tracking visit
-    #
     oro_tracking.provider.identifier_provider:
-        class: '%oro_tracking.provider.identifier_provider.class%'
+        class: Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider
 
     oro_tracking.migration.fill_unique_tracking_visits_query:
         class: Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery

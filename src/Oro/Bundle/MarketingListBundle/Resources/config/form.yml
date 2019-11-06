@@ -1,19 +1,12 @@
-parameters:
-    oro_marketing_list.form.type.marketing_list.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType
-    oro_marketing_list.form.type.marketing_list_removed_item.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeRemovedItemType
-    oro_marketing_list.form.type.marketing_list_unsubscribed_item.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeUnsubscribedItemType
-    oro_marketing_list.form.type.entity_choice.class: Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType
-    oro_marketing_list.form.type.marketing_list_select.class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType
-
 services:
     # MarketingList
     oro_marketing_list.form.type.marketing_list:
-        class: '%oro_marketing_list.form.type.marketing_list.class%'
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType
         tags:
             - { name: form.type, alias: oro_marketing_list }
 
     oro_marketing_list.form.type.marketing_list_removed_item:
-        class: '%oro_marketing_list.form.type.marketing_list_removed_item.class%'
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeRemovedItemType
         tags:
             - { name: form.type, alias: oro_marketing_list_removed_item }
 
@@ -39,7 +32,7 @@ services:
             - [setForm, ['@oro_marketing_list.form.marketing_list_removed_item']]
 
     oro_marketing_list.form.type.marketing_list_unsubscribed_item:
-        class: '%oro_marketing_list.form.type.marketing_list_unsubscribed_item.class%'
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeUnsubscribedItemType
         tags:
             - { name: form.type, alias: oro_marketing_list_unsubscribed_item }
 
@@ -75,13 +68,13 @@ services:
         alias: oro_marketing_list.form.handler.marketing_list
 
     oro_marketing_list.form.type.entity_choice:
-        class: '%oro_marketing_list.form.type.entity_choice.class%'
+        class: Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType
         arguments:
             - "@oro_marketing_list.entity_provider.contact_information"
         tags:
             - { name: form.type, alias: oro_marketing_list_contact_information_entity_choice }
 
     oro_marketing_list.form.type.marketing_list_select:
-        class: '%oro_marketing_list.form.type.marketing_list_select.class%'
+        class: Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType
         tags:
             - { name: form.type, alias: "oro_marketing_list_select" }
