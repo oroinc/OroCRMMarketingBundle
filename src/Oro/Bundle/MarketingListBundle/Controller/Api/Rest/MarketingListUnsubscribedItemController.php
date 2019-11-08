@@ -39,6 +39,8 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      *
      * @param int $id
      *
+     * @Rest\Delete(requirements={"id"="\d+"})
+     *
      * @ApiDoc(
      *     description="Delete MarketingListRemovedItem",
      *     resource=true
@@ -47,7 +49,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      *
      * @return Response
      */
-    public function deleteAction($id)
+    public function deleteAction(int $id)
     {
         return $this->handleDeleteRequest($id);
     }
@@ -59,7 +61,8 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      * - HTTP_OK (200)
      *
      * @Rest\Post(
-     *      "/marketinglist/{marketingList}/unsubscribe/{id}"
+     *      "/marketinglist/{marketingList}/unsubscribe/{id}",
+     *      requirements={"marketingList"="\d+", "id"="\d+"}
      * )
      * @ApiDoc(description="Unsubscribe marketing list entity item", resource=true)
      * @AclAncestor("oro_marketinglist_unsubscribed_item_create")
@@ -69,7 +72,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      *
      * @return Response
      */
-    public function unsubscribeAction(MarketingList $marketingList, $id)
+    public function unsubscribeAction(MarketingList $marketingList, int $id)
     {
         $item = new MarketingListUnsubscribedItem();
         $item
@@ -109,7 +112,8 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      * @param int           $id
      *
      * @Rest\Post(
-     *      "/marketinglist/{marketingList}/subscribe/{id}"
+     *      "/marketinglist/{marketingList}/subscribe/{id}",
+     *      requirements={"marketingList"="\d+", "id"="\d+"}
      * )
      * @ApiDoc(
      *     description="Delete MarketingListUnsubscribedItem by marketing list entity",
@@ -119,7 +123,7 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      *
      * @return Response
      */
-    public function subscribeAction(MarketingList $marketingList, $id)
+    public function subscribeAction(MarketingList $marketingList, int $id)
     {
         /** @var MarketingListUnsubscribedItem[] $forRemove */
         $forRemove = $this->getManager()->getRepository()->findBy(

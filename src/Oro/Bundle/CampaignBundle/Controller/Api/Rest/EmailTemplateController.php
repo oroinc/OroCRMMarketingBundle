@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller\Api\Rest;
 
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -20,7 +21,9 @@ class EmailTemplateController extends RestController
     /**
      * REST GET email campaign templates by entity name
      *
-     * @param string $id
+     * @param int|null $id
+     *
+     * @Rest\Get(requirements={"id"="\d*"})
      *
      * @ApiDoc(
      *     description="Get email campaign templates by entity name",
@@ -30,7 +33,7 @@ class EmailTemplateController extends RestController
      *
      * @return Response
      */
-    public function cgetAction($id = null)
+    public function cgetAction(int $id = null)
     {
         if (!$id) {
             return $this->handleView(

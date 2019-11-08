@@ -24,6 +24,8 @@ class MarketingListController extends RestController implements ClassResourceInt
      *
      * @param int $id
      *
+     * @Rest\Delete(requirements={"id"="\d+"})
+     *
      * @ApiDoc(
      *      description="Delete Marketing List",
      *      resource=true
@@ -32,7 +34,7 @@ class MarketingListController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function deleteAction($id)
+    public function deleteAction(int $id)
     {
         return $this->handleDeleteRequest($id);
     }
