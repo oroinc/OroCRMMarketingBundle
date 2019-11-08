@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller\Api\Rest;
 
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Util\Codes;
@@ -21,7 +22,9 @@ class EmailTemplateController extends RestController
     /**
      * REST GET email campaign templates by entity name
      *
-     * @param string $id
+     * @param int|null $id
+     *
+     * @Rest\Get(requirements={"id"="\d*"})
      *
      * @ApiDoc(
      *     description="Get email campaign templates by entity name",

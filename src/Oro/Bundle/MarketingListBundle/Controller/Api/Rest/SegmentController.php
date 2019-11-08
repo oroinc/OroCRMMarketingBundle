@@ -12,6 +12,8 @@ use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * API CRUD controller for Segment entity.
+ *
  * @Rest\RouteResource("marketinglist_segment")
  * @Rest\NamePrefix("oro_api_")
  */
@@ -19,6 +21,8 @@ class SegmentController extends RestController implements ClassResourceInterface
 {
     /**
      * @param int $id
+     *
+     * @Rest\Post(requirements={"id"="\d+"})
      *
      * @ApiDoc(
      *      description="Run Static Marketing List Segment",
