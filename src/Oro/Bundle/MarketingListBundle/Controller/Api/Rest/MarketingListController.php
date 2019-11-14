@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Handles api requests related to the marketing lists.
+ *
  * @Rest\RouteResource("marketinglist")
  * @Rest\NamePrefix("oro_api_")
  */
@@ -22,6 +24,8 @@ class MarketingListController extends RestController implements ClassResourceInt
      * REST DELETE
      *
      * @param int $id
+     *
+     * @Rest\Delete(requirements={"id"="\d+"})
      *
      * @ApiDoc(
      *      description="Delete Marketing List",

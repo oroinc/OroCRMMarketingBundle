@@ -40,6 +40,8 @@ class MarketingListRemovedItemController extends RestController implements Class
      *
      * @param int $id
      *
+     * @Rest\Delete(requirements={"id"="\d+"})
+     *
      * @ApiDoc(
      *     description="Delete MarketingListRemovedItem",
      *     resource=true
@@ -60,7 +62,8 @@ class MarketingListRemovedItemController extends RestController implements Class
      * - HTTP_OK (200)
      *
      * @Rest\Post(
-     *      "/marketinglist/{marketingList}/remove/{id}"
+     *      "/marketinglist/{marketingList}/remove/{id}",
+     *      requirements={"marketingList"="\d+", "id"="\d+"}
      * )
      * @ApiDoc(description="Remove marketing list entity item", resource=true)
      * @AclAncestor("oro_marketing_list_removed_item_delete")
@@ -110,7 +113,8 @@ class MarketingListRemovedItemController extends RestController implements Class
      * @param int           $id
      *
      * @Rest\Post(
-     *      "/marketinglist/{marketingList}/unremove/{id}"
+     *      "/marketinglist/{marketingList}/unremove/{id}",
+     *      requirements={"marketingList"="\d+", "id"="\d+"}
      * )
      * @ApiDoc(
      *     description="Delete MarketingListRemovedItem by marketing list entity",
