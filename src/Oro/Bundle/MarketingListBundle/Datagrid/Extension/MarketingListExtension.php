@@ -22,9 +22,6 @@ class MarketingListExtension extends AbstractExtension
 {
     use HookUnionTrait;
 
-    /** @deprecated since 1.10. Use config->getName() instead */
-    const NAME_PATH = '[name]';
-
     /**
      * @var MarketingListHelper
      */

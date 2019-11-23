@@ -9,6 +9,9 @@ The current file describes significant changes in the code that may affect the u
 #### All Bundles
 * All `*.class` parameters were removed from the dependency injection container.
 
+#### MarketingListBundle
+* The deprecated constant `Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension::NAME_PATH` was removed.
+
 ## 4.0.0 (2019-07-31)
 [Show detailed list of changes](incompatibilities-4-0.md)
 
