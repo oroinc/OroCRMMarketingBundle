@@ -9,6 +9,10 @@ The current file describes significant changes in the code that may affect the u
 #### All Bundles
 * All `*.class` parameters were removed from the dependency injection container.
 
+#### CampaignBundle
+* The deprecated constant `Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticDatagridListener::PATH_NAME` was removed.
+* The deprecated constant `Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticGroupingListener::PATH_NAME` was removed.
+
 #### MarketingListBundle
 * The deprecated constant `Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension::NAME_PATH` was removed.
 

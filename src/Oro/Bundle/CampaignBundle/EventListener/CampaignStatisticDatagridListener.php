@@ -8,11 +8,11 @@ use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 
+/**
+ * Adds mixins for sent/unsent email campaign datagrids.
+ */
 class CampaignStatisticDatagridListener
 {
-    /** @deprecated since 1.10. Use config->getName() instead */
-    const PATH_NAME = '[name]';
-
     const MIXIN_SENT_NAME = 'oro-email-campaign-marketing-list-sent-items-mixin';
     const MIXIN_UNSENT_NAME = 'oro-email-campaign-marketing-list-unsent-items-mixin';
 

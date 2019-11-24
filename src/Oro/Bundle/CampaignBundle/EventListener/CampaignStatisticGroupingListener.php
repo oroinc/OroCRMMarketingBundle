@@ -7,11 +7,11 @@ use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
 
+/**
+ * Adds fields that are not mentioned in aggregate functions to GROUP BY for email campaign datagrids.
+ */
 class CampaignStatisticGroupingListener
 {
-    /** @deprecated since 1.10. Use config->getName() instead */
-    const PATH_NAME = '[name]';
-
     const MIXIN_NAME = 'orocrm-email-campaign-marketing-list-items-mixin';
     const MANUAL_MIXIN_NAME = 'orocrm-email-campaign-marketing-list-manual-items-mixin';
 
