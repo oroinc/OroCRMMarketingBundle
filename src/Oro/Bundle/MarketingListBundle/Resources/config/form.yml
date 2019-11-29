@@ -17,7 +17,6 @@ services:
 
     oro_marketing_list.form.marketing_list_removed_item:
         class: Symfony\Component\Form\Form
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         factory: ['@form.factory', createNamed]
         arguments:
@@ -26,7 +25,6 @@ services:
 
     oro_marketing_list.form.handler.marketing_list_removed_item:
         parent: oro_form.form_handler.api
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         calls:
             - [setForm, ['@oro_marketing_list.form.marketing_list_removed_item']]
@@ -43,7 +41,6 @@ services:
 
     oro_marketing_list.form.marketing_list_unsubscribed_item:
         class: Symfony\Component\Form\Form
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         factory: ['@form.factory', createNamed]
         arguments:
@@ -52,7 +49,6 @@ services:
 
     oro_marketing_list.form.handler.marketing_list_unsubscribed_item:
         parent: oro_form.form_handler.api
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         calls:
             - [setForm,  ["@oro_marketing_list.form.marketing_list_unsubscribed_item"]]

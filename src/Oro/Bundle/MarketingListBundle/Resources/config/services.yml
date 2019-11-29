@@ -16,7 +16,6 @@ services:
 
     oro_marketing_list.marketing_list.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
@@ -25,7 +24,6 @@ services:
 
     oro_marketing_list.marketing_list_removed_item.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
@@ -34,7 +32,6 @@ services:
 
     oro_marketing_list.marketing_list_unsubscribed_item.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
@@ -43,7 +40,6 @@ services:
 
     oro_marketing_list.contact_information_field_helper:
         class: Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         arguments:
             - "@oro_entity_config.provider.entity"

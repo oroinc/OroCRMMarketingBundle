@@ -15,7 +15,6 @@ services:
 
     oro_tracking.form.handler.tracking_website:
         class: Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         arguments:
             - '@oro_tracking.form.tracking_website'
@@ -24,7 +23,6 @@ services:
 
     oro_tracking.form.tracking_website:
         class: Symfony\Component\Form\Form
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         factory: ['@form.factory', createNamed]
         arguments:
@@ -33,7 +31,6 @@ services:
 
     oro_tracking.tracking_website.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
         parent: oro_soap.manager.entity_manager.abstract
         arguments:

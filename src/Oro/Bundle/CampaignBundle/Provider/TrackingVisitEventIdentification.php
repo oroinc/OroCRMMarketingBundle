@@ -2,23 +2,26 @@
 
 namespace Oro\Bundle\CampaignBundle\Provider;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentifierInterface;
 
+/**
+ * Checks if given tracking event is supported by identifier
+ */
 class TrackingVisitEventIdentification implements TrackingEventIdentifierInterface
 {
-    /** @var ObjectManager */
-    protected $em;
+    /** @var ManagerRegistry */
+    protected $registry;
 
     /**
-     * @param Registry  $doctrine
+     * @param ManagerRegistry $registry
      */
-    public function __construct(Registry $doctrine)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->em = $doctrine->getManager();
+        $this->registry = $registry;
     }
 
     /**
@@ -69,7 +72,10 @@ class TrackingVisitEventIdentification implements TrackingEventIdentifierInterfa
     public function processEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         $code = $trackingVisitEvent->getWebEvent()->getCode();
-        $campaign = $this->em->getRepository('OroCampaignBundle:Campaign')->findOneByCode($code);
+        $campaign = $this->registry->getManagerForClass(Campaign::class)
+            ->getRepository(Campaign::class)
+            ->findOneByCode($code);
+
         if ($campaign) {
             return [$campaign];
         }

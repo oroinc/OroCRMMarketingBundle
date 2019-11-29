@@ -22,12 +22,10 @@ services:
 
     oro_marketing_activity.normalizer.marketing_activity.section_data:
         class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer'
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
 
     oro_marketing_activity.section_data.filter.helper:
         class: 'Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper'
-        # This service marked as public for compatibility with Symfony 4. All dependencies must be refactored after BAP-17037
         public: true
 
     oro_marketing_activity.factory:
