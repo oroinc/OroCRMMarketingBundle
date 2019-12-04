@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\EventListener;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormInterface;
 class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $registry;
 
@@ -28,10 +28,10 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
     protected $tokenAccessor;
 
     /**
-     * @param RegistryInterface      $registry
+     * @param ManagerRegistry        $registry
      * @param TokenAccessorInterface $tokenAccessor
      */
-    public function __construct(RegistryInterface $registry, TokenAccessorInterface $tokenAccessor)
+    public function __construct(ManagerRegistry $registry, TokenAccessorInterface $tokenAccessor)
     {
         $this->registry = $registry;
         $this->tokenAccessor = $tokenAccessor;

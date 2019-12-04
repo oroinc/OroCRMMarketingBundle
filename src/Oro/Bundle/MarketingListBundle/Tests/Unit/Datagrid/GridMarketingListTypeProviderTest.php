@@ -19,7 +19,7 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->createMock('Symfony\Bridge\Doctrine\RegistryInterface');
+        $this->registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
 
         $this->provider = new GridMarketingListTypeProvider($this->registry);
     }

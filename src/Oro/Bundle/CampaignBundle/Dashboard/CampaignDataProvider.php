@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\CampaignBundle\Dashboard;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\DashboardBundle\Filter\DateFilterProcessor;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CampaignDataProvider
 {
@@ -14,7 +14,7 @@ class CampaignDataProvider
     const CAMPAIGN_OPPORTUNITY_COUNT   = 5;
     const CAMPAIGN_CLOSE_REVENUE_COUNT = 5;
 
-    /** @var RegistryInterface */
+    /** @var ManagerRegistry */
     protected $registry;
 
     /** @var AclHelper */
@@ -27,13 +27,13 @@ class CampaignDataProvider
     protected $qbTransformer;
 
     /**
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      * @param AclHelper $aclHelper
      * @param DateFilterProcessor $processor
      * @param CurrencyQueryBuilderTransformerInterface $qbTransformer
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         AclHelper $aclHelper,
         DateFilterProcessor $processor,
         CurrencyQueryBuilderTransformerInterface $qbTransformer

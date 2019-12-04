@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Handler;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
@@ -10,7 +11,6 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
 use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,8 +61,8 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|RegistryInterface $registry */
-        $registry = $this->createMock(RegistryInterface::class);
+        /** @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
 
         $this->manager = $this->createMock(EntityManager::class);
         $registry->expects($this->any())

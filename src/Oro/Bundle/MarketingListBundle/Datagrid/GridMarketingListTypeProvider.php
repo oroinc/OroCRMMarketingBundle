@@ -2,22 +2,22 @@
 
 namespace Oro\Bundle\MarketingListBundle\Datagrid;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class GridMarketingListTypeProvider
 {
     const MARKETING_LIST_TYPE = 'OroMarketingListBundle:MarketingListType';
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $registry;
 
     /**
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

@@ -26,7 +26,7 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit\Framework\Test
 
     protected function setUp()
     {
-        $this->registry = $this->createMock('Symfony\Bridge\Doctrine\RegistryInterface');
+        $this->registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->tokenAccessor = $this->createMock(TokenAccessorInterface::class);
 
         $this->form = $this
