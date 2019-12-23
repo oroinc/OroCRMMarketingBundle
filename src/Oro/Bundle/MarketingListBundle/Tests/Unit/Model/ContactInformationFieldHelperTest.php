@@ -4,6 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Model;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
@@ -59,20 +60,10 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->queryDesigner = $this
-            ->getMockForAbstractClass('Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner');
-
-        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->fieldProvider = $this->getMockBuilder('Oro\Bundle\EntityBundle\Provider\EntityFieldProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->configProvider = $this->createMock(ConfigProvider::class);
+        $this->queryDesigner = $this->createMock(AbstractQueryDesigner::class);
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $this->fieldProvider = $this->createMock(EntityFieldProvider::class);
 
         $this->helper = new ContactInformationFieldHelper(
             $this->configProvider,
@@ -100,20 +91,14 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 
         $this->queryDesigner->expects($this->once())
             ->method('getDefinition')
-            ->will(
-                $this->returnValue(
-                    json_encode(
-                        [
-                            'columns' => [
-                                ['name' => 'one'],
-                                ['name' => 'two'],
-                                ['name' => 'three'],
-                                ['name' => 'four']
-                            ]
-                        ]
-                    )
-                )
-            );
+            ->willReturn(json_encode([
+                'columns' => [
+                    ['name' => 'one'],
+                    ['name' => 'two'],
+                    ['name' => 'three'],
+                    ['name' => 'four']
+                ]
+            ]));
 
         $this->queryDesigner->expects($this->once())
             ->method('getEntity')
@@ -140,17 +125,14 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->configProvider->expects($this->atLeastOnce())
             ->method('hasConfig')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        [$entity, null, true],
-                        [$entity, 'one', true],
-                        [$entity, 'two', true],
-                        [$entity, 'three', true],
-                        [$entity, 'four', false]
-                    ]
-                )
-            );
+            ->willReturnMap([
+                [$entity, null, true],
+                [$entity, 'one', true],
+                [$entity, 'two', true],
+                [$entity, 'three', true],
+                [$entity, 'four', false],
+                [$entity, 'contactInformation', false]
+            ]);
 
         $entityConfig = $this->getConfig(
             'contact_information',
@@ -166,16 +148,12 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         );
         $this->configProvider->expects($this->atLeastOnce())
             ->method('getConfig')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        [$entity, null, $entityConfig],
-                        [$entity, 'one', $fieldNoInfoConfig],
-                        [$entity, 'two', $fieldWithInfoConfig],
-                        [$entity, 'three', $fieldNoInfoConfig]
-                    ]
-                )
-            );
+            ->willReturnMap([
+                [$entity, null, $entityConfig],
+                [$entity, 'one', $fieldNoInfoConfig],
+                [$entity, 'two', $fieldWithInfoConfig],
+                [$entity, 'three', $fieldNoInfoConfig]
+            ]);
     }
 
     /**
@@ -314,7 +292,7 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
      */
     protected function getConfig($key, $data)
     {
-        $config = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface');
+        $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->any())
             ->method('get')
             ->with($key)
