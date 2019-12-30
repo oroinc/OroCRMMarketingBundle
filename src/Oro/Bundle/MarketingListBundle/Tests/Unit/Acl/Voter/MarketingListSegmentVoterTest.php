@@ -2,55 +2,36 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Acl\Voter;
 
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Acl\Voter\MarketingListSegmentVoter;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingListSegmentVoter
-     */
-    protected $voter;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper */
+    private $doctrineHelper;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper
-     */
-    protected $doctrineHelper;
+    /** @var MarketingListSegmentVoter */
+    private $voter;
 
     protected function setUp()
     {
-        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
 
         $this->voter = new MarketingListSegmentVoter($this->doctrineHelper);
     }
 
-    protected function tearDown()
-    {
-        unset($this->voter);
-        unset($this->doctrineHelper);
-    }
-
     /**
      * @dataProvider attributesDataProvider
-     * @param array $attributes
-     * @param $marketingList
-     * @param $expected
      */
     public function testVote($attributes, $marketingList, $expected)
     {
-        $object = $this->getMockBuilder('Oro\Bundle\SegmentBundle\Entity\Segment')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $object = new Segment();
 
-        $this->doctrineHelper->expects($this->once())
-            ->method('getEntityClass')
-            ->with($object)
-            ->will($this->returnValue('\stdClass'));
-
-        $this->voter->setClassName('\stdClass');
+        $this->voter->setClassName(Segment::class);
 
         $this->doctrineHelper->expects($this->once())
             ->method('getSingleEntityIdentifier')
@@ -59,8 +40,7 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
 
         $this->assertMarketingListLoad($marketingList);
 
-        /** @var TokenInterface $token */
-        $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->createMock(TokenInterface::class);
         $this->assertEquals(
             $expected,
             $this->voter->vote($token, $object, $attributes)
@@ -72,9 +52,7 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
      */
     public function attributesDataProvider()
     {
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = new MarketingList();
 
         return [
             [['VIEW'], null, MarketingListSegmentVoter::ACCESS_ABSTAIN],
@@ -94,19 +72,15 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param $marketingList
      */
-    protected function assertMarketingListLoad($marketingList)
+    private function assertMarketingListLoad($marketingList)
     {
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(EntityRepository::class);
 
-        $repository
-            ->expects($this->any())
+        $repository->expects($this->any())
             ->method('findOneBy')
             ->will($this->returnValue($marketingList));
 
-        $this->doctrineHelper
-            ->expects($this->any())
+        $this->doctrineHelper->expects($this->any())
             ->method('getEntityRepository')
             ->will($this->returnValue($repository));
     }
