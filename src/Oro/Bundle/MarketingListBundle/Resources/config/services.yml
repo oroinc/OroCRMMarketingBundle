@@ -68,6 +68,7 @@ services:
 
     oro_marketing_list.entity_provider.contact_information:
         parent: oro_query_designer.entity_provider
+        lazy: true
         calls:
             - [setExclusionProvider,  ["@oro_marketing_list.provider.chain_exclusion"]]
 

@@ -55,7 +55,7 @@ class MarketingListController extends AbstractController
     {
         $this->checkMarketingList($entity);
 
-        $entityConfig = $this->get(EntityProvider::class)->getEntity($entity->getEntity());
+        $entityConfig = $this->getEntityProvider()->getEntity($entity->getEntity());
 
         return [
             'entity'   => $entity,
@@ -123,7 +123,7 @@ class MarketingListController extends AbstractController
             return array_merge(
                 $response,
                 [
-                    'entities' => $this->get(EntityProvider::class)->getEntities(),
+                    'entities' => $this->getEntityProvider()->getEntities(),
                     'metadata' => $this->get(Manager::class)->getMetadata('segment')
                 ]
             );
@@ -153,6 +153,14 @@ class MarketingListController extends AbstractController
     }
 
     /**
+     * @return EntityProvider
+     */
+    private function getEntityProvider()
+    {
+        return $this->get('oro_marketing_list.entity_provider');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedServices()
@@ -160,9 +168,9 @@ class MarketingListController extends AbstractController
         return array_merge(
             parent::getSubscribedServices(),
             [
+                'oro_marketing_list.entity_provider' => EntityProvider::class,
                 TranslatorInterface::class,
                 FeatureChecker::class,
-                EntityProvider::class,
                 UpdateHandlerFacade::class,
                 ValidatorInterface::class,
                 Manager::class,
