@@ -11,3 +11,9 @@ In order to use the package in your project, it needs to be added as a dependenc
         "oro/marketing": "1.0.*"
     }
 ```
+
+Resources
+---------
+
+  * [OroCommerce, OroCRM and OroPlatform Documentation](https://doc.oroinc.com)
+  * [Contributing](https://doc.oroinc.com/community/contribute/)
