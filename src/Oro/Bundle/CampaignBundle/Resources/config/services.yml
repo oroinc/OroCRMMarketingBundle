@@ -134,7 +134,7 @@ services:
         arguments:
             - "@oro_campaign.email_campaign.statistics_connector"
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: onClear }
 
     oro_campaign.listener.campaign_code_history:
         class: Oro\Bundle\CampaignBundle\EventListener\CampaignCodeHistoryListener

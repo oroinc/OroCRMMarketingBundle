@@ -2,15 +2,15 @@
 
 namespace Oro\Bundle\CampaignBundle\EventListener;
 
-use Doctrine\Common\EventSubscriber;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignStatisticsConnector;
 
-class EmailCampaignStatisticConnectorCacheClearListener implements EventSubscriber
+/**
+ * Clears the marketing list item cache when the entity manager is cleared.
+ */
+class EmailCampaignStatisticConnectorCacheClearListener
 {
-    /**
-     * @var EmailCampaignStatisticsConnector
-     */
-    protected $emailCampaignStatisticsConnector;
+    /** @var EmailCampaignStatisticsConnector */
+    private $emailCampaignStatisticsConnector;
 
     /**
      * @param EmailCampaignStatisticsConnector $emailCampaignStatisticsConnector
@@ -23,15 +23,5 @@ class EmailCampaignStatisticConnectorCacheClearListener implements EventSubscrib
     public function onClear()
     {
         $this->emailCampaignStatisticsConnector->clearMarketingListItemCache();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscribedEvents()
-    {
-        return [
-            'onClear'
-        ];
     }
 }
