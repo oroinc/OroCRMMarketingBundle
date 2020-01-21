@@ -4,6 +4,7 @@ oro:
         entity_description:  Marketing campaigns help track marketing budgets and outcomes of marketing actions.
         entity_label:        Campaign
         entity_plural_label: Campaigns
+        entity_grid_all_view_label: All %entity_plural_label%
         id.label:            Id
         name.label:          Name
         name.description:    This value should not exceed 100 characters.
@@ -72,6 +73,7 @@ oro:
             entity_description:  Marketing email campaigns
             entity_label:        Email Campaign
             entity_plural_label: Email Campaigns
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label:            Id
             name.label:          Name
             sender_email.label:  Sender Email
@@ -137,6 +139,7 @@ oro:
         emailcampaignstatistics:
             entity_label: Email Campaign Statistics
             entity_plural_label: Email Campaign Statistics
+            entity_grid_all_view_label: All %entity_plural_label%
             created_at.label: Created At
             email_campaign.label: Email Campaign
             id.label: Id
@@ -153,12 +156,14 @@ oro:
         internaltransportsettings:
             entity_label: Email Campaign Internal Transport Settings
             entity_plural_label: Email Campaign Internal Transport Settings
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             template.label: Template
 
         campaigncodehistory:
             entity_label: Campaign Code History
             entity_plural_label: Campaign Code History
+            entity_grid_all_view_label: All %entity_plural_label%
             id.label: Id
             campaign.label: Campaign
             code.label: Code
