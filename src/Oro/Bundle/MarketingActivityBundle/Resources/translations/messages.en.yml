@@ -3,6 +3,7 @@ oro:
         feature_enabled:               Enable Marketing Activities Features
         entity_label:                  Marketing Activity
         entity_plural_label:           Marketing Activities
+        entity_grid_all_view_label: All %entity_plural_label%
         entity_description:            The record of marketing activity statistics in context (e.g. orders, customer users).
         id.label:                      Id
         owner.label:                   Owner
