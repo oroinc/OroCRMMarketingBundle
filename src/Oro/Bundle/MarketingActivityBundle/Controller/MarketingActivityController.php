@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * Provides various marketing activity widgets.
+ *
  * @Route("/marketing-activity")
  */
 class MarketingActivityController extends Controller
@@ -59,7 +62,7 @@ class MarketingActivityController extends Controller
     {
         $entity = $this->get('oro_entity.routing_helper')->getEntity($entityClass, $entityId);
 
-        $campaignEntityClass = $this->container->getParameter('oro_campaign.entity.class');
+        $campaignEntityClass = Campaign::class;
         $configurationEntityKey = $this->get('oro_entity.routing_helper')->getUrlSafeClassName($campaignEntityClass);
 
         $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);

@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * CRUD for marketing campaigns.
+ *
  * @Route("/campaign")
  */
 class CampaignController extends Controller
@@ -22,7 +24,7 @@ class CampaignController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('oro_campaign.entity.class')
+            'entity_class' => Campaign::class
         ];
     }
 

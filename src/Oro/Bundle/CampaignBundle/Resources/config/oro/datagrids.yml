@@ -82,7 +82,7 @@ datagrids:
         mass_actions:
             merge:
                 type: merge
-                entity_name: '%oro_campaign.entity.class%'
+                entity_name: 'Oro\Bundle\CampaignBundle\Entity\Campaign'
                 data_identifier: c.id
         options:
             entity_pagination: true
@@ -131,7 +131,7 @@ datagrids:
                     - e.name
                     - COUNT(e.id) as visitsCount
                 from:
-                    - { table: '%oro_tracking.tracking_event.class%', alias: e }
+                    - { table: 'Oro\Bundle\TrackingBundle\Entity\TrackingEvent', alias: e }
 
     campaign-tracking-total-report-grid-precalculated:
         extends: campaign-tracking-total-report-grid-basic
@@ -141,7 +141,7 @@ datagrids:
                     - e.name
                     - SUM(e.visitCount) as visitsCount
                 from:
-                    - { table: '%oro_campaign.tracking_event_summary.class%', alias: e }
+                    - { table: 'Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary', alias: e }
 
     campaign-tracking-detailed-report-hour-grid:
         mixins:
@@ -155,7 +155,7 @@ datagrids:
                     - COUNT(e.id) as visitsCount
                     - CONCAT(DATE(e.loggedAt), ' ', TIME(CONCAT(HOUR(e.loggedAt), ':00:00'))) as logTime
                 from:
-                    - { table: '%oro_tracking.tracking_event.class%', alias: e }
+                    - { table: 'Oro\Bundle\TrackingBundle\Entity\TrackingEvent', alias: e }
                 groupBy: e.name, logTime
         columns:
             name:
@@ -194,7 +194,7 @@ datagrids:
                     - COUNT(e.id) as visitsCount
                     - DATE(e.loggedAt) as logTime
                 from:
-                    - { table: '%oro_tracking.tracking_event.class%', alias: e }
+                    - { table: 'Oro\Bundle\TrackingBundle\Entity\TrackingEvent', alias: e }
 
     campaign-tracking-detailed-report-day-grid-precalculated:
         extends: campaign-tracking-detailed-report-day-grid-basic
@@ -205,7 +205,7 @@ datagrids:
                     - SUM(e.visitCount) as visitsCount
                     - DATE(e.loggedAt) as logTime
                 from:
-                    - { table: '%oro_campaign.tracking_event_summary.class%', alias: e }
+                    - { table: 'Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary', alias: e }
 
     campaign-tracking-detailed-report-month-grid-basic:
         mixins:
@@ -236,7 +236,7 @@ datagrids:
                     - MONTH(e.loggedAt) as monthLoggedAt
                     - DATE(CONCAT(YEAR(e.loggedAt), '-', MONTH(e.loggedAt), '-01')) as logTime
                 from:
-                    - { table: '%oro_tracking.tracking_event.class%', alias: e }
+                    - { table: 'Oro\Bundle\TrackingBundle\Entity\TrackingEvent', alias: e }
 
     campaign-tracking-detailed-report-month-grid-precalculated:
         extends: campaign-tracking-detailed-report-month-grid-basic
@@ -249,7 +249,7 @@ datagrids:
                     - MONTH(e.loggedAt) as monthLoggedAt
                     - DATE(CONCAT(YEAR(e.loggedAt), '-', MONTH(e.loggedAt), '-01')) as logTime
                 from:
-                    - { table: '%oro_campaign.tracking_event_summary.class%', alias: e }
+                    - { table: 'Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary', alias: e }
 
     oro-email-campaign-grid:
         extended_entity_name: Oro\Bundle\CampaignBundle\Entity\EmailCampaign
