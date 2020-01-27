@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
+ * CRUD for tracking websites.
+ *
  * @Route("/tracking/website")
  */
 class TrackingWebsiteController extends Controller
@@ -35,7 +37,7 @@ class TrackingWebsiteController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => $this->container->getParameter('oro_tracking.tracking_website.class')
+            'entity_class' => TrackingWebsite::class
         ];
     }
 

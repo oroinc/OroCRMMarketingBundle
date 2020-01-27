@@ -1,9 +1,3 @@
-parameters:
-    oro_campaign.entity.class:                  Oro\Bundle\CampaignBundle\Entity\Campaign
-    oro_campaign.tracking_event_summary.class:  Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary
-    oro_campaign.email_campaign_statistics.class: Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics
-    oro_campaign.email_campaign.entity.class:   Oro\Bundle\CampaignBundle\Entity\EmailCampaign
-
 services:
     oro_campaign.campaign.form.type:
         class: Oro\Bundle\CampaignBundle\Form\Type\CampaignType
@@ -38,14 +32,14 @@ services:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - '%oro_campaign.entity.class%'
+            - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
             - "@doctrine.orm.entity_manager"
 
     oro_campaign.email_campaign.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - '%oro_campaign.email_campaign.entity.class%'
+            - 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign'
             - "@doctrine.orm.entity_manager"
 
     oro_campaign.data_transformer.multi_line:
@@ -54,7 +48,7 @@ services:
     oro_campaign.form.autocomplete.campaign.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - '%oro_campaign.entity.class%'
+            - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
             - ["name"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: campaigns, acl_resource: oro_campaign_view }
@@ -87,7 +81,7 @@ services:
             - "@oro_marketing_list.model.marketing_list_item_connector"
             - "@oro_entity.doctrine_helper"
         calls:
-            - [setEntityName, ['%oro_campaign.email_campaign_statistics.class%']]
+            - [setEntityName, ['Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics']]
 
     oro_campaign.email_campaign.sender:
         class: Oro\Bundle\CampaignBundle\Model\EmailCampaignSender

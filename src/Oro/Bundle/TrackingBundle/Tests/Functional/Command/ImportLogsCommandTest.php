@@ -4,6 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\Command;
 
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Oro\Bundle\TrackingBundle\Entity\TrackingData;
 use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -96,7 +97,7 @@ class ImportLogsCommandTest extends WebTestCase
             'import_log_to_database',
             [
                 ProcessorRegistry::TYPE_IMPORT => [
-                    'entityName' => $this->getContainer()->getParameter('oro_tracking.tracking_data.class'),
+                    'entityName' => TrackingData::class,
                     'processorAlias' => 'oro_tracking.processor.data',
                     'file' => $file,
                 ],

@@ -1,15 +1,8 @@
-parameters:
-    oro_tracking.tracking_website.class:                 Oro\Bundle\TrackingBundle\Entity\TrackingWebsite
-    oro_tracking.tracking_event.class:                   Oro\Bundle\TrackingBundle\Entity\TrackingEvent
-    oro_tracking.tracking_data.class:                    Oro\Bundle\TrackingBundle\Entity\TrackingData
-    oro_tracking.tracking_visit_event.class:             Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent
-    oro_tracking.tracking_visit.class:                   Oro\Bundle\TrackingBundle\Entity\TrackingVisit
-
 services:
     oro_tracking.form.type.tracking_website:
         class: Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType
         arguments:
-            - '%oro_tracking.tracking_website.class%'
+            - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
         tags:
             - { name: form.type, alias: oro_tracking_website }
 
@@ -34,7 +27,7 @@ services:
         public: true
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - '%oro_tracking.tracking_website.class%'
+            - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
             - '@doctrine.orm.entity_manager'
 
     oro_tracking.importexport.reader.log:
@@ -59,7 +52,7 @@ services:
         class: Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer
         parent: oro_importexport.serializer.configurable_entity_normalizer
         calls:
-            - [setEntityName, ['%oro_tracking.tracking_data.class%']]
+            - [setEntityName, ['Oro\Bundle\TrackingBundle\Entity\TrackingData']]
         tags:
             - { name: oro_importexport.normalizer, priority: 10 }
 
@@ -69,7 +62,7 @@ services:
             - [setDataConverter,  ['@oro_tracking.importexport.data_converter.data']]
             - [setStrategy,  ['@oro_tracking.importexport.strategy.data']]
         tags:
-            - { name: oro_importexport.processor, type: import, entity: '%oro_tracking.tracking_data.class%', alias: oro_tracking.processor.data }
+            - { name: oro_importexport.processor, type: import, entity: 'Oro\Bundle\TrackingBundle\Entity\TrackingData', alias: oro_tracking.processor.data }
 
     oro_tracking.config.listener:
         class: Oro\Bundle\TrackingBundle\EventListener\ConfigListener
@@ -93,7 +86,7 @@ services:
             - '@oro_config.global'
             - '@doctrine'
         tags:
-            - { name: doctrine.orm.entity_listener, entity: '%oro_tracking.tracking_visit.class%', event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit', event: prePersist }
 
     oro_tracking.migration.extension.tracking_identifier:
         class: Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension
