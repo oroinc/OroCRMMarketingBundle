@@ -16,6 +16,7 @@
         }
     },
     "require": {
+        "ext-curl": "*",
         "oro/platform": "4.1.*"
     },
     "repositories": {
