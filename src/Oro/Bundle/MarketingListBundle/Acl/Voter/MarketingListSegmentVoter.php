@@ -3,14 +3,18 @@
 namespace Oro\Bundle\MarketingListBundle\Acl\Voter;
 
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\SecurityBundle\Acl\BasicPermission;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
 
+/**
+ * Prevents editing and removal of segments that are used by marketing lists.
+ */
 class MarketingListSegmentVoter extends AbstractEntityVoter
 {
     /**
      * @var array
      */
-    protected $supportedAttributes = ['EDIT', 'DELETE'];
+    protected $supportedAttributes = [BasicPermission::EDIT, BasicPermission::DELETE];
 
     /**
      * @var array
@@ -38,7 +42,7 @@ class MarketingListSegmentVoter extends AbstractEntityVoter
         if (empty($this->marketingListBySegment[$segmentId])) {
             $segment = $this->doctrineHelper->getEntityReference($this->className, $segmentId);
             $marketingList = $this->doctrineHelper
-                ->getEntityRepository('OroMarketingListBundle:MarketingList')
+                ->getEntityRepository(MarketingList::class)
                 ->findOneBy(['segment' => $segment]);
             $this->marketingListBySegment[$segmentId] = $marketingList;
         }
