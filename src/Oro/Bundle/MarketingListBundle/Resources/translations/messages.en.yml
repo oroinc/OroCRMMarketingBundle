@@ -8,6 +8,7 @@ oro:
         feature_enabled: Enable Marketing List
         entity_label:        Marketing List
         entity_plural_label: Marketing Lists
+        entity_grid_all_view_label: All %entity_plural_label%
         description.label:   Description
         id.label:            Id
         last_run.label:      Last Used
@@ -79,6 +80,7 @@ oro:
         marketinglistitem:
             entity_label: Marketing List Item
             entity_plural_label: Marketing List Items
+            entity_grid_all_view_label: All %entity_plural_label%
             contacted_times.label: Contacted Times
             created_at.label: Created At
             entity_id.label: Entity Id
@@ -89,6 +91,7 @@ oro:
         marketinglistunsubscribeditem:
             entity_label: Marketing List Unsubscribed Item
             entity_plural_label: Marketing List Unsubscribed Items
+            entity_grid_all_view_label: All %entity_plural_label%
             created_at.label: Created At
             entity_id.label: Entity Id
             id.label: Id
@@ -97,12 +100,14 @@ oro:
         marketinglisttype:
             entity_label: Marketing List Type
             entity_plural_label: Marketing List Types
+            entity_grid_all_view_label: All %entity_plural_label%
             label.label: Label
             name.label: Name
 
         marketinglistremoveditem:
             entity_label: Marketing List Removed Item
             entity_plural_label: Marketing List Removed Items
+            entity_grid_all_view_label: All %entity_plural_label%
             created_at.label: Created At
             entity_id.label: Entity Id
             id.label: Id
