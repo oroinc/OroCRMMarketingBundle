@@ -7,6 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Adds charts for campaign leads, campaign opportunity, campaign by close revenue
+ */
 class DashboardController extends Controller
 {
     const CAMPAIGN_LEAD_COUNT          = 5;
@@ -17,7 +20,7 @@ class DashboardController extends Controller
      * @Route(
      *      "/campaign_lead/chart/{widget}",
      *      name="oro_campaign_dashboard_campaigns_leads_chart",
-     *      requirements={"widget"="[\w-]+"}
+     *      requirements={"widget"="[\w\-]+"}
      * )
      * @Template("OroCampaignBundle:Dashboard:campaignLeads.html.twig")
      * @param Request $request
@@ -54,7 +57,7 @@ class DashboardController extends Controller
      * @Route(
      *      "/campaign_opportunity/chart/{widget}",
      *      name="oro_campaign_dashboard_campaigns_opportunity_chart",
-     *      requirements={"widget"="[\w-]+"}
+     *      requirements={"widget"="[\w\-]+"}
      * )
      * @Template("OroCampaignBundle:Dashboard:campaignOpportunity.html.twig")
      * @param Request $request
@@ -92,7 +95,7 @@ class DashboardController extends Controller
      * @Route(
      *      "/campaign_by_close_revenue/chart/{widget}",
      *      name="oro_campaign_dashboard_campaigns_by_close_revenue_chart",
-     *      requirements={"widget"="[\w-]+"}
+     *      requirements={"widget"="[\w\-]+"}
      * )
      * @Template("OroCampaignBundle:Dashboard:campaignByCloseRevenue.html.twig")
      * @param Request $request
