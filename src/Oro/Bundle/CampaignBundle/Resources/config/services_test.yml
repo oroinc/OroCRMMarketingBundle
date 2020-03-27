@@ -1,0 +1,4 @@
+services:
+    oro_campaign.test.dashboard.campaign_data_provider:
+        alias: oro_campaign.dashboard.campaign_data_provider
+        public: true
