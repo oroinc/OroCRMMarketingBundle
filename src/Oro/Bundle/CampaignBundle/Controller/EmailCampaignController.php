@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller;
 
+use Oro\Bundle\CampaignBundle\Async\Topics;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
@@ -9,6 +10,7 @@ use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -21,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Serve CRUD of EmailCampaign entity.
+ * Email Campaign related controller (Create/Update/View/Send)
  *
  * @Route("/campaign/email")
  */
@@ -151,15 +153,21 @@ class EmailCampaignController extends AbstractController
      *      category="marketing"
      * )
      *
-     * @param EmailCampaign $entity
+     * @param EmailCampaign $emailCampaign
      * @return RedirectResponse
      */
-    public function sendAction(EmailCampaign $entity)
+    public function sendAction(EmailCampaign $emailCampaign)
     {
-        if ($this->isManualSendAllowed($entity)) {
-            $senderFactory = $this->get(EmailCampaignSenderBuilder::class);
-            $sender = $senderFactory->getSender($entity);
-            $sender->send();
+        if ($this->isManualSendAllowed($emailCampaign)) {
+            // Schedule email campaign sending
+            $messageProducer = $this->get(MessageProducerInterface::class);
+            $messageProducer->send(Topics::SEND_EMAIL_CAMPAIGN, ['email_campaign' => $emailCampaign->getId()]);
+
+            // Update sent status to hide send button
+            $manager = $this->getDoctrine()->getManagerForClass(EmailCampaign::class);
+            $emailCampaign->setSent(true);
+            $manager->persist($emailCampaign);
+            $manager->flush($emailCampaign);
 
             $this->get(SessionInterface::class)->getFlashBag()->add(
                 'success',
@@ -175,7 +183,7 @@ class EmailCampaignController extends AbstractController
         return $this->redirect(
             $this->generateUrl(
                 'oro_email_campaign_view',
-                ['id' => $entity->getId()]
+                ['id' => $emailCampaign->getId()]
             )
         );
     }
@@ -217,6 +225,7 @@ class EmailCampaignController extends AbstractController
                 SessionInterface::class,
                 TranslatorInterface::class,
                 ValidatorInterface::class,
+                MessageProducerInterface::class
             ]
         );
     }

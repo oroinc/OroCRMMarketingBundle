@@ -482,6 +482,8 @@ datagrids:
                 bounceCount:      { data_name: cs.bounceCount }
                 abuseCount:       { data_name: cs.abuseCount }
                 unsubscribeCount: { data_name: cs.unsubscribeCount }
+        options:
+            add_contacted_items: true
 
     oro-campaign-code-history-mixin:
         source:

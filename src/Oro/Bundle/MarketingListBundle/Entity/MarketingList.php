@@ -176,10 +176,12 @@ class MarketingList extends ExtendMarketingList
     protected $updatedAt;
 
     /**
-     * Runtime value to disable union, used to retrieve actual ML entities without MLI/MLRI/MLUI
+     * Value to disable union, used to retrieve actual ML entities without MLI/MLRI/MLUI
      * @see \Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension::isApplicable
      *
      * @var bool
+     *
+     * @ORM\Column(name="union_contacted_items", type="boolean", nullable=false, options={"default"=true})
      */
     protected $union = true;
 
