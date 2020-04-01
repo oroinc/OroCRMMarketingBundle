@@ -27,6 +27,7 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
         type: '@marketing_list_dynamic_type'
         entity: 'Oro\Bundle\ContactBundle\Entity\Contact'
         segment: '@contact_segment'
+        union: true
 
     contact_email_segment_marketinglist:
         owner: '@admin'
@@ -35,3 +36,4 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
         type: '@marketing_list_dynamic_type'
         entity: 'Oro\Bundle\ContactBundle\Entity\Contact'
         segment: '@contact_email_segment'
+        union: true

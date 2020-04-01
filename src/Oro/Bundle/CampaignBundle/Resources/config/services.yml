@@ -212,6 +212,16 @@ services:
             - '@oro_dashboard.filter.date_filter_processor'
             - '@oro_currency.query.currency_transformer'
 
+    oro_campaign.async.email_campaign_send_processor:
+        class: Oro\Bundle\CampaignBundle\Async\EmailCampaignSendProcessor
+        arguments:
+            - '@logger'
+            - '@doctrine'
+            - '@oro_campaign.email_campaign.sender.builder'
+            - '@oro_message_queue.job.runner'
+        tags:
+            - { name: oro_message_queue.client.message_processor }
+
     oro_campaign.validator.campaign_code:
         class: Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator
         arguments:

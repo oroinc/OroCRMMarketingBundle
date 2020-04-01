@@ -16,7 +16,7 @@ use Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
-use Oro\Component\DoctrineUtils\ORM\HookUnionTrait;
+use Oro\Component\DoctrineUtils\ORM\Walker\UnionOutputResultModifier;
 
 class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 {
@@ -50,7 +50,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(false));
 
         $config
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('grid'));
 
@@ -211,8 +211,8 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
                     ->expects($this->exactly(2))
                     ->method('setDefaultQueryHint')
                     ->withConsecutive(
-                        [HookUnionTrait::$walkerHookUnionKey],
-                        [HookUnionTrait::$walkerHookUnionValue]
+                        [UnionOutputResultModifier::HINT_UNION_KEY],
+                        [UnionOutputResultModifier::HINT_UNION_VALUE]
                     );
             }
         }
@@ -248,7 +248,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(true));
 
         $config
-            ->expects($this->atLeastOnce())
+            ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($gridName));
 

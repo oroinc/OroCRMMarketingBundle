@@ -17,7 +17,7 @@ class OroMarketingListBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_6';
+        return 'v1_6_1';
     }
 
     /**
@@ -72,6 +72,7 @@ class OroMarketingListBundleInstaller implements Installation
         $table->addColumn('last_run', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
+        $table->addColumn('union_contacted_items', 'boolean', ['notnull' => true, 'default' => true]);
         $table->addIndex(['owner_id'], 'idx_3acc3ba7e3c61f9', []);
         $table->addIndex(['segment_id'], 'idx_3acc3badb296aad', []);
         $table->addIndex(['type'], 'idx_3acc3ba8cde5729', []);
