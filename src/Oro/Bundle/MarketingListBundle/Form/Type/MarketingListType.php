@@ -4,6 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\EntityBundle\Form\Type\EntityFieldSelectType;
+use Oro\Bundle\FormBundle\Form\Type\CheckboxType;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType as MarketingListTypeEntity;
@@ -29,6 +30,7 @@ class MarketingListType extends AbstractQueryDesignerType
     {
         $builder
             ->add('name', TextType::class, ['required' => true])
+            ->add('union', CheckboxType::class)
             ->add('entity', ContactInformationEntityChoiceType::class, ['required' => true])
             ->add('description', OroResizeableRichTextType::class, ['required' => false]);
 
@@ -96,7 +98,7 @@ class MarketingListType extends AbstractQueryDesignerType
         $options = array_merge(
             $this->getDefaultOptions(),
             [
-                'data_class' => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
+                'data_class' => MarketingList::class,
                 'csrf_token_id' => 'marketing_list',
                 'query_type' => 'segment',
             ]

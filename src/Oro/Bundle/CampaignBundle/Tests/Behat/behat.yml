@@ -15,6 +15,7 @@ oro_behat_extension:
         - OroCampaignBundle::CampaignFeatureToggleContext
         - OroConfigBundle::FeatureContext
         - OroFormBundle::FormContext
+        - OroFilterBundle::FilterContext
         - OroMarketingListBundle::MarketingListContext
       paths:
         - '@OroCampaignBundle/Tests/Behat/Features'
