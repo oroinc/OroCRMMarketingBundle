@@ -169,10 +169,6 @@ class EmailCampaignSender
                 }
             }
         }
-
-        $this->emailCampaign->setSent(true);
-        $manager->persist($this->emailCampaign);
-        $manager->flush();
     }
 
     /**

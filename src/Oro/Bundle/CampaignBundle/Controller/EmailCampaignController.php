@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller;
 
+use Oro\Bundle\CampaignBundle\Async\Topics;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -10,9 +11,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * Email Campaign related controller (Create/Update/View/Send)
+ *
  * @Route("/campaign/email")
  */
 class EmailCampaignController extends Controller
@@ -151,15 +153,21 @@ class EmailCampaignController extends Controller
      *      category="marketing"
      * )
      *
-     * @param EmailCampaign $entity
+     * @param EmailCampaign $emailCampaign
      * @return array
      */
-    public function sendAction(EmailCampaign $entity)
+    public function sendAction(EmailCampaign $emailCampaign)
     {
-        if ($this->isManualSendAllowed($entity)) {
-            $senderFactory = $this->get('oro_campaign.email_campaign.sender.builder');
-            $sender = $senderFactory->getSender($entity);
-            $sender->send($entity);
+        if ($this->isManualSendAllowed($emailCampaign)) {
+            // Schedule email campaign sending
+            $messageProducer = $this->get('oro_message_queue.message_producer');
+            $messageProducer->send(Topics::SEND_EMAIL_CAMPAIGN, ['email_campaign' => $emailCampaign->getId()]);
+
+            // Update sent status to hide send button
+            $manager = $this->getDoctrine()->getManagerForClass(EmailCampaign::class);
+            $emailCampaign->setSent(true);
+            $manager->persist($emailCampaign);
+            $manager->flush($emailCampaign);
 
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -175,7 +183,7 @@ class EmailCampaignController extends Controller
         return $this->redirect(
             $this->generateUrl(
                 'oro_email_campaign_view',
-                ['id' => $entity->getId()]
+                ['id' => $emailCampaign->getId()]
             )
         );
     }

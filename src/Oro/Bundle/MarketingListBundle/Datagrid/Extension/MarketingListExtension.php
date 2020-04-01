@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Datagrid\Extension;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\ORM\QueryBuilder;
@@ -11,9 +10,10 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
-use Oro\Component\DoctrineUtils\ORM\HookUnionTrait;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
+use Oro\Component\DoctrineUtils\ORM\Walker\UnionOutputResultModifier;
 
 /**
  * For segment based marketing lists show not only segment results but also already contacted entities.
@@ -21,8 +21,6 @@ use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
  */
 class MarketingListExtension extends AbstractExtension
 {
-    use HookUnionTrait;
-
     /** @deprecated since 1.10. Use config->getName() instead */
     const NAME_PATH = '[name]';
 
@@ -58,8 +56,6 @@ class MarketingListExtension extends AbstractExtension
             return false;
         }
 
-        $gridName = $config->getName();
-
         $cacheKey = $this->getCacheKey($config);
         if (array_key_exists($cacheKey, $this->applicable)) {
             return $this->applicable[$cacheKey];
@@ -67,23 +63,43 @@ class MarketingListExtension extends AbstractExtension
 
         if (!$config->isOrmDatasource()) {
             $this->applicable[$cacheKey] = false;
+
             return false;
         }
 
-        $this->marketingListId = $this->marketingListHelper->getMarketingListIdByGridName($gridName);
+        $this->marketingListId = $this->marketingListHelper->getMarketingListIdByGridName($config->getName());
         if (!$this->marketingListId) {
             $this->applicable[$cacheKey] = false;
+
             return false;
         }
 
         $marketingList = $this->marketingListHelper->getMarketingList($this->marketingListId);
 
+        // Accept only segment based marketing lists
+        return $this->isMarketingListApplicable($marketingList, $config, $cacheKey);
+    }
+
+    /**
+     * @param MarketingList|null $marketingList
+     * @param DatagridConfiguration $config
+     * @param string $cacheKey
+     * @return bool
+     */
+    private function isMarketingListApplicable(
+        ?MarketingList $marketingList,
+        DatagridConfiguration $config,
+        string $cacheKey
+    ): bool {
         if (!$marketingList || $marketingList->isManual()) {
             $this->applicable[$cacheKey] = false;
+
             return false;
         }
 
-        if (!$marketingList->isUnion()) {
+        if (empty($config['options']['add_contacted_items']) && !$marketingList->isUnion()) {
+            $this->applicable[$cacheKey] = false;
+
             return false;
         }
 
@@ -92,10 +108,10 @@ class MarketingListExtension extends AbstractExtension
         // We should skip the configuration if it do not contain at least one filter
         if (empty($definition['filters'])) {
             $this->applicable[$cacheKey] = false;
+
             return false;
         }
 
-        // Accept only segment based marketing lists
         return true;
     }
 
@@ -125,21 +141,21 @@ class MarketingListExtension extends AbstractExtension
             return;
         }
 
-        $entityManager    = $qb->getEntityManager();
-        $itemsQuery       = $this->createItemsQuery($entityManager);
-        $uniqueIdentifier = QueryBuilderUtil::generateParameterName(HookUnionTrait::$walkerHookUnionKey);
+        $entityManager = $qb->getEntityManager();
+        $itemsQuery = $this->createItemsQuery($entityManager);
+        $uniqueIdentifier = QueryBuilderUtil::generateParameterName(UnionOutputResultModifier::HINT_UNION_KEY);
         $walkerHook = " AND '$uniqueIdentifier' = '$uniqueIdentifier'";
 
         $configuration = $entityManager->getConfiguration();
-        $configuration->setDefaultQueryHint(HookUnionTrait::$walkerHookUnionKey, $walkerHook);
-        $configuration->setDefaultQueryHint(HookUnionTrait::$walkerHookUnionValue, $itemsQuery);
+        $configuration->setDefaultQueryHint(UnionOutputResultModifier::HINT_UNION_KEY, $walkerHook);
+        $configuration->setDefaultQueryHint(UnionOutputResultModifier::HINT_UNION_VALUE, $itemsQuery);
 
         $qb->resetDQLPart('where');
 
         /** @var string|Func $part */
         foreach ($parts as $part) {
             if (!is_string($part)) {
-                $part = new Func($part->getName(), $part->getArguments()[0].$walkerHook);
+                $part = new Func($part->getName(), $part->getArguments()[0] . $walkerHook);
             }
 
             $qb->andWhere($part);

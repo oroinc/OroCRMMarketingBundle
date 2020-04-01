@@ -3,11 +3,13 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\EntityBundle\Form\Type\EntityFieldSelectType;
+use Oro\Bundle\FormBundle\Form\Type\CheckboxType;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
 use Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType;
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilder;
 
 class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -23,9 +25,7 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildForm()
     {
-        $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $builder = $this->createMock(FormBuilder::class);
 
         $builder->expects($this->at(0))
             ->method('add')
@@ -39,13 +39,21 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
         $builder->expects($this->at(1))
             ->method('add')
             ->with(
+                'union',
+                CheckboxType::class
+            )
+            ->will($this->returnSelf());
+
+        $builder->expects($this->at(2))
+            ->method('add')
+            ->with(
                 'entity',
                 ContactInformationEntityChoiceType::class,
                 ['required' => true]
             )
             ->will($this->returnSelf());
 
-        $builder->expects($this->at(2))
+        $builder->expects($this->at(3))
             ->method('add')
             ->with(
                 'description',
@@ -54,7 +62,7 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
             )
             ->will($this->returnSelf());
 
-        $builder->expects($this->at(4))
+        $builder->expects($this->at(5))
             ->method('add')
             ->with(
                 'definition',
@@ -84,6 +92,10 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
                 ]
             );
 
-        $this->type->configureOptions($resolver);
+        $this->type->configureOptions($resolver, [
+            'data_class' => MarketingList::class,
+            'csrf_token_id' => 'marketing_list',
+            'query_type' => 'segment',
+        ]);
     }
 }
