@@ -31,7 +31,7 @@ class CampaignControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $result  = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains("Campaign saved", $crawler->html());
+        static::assertStringContainsString("Campaign saved", $crawler->html());
     }
 
     /**
@@ -57,7 +57,7 @@ class CampaignControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $result  = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains("Campaign saved", $crawler->html());
+        static::assertStringContainsString("Campaign saved", $crawler->html());
     }
 
     /**
