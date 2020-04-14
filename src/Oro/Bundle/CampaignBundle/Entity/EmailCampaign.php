@@ -11,6 +11,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
+ * Email Campaign entity.
+ *
  * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository")
  * @ORM\Table(
  *      name="orocrm_campaign_email",
@@ -18,6 +20,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  * )
  * @ORM\HasLifecycleCallbacks()
  * @Config(
+ *      routeName="oro_email_campaign_index",
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-envelope"
