@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MarketingListControllerTest extends WebTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateWsseAuthHeader());
     }

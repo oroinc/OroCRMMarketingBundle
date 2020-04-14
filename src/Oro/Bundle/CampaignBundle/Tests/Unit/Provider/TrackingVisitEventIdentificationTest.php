@@ -16,7 +16,7 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
     /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $em;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->em = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
             ->disableOriginalConstructor()

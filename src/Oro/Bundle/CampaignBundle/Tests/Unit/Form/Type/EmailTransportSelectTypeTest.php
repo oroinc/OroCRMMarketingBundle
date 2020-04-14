@@ -20,7 +20,7 @@ class EmailTransportSelectTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup test env
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->emailTransportProvider = $this
             ->getMockBuilder('Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider')

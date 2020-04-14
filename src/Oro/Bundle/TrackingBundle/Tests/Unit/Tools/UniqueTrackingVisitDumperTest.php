@@ -32,7 +32,7 @@ class UniqueTrackingVisitDumperTest extends \PHPUnit\Framework\TestCase
      */
     private $dumper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);
         $this->logger = $this->createMock(LoggerInterface::class);

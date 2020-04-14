@@ -45,7 +45,7 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
      */
     private $processor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->registry = $this->createMock(ManagerRegistry::class);

@@ -7,7 +7,7 @@ use Oro\Bundle\MarketingActivityBundle\QueryDesigner\UnsubscribeTypeCountFunctio
 
 class UnsubscribeTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->function = new UnsubscribeTypeCountFunction();
         $this->type = MarketingActivity::TYPE_UNSUBSCRIBE;

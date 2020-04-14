@@ -7,7 +7,7 @@ use Oro\Bundle\MarketingActivityBundle\QueryDesigner\ClickTypeCountFunction;
 
 class ClickTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->function = new ClickTypeCountFunction();
         $this->type = MarketingActivity::TYPE_CLICK;

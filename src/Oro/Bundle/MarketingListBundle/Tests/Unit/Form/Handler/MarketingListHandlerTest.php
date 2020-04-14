@@ -59,7 +59,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
      */
     protected $testEntity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry $registry */
         $registry = $this->createMock(ManagerRegistry::class);

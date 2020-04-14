@@ -17,7 +17,7 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->extension = new IdentifierVisitGeneratorExtension();
     }
@@ -25,7 +25,7 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
     }

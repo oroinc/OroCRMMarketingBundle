@@ -17,7 +17,7 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
      */
     protected $fieldProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->relationProvider = $this
             ->getMockBuilder('Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider')
@@ -27,7 +27,7 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
         $this->fieldProvider = new MarketingListItemVirtualFieldProvider($this->relationProvider);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->fieldProvider, $this->relationProvider);
     }

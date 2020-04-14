@@ -32,7 +32,7 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit\Framework\TestCase
      */
     private $processor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->trackingVisitDumper = $this->createMock(UniqueTrackingVisitDumper::class);
         $this->configManager = $this->createMock(ConfigManager::class);

@@ -15,7 +15,7 @@ class MarketingListTypeUnsubscribedItemTypeTest extends \PHPUnit\Framework\TestC
     /**
      * Setup test env
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->type = new MarketingListTypeUnsubscribedItemType();
     }

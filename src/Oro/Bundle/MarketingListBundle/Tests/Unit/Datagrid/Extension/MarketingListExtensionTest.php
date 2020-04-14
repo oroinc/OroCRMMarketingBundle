@@ -32,7 +32,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
     /** @var \PHPUnit\Framework\MockObject\MockObject|Configuration */
     protected $emConfiguration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingListHelper = $this->createMock(MarketingListHelper::class);
 

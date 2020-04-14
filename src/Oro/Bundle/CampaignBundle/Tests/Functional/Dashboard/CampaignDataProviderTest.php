@@ -14,7 +14,7 @@ class CampaignDataProviderTest extends WebTestCase
      */
     private $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists('Oro\Bundle\SalesBundle\OroSalesBundle')) {
             $this->markTestSkipped('CampaignDataProvider could be used only with SalesBundle installed');

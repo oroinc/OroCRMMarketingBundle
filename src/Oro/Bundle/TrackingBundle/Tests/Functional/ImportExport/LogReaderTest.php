@@ -33,7 +33,7 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
      */
     protected $reader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contextRegistry = $this->createMock(ContextRegistry::class);
         $this->context = $this->createMock(ContextInterface::class);

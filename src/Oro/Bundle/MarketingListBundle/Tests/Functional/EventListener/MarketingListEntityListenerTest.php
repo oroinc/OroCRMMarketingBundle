@@ -16,7 +16,7 @@ class MarketingListEntityListenerTest extends WebTestCase
     const CACHE_KEY = 'some';
     const CACHE_VALUE = 'value';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], self::generateBasicAuthHeader());
     }

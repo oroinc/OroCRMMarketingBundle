@@ -26,7 +26,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected $registry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingListHelper = $this
             ->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\MarketingListHelper')

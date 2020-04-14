@@ -22,7 +22,7 @@ class EmailCampaignStatisticsConnectorTest extends \PHPUnit\Framework\TestCase
      */
     protected $connector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingListItemConnector = $this
             ->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\MarketingListItemConnector')

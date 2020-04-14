@@ -10,7 +10,7 @@ class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
     /** @var EmailCampaignType */
     protected $type;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $transportProvider = $this
             ->getMockBuilder('Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider')
@@ -20,7 +20,7 @@ class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
         $this->type = new EmailCampaignType($transportProvider);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->type);
     }

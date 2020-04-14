@@ -13,7 +13,7 @@ class TrackingDataTest extends \PHPUnit\Framework\TestCase
      */
     protected $data;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->data = new TrackingData();
     }

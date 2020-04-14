@@ -12,12 +12,12 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
      */
     protected $entity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entity = new MarketingListType(MarketingListType::TYPE_DYNAMIC);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->entity);
     }

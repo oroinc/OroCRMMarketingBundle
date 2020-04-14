@@ -12,7 +12,7 @@ abstract class AbstractEntityTestCase extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $name         = $this->getEntityFQCN();
         $this->entity = new $name();
@@ -21,7 +21,7 @@ abstract class AbstractEntityTestCase extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         unset($this->entity);
     }

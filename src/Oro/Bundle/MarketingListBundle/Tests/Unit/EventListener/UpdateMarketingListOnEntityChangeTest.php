@@ -50,7 +50,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
      */
     private $unitOfWork;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->messageProducer = $this->getMockBuilder(MessageProducerInterface::class)
             ->getMock();

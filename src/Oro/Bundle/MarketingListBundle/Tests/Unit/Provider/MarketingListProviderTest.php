@@ -25,7 +25,7 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dataGridManager = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Manager')
             ->disableOriginalConstructor()
@@ -34,7 +34,7 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
         $this->provider = new MarketingListProvider($this->dataGridManager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->provider, $this->dataGridManager);
     }

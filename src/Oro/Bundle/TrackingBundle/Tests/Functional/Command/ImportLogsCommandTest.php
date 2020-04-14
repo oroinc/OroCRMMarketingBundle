@@ -27,7 +27,7 @@ class ImportLogsCommandTest extends WebTestCase
      */
     protected $logsDir;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
 

@@ -76,7 +76,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
      */
     protected $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingListProvider = $this->createMock(MarketingListProvider::class);
         $this->configManager = $this->createMock(ConfigManager::class);
@@ -101,7 +101,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $this->sender->setLogger($this->logger);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->sender);
     }

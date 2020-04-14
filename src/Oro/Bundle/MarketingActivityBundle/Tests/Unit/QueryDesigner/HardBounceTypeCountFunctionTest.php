@@ -7,7 +7,7 @@ use Oro\Bundle\MarketingActivityBundle\QueryDesigner\HardBounceTypeCountFunction
 
 class HardBounceTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->function = new HardBounceTypeCountFunction();
         $this->type = MarketingActivity::TYPE_HARD_BOUNCE;

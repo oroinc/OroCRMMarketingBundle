@@ -23,7 +23,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
             ->disableOriginalConstructor()

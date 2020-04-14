@@ -14,7 +14,7 @@ class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->trackingEvents = new TrackingEventDictionary();
     }
@@ -22,7 +22,7 @@ class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->trackingEvents);
     }

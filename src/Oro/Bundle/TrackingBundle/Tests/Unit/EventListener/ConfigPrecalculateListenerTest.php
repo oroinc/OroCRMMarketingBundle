@@ -19,7 +19,7 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected $listener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->producer = $this->createMock(MessageProducerInterface::class);
 

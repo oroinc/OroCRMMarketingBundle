@@ -23,7 +23,7 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
      */
     protected $condition;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contextAccessor = new ContextAccessor();
         $this->fieldsProvider = $this

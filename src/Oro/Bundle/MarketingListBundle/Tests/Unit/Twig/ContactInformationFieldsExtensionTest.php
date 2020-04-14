@@ -16,7 +16,7 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
     /** @var ContactInformationFieldsExtension */
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->helper = $this->getMockBuilder(ContactInformationFieldHelper::class)
             ->disableOriginalConstructor()
@@ -29,7 +29,7 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
         $this->extension = new ContactInformationFieldsExtension($container);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
         unset($this->helper);

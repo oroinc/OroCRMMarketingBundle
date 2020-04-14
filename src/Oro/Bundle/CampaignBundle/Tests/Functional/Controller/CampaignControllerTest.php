@@ -9,7 +9,7 @@ class CampaignControllerTest extends WebTestCase
     const TEST_CODE         = 'code-1234';
     const UPDATED_TEST_CODE = 'updated-code-1234';
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->initClient(['debug' => false], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);

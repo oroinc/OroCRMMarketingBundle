@@ -17,7 +17,7 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListSegmentVoter */
     private $voter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
 

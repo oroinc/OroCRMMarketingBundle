@@ -24,7 +24,7 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit\Framework\Test
     /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $form;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->tokenAccessor = $this->createMock(TokenAccessorInterface::class);

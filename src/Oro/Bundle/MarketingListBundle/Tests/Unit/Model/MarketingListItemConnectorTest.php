@@ -21,7 +21,7 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
      */
     protected $connector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\ManagerRegistry')
             ->disableOriginalConstructor()
@@ -32,7 +32,7 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
         $this->connector = new MarketingListItemConnector($this->registry, $this->doctrineHelper);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->connector);
         unset($this->doctrineHelper);

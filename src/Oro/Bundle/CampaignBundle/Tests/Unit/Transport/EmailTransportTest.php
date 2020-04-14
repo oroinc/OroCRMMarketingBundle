@@ -36,7 +36,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
      */
     protected $emailHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->processor = $this
             ->getMockBuilder('Oro\Bundle\EmailBundle\Mailer\Processor')

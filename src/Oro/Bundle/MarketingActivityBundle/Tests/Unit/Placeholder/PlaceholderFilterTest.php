@@ -24,7 +24,7 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     /** @var \PHPUnit\Framework\MockObject\MockObject */
     protected $featureChecker;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->doctrineHelper = $this
             ->getMockBuilder('\Oro\Bundle\EntityBundle\ORM\DoctrineHelper')

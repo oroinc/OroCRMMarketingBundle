@@ -37,7 +37,7 @@ class ContextReaderTest extends \PHPUnit\Framework\TestCase
      */
     protected $reader;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->contextRegistry = $this
             ->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')

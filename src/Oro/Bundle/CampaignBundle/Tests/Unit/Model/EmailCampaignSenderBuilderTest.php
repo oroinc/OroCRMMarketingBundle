@@ -17,7 +17,7 @@ class EmailCampaignSenderBuilderTest extends \PHPUnit\Framework\TestCase
      */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->campaignSender = $this
             ->getMockBuilder('Oro\Bundle\CampaignBundle\Model\EmailCampaignSender')

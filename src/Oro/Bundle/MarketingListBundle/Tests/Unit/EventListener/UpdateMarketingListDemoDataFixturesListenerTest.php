@@ -48,7 +48,7 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit\Framework
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->listenerManager = $this->createMock(OptionalListenerManager::class);
         $this->entityProvider = $this->createMock(EntityProvider::class);

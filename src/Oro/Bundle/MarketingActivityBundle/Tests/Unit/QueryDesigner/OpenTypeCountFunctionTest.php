@@ -7,7 +7,7 @@ use Oro\Bundle\MarketingActivityBundle\QueryDesigner\OpenTypeCountFunction;
 
 class OpenTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->function = new OpenTypeCountFunction();
         $this->type = MarketingActivity::TYPE_OPEN;

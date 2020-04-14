@@ -13,7 +13,7 @@ class TrackingVisitTest extends \PHPUnit\Framework\TestCase
      */
     protected $trackingVisit;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->trackingVisit = new TrackingVisit();
     }

@@ -22,7 +22,7 @@ class TransportSettingsListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected $listener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->emailTransportProvider = $this
             ->getMockBuilder('Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider')

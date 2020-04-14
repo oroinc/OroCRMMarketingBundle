@@ -22,7 +22,7 @@ class MarketingListItemsListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected $marketingListHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingListHelper = $this
             ->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\MarketingListHelper')

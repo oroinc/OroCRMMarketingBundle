@@ -41,7 +41,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected $listener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->logsDir = $this->getTempDir('tracking_log');
         $this->trackingDir = $this->logsDir . DIRECTORY_SEPARATOR . 'tracking';

@@ -37,7 +37,7 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
      */
     protected $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);
         $this->translator = $this->createMock(TranslatorInterface::class);

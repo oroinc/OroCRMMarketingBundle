@@ -17,7 +17,7 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->extension = new VisitEventAssociationGeneratorExtension();
     }
@@ -25,7 +25,7 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
     }

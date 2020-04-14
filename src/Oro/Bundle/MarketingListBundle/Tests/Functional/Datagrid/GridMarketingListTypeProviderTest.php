@@ -18,7 +18,7 @@ class GridMarketingListTypeProviderTest extends WebTestCase
      */
     protected $registry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
 

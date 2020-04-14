@@ -12,7 +12,7 @@ class TrackingEventIdentificationProviderTest extends \PHPUnit\Framework\TestCas
     /** @var TrackingEventIdentificationProvider */
     protected $provider;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $testIdentifier = new TestProvider();
         $this->provider = new TrackingEventIdentificationProvider();

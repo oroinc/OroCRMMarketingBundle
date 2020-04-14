@@ -21,7 +21,7 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
      */
     private $entityProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cacheProvider = new ArrayCache();
 

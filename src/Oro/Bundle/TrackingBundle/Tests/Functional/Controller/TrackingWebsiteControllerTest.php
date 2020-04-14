@@ -6,17 +6,17 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class TrackingWebsiteControllerTest extends WebTestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         gc_disable();
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         gc_enable();
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);

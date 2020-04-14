@@ -17,7 +17,7 @@ class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->trackingVisitEvent = new TrackingVisitEvent();
     }
@@ -25,7 +25,7 @@ class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->trackingVisitEvent);
     }
