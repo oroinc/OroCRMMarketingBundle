@@ -83,12 +83,11 @@ class ContextReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($data, $result);
     }
 
-    /**
-     * @expectedException \Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Configuration reader must contain "data".
-     */
     public function testReadFailed()
     {
+        $this->expectException(\Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Configuration reader must contain "data".');
+
         $this->context
             ->expects($this->once())
             ->method('hasOption')

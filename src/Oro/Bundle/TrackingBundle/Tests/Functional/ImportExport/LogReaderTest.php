@@ -81,12 +81,11 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($data, $result);
     }
 
-    /**
-     * @expectedException \Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Configuration reader must contain "file".
-     */
     public function testReadFailed()
     {
+        $this->expectException(\Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Configuration reader must contain "file".');
+
         $this->context
             ->expects($this->once())
             ->method('hasOption')

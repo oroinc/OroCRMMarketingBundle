@@ -37,12 +37,11 @@ class ContactInformationColumnValidatorTest extends \PHPUnit\Framework\TestCase
         $this->validator->initialize($this->context);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage Expected argument of type "string", "array" given
-     */
     public function testValidateFieldException()
     {
+        $this->expectException(\Symfony\Component\Validator\Exception\UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "string", "array" given');
+
         $constraint = new ContactInformationColumnConstraint();
         $constraint->field = ['test'];
 
@@ -50,12 +49,11 @@ class ContactInformationColumnValidatorTest extends \PHPUnit\Framework\TestCase
         $this->validator->validate($value, $constraint);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage Expected argument of type "AbstractQueryDesigner", "string" given
-     */
     public function testValidateValueException()
     {
+        $this->expectException(\Symfony\Component\Validator\Exception\UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "AbstractQueryDesigner", "string" given');
+
         $constraint = new ContactInformationColumnConstraint();
 
         $value = 'test';

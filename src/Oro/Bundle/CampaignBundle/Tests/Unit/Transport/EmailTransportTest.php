@@ -161,12 +161,11 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Sender email and name is empty
-     */
     public function testFromEmpty()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Sender email and name is empty');
+
         $entity = new \stdClass();
 
         $this->helper

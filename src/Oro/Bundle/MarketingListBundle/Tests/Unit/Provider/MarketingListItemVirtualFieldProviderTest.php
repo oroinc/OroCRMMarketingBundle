@@ -99,12 +99,11 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
         ];
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage No virtual field found for stdClass::test
-     */
     public function testGetVirtualFieldQueryException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No virtual field found for stdClass::test');
+
         $this->fieldProvider->getVirtualFieldQuery('stdClass', 'test');
     }
 

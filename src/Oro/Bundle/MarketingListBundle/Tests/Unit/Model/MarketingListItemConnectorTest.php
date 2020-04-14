@@ -112,12 +112,11 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Result row must contain identifier field
-     */
     public function testContactResultRowException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Result row must contain identifier field');
+
         $entityId = 42;
         $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
             ->disableOriginalConstructor()

@@ -106,12 +106,11 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         unset($this->sender);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Transport is required to perform send
-     */
     public function testAssertTransport()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Transport is required to perform send');
+
         $campaign = new EmailCampaign();
 
         $this->sender->send();

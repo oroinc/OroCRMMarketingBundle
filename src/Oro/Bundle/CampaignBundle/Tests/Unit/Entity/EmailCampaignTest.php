@@ -58,12 +58,11 @@ class EmailCampaignTest extends AbstractEntityTestCase
         $this->assertEquals($date->format('Y-m-d'), $this->entity->getUpdatedAt()->format('Y-m-d'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Schedule type unknown is not know. Known types are manual, deferred
-     */
     public function testUnknownSchedule()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Schedule type unknown is not know. Known types are manual, deferred');
+
         $entity = new EmailCampaign();
         $entity->setSchedule('unknown');
     }

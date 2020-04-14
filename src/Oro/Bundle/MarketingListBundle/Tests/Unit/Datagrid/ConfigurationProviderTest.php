@@ -56,12 +56,11 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->provider->isApplicable($gridName));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Marketing List with id "1" not found.
-     */
     public function testGetConfigurationException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Marketing List with id "1" not found.');
+
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
@@ -75,12 +74,11 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $this->provider->getConfiguration($gridName);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Grid not found for entity "\stdClass"
-     */
     public function testGetConfigurationManualExceptionNoConfiguration()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Grid not found for entity "\stdClass"');
+
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
         $entityName = '\stdClass';
 
@@ -112,12 +110,11 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $this->provider->getConfiguration($gridName);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Grid not found for entity "\stdClass"
-     */
     public function testGetConfigurationManualExceptionNoConfiguredGrid()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Grid not found for entity "\stdClass"');
+
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
         $entityName = '\stdClass';
 
@@ -256,12 +253,11 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         return $configuration;
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Marketing List id not found in "oro_segment_grid_" gridName.
-     */
     public function testDoNotProcessInvalidSegmentGridName()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Marketing List id not found in "oro_segment_grid_" gridName.');
+
         $this->provider->getConfiguration(Segment::GRID_PREFIX);
     }
 }

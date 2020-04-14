@@ -32,12 +32,11 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Not implemented
-     */
     public function testNormalize()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Not implemented');
+
         $this->normalizer->normalize(new \stdClass());
     }
 

@@ -35,13 +35,14 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \Oro\Component\ConfigExpression\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Option "marketing_list" is required
      * @dataProvider invalidOptionsDataProvider
      * @param array $options
      */
     public function testInitializeException(array $options)
     {
+        $this->expectException(\Oro\Component\ConfigExpression\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Option "marketing_list" is required');
+
         $this->condition->initialize($options);
     }
 
@@ -94,11 +95,9 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \Oro\Component\ConfigExpression\Exception\InvalidArgumentException
-     */
     public function testEvaluateException()
     {
+        $this->expectException(\Oro\Component\ConfigExpression\Exception\InvalidArgumentException::class);
         $context = [];
         $this->condition->evaluate($context);
     }

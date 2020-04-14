@@ -273,23 +273,21 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Options "groupingOption" is not set
-     */
     public function testGroupingOptionNotSet()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Options "groupingOption" is not set');
+
         $sourceData = new ArrayData([]);
         $data       = new MappedData([], $sourceData);
         $this->transformer->transform($data, []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Options "period" is not set
-     */
     public function testPeriodOptionNotSet()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Options "period" is not set');
+
         $sourceData = new ArrayData([]);
         $data       = new MappedData([], $sourceData);
 

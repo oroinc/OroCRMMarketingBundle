@@ -59,12 +59,11 @@ class EmailTransportProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($choices, $provider->getVisibleTransportChoices());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Transport test is unknown
-     */
     public function testGetTransportException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Transport test is unknown');
+
         $provider = new EmailTransportProvider();
         $provider->getTransportByName('test');
     }
