@@ -347,7 +347,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testGetPriority()
     {
-        $this->assertInternalType('integer', $this->extension->getPriority());
+        $this->assertIsInt($this->extension->getPriority());
     }
 
     public function testIsApplicableSameGridTwiceWithParamsChangedUsingMQ()

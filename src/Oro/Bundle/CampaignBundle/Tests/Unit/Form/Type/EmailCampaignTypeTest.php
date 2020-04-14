@@ -52,7 +52,7 @@ class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
     public function testName()
     {
         $typeName = $this->type->getName();
-        $this->assertInternalType('string', $typeName);
+        $this->assertIsString($typeName);
         $this->assertSame('oro_email_campaign', $typeName);
     }
 

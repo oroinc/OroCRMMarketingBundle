@@ -60,7 +60,7 @@ class CampaignTypeTest extends \PHPUnit\Framework\TestCase
     public function testName()
     {
         $typeName = $this->type->getName();
-        $this->assertInternalType('string', $typeName);
+        $this->assertIsString($typeName);
         $this->assertSame('oro_campaign_form', $typeName);
     }
 

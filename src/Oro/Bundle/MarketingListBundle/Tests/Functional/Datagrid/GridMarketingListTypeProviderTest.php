@@ -29,10 +29,10 @@ class GridMarketingListTypeProviderTest extends WebTestCase
     public function testGetListTypeChoices()
     {
         $types = $this->provider->getListTypeChoices();
-        $this->assertInternalType('array', $types);
+        $this->assertIsArray($types);
         foreach ($types as $name => $label) {
-            $this->assertInternalType('string', $name);
-            $this->assertInternalType('string', $label);
+            $this->assertIsString($name);
+            $this->assertIsString($label);
         }
     }
 }
