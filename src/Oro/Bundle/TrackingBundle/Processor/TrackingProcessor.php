@@ -504,6 +504,20 @@ class TrackingProcessor implements LoggerAwareInterface
             $decodedData = json_decode($eventData->getData(), true);
 
             $trackingVisit = $this->getTrackingVisit($event, $decodedData);
+            
+            if(empty($trackingVisit->getVisitorUid())) {
+                $this->logger->notice(
+                    sprintf(
+                        '<error>Visit event %s data have a null visitorUID</error>',
+                        $event->getId()
+                    )
+                );
+
+                $event->setParsed(true);
+                continue;
+            }
+            
+            
             $trackingVisitEvent->setVisit($trackingVisit);
             $trackingVisitEvent->setWebEvent($event);
             $trackingVisitEvent->setWebsite($event->getWebsite());
