@@ -508,7 +508,7 @@ class TrackingProcessor implements LoggerAwareInterface
             if(empty($trackingVisit->getVisitorUid())) {
                 $this->logger->notice(
                     sprintf(
-                        '<error>Visit event %s data have a null visitorUID</error>',
+                        '<error>Visit event %s data have a empty visitorUID</error>',
                         $event->getId()
                     )
                 );
@@ -516,7 +516,6 @@ class TrackingProcessor implements LoggerAwareInterface
                 $event->setParsed(true);
                 continue;
             }
-            
             
             $trackingVisitEvent->setVisit($trackingVisit);
             $trackingVisitEvent->setWebEvent($event);
