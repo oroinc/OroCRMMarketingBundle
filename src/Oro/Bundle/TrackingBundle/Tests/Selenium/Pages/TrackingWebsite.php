@@ -15,7 +15,7 @@ class TrackingWebsite extends AbstractPageEntity
 {
     protected $owner = "//div[starts-with(@id,'s2id_oro_tracking_website_owner')]/a";
 
-     /**
+    /**
      * @param string $name
      * @return $this
      */
