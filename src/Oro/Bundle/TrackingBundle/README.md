@@ -63,7 +63,7 @@ A simple example is represented below:
 ```yaml
 
     acme_test.provider.tracking_customer_identificator:
-        class: %acme_test.provider.tracking_customer_identificator.class%
+        class: Acme\Bundle\AcmeBundle\Provider\TestCustomerIdentification
         tags:
            - {name: oro_tracking.provider.identification, priority: 10}
 ```
@@ -72,7 +72,7 @@ A simple example is represented below:
 
 ``` php
 
-namespace Acme\Bundle\TestBundle\Provider;
+namespace Acme\Bundle\AcmeBundle\Provider;
 
 use ...
 
