@@ -14,6 +14,9 @@ oro:
         last_run.label:      Last Used
         created_at.label:    Created At
         name.label:          Name
+        union:
+            label:           Include previously contacted members
+            tooltip:         Lists which include previously contacted members include records that are matching filter conditions and the ones that were part of the list and contacted in the past.
         owner.label:         Owner
         organization.label:  Organization
         segment.label:       Segment

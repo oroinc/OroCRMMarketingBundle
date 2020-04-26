@@ -11,9 +11,13 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Oro": "src/"
-        }
+        "psr-4": {
+            "Oro\\Bundle\\CampaignBundle\\": "src/Oro/Bundle/CampaignBundle",
+            "Oro\\Bundle\\MarketingActivityBundle\\": "src/Oro/Bundle/MarketingActivityBundle",
+            "Oro\\Bundle\\MarketingListBundle\\": "src/Oro/Bundle/MarketingListBundle",
+            "Oro\\Bundle\\TrackingBundle\\": "src/Oro/Bundle/TrackingBundle"
+        },
+        "exclude-from-classmap": ["/Tests/"]
     },
     "require": {
         "ext-curl": "*",
