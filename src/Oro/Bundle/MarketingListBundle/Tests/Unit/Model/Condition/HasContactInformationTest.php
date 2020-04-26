@@ -2,35 +2,44 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Model\Condition;
 
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\Condition\HasContactInformation;
+use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Component\ConfigExpression\ContextAccessor;
+use Oro\Component\ConfigExpression\Exception\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 class HasContactInformationTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ContextAccessor|MockObject */
     protected $contextAccessor;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ContactInformationFieldsProvider|MockObject */
     protected $fieldsProvider;
 
-    /**
-     * @var HasContactInformation
-     */
+    /** @var HasContactInformation */
     protected $condition;
 
     protected function setUp(): void
     {
         $this->contextAccessor = new ContextAccessor();
-        $this->fieldsProvider = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider')
+        $this->fieldsProvider = $this->getMockBuilder(ContactInformationFieldsProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->condition = new HasContactInformation($this->fieldsProvider);
+
+        $this->condition = new class($this->fieldsProvider) extends HasContactInformation {
+            public function xgetMarketingList()
+            {
+                return $this->marketingList;
+            }
+
+            public function xgetType()
+            {
+                return $this->type;
+            }
+        };
+
         $this->condition->setContextAccessor($this->contextAccessor);
     }
 
@@ -40,7 +49,7 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
      */
     public function testInitializeException(array $options)
     {
-        $this->expectException(\Oro\Component\ConfigExpression\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Option "marketing_list" is required');
 
         $this->condition->initialize($options);
@@ -65,9 +74,9 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
      */
     public function testInitialize($options, $expectedList, $expectedType)
     {
-        $this->assertSame($this->condition, $this->condition->initialize($options));
-        $this->assertAttributeEquals($expectedList, 'marketingList', $this->condition);
-        $this->assertAttributeEquals($expectedType, 'type', $this->condition);
+        static::assertSame($this->condition, $this->condition->initialize($options));
+        static::assertEquals($expectedList, $this->condition->xgetMarketingList());
+        static::assertEquals($expectedType, $this->condition->xgetType());
     }
 
     /**
@@ -97,7 +106,7 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
 
     public function testEvaluateException()
     {
-        $this->expectException(\Oro\Component\ConfigExpression\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $context = [];
         $this->condition->evaluate($context);
     }
@@ -105,17 +114,15 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
     public function testEvaluate()
     {
         $type = 'test';
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->getMockBuilder(MarketingList::class)->disableOriginalConstructor()->getMock();
         $context = new \stdClass();
         $context->marketingList = $marketingList;
         $context->type = $type;
 
-        $this->fieldsProvider->expects($this->once())
+        $this->fieldsProvider->expects(static::once())
             ->method('getMarketingListTypedFields')
             ->with($marketingList, $type)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $options = [
             'marketing_list' => new PropertyPath('marketingList'),
@@ -123,6 +130,7 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
         ];
 
         $this->condition->initialize($options);
-        $this->assertTrue($this->condition->evaluate($context));
+
+        static::assertTrue($this->condition->evaluate($context));
     }
 }
