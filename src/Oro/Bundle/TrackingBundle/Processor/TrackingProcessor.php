@@ -4,6 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Processor;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
@@ -19,9 +20,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 /**
- * Class TrackingProcessor
- * @package Oro\Bundle\TrackingBundle\Processor
- *
+ * Processes (parses) tracking logs.
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class TrackingProcessor implements LoggerAwareInterface
@@ -402,7 +401,7 @@ class TrackingProcessor implements LoggerAwareInterface
                     ->andWhere('entity.parsedUID = 0')
                     ->andWhere('entity.trackingWebsite  = :website')
                     ->setParameter('visitorUid', $visit->getVisitorUid())
-                    ->setParameter('maxDate', $visit->getFirstActionTime())
+                    ->setParameter('maxDate', $visit->getFirstActionTime(), Type::DATETIME)
                     ->setParameter('website', $visit->getTrackingWebsite())
                     ->getQuery()
                     ->getArrayResult();
@@ -440,7 +439,7 @@ class TrackingProcessor implements LoggerAwareInterface
                     ->andWhere('entity.parsedUID = 0')
                     ->andWhere('entity.trackingWebsite  = :website')
                     ->setParameter('visitorUid', $visit->getVisitorUid())
-                    ->setParameter('maxDate', $visit->getFirstActionTime())
+                    ->setParameter('maxDate', $visit->getFirstActionTime(), Type::DATETIME)
                     ->setParameter('website', $visit->getTrackingWebsite())
                     ->setParameter('identifier', $identifier)
                     ->setParameter('detected', true)

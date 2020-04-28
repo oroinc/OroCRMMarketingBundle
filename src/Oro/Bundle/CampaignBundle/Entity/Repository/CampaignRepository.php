@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
@@ -9,6 +10,9 @@ use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
+/**
+ * Doctrine repository for CampaignBundle Campaign entity.
+ */
 class CampaignRepository extends EntityRepository
 {
     /**
@@ -77,8 +81,8 @@ class CampaignRepository extends EntityRepository
 
         if ($dateRange) {
             $qb->where($qb->expr()->between('lead.createdAt', ':dateFrom', ':dateTo'))
-                ->setParameter('dateFrom', $dateRange['start'])
-                ->setParameter('dateTo', $dateRange['end']);
+                ->setParameter('dateFrom', $dateRange['start'], Type::DATETIME)
+                ->setParameter('dateTo', $dateRange['end'], Type::DATETIME);
         }
 
         return $aclHelper->apply($qb)->getArrayResult();
@@ -126,8 +130,8 @@ class CampaignRepository extends EntityRepository
 
         if ($dateRange) {
             $qb->where($qb->expr()->between('opportunities.createdAt', ':dateFrom', ':dateTo'))
-                ->setParameter('dateFrom', $dateRange['start'])
-                ->setParameter('dateTo', $dateRange['end']);
+                ->setParameter('dateFrom', $dateRange['start'], Type::DATETIME)
+                ->setParameter('dateTo', $dateRange['end'], Type::DATETIME);
         }
 
         return $aclHelper->apply($qb)->getArrayResult();
