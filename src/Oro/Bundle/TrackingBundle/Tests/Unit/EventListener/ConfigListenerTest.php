@@ -71,7 +71,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
             ->getMock();
 
         $this->listener->onUpdateAfter($event);
-        $this->assertFileNotExists($this->settingsFile);
+        $this->assertFileDoesNotExist($this->settingsFile);
     }
 
     public function testOnUpdateAfterNoDynamic()
