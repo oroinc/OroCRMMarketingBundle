@@ -17,6 +17,7 @@ Retrieve a collection of campaign records.
 ### create
 
 Create a new campaign record.
+
 The created record is returned in response.
 
 {@inheritdoc}
@@ -56,6 +57,8 @@ Example:
 ### update
 
 Edit a specific campaign record.
+
+The updated record is returned in the response.
 
 {@inheritdoc}
 
