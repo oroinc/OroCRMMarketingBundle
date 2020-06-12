@@ -27,25 +27,25 @@ Example:
 
 ```JSON
 {
-   "data":{
-      "type":"campaigns",
-      "attributes":{
-         "name":"Campaign Name",
-         "code":"CampaignCode",
+   "data": {
+      "type": "campaigns",
+      "attributes": {
+         "name": "Campaign Name",
+         "code": "CampaignCode",
          "description": "Campaign description",
          "budget" : "100"
       },
-      "relationships":{
-         "owner":{
-            "data":{
-               "type":"users",
-               "id":"44"
+      "relationships": {
+         "owner": {
+            "data": {
+               "type": "users",
+               "id": "44"
             }
          },
-         "organization":{
-            "data":{
-               "type":"organizations",
-               "id":"1"
+         "organization": {
+            "data": {
+               "type": "organizations",
+               "id": "1"
             }
          }
       }
@@ -67,26 +67,26 @@ Example:
 
 ```JSON
 {
-   "data":{
-      "type":"campaigns",
-      "id":"1",
-      "attributes":{
-         "name":"Campaign Name",
-         "code":"CampaignCode1",
+   "data": {
+      "type": "campaigns",
+      "id": "1",
+      "attributes": {
+         "name": "Campaign Name",
+         "code": "CampaignCode1",
          "description": "Campaign description",
          "budget" : "100"
       },
-      "relationships":{
-         "owner":{
-            "data":{
-               "type":"users",
-               "id":"44"
+      "relationships": {
+         "owner": {
+            "data": {
+               "type": "users",
+               "id": "44"
             }
          },
-         "organization":{
-            "data":{
-               "type":"organizations",
-               "id":"1"
+         "organization": {
+            "data": {
+               "type": "organizations",
+               "id": "1"
             }
          }
       }

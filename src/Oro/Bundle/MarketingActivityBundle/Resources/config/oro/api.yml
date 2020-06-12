@@ -1,4 +1,9 @@
 api:
+    entity_aliases:
+        Extend\Entity\EV_Ma_Type:
+            alias: marketingactivitytype
+            plural_alias: marketingactivitytypes
+
     entities:
         Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity:
             documentation_resource: '@OroMarketingActivityBundle/Resources/doc/api/marketing_activity.md'

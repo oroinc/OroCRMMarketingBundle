@@ -53,7 +53,7 @@ Example:
       },
       "marketingActivityType": {
         "data": {
-          "type": "matypes",
+          "type": "marketingactivitytypes",
           "id": "click"
         }
       }
@@ -88,7 +88,7 @@ Example:
       },
       "marketingActivityType": {
         "data": {
-          "type": "matypes",
+          "type": "marketingactivitytypes",
           "id": "click"
         }
       }
@@ -234,7 +234,7 @@ Example:
 ```JSON
 {
   "data": {
-    "type": "matypes",
+    "type": "marketingactivitytypes",
     "id": "open"
   }
 }
@@ -301,8 +301,8 @@ Example:
 
 ### get
 
-Retrieve a specific marketing activity type record, such as click, open, send, unsubscribe, soft_bunce, and hard_bounce.
+Retrieve a specific marketing activity type record.
 
 ### get_list
 
-Retrieve a collection of marketing activity type records, such as click, open, send, unsubscribe, soft_bunce, and hard_bounce.
+Retrieve a collection of marketing activity type records.

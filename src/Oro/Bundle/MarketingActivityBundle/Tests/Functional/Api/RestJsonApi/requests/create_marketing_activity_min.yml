@@ -5,7 +5,7 @@ data:
     relationships:
         marketingActivityType:
             data:
-                type: matypes
+                type: marketingactivitytypes
                 id: 'open'
         entity:
             data:

@@ -16,7 +16,7 @@ data:
                     id: '<toString(@Campaign.Campaign1->id)>'
             marketingActivityType:
                 data:
-                    type: matypes
+                    type: marketingactivitytypes
                     id: send
             entity:
                 data:
@@ -41,7 +41,7 @@ data:
                     id: '<toString(@Campaign.Campaign1->id)>'
             marketingActivityType:
                 data:
-                    type: matypes
+                    type: marketingactivitytypes
                     id: open
             entity:
                 data:

@@ -12,7 +12,7 @@ oro:
             description:               The marketing campaign that the marketing activity took place within.
         type:
             label:                     Type
-            description:               The marketing activity type (click, open, send, unsubscribe, soft_bunce, hard_bounce).
+            description:               The marketing activity type (click, open, send, unsubscribe, soft_bounce, hard_bounce).
         entity_id:
             label:                     Entity Id
             description:               The ID of the marketing activity.
