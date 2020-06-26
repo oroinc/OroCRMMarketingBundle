@@ -4,7 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
@@ -217,7 +217,7 @@ class ImportLogsCommand extends Command implements CronCommandInterface
             ->andWhere('ji.rawConfiguration = :rawConfiguration')
             ->setParameter(
                 'rawConfiguration',
-                $manager->getConnection()->convertToDatabaseValue($options, Type::TARRAY)
+                $manager->getConnection()->convertToDatabaseValue($options, Types::ARRAY)
             )
             ->getQuery()
             ->getOneOrNullResult();
