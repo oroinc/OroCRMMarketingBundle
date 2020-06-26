@@ -2,11 +2,14 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 
+/**
+ * ORM entity repository for EmailCampaign entity.
+ */
 class EmailCampaignRepository extends EntityRepository
 {
     /**
@@ -42,9 +45,9 @@ class EmailCampaignRepository extends EntityRepository
             ->andWhere($qb->expr()->eq('email_campaign.schedule', ':scheduleType'))
             ->andWhere($qb->expr()->isNotNull('email_campaign.scheduledFor'))
             ->andWhere($qb->expr()->lte('email_campaign.scheduledFor', ':currentTimestamp'))
-            ->setParameter('sent', false, Type::BOOLEAN)
-            ->setParameter('scheduleType', EmailCampaign::SCHEDULE_DEFERRED, Type::STRING)
-            ->setParameter('currentTimestamp', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
+            ->setParameter('sent', false, Types::BOOLEAN)
+            ->setParameter('scheduleType', EmailCampaign::SCHEDULE_DEFERRED, Types::STRING)
+            ->setParameter('currentTimestamp', new \DateTime('now', new \DateTimeZone('UTC')), Types::DATETIME_MUTABLE);
 
         return $qb;
     }

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 
@@ -40,12 +40,12 @@ class TrackingEventSummaryRepository extends EntityRepository
             ->andWhere('campaignCodeHistory.campaign = :campaign')
             ->andWhere('DATE(trackingEvent.loggedAt) < DATE(:today)')
             ->setParameter('campaign', $campaign)
-            ->setParameter('today', $today, Type::DATETIME)
+            ->setParameter('today', $today, Types::DATETIME_MUTABLE)
             ->groupBy('trackingEvent.name, trackingEvent.website, campaignCodeHistory.code, loggedAtDate');
 
         if ($campaign->getReportRefreshDate()) {
             $qb->andWhere('DATE(trackingEvent.loggedAt) > DATE(:since)')
-                ->setParameter('since', $campaign->getReportRefreshDate(), Type::DATETIME);
+                ->setParameter('since', $campaign->getReportRefreshDate(), Types::DATETIME_MUTABLE);
         }
 
         return $qb->getQuery()->getArrayResult();
