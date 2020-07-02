@@ -42,6 +42,7 @@ Feature: System entities should be available as ML targets
       | Contact                       | Contact                       |
       | Lead                          | Lead                          |
       | Business Customer             | Business Customer             |
-      | Magento Customer              | Magento Customer              |
-      | Magento Shopping Cart         | Magento Shopping Cart         |
-      | Magento Newsletter Subscriber | Magento Newsletter Subscriber |
+# Magento integration is disabled in CRM-9202
+#      | Magento Customer              | Magento Customer              |
+#      | Magento Shopping Cart         | Magento Shopping Cart         |
+#      | Magento Newsletter Subscriber | Magento Newsletter Subscriber |

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
@@ -81,8 +81,8 @@ class CampaignRepository extends EntityRepository
 
         if ($dateRange) {
             $qb->where($qb->expr()->between('lead.createdAt', ':dateFrom', ':dateTo'))
-                ->setParameter('dateFrom', $dateRange['start'], Type::DATETIME)
-                ->setParameter('dateTo', $dateRange['end'], Type::DATETIME);
+                ->setParameter('dateFrom', $dateRange['start'], Types::DATETIME_MUTABLE)
+                ->setParameter('dateTo', $dateRange['end'], Types::DATETIME_MUTABLE);
         }
 
         return $aclHelper->apply($qb)->getArrayResult();
@@ -130,8 +130,8 @@ class CampaignRepository extends EntityRepository
 
         if ($dateRange) {
             $qb->where($qb->expr()->between('opportunities.createdAt', ':dateFrom', ':dateTo'))
-                ->setParameter('dateFrom', $dateRange['start'], Type::DATETIME)
-                ->setParameter('dateTo', $dateRange['end'], Type::DATETIME);
+                ->setParameter('dateFrom', $dateRange['start'], Types::DATETIME_MUTABLE)
+                ->setParameter('dateTo', $dateRange['end'], Types::DATETIME_MUTABLE);
         }
 
         return $aclHelper->apply($qb)->getArrayResult();

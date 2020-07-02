@@ -3,11 +3,14 @@
 namespace Oro\Bundle\TrackingBundle\Migration;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Fill oro_tracking_unique_visit table with unique visits based on records from oro_tracking_visit table.
+ */
 class FillUniqueTrackingVisitsQuery extends ParametrizedMigrationQuery
 {
     /**
@@ -79,9 +82,9 @@ SQL;
             'section' => 'oro_locale',
         ];
         $types = [
-            'entity' => Type::STRING,
-            'name' => Type::STRING,
-            'section' => Type::STRING,
+            'entity' => Types::STRING,
+            'name' => Types::STRING,
+            'section' => Types::STRING,
         ];
 
         $this->logQuery($logger, $query, $params, $types);

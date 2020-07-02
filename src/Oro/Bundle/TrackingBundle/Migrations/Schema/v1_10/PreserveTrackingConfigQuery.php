@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Migrations\Schema\v1_10;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedSqlMigrationQuery;
@@ -108,14 +108,14 @@ SQL;
                 'created_at' => (new \DateTime())->setTimezone(new \DateTimeZone('UTC')),
             ],
             [
-                'entity' => Type::STRING,
-                'name' => Type::STRING,
-                'section' => Type::STRING,
-                'text_value' => Type::TEXT,
-                'object_value' => Type::OBJECT,
-                'array_value' => Type::TARRAY,
-                'type' => Type::STRING,
-                'created_at' => Type::DATETIME,
+                'entity' => Types::STRING,
+                'name' => Types::STRING,
+                'section' => Types::STRING,
+                'text_value' => Types::TEXT,
+                'object_value' => Types::OBJECT,
+                'array_value' => Types::ARRAY,
+                'type' => Types::STRING,
+                'created_at' => Types::DATETIME_MUTABLE,
             ]
         );
 

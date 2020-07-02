@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Migrations\Schema\v1_5;
 
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 use Psr\Log\LoggerInterface;
 
@@ -21,7 +22,7 @@ class RemoveContactInformation extends ParametrizedMigrationQuery
      */
     public function execute(LoggerInterface $logger)
     {
-        $type = Type::getType(Type::TARRAY);
+        $type = Type::getType(Types::ARRAY);
         $platform = $this->connection->getDatabasePlatform();
 
         $query = 'SELECT id, data FROM oro_entity_config_field WHERE type NOT IN (?,?)';
