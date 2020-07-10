@@ -234,6 +234,99 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $this->sender->send();
     }
 
+    /**
+     * @param array $marketingListItems
+     * @param string $marketingListTypeName
+     *
+     * @dataProvider sendWithoutEmailContactInformationDataProvider
+     */
+    public function testSendWithoutEmailContactInformation(array $marketingListItems, string $marketingListTypeName)
+    {
+        $marketingListType = new MarketingListType($marketingListTypeName);
+
+        $segment = new Segment();
+        $entity = '\stdClass';
+
+        $marketingList = new MarketingList();
+        $marketingList->setSegment($segment);
+        $marketingList->setType($marketingListType);
+        $marketingList->setEntity($entity);
+
+        $transportSettings = $this->createMock(TransportSettings::class);
+        $campaign = new EmailCampaign();
+        $campaign
+            ->setMarketingList($marketingList)
+            ->setTransportSettings($transportSettings);
+
+        $constraint = $this->createMock(ConstraintViolationList::class);
+        $constraint->expects($this->once())
+            ->method('count')
+            ->will($this->returnValue(0));
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->with($transportSettings)
+            ->will($this->returnValue($constraint));
+
+        $this->marketingListProvider
+            ->expects($this->once())
+            ->method('getEntitiesIterator')
+            ->will($this->returnValue($marketingListItems));
+
+        $manager = $this->createMock(EntityManager::class);
+        $this->registry->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($manager));
+        $manager->expects($this->never())
+            ->method('flush');
+        $manager->expects($this->never())
+            ->method('beginTransaction');
+        $manager->expects($this->never())
+            ->method('commit');
+
+        $fields = ['email'];
+        $this->assertFieldsCall($fields, $marketingList);
+        $this->contactInformationFieldsProvider
+            ->expects($this->any())
+            ->method('getTypedFieldsValues')
+            ->will($this->returnValue([]));
+
+        $this->statisticsConnector
+            ->expects($this->never())
+            ->method('getStatisticsRecord');
+
+        $this->transport->expects($this->never())
+            ->method('send');
+
+        $this->transportProvider
+            ->expects($this->once())
+            ->method('getTransportByName')
+            ->will($this->returnValue($this->transport));
+
+        $this->sender->setEmailCampaign($campaign);
+        $this->sender->send();
+    }
+
+    /**
+     * @return array
+     */
+    public function sendWithoutEmailContactInformationDataProvider()
+    {
+        $entity = $this->getMockBuilder('\stdClass')
+            ->setMethods(['getId'])
+            ->getMock();
+
+        return [
+            [
+                [[$entity], [$entity]],
+                MarketingListType::TYPE_MANUAL
+            ],
+            [
+                [[$entity], [$entity]],
+                MarketingListType::TYPE_DYNAMIC
+            ],
+        ];
+    }
+
     public function testSendWithCertainFields()
     {
         $segment = new Segment();
@@ -428,16 +521,10 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $segmentBasedType = new MarketingListType(MarketingListType::TYPE_DYNAMIC);
 
         return [
-            [[[$entity], [$entity]], [], $manualType],
-            [[[$entity]], [], $manualType],
-            [[], [], $manualType],
             [[], ['mail@example.com'], $manualType],
             [[[$entity]], ['mail@example.com'], $manualType],
             [[[$entity], [$entity]], ['mail@example.com'], $manualType],
 
-            [[[$entity], [$entity]], [], $segmentBasedType],
-            [[[$entity]], [], $segmentBasedType],
-            [[], [], $segmentBasedType],
             [[], ['mail@example.com'], $segmentBasedType],
             [[[$entity]], ['mail@example.com'], $segmentBasedType],
             [[[$entity], [$entity]], ['mail@example.com'], $segmentBasedType],

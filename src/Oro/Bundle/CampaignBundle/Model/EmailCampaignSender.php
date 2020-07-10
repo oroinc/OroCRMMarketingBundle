@@ -140,7 +140,20 @@ class EmailCampaignSender
             } catch (NoSuchPropertyException $e) {
                 $toFromEntity = [];
             }
+
+            /**
+             * Filter empty values (Contact information could be empty for some rows)
+             */
             $to = array_filter(array_unique(array_merge($toFromFields, $toFromEntity)));
+
+            /**
+             * Check if row has not empty contact information. If Contact information is empty - skip
+             */
+            if (!$to) {
+                $this->logger->info('Email sending skipped. Reason: Recipients Contact information is blank.');
+
+                continue;
+            }
 
             try {
                 $manager->beginTransaction();
