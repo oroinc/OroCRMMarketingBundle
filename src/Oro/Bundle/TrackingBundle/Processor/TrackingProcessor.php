@@ -104,6 +104,7 @@ class TrackingProcessor implements LoggerAwareInterface
 
     /**
      * Process tracking data
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function process()
     {

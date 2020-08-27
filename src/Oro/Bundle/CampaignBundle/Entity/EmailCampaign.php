@@ -45,6 +45,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *          }
  *      }
  * )
+ * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class EmailCampaign extends ExtendEmailCampaign
 {

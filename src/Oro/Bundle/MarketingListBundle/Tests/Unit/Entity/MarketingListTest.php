@@ -7,6 +7,9 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class MarketingListTest extends \PHPUnit\Framework\TestCase
 {
     /**

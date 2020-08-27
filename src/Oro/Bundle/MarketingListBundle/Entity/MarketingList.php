@@ -51,6 +51,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  * )
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class MarketingList extends ExtendMarketingList
 {
