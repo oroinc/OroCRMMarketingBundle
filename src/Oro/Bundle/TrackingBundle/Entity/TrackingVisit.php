@@ -7,6 +7,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisit;
 
 /**
+ * Represent a website visit.
+ *
  * @ORM\Entity()
  * @ORM\Table(name="oro_tracking_visit", indexes={
  *     @ORM\Index(name="visit_visitorUid_idx", columns={"visitor_uid"}),
@@ -21,6 +23,7 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisit;
  *      }
  *  }
  * )
+ * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class TrackingVisit extends ExtendTrackingVisit
 {
