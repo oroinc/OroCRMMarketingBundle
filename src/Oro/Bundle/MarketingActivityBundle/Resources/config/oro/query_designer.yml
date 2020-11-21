@@ -1,7 +1,7 @@
 query_designer:
     aggregates:
         marketing_activity_type:
-            applicable: [{entity: 'OroMarketingActivityBundle:MarketingActivity', field: type }]
+            applicable: [{entity: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity, field: type }]
             functions:
                 - { name: SendCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\SendTypeCountFunction' }
                 - { name: OpenCount, return_type: integer, expr: '@Oro\Bundle\MarketingActivityBundle\QueryDesigner\OpenTypeCountFunction' }
