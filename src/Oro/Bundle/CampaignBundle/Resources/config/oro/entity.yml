@@ -8,4 +8,4 @@ oro_entity:
                 query:
                     join:
                         left:
-                            - { join: 'Oro\Bundle\TrackingBundle\Entity\TrackingEvent', alias: trackingEvent, conditionType: 'WITH', condition: 'trackingEvent.code = entity.code' }
+                            - { join: Oro\Bundle\TrackingBundle\Entity\TrackingEvent, alias: trackingEvent, conditionType: WITH, condition: 'trackingEvent.code = entity.code' }

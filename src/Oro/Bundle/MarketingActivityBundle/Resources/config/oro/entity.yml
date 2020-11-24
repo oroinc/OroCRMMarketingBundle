@@ -8,7 +8,7 @@ oro_entity:
                 query:
                     join:
                         left:
-                            - { join: 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign', alias: emailCampaign, conditionType: 'WITH', condition: "entity.relatedCampaignClass = 'Oro\\Bundle\\CampaignBundle\\Entity\\EmailCampaign' AND entity.relatedCampaignId = emailCampaign.id" }
+                            - { join: Oro\Bundle\CampaignBundle\Entity\EmailCampaign, alias: emailCampaign, conditionType: WITH, condition: "entity.relatedCampaignClass = 'Oro\\Bundle\\CampaignBundle\\Entity\\EmailCampaign' AND entity.relatedCampaignId = emailCampaign.id" }
         Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
             marketingActivity:
                 relation_type: oneToMany
@@ -17,4 +17,4 @@ oro_entity:
                 query:
                     join:
                         left:
-                            - { join: 'Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity', alias: marketingActivity, conditionType: 'WITH', condition: "marketingActivity.relatedCampaignClass = 'Oro\\Bundle\\CampaignBundle\\Entity\\EmailCampaign' AND marketingActivity.relatedCampaignId = entity.id" }
+                            - { join: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity, alias: marketingActivity, conditionType: WITH, condition: "marketingActivity.relatedCampaignClass = 'Oro\\Bundle\\CampaignBundle\\Entity\\EmailCampaign' AND marketingActivity.relatedCampaignId = entity.id" }
