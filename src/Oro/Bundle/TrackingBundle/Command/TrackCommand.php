@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Command;
 
@@ -12,25 +13,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Parse tracking logs
+ * Parses tracking logs.
  */
 class TrackCommand extends Command implements CronCommandInterface
 {
-    const STATUS_SUCCESS = 0;
+    public const STATUS_SUCCESS = 0;
 
     /** @var string */
     protected static $defaultName = 'oro:cron:tracking:parse';
 
-    /** @var FeatureChecker */
-    private $featureChecker;
+    private FeatureChecker $featureChecker;
+    private TrackingProcessor $trackingProcessor;
 
-    /** @var TrackingProcessor */
-    private $trackingProcessor;
-
-    /**
-     * @param FeatureChecker $featureChecker
-     * @param TrackingProcessor $trackingProcessor
-     */
     public function __construct(FeatureChecker $featureChecker, TrackingProcessor $trackingProcessor)
     {
         parent::__construct();
@@ -39,17 +33,11 @@ class TrackCommand extends Command implements CronCommandInterface
         $this->trackingProcessor = $trackingProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultDefinition()
     {
         return '*/5 * * * *';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isActive()
     {
         if (!$this->featureChecker->isFeatureEnabled('tracking')) {
@@ -59,24 +47,39 @@ class TrackCommand extends Command implements CronCommandInterface
         return $this->trackingProcessor->hasEntitiesToProcess();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function configure()
     {
         $this
-            ->setDescription('Parse tracking logs')
             ->addOption(
                 'max-execution-time',
                 'm',
                 InputOption::VALUE_OPTIONAL,
-                'Max execution time (in minutes). "0" means - unlimited. <comment>(default: 5)</comment>'
-            );
+                'Max execution time in minutes (use 0 for unlimited)',
+                5
+            )
+            ->setDescription('Parses tracking logs.')
+            ->setHelp(
+                <<<'HELP'
+The <info>%command.name%</info> command parses tracking logs.
+
+  <info>php %command.full_name%</info>
+
+The <info>--max-execution-time</info> option can be used to prevent parallel processing
+as this command is run by cron every 5 minutes, which is also the default value
+for the maximum execution time (use 0 to remove the limit):
+
+  <info>php %command.full_name% --max-execution-time=<minutes></info>
+  <info>php %command.full_name% --max-execution-time=0</info>
+
+HELP
+            )
+            ->addUsage('--max-execution-time=<minutes>')
+            ->addUsage('--max-execution-time=0')
+        ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$this->featureChecker->isFeatureEnabled('tracking')) {

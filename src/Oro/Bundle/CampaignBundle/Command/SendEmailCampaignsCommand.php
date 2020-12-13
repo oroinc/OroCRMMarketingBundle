@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
@@ -13,27 +14,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to send scheduled email campaigns
+ * Sends scheduled email campaigns.
  */
 class SendEmailCampaignsCommand extends Command implements CronCommandInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:send-email-campaigns';
 
-    /** @var ManagerRegistry */
-    private $registry;
+    private ManagerRegistry $registry;
+    private FeatureChecker $featureChecker;
+    private EmailCampaignSenderBuilder $emailCampaignSenderBuilder;
 
-    /** @var FeatureChecker */
-    private $featureChecker;
-
-    /** @var EmailCampaignSenderBuilder */
-    private $emailCampaignSenderBuilder;
-
-    /**
-     * @param ManagerRegistry $registry
-     * @param FeatureChecker $featureChecker
-     * @param EmailCampaignSenderBuilder $emailCampaignSenderBuilder
-     */
     public function __construct(
         ManagerRegistry $registry,
         FeatureChecker $featureChecker,
@@ -46,17 +37,11 @@ class SendEmailCampaignsCommand extends Command implements CronCommandInterface
         $this->emailCampaignSenderBuilder = $emailCampaignSenderBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultDefinition()
     {
         return '*/1 * * * *';
     }
 
-    /**
-     * @return bool
-     */
     public function isActive()
     {
         $count = $this->getEmailCampaignRepository()->countEmailCampaignsToSend();
@@ -64,17 +49,25 @@ class SendEmailCampaignsCommand extends Command implements CronCommandInterface
         return ($count > 0);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function configure()
     {
         $this
-            ->setDescription('Send email campaigns');
+            ->setDescription('Sends scheduled email campaigns.')
+            ->setHelp(
+                <<<'HELP'
+The <info>%command.name%</info> command sends scheduled email campaigns.
+
+  <info>php %command.full_name%</info>
+
+HELP
+            )
+        ;
     }
 
     /**
-     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @noinspection PhpMissingParentCallCommonInspection
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -107,7 +100,7 @@ class SendEmailCampaignsCommand extends Command implements CronCommandInterface
      * @param OutputInterface $output
      * @param EmailCampaign[] $emailCampaigns
      */
-    protected function send($output, array $emailCampaigns)
+    protected function send(OutputInterface $output, array $emailCampaigns): void
     {
         foreach ($emailCampaigns as $emailCampaign) {
             $output->writeln(sprintf('<info>Sending email campaign</info>: %s', $emailCampaign->getName()));
@@ -117,10 +110,7 @@ class SendEmailCampaignsCommand extends Command implements CronCommandInterface
         }
     }
 
-    /**
-     * @return EmailCampaignRepository
-     */
-    protected function getEmailCampaignRepository()
+    protected function getEmailCampaignRepository(): EmailCampaignRepository
     {
         return $this->registry->getRepository('OroCampaignBundle:EmailCampaign');
     }

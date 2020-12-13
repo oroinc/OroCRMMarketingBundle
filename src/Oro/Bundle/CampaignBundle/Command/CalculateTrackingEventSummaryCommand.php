@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
@@ -15,26 +16,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Calculate Tracking Event Summary
+ * Calculates tracking event summary (campaign statistics).
  */
 class CalculateTrackingEventSummaryCommand extends Command implements CronCommandInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:calculate-tracking-event-summary';
 
-    /** @var FeatureChecker */
-    private $featureChecker;
+    private FeatureChecker $featureChecker;
+    private DoctrineHelper $doctrineHelper;
+    private ?TrackingEventSummaryRepository $trackingEventRepository = null;
 
-    /** @var DoctrineHelper */
-    private $doctrineHelper;
-
-    /** @var TrackingEventSummaryRepository */
-    private $trackingEventRepository;
-
-    /**
-     * @param FeatureChecker $featureChecker
-     * @param DoctrineHelper $doctrineHelper
-     */
     public function __construct(FeatureChecker $featureChecker, DoctrineHelper $doctrineHelper)
     {
         parent::__construct();
@@ -43,19 +35,12 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
         $this->doctrineHelper = $doctrineHelper;
     }
 
-    /**
-     * Run command at 00:01 every day.
-     *
-     * @return string
-     */
     public function getDefaultDefinition()
     {
+        // 00:01 every day
         return '1 0 * * *';
     }
 
-    /**
-     * @return bool
-     */
     public function isActive()
     {
         $count = $this->getCampaignRepository()->getCount();
@@ -63,16 +48,24 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
         return ($count > 0);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function configure()
     {
-        $this->setDescription('Calculate Tracking Event Summary');
+        $this->setDescription('Calculates tracking event summary (campaign statistics).')
+            ->setHelp(
+                <<<'HELP'
+The <info>%command.name%</info> command calculates tracking event summary (campaign statistics).
+
+  <info>php %command.full_name%</info>
+
+HELP
+            )
+        ;
     }
 
     /**
-     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @noinspection PhpMissingParentCallCommonInspection
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -107,8 +100,10 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
      *
      * @param OutputInterface $output
      * @param Campaign[] $campaigns
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function calculate($output, array $campaigns)
+    protected function calculate(OutputInterface $output, array $campaigns): void
     {
         $em = $this->doctrineHelper->getEntityManagerForClass(Campaign::class);
         foreach ($campaigns as $campaign) {
@@ -124,9 +119,6 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
         $em->flush();
     }
 
-    /**
-     * @param Campaign $campaign
-     */
     protected function calculateForCampaign(Campaign $campaign)
     {
         $trackingEventRepository = $this->getTrackingEventSummaryRepository();
@@ -153,20 +145,16 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
         $em->flush();
     }
 
-    /**
-     * @return CampaignRepository
-     */
-    protected function getCampaignRepository()
+    protected function getCampaignRepository(): CampaignRepository
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->doctrineHelper->getEntityRepository(Campaign::class);
     }
 
-    /**
-     * @return TrackingEventSummaryRepository
-     */
-    protected function getTrackingEventSummaryRepository()
+    protected function getTrackingEventSummaryRepository(): TrackingEventSummaryRepository
     {
         if (!$this->trackingEventRepository) {
+            /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
             $this->trackingEventRepository = $this->doctrineHelper->getEntityRepository(TrackingEventSummary::class);
         }
 

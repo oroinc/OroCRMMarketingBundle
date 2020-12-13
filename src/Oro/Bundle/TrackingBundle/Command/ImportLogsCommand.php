@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Command;
 
@@ -21,35 +22,20 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Imports tracking logs
+ * Imports event tracking logs.
  */
 class ImportLogsCommand extends Command implements CronCommandInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:import-tracking';
 
-    /** @var DoctrineJobRepository */
-    private $akeneoJobRepository;
+    private DoctrineJobRepository $akeneoJobRepository;
+    private FeatureChecker $featureChecker;
+    private JobExecutor $jobExecutor;
+    private ConfigManager $configManager;
 
-    /** @var FeatureChecker */
-    private $featureChecker;
+    private string $kernelLogsDir;
 
-    /** var JobExecutor **/
-    private $jobExecutor;
-
-    /** @var ConfigManager */
-    private $configManager;
-
-    /** @var string */
-    private $kernelLogsDir;
-
-    /**
-     * @param DoctrineJobRepository $akeneoJobRepository
-     * @param FeatureChecker $featureChecker
-     * @param JobExecutor $jobExecutor
-     * @param ConfigManager $configManager
-     * @param string $kernelLogsDir
-     */
     public function __construct(
         DoctrineJobRepository $akeneoJobRepository,
         FeatureChecker $featureChecker,
@@ -65,17 +51,11 @@ class ImportLogsCommand extends Command implements CronCommandInterface
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultDefinition()
     {
         return '1 * * * *';
     }
 
-    /**
-     * @return bool
-     */
     public function isActive()
     {
         $fs     = new Filesystem();
@@ -100,24 +80,30 @@ class ImportLogsCommand extends Command implements CronCommandInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function configure()
     {
         $this
-            ->setDescription('Import tracking logs')
-            ->addOption(
-                'directory',
-                'd',
-                InputOption::VALUE_OPTIONAL,
-                'Logs directory'
-            );
+            ->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'Logs directory')
+            ->setDescription('Imports event tracking logs.')
+            ->setHelp(
+                <<<'HELP'
+The <info>%command.name%</info> command imports event tracking logs.
+
+  <info>php %command.full_name%</info>
+
+The <info>--directory</info> option can be used to provide a different path to a directory
+that contains even tracking log files:
+
+  <info>php %command.full_name% --directory=<path></info>
+
+HELP
+            )
+            ->addUsage('--directory=<path>')
+        ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$this->featureChecker->isFeatureEnabled('tracking')) {
@@ -196,11 +182,7 @@ class ImportLogsCommand extends Command implements CronCommandInterface
         }
     }
 
-    /**
-     * @param array $options
-     * @return bool
-     */
-    protected function isFileProcessed(array $options)
+    protected function isFileProcessed(array $options): bool
     {
         $manager = $this->akeneoJobRepository->getJobManager();
 
@@ -222,13 +204,10 @@ class ImportLogsCommand extends Command implements CronCommandInterface
             ->getQuery()
             ->getOneOrNullResult();
 
-        return $result['jobs'];
+        return $result['jobs'] > 0;
     }
 
-    /**
-     * @return string
-     */
-    protected function getIgnoredFilename()
+    protected function getIgnoredFilename(): string
     {
         $logRotateInterval = $this->configManager->get('oro_tracking.log_rotate_interval');
 
