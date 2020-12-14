@@ -1,0 +1,5 @@
+acl_categories:
+    marketing:
+        label: oro.campaign.privilege.category.marketing.label
+        tab: true
+        priority: 5
