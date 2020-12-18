@@ -41,7 +41,8 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function generateHtmlPageWithTrackingCode($identifier)
     {
-        $filePath = $this->getKernel()->getProjectDir() . '/public/uploads/' . $this->getHtmlFilename($identifier);
+        // the public path where the generated page can be requested by direct link.
+        $filePath = $this->getKernel()->getProjectDir() . '/public/media/' . $this->getHtmlFilename($identifier);
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -78,7 +79,10 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function openPageWithTrackingCode($identifier)
     {
-        $this->visitPath('/uploads/' . $this->getHtmlFilename($identifier));
+        // the public path where the generated page can be requested by direct link.
+        $filePath = '/media/' . $this->getHtmlFilename($identifier);
+
+        $this->visitPath($filePath);
     }
 
     /**
