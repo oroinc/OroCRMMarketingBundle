@@ -51,7 +51,7 @@ services:
     oro_marketing_list.provider.contact_information_exclusion:
         class: Oro\Bundle\MarketingListBundle\Provider\ContactInformationExclusionProvider
         arguments:
-            - "@oro_entity.virtual_field_provider.chain"
+            - "@oro_entity.virtual_field_provider"
             - "@oro_entity_config.provider.entity"
             - "@doctrine"
 
@@ -164,20 +164,18 @@ services:
           calls:
               - [setNamespace, [ 'oro_marketing_list' ] ]
 
-    oro_marketing_list.provider.virtual_relation.marketing_list:
+    oro_marketing_list.virtual_relation_provider.marketing_list:
         class: Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider
-        public: false
         arguments:
             - "@oro_entity.doctrine_helper"
             - '@oro_marketing_list.virtual_relation_cache'
         tags:
             - { name: oro_entity.virtual_relation_provider, priority: 150 }
 
-    oro_marketing_list.provider.virtual_field.marketing_list_item:
+    oro_marketing_list.virtual_field_provider.marketing_list_item:
         class: Oro\Bundle\MarketingListBundle\Provider\MarketingListItemVirtualFieldProvider
-        public: false
         arguments:
-            - "@oro_marketing_list.provider.virtual_relation.marketing_list"
+            - "@oro_marketing_list.virtual_relation_provider.marketing_list"
         tags:
             - { name: oro_entity.virtual_field_provider, priority: 150 }
 
