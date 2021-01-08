@@ -1,36 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Tools;
 
-use Oro\Bundle\EntityExtendBundle\Extend\RelationType;
 use Oro\Bundle\EntityExtendBundle\Tools\GeneratorExtensions\AbstractAssociationEntityGeneratorExtension;
+use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 
+/**
+ * Generates PHP code for many-to-one IdentifierEventExtension::ASSOCIATION_KIND association.
+ */
 class IdentifierVisitGeneratorExtension extends AbstractAssociationEntityGeneratorExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(array $schema)
+    public function supports(array $schema): bool
     {
         return
-            $schema['class'] === 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit'
+            $schema['class'] === TrackingVisit::class
             && parent::supports($schema);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAssociationKind()
+    /** @noinspection PhpMissingParentCallCommonInspection */
+    protected function getAssociationKind(): ?string
     {
         return IdentifierEventExtension::ASSOCIATION_KIND;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getAssociationType()
-    {
-        return RelationType::MANY_TO_ONE;
     }
 }

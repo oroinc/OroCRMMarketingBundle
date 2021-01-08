@@ -1,30 +1,24 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Tools;
 
-use CG\Core\DefaultGeneratorStrategy;
-use CG\Generator\PhpClass;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Tools\VisitEventAssociationGeneratorExtension;
+use Oro\Component\PhpUtils\ClassGenerator;
 
 class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var VisitEventAssociationGeneratorExtension */
-    protected $extension;
+    protected VisitEventAssociationGeneratorExtension $extension;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->extension = new VisitEventAssociationGeneratorExtension();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         unset($this->extension);
@@ -35,10 +29,7 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
      */
     public function testSupports($schema, $expected)
     {
-        $this->assertEquals(
-            $expected,
-            $this->extension->supports($schema)
-        );
+        static::assertEquals($expected, $this->extension->supports($schema));
     }
 
     public function supportsProvider()
@@ -46,13 +37,13 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
         return [
             [
                 [
-                    'class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent',
+                    'class' => TrackingVisitEvent::class,
                     'relation' => 'test',
                     'relationData' => [
                         [
                             'field_id' => new FieldConfigId(
                                 'extend',
-                                'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent',
+                                TrackingVisitEvent::class,
                                 ExtendHelper::buildAssociationName(
                                     'Test\TargetEntity',
                                     VisitEventAssociationExtension::ASSOCIATION_KIND
@@ -68,13 +59,13 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
             ],
             [
                 [
-                    'class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent',
+                    'class' => TrackingVisitEvent::class,
                     'relation' => 'test',
                     'relationData' => [
                         [
                             'field_id' => new FieldConfigId(
                                 'extend',
-                                'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent',
+                                TrackingVisitEvent::class,
                                 'testField',
                                 'manyToOne'
                             ),
@@ -87,13 +78,13 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
             ],
             [
                 [
-                    'class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent',
+                    'class' => TrackingVisitEvent::class,
                     'relation' => 'test',
                     'relationData' => [
                         [
                             'field_id' => new FieldConfigId(
                                 'extend',
-                                'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent',
+                                TrackingVisitEvent::class,
                                 ExtendHelper::buildAssociationName(
                                     'Test\TargetEntity',
                                     VisitEventAssociationExtension::ASSOCIATION_KIND
@@ -108,7 +99,7 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
                 false
             ],
             [
-                ['class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent'],
+                ['class' => TrackingVisitEvent::class],
                 false
             ],
             [
@@ -174,13 +165,11 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
             ]
         ];
 
-        $class = PhpClass::create('Test\Entity');
+        $class = new ClassGenerator('Test\Entity');
 
         $this->extension->generate($schema, $class);
-        $strategy     = new DefaultGeneratorStrategy();
-        $classBody    = $strategy->generate($class);
 
-        $expectedBody = file_get_contents(__DIR__ . '/Fixtures/generationAssociationResult.txt');
-        $this->assertEquals(trim($expectedBody), $classBody);
+        $expectedBody = \file_get_contents(__DIR__ . '/Fixtures/generationAssociationResult.txt');
+        static::assertEquals(\trim($expectedBody), \trim($class->print()));
     }
 }

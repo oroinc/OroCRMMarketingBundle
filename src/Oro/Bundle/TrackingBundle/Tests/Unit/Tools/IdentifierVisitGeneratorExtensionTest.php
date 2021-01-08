@@ -1,30 +1,24 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Tools;
 
-use CG\Core\DefaultGeneratorStrategy;
-use CG\Generator\PhpClass;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 use Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension;
+use Oro\Component\PhpUtils\ClassGenerator;
 
 class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var IdentifierVisitGeneratorExtension */
-    protected $extension;
+    protected IdentifierVisitGeneratorExtension $extension;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->extension = new IdentifierVisitGeneratorExtension();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         unset($this->extension);
@@ -35,10 +29,7 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
      */
     public function testSupports($schema, $expected)
     {
-        $this->assertEquals(
-            $expected,
-            $this->extension->supports($schema)
-        );
+        static::assertEquals($expected, $this->extension->supports($schema));
     }
 
     public function supportsProvider()
@@ -46,13 +37,13 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 [
-                    'class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit',
+                    'class' => TrackingVisit::class,
                     'relation' => 'test',
                     'relationData' => [
                         [
                             'field_id' => new FieldConfigId(
                                 'extend',
-                                'Oro\Bundle\TrackingBundle\Entity\TrackingVisit',
+                                TrackingVisit::class,
                                 ExtendHelper::buildAssociationName(
                                     'Test\TargetEntity',
                                     IdentifierEventExtension::ASSOCIATION_KIND
@@ -68,13 +59,13 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit',
+                    'class' => TrackingVisit::class,
                     'relation' => 'test',
                     'relationData' => [
                         [
                             'field_id' => new FieldConfigId(
                                 'extend',
-                                'Oro\Bundle\TrackingBundle\Entity\TrackingVisit',
+                                TrackingVisit::class,
                                 'testField',
                                 'manyToOne'
                             ),
@@ -86,13 +77,13 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit',
+                    'class' => TrackingVisit::class,
                     'relation' => 'test',
                     'relationData' => [
                         [
                             'field_id' => new FieldConfigId(
                                 'extend',
-                                'Oro\Bundle\TrackingBundle\Entity\TrackingVisit',
+                                TrackingVisit::class,
                                 ExtendHelper::buildAssociationName(
                                     'Test\TargetEntity',
                                     IdentifierEventExtension::ASSOCIATION_KIND
@@ -106,7 +97,7 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
                 false
             ],
             [
-                ['class' => 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit'],
+                ['class' => TrackingVisit::class],
                 false
             ],
             [
@@ -171,12 +162,10 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
             ]
         ];
 
-        $class = PhpClass::create('Test\Entity');
+        $class = new ClassGenerator('Test\Entity');
 
         $this->extension->generate($schema, $class);
-        $strategy     = new DefaultGeneratorStrategy();
-        $classBody    = $strategy->generate($class);
-        $expectedBody = file_get_contents(__DIR__ . '/Fixtures/generationIdentifierResult.txt');
-        $this->assertEquals(trim($expectedBody), $classBody);
+        $expectedCode = \file_get_contents(__DIR__ . '/Fixtures/generationIdentifierResult.txt');
+        static::assertEquals(\trim($expectedCode), \trim($class->print()));
     }
 }
