@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 
 class ContactInformationFieldsProviderTest extends \PHPUnit\Framework\TestCase
 {
@@ -76,43 +77,43 @@ class ContactInformationFieldsProviderTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 null,
-                json_encode([]),
+                QueryDefinitionUtil::encodeDefinition([]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
                 []
             ],
             [
                 [],
-                json_encode([]),
+                QueryDefinitionUtil::encodeDefinition([]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
                 []
             ],
             [
                 ['email' => 'email'],
-                json_encode([]),
+                QueryDefinitionUtil::encodeDefinition([]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
                 ['email']
             ],
             [
                 ['email' => 'email'],
-                json_encode(['columns' => [['name' => 'primaryEmail']]]),
+                QueryDefinitionUtil::encodeDefinition(['columns' => [['name' => 'primaryEmail']]]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
                 []
             ],
             [
                 ['email' => 'email'],
-                json_encode(['columns' => [['name' => 'primaryEmail']]]),
+                QueryDefinitionUtil::encodeDefinition(['columns' => [['name' => 'primaryEmail']]]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
                 []
             ],
             [
                 ['email' => 'email'],
-                json_encode(['columns' => [['name' => 'email']]]),
+                QueryDefinitionUtil::encodeDefinition(['columns' => [['name' => 'email']]]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_PHONE,
                 []
             ],
             [
                 ['email' => 'email'],
-                json_encode(['columns' => [['name' => 'email'], ['name' => 'phone']]]),
+                QueryDefinitionUtil::encodeDefinition(['columns' => [['name' => 'email'], ['name' => 'phone']]]),
                 ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL,
                 ['email']
             ],

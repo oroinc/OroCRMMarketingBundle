@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 
 class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 {
@@ -81,7 +82,7 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
     {
         $this->queryDesigner->expects($this->once())
             ->method('getDefinition')
-            ->will($this->returnValue(json_encode(['columns' => []])));
+            ->willReturn(QueryDefinitionUtil::encodeDefinition(['columns' => []]));
         $this->assertEmpty($this->helper->getQueryContactInformationFields($this->queryDesigner));
     }
 
@@ -91,7 +92,7 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 
         $this->queryDesigner->expects($this->once())
             ->method('getDefinition')
-            ->willReturn(json_encode([
+            ->willReturn(QueryDefinitionUtil::encodeDefinition([
                 'columns' => [
                     ['name' => 'one'],
                     ['name' => 'two'],

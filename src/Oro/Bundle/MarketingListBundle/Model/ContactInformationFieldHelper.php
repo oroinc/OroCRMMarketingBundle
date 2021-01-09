@@ -7,6 +7,7 @@ use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\JoinIdentifierHelper;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 
 /**
  * Uses entityFields config and entityFields fetched from dbSource
@@ -48,19 +49,12 @@ class ContactInformationFieldHelper
      */
     public function getQueryContactInformationFields(AbstractQueryDesigner $queryDesigner)
     {
-        $fields = [];
-
-        // If definition is empty there is no one contact information field
-        $definition = $queryDesigner->getDefinition();
-        if (!$definition) {
-            return $fields;
-        }
-
-        $definition = json_decode($definition, JSON_OBJECT_AS_ARRAY);
+        $definition = QueryDefinitionUtil::decodeDefinition($queryDesigner->getDefinition());
         if (empty($definition['columns'])) {
-            return $fields;
+            return [];
         }
 
+        $fields = [];
         $entity = $queryDesigner->getEntity();
         foreach ($definition['columns'] as $column) {
             $contactInformationType = $this->getContactInformationFieldType($entity, $column['name']);

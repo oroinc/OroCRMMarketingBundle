@@ -12,6 +12,7 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 use Oro\Component\DoctrineUtils\ORM\Walker\UnionOutputResultModifier;
 
@@ -100,7 +101,7 @@ class MarketingListExtension extends AbstractExtension
             return false;
         }
 
-        $definition = json_decode($marketingList->getDefinition(), true);
+        $definition = QueryDefinitionUtil::decodeDefinition($marketingList->getDefinition());
 
         // We should skip the configuration if it do not contain at least one filter
         if (empty($definition['filters'])) {

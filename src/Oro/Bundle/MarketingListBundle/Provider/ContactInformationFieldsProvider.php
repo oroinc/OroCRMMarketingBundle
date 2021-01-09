@@ -5,9 +5,13 @@ namespace Oro\Bundle\MarketingListBundle\Provider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
+/**
+ * Provides details related to the contact information fields.
+ */
 class ContactInformationFieldsProvider
 {
     const CONTACT_INFORMATION_SCOPE_EMAIL = 'email';
@@ -38,17 +42,14 @@ class ContactInformationFieldsProvider
         $typedFields = $this->getEntityTypedFields($entityClass, $type);
 
         $definitionColumns = [];
-        $definition = $queryDesigner->getDefinition();
-        if ($definition) {
-            $definition = json_decode($definition, JSON_OBJECT_AS_ARRAY);
-            if (!empty($definition['columns'])) {
-                $definitionColumns = array_map(
-                    function (array $columnDefinition) {
-                        return $columnDefinition['name'];
-                    },
-                    $definition['columns']
-                );
-            }
+        $definition = QueryDefinitionUtil::decodeDefinition($queryDesigner->getDefinition());
+        if (!empty($definition['columns'])) {
+            $definitionColumns = array_map(
+                function (array $columnDefinition) {
+                    return $columnDefinition['name'];
+                },
+                $definition['columns']
+            );
         }
 
         if (!empty($definitionColumns)) {
