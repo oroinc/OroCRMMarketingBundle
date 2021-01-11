@@ -2,5 +2,3 @@ oro:
     marketinglist:
         contact_information_required: "At least one column must contain contact information"
         contact_information_type: "At least one column must contain contact information of type %type%"
-        dublicate:
-            columns: You are trying to add several copies of column(s) %columnName% to the Marketing List. Only one copy of the column may be added. Please, review the list of columns to remove duplicates.

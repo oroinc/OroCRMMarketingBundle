@@ -229,11 +229,6 @@ services:
         tags:
             - { name: oro_action.condition, alias: has_contact_information }
 
-    oro_marketing_list.validator.column_dublicate_validator:
-        class: Oro\Bundle\MarketingListBundle\Validator\ColumnDublicateValidator
-        tags:
-            - { name: validator.constraint_validator, alias: oro_marketing_list.column_dublicate_validator }
-
     oro_marketing_list.async.update_marketing_list:
         class: Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor
         arguments:

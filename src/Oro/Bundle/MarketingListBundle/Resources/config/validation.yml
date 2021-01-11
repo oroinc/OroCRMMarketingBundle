@@ -3,13 +3,13 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [ name ]
     properties:
         name:
-            - NotBlank:     ~
+            - NotBlank: ~
             - Length:
                 max: 255
         type:
-            - NotBlank:     ~
+            - NotBlank: ~
         entity:
-            - NotBlank:     ~
+            - NotBlank: ~
             - Length:
                 max: 255
         organization:
@@ -18,14 +18,9 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
             - Valid: ~
 
 Oro\Bundle\SegmentBundle\Entity\Segment:
-    group_sequence:
-        - PreQueryValidate
-        - Segment
     constraints:
-        - Oro\Bundle\MarketingListBundle\Validator\Constraints\ColumnDublicateConstraint:
-            groups: [PreQueryValidate]
         - Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint:
-            groups: ["marketing_list"]
+            groups: [ marketing_list ]
 
 Oro\Bundle\MarketingListBundle\Entity\MarketingListItem:
     constraints:
@@ -36,7 +31,7 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingListItem:
             - Length:
                 max: 255
         marketingList:
-            - NotBlank:     ~
+            - NotBlank: ~
 
 Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem:
     constraints:
@@ -47,9 +42,7 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem:
             - Length:
                 max: 255
         marketingList:
-            - NotBlank:     ~
-
-
+            - NotBlank: ~
 
 Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem:
     constraints:
@@ -60,4 +53,4 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem:
             - Length:
                 max: 255
         marketingList:
-            - NotBlank:     ~
+            - NotBlank: ~
