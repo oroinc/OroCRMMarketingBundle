@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Validator;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

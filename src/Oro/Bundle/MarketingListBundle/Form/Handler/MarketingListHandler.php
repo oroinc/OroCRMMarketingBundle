@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;

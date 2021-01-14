@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;

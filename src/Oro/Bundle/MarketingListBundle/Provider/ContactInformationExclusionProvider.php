@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityBundle\Provider\AbstractExclusionProvider;
 use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;

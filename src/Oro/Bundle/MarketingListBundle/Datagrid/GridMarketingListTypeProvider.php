@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Datagrid;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
 class GridMarketingListTypeProvider

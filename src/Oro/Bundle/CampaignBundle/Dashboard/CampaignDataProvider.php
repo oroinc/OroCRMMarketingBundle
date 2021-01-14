@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Dashboard;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;

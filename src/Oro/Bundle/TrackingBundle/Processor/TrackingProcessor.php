@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\TrackingBundle\Processor;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;

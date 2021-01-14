@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\Form\FormInterface;

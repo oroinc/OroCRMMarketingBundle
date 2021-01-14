@@ -81,11 +81,11 @@ class EmailCampaignStatisticsConnectorTest extends \PHPUnit\Framework\TestCase
 
         $statisticsRecord = new EmailCampaignStatistics();
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $manager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+        $manager = $this->getMockBuilder('\Doctrine\Persistence\ObjectManager')
             ->disableArgumentCloning()
             ->getMock();
         $manager->expects($this->exactly(2))

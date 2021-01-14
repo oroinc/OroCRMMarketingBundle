@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Form\EventListener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;

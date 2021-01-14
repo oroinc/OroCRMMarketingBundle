@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Handler;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler;

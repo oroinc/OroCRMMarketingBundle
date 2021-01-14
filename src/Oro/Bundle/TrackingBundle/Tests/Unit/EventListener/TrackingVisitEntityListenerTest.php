@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\EventListener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TrackingBundle\Entity\Repository\UniqueTrackingVisitRepository;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;

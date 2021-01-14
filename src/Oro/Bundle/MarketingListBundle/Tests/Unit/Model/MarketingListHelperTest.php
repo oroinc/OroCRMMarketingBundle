@@ -19,7 +19,7 @@ class MarketingListHelperTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->managerRegistry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+        $this->managerRegistry = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
             ->getMock();
 
         $this->helper = new MarketingListHelper($this->managerRegistry);
@@ -54,7 +54,7 @@ class MarketingListHelperTest extends \PHPUnit\Framework\TestCase
         $id = 100;
         $entity = new \stdClass();
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
 

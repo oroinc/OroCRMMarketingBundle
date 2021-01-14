@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;

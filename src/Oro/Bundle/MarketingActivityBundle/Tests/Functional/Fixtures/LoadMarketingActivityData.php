@@ -4,8 +4,8 @@ namespace Oro\Bundle\MarketingActivityBundle\Tests\Functional\Fixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadCampaignData;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;

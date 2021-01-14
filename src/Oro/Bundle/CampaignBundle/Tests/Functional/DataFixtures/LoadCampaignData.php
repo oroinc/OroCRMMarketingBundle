@@ -4,7 +4,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;

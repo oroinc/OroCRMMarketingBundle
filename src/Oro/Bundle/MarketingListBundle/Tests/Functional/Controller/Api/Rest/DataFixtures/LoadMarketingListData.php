@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

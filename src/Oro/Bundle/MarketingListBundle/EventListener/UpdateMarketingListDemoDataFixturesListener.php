@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;

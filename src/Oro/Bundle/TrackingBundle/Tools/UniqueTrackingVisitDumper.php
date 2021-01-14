@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\TrackingBundle\Tools;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 use Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery;
 use Psr\Log\LoggerInterface;

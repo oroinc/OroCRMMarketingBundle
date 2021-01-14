@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MarketingActivityBundle\Tests\Functional\Fixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\TestFrameworkBundle\Entity\TestActivity;
 
 class LoadTestEntityData extends AbstractFixture

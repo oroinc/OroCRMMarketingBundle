@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Model;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 

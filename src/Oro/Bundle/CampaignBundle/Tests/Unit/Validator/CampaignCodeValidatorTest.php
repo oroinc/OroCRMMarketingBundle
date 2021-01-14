@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Validator;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Behat\Context;
 
 use Behat\Symfony2Extension\Context\KernelDictionary;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\Controller\Api\Rest\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

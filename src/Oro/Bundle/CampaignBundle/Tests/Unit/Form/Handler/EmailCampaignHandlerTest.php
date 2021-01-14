@@ -38,7 +38,7 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
         $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+        $this->registry = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
             ->getMockForAbstractClass();
 
         $this->handler = new EmailCampaignHandler($requestStack, $this->form, $this->registry);
@@ -134,7 +134,7 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
             ->method('submit')
             ->with(self::FORM_DATA);
 
-        $manager = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+        $manager = $this->getMockBuilder('\Doctrine\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
         $manager->expects($this->once())

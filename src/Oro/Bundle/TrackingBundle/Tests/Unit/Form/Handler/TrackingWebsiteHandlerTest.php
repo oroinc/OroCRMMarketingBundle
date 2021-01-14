@@ -34,7 +34,7 @@ class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->request = new Request();
 
-        $this->manager = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+        $this->manager = $this->getMockBuilder('Doctrine\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
     }

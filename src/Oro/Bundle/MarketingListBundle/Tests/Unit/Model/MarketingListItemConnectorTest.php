@@ -57,7 +57,7 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())
@@ -69,7 +69,7 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
             ->with(MarketingListItemConnector::MARKETING_LIST_ITEM_ENTITY)
             ->will($this->returnValue($repository));
 
-        $em = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectManager')
+        $em = $this->getMockBuilder('\Doctrine\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
         $em->expects($this->once())
@@ -139,7 +139,7 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
         $marketingListItem->expects($this->once())
             ->method('contact');
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())

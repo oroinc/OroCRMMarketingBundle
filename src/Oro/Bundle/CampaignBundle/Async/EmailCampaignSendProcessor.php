@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Async;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;

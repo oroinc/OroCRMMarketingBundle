@@ -4,7 +4,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 
 class LoadTrackingVisits extends AbstractFixture implements DependentFixtureInterface

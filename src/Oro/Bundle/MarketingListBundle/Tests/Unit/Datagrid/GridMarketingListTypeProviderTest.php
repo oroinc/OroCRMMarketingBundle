@@ -19,7 +19,7 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->registry = $this->createMock('Doctrine\Persistence\ManagerRegistry');
 
         $this->provider = new GridMarketingListTypeProvider($this->registry);
     }
@@ -33,7 +33,7 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
     public function testGetListTypeChoices(array $data, array $expected)
     {
         $repository = $this
-            ->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+            ->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -43,7 +43,7 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($data));
 
         $om = $this
-            ->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+            ->getMockBuilder('Doctrine\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Async;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Async\EmailCampaignSendProcessor;
 use Oro\Bundle\CampaignBundle\Async\Topics;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;

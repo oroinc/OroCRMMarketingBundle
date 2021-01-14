@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;

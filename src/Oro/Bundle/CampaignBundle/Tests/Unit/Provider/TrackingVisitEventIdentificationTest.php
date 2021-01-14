@@ -18,10 +18,10 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->em = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+        $this->em = $this->getMockBuilder('Doctrine\Persistence\ObjectManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $doctrine = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+        $doctrine = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
         $doctrine->expects($this->any())

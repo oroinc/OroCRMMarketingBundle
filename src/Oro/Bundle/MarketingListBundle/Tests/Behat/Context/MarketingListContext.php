@@ -4,7 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Behat\Context;
 
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
 use Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\FixtureLoaderAwareInterface;

@@ -33,7 +33,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->registry = $this
-            ->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+            ->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
             ->getMock();
 
         $this->listener = new CampaignStatisticDatagridListener($this->marketingListHelper, $this->registry);
@@ -140,7 +140,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected function assertEntityFind($id, $entity)
     {
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())

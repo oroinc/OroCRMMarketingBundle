@@ -3,7 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 
