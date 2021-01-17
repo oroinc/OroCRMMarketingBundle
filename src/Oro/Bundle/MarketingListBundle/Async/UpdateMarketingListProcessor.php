@@ -93,7 +93,7 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
         $event = new UpdateMarketingListEvent();
         $event->setMarketingLists($marketingLists);
 
-        $this->dispatcher->dispatch(self::UPDATE_MARKETING_LIST_EVENT, $event);
+        $this->dispatcher->dispatch($event, self::UPDATE_MARKETING_LIST_EVENT);
     }
 
     /**

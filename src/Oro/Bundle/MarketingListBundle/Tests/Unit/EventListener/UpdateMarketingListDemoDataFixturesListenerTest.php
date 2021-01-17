@@ -137,7 +137,7 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit\Framework
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with(UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT, $event);
+            ->with($event, UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT);
 
         $this->listener->onPostLoad($this->event);
     }

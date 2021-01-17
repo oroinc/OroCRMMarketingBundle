@@ -41,7 +41,7 @@ class FillUniqueTrackingVisitsQuery extends ParametrizedMigrationQuery
         $truncateQuery = $this->connection->getDatabasePlatform()->getTruncateTableSQL('oro_tracking_unique_visit');
         $this->logQuery($logger, $truncateQuery);
         if (!$dryRun) {
-            $this->connection->executeUpdate($truncateQuery);
+            $this->connection->executeStatement($truncateQuery);
         }
 
         $insertQuery = <<<'SQL'
@@ -59,7 +59,7 @@ SQL;
 
         $this->logQuery($logger, $insertQuery);
         if (!$dryRun) {
-            $this->connection->executeUpdate($insertQuery);
+            $this->connection->executeStatement($insertQuery);
         }
     }
 

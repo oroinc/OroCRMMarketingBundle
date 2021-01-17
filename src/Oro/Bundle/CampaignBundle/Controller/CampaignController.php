@@ -6,7 +6,7 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/campaign")
  */
-class CampaignController extends Controller
+class CampaignController extends AbstractController
 {
     /**
      * @Route("/", name="oro_campaign_index")

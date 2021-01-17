@@ -7,7 +7,7 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/marketing-activity")
  */
-class MarketingActivityController extends Controller
+class MarketingActivityController extends AbstractController
 {
     /**
      * @Route(

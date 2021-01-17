@@ -88,8 +88,8 @@ class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
             ->with(
-                UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT,
-                $this->isInstanceOf(UpdateMarketingListEvent::class)
+                $this->isInstanceOf(UpdateMarketingListEvent::class),
+                UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT
             );
 
         $this->logger->expects($this->once())

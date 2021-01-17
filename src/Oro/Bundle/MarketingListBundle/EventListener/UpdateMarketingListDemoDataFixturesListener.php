@@ -74,7 +74,7 @@ class UpdateMarketingListDemoDataFixturesListener extends AbstractDemoDataFixtur
         $event = new UpdateMarketingListEvent();
         $event->setMarketingLists($marketingLists);
 
-        $this->dispatcher->dispatch(UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT, $event);
+        $this->dispatcher->dispatch($event, UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT);
     }
 
     /**

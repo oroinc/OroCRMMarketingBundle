@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @Route("/tracking/website")
  */
-class TrackingWebsiteController extends Controller
+class TrackingWebsiteController extends AbstractController
 {
     /**
      * @Route(
