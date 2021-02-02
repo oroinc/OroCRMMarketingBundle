@@ -46,7 +46,7 @@
             {{ UI.renderProperty('oro.tracking.trackingwebsite.identifier.label'|trans, entity.identifier) }}
 
             {%- set url -%}
-            <a target="_blank" href="{{ entity.url }}">
+            <a target="_blank" href="{{ entity.url|strip_dangerous_protocols }}">
                 {{ entity.url }}
             </a>
             {%- endset -%}
