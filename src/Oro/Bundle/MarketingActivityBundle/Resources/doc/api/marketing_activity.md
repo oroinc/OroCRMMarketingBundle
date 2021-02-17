@@ -124,9 +124,7 @@ Delete a collection of marketing activity records.
 
 {@inheritdoc}
 
-**Please note:**
-
-*This field is **required** and must remain defined.*
+**This field must not be empty, if it is passed.**
 
 ### entity
 
@@ -142,9 +140,7 @@ The entity to which this marketing activity record is related.
 
 {@inheritdoc}
 
-**Please note:**
-
-*This field is **required** and must remain defined.*
+**This field must not be empty, if it is passed.**
 
 ### marketingActivityType
 
