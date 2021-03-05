@@ -41,7 +41,7 @@ class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string $method
-     * @param bool   $formValid
+     * @param bool   $isFormValid
      * @param bool   $isFlushCalled
      *
      * @dataProvider processProvider
