@@ -7,7 +7,7 @@
     .icon {
         min-width: $dropdown-item-icon-fa-size;
         height: $dropdown-item-icon-fa-size;
-        margin-#{$end}: $dropdown-item-icon-fa-offset;
+        margin-right: $dropdown-item-icon-fa-offset;
 
         text-align: center;
     }
@@ -15,7 +15,7 @@
 
 #oro_marketing_list-column-list .name-cell {
     &:not(.has-icon) {
-        padding-#{$start}: $content-padding-medium + $dropdown-item-icon-fa-size + $dropdown-item-icon-fa-offset;
+        padding-left: $content-padding-medium + $dropdown-item-icon-fa-size + $dropdown-item-icon-fa-offset;
     }
 }
 
@@ -26,7 +26,7 @@
 
     ul {
         margin-bottom: 0;
-        margin-#{$start}: 8px;
+        margin-left: 8px;
 
         @include list-unstyled();
     }
