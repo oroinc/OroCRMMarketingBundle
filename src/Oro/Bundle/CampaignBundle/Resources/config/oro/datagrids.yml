@@ -281,6 +281,7 @@ datagrids:
                 label: oro.campaign.emailcampaign.name.label
             senderEmail:
                 label: oro.campaign.emailcampaign.sender_email.label
+                cellClassName: 'direction-ltr'
             senderName:
                 label: oro.campaign.emailcampaign.sender_name.label
             campaignName:

@@ -5,7 +5,7 @@
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
             {{ ui.renderProperty('oro.campaign.emailcampaign.name.label'|trans, entity.name) }}
-            {{ ui.renderProperty('oro.campaign.emailcampaign.sender_email.label'|trans, entity.senderEmail) }}
+            {{ ui.renderProperty('oro.campaign.emailcampaign.sender_email.label'|trans, entity.senderEmail, null, null, {'dir': 'ltr'}) }}
             {{ ui.renderProperty('oro.campaign.emailcampaign.sender_name.label'|trans, entity.senderName) }}
             {{ ui.renderProperty('oro.campaign.emailcampaign.schedule.label'|trans, ('oro.campaign.emailcampaign.schedule.' ~ entity.schedule)|trans ) }}
 
