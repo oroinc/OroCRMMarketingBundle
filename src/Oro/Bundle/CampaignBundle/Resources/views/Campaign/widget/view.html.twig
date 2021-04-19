@@ -10,7 +10,7 @@
                 {{ entity.code }}
                 {% if codes_history is not empty %} ({{ codes_history|join(', ') }}) {{ ui.tooltip('oro.campaign.code.tooltip'|trans) }}{% endif %}
             {%- endset -%}
-            {{ ui.renderHtmlProperty('oro.campaign.code.label'|trans, codesData) }}
+            {{ ui.renderHtmlProperty('oro.campaign.code.label'|trans, codesData, null, null, {'dir': 'ltr'}) }}
             {{ ui.renderSwitchableHtmlProperty('oro.campaign.description.label'|trans, entity.description) }}
         </div>
 
