@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
+use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListRemovedItemTest extends \PHPUnit\Framework\TestCase
@@ -27,10 +28,8 @@ class MarketingListRemovedItemTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->entity->getId());
 
         $value = 42;
-        $idReflection = new \ReflectionProperty(get_class($this->entity), 'id');
-        $idReflection->setAccessible(true);
-        $idReflection->setValue($this->entity, $value);
-        $this->assertEquals($value, $this->entity->getId());
+        ReflectionUtil::setId($this->entity, $value);
+        $this->assertSame($value, $this->entity->getId());
     }
 
     /**

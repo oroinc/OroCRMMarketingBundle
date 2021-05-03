@@ -2,25 +2,21 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 
+use Oro\Bundle\EntityBundle\Helper\FieldHelper;
 use Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer;
+use Oro\Component\Testing\ReflectionUtil;
 
 class DataNormalizerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var DataNormalizer
-     */
-    protected $normalizer;
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $fieldHelper;
+    /** @var FieldHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $fieldHelper;
+
+    /** @var DataNormalizer */
+    private $normalizer;
 
     protected function setUp(): void
     {
-        $this->fieldHelper = $this
-            ->getMockBuilder('Oro\Bundle\EntityBundle\Helper\FieldHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->fieldHelper = $this->createMock(FieldHelper::class);
 
         $this->normalizer = new DataNormalizer($this->fieldHelper);
     }
@@ -105,13 +101,9 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
      */
     public function testUpdateData(array $data, array $expected)
     {
-        $reflectionClass = new \ReflectionClass($this->normalizer);
-        $method          = $reflectionClass->getMethod('updateData');
-        $method->setAccessible(true);
-
         $this->assertEquals(
             $expected,
-            $method->invokeArgs($this->normalizer, ['data' => $data])
+            ReflectionUtil::callMethod($this->normalizer, 'updateData', [$data])
         );
     }
 
