@@ -10,7 +10,7 @@ abstract class AbstractTypeCountFunctionTestCase extends \PHPUnit\Framework\Test
     /** @var AbstractTypeCountFunction */
     protected $function;
 
-    /** @var  string */
+    /** @var string */
     protected $type;
 
     public function testGetExpression()

@@ -17,24 +17,16 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
 {
     use EntityTrait;
 
-    /**
-     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     protected $registry;
 
-    /**
-     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject */
     protected $translator;
 
-    /**
-     * @var Constraint|\PHPUnit\Framework\MockObject\MockObject $constraint
-     */
+    /** @var Constraint|\PHPUnit\Framework\MockObject\MockObject */
     protected $constraint;
 
-    /**
-     * @var CampaignCodeValidator
-     */
+    /** @var CampaignCodeValidator */
     protected $validator;
 
     protected function setUp(): void

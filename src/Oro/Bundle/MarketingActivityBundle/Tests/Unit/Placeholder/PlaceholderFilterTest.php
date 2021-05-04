@@ -18,7 +18,7 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     /** @var \PHPUnit\Framework\MockObject\MockObject|EntityProvider */
     protected $entityProvider;
 
-    /** @var  PlaceholderFilter */
+    /** @var PlaceholderFilter */
     protected $filter;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject */
