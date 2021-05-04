@@ -11,7 +11,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Email Campaign entity.
+ * Represents an email campaign.
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository")
  * @ORM\Table(

@@ -4,58 +4,69 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Entity\TransportSettings;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class EmailCampaignTest extends AbstractEntityTestCase
+class EmailCampaignTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityFQCN()
-    {
-        return 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign';
-    }
+    use EntityTestCaseTrait;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getSetDataProvider()
+    public function testProperties()
     {
-        $campaign      = new Campaign();
-        $marketingList = new MarketingList();
-        $owner         = new User();
-        $date          = new \DateTime('now', new \DateTimeZone('UTC'));
-        $transportSettings = $this->getMockForAbstractClass('Oro\Bundle\CampaignBundle\Entity\TransportSettings');
-
-        return [
-            'name'          => ['name', 'test', 'test'],
-            'description'   => ['description', 'test', 'test'],
-            'campaign'      => ['campaign', $campaign, $campaign],
-            'sent'          => ['sent', $date, $date],
-            'sentAt'        => ['sentAt', true, true],
-            'schedule'      => ['schedule', EmailCampaign::SCHEDULE_DEFERRED, EmailCampaign::SCHEDULE_DEFERRED],
-            'scheduledFor'  => ['scheduledFor', $date, $date],
-            'marketingList' => ['marketingList', $marketingList, $marketingList],
-            'owner'         => ['owner', $owner, $owner],
-            'updatedAt'     => ['updatedAt', $date, $date],
-            'createdAt'     => ['createdAt', $date, $date],
-            'senderEmail'   => ['senderEmail', 'test@test.com', 'test@test.com'],
-            'senderName'    => ['senderName', 'name', 'name'],
-            'transport'     => ['transport', 'transport', 'transport'],
-            'transportSettings' => ['transportSettings', $transportSettings, $transportSettings]
+        $properties = [
+            'id'                => ['id', 1],
+            'name'              => ['name', 'test'],
+            'description'       => ['description', 'test'],
+            'campaign'          => ['campaign', $this->createMock(Campaign::class)],
+            'sent'              => ['sent', new \DateTime()],
+            'sentAt'            => ['sentAt', true],
+            'schedule'          => ['schedule', EmailCampaign::SCHEDULE_DEFERRED],
+            'scheduledFor'      => ['scheduledFor', new \DateTime()],
+            'marketingList'     => ['marketingList', $this->createMock(MarketingList::class)],
+            'owner'             => ['owner', $this->createMock(User::class)],
+            'updatedAt'         => ['updatedAt', new \DateTime()],
+            'createdAt'         => ['createdAt', new \DateTime()],
+            'senderEmail'       => ['senderEmail', 'test@test.com'],
+            'senderName'        => ['senderName', 'name'],
+            'transport'         => ['transport', 'transport'],
+            'transportSettings' => ['transportSettings', $this->getMockForAbstractClass(TransportSettings::class)],
         ];
+
+        $entity = new EmailCampaign();
+        self::assertPropertyAccessors($entity, $properties);
     }
 
-    public function testLifecycleCallbacks()
+    public function testPrePersist()
     {
-        $date = new \DateTime('now', new \DateTimeZone('UTC'));
+        $entity = new EmailCampaign();
+        $entity->prePersist();
 
-        $this->entity->prePersist();
-        $this->entity->preUpdate();
+        $this->assertNotNull($entity->getCreatedAt());
+        $this->assertNotNull($entity->getUpdatedAt());
+        $this->assertEquals($entity->getCreatedAt(), $entity->getUpdatedAt());
+        $this->assertNotSame($entity->getCreatedAt(), $entity->getUpdatedAt());
 
-        $this->assertEquals($date->format('Y-m-d'), $this->entity->getCreatedAt()->format('Y-m-d'));
-        $this->assertEquals($date->format('Y-m-d'), $this->entity->getUpdatedAt()->format('Y-m-d'));
+        $existingCreatedAt = $entity->getCreatedAt();
+        $existingUpdatedAt = $entity->getUpdatedAt();
+        $entity->prePersist();
+        self::assertNotSame($existingCreatedAt, $entity->getCreatedAt());
+        self::assertNotSame($existingUpdatedAt, $entity->getUpdatedAt());
+        self::assertEquals($entity->getCreatedAt(), $entity->getUpdatedAt());
+        self::assertNotSame($entity->getCreatedAt(), $entity->getUpdatedAt());
+    }
+
+    public function testPreUpdate()
+    {
+        $entity = new EmailCampaign();
+        $entity->preUpdate();
+
+        $this->assertNotNull($entity->getUpdatedAt());
+
+        $existingUpdatedAt = $entity->getUpdatedAt();
+        $entity->preUpdate();
+        self::assertNotSame($existingUpdatedAt, $entity->getUpdatedAt());
     }
 
     public function testUnknownSchedule()
@@ -67,15 +78,14 @@ class EmailCampaignTest extends AbstractEntityTestCase
         $entity->setSchedule('unknown');
     }
 
-
     public function testGetEntityName()
     {
-        $marketingList = new MarketingList();
-        $marketingList->setEntity('\stdClass');
-        $campaign = new EmailCampaign();
-        $this->assertNull($campaign->getEntityName());
+        $entity = new EmailCampaign();
+        self::assertNull($entity->getEntityName());
 
-        $campaign->setMarketingList($marketingList);
-        $this->assertEquals($marketingList->getEntity(), $campaign->getEntityName());
+        $marketingList = new MarketingList();
+        $marketingList->setEntity(\stdClass::class);
+        $entity->setMarketingList($marketingList);
+        self::assertSame($marketingList->getEntity(), $entity->getEntityName());
     }
 }

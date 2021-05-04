@@ -10,7 +10,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Email Campaign Statistics.
+ * Represents statistics of an email campaign.
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignStatisticsRepository")
  * @ORM\Table(name="orocrm_campaign_email_stats", uniqueConstraints={

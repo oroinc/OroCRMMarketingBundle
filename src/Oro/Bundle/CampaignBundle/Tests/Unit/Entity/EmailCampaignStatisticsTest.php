@@ -2,45 +2,42 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Entity;
 
-class EmailCampaignStatisticsTest extends AbstractEntityTestCase
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+
+class EmailCampaignStatisticsTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityFQCN()
+    use EntityTestCaseTrait;
+
+    public function testProperties()
     {
-        return 'Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getSetDataProvider()
-    {
-        $campaign = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $marketingListItem = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingListItem')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $date = new \DateTime();
-
-        return [
-
-            'createdAt' => ['createdAt', $date, $date],
-            'emailCampaign' => ['emailCampaign', $campaign, $campaign],
-            'marketingListItem' => ['marketingListItem', $marketingListItem, $marketingListItem],
-            'openCount' => ['openCount', 1, 1],
-            'clickCount' => ['clickCount', 2, 2],
-            'bounceCount' => ['bounceCount', 3, 3],
-            'abuseCount' => ['abuseCount', 4, 4],
-            'unsubscribeCount' => ['unsubscribeCount', 5, 5]
+        $properties = [
+            'id'                => ['id', 1],
+            'createdAt'         => ['createdAt', new \DateTime()],
+            'emailCampaign'     => ['emailCampaign', $this->createMock(EmailCampaign::class)],
+            'marketingListItem' => ['marketingListItem', $this->createMock(MarketingListItem::class)],
+            'openCount'         => ['openCount', 1],
+            'clickCount'        => ['clickCount', 2],
+            'bounceCount'       => ['bounceCount', 3],
+            'abuseCount'        => ['abuseCount', 4],
+            'unsubscribeCount'  => ['unsubscribeCount', 5],
         ];
+
+        $entity = new EmailCampaignStatistics();
+        self::assertPropertyAccessors($entity, $properties);
     }
 
-    public function testLifecycleCallbacks()
+    public function testPrePersist()
     {
-        $this->entity->prePersist();
-        $this->assertInstanceOf('\DateTime', $this->entity->getCreatedAt());
+        $entity = new EmailCampaignStatistics();
+        $entity->prePersist();
+
+        self::assertNotNull($entity->getCreatedAt());
+
+        $existingCreatedAt = $entity->getCreatedAt();
+        $entity->prePersist();
+        self::assertNotSame($existingCreatedAt, $entity->getCreatedAt());
     }
 }

@@ -3,66 +3,75 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class CampaignTest extends AbstractEntityTestCase
+class CampaignTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getEntityFQCN()
-    {
-        return 'Oro\Bundle\CampaignBundle\Entity\Campaign';
-    }
+    use EntityTestCaseTrait;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getSetDataProvider()
+    public function testProperties()
     {
-        $name           = 'Some Name';
-        $code           = '123-abc';
-        $date           = new \DateTime('now');
-        $description    = 'some description';
-        $budget         = 10.44;
-        $owner          = new User();
-        $organization   = $this->createMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
-
-        return [
-            'name'         => ['name', $name, $name],
-            'code'         => ['code', $code, $code],
-            'startDate'    => ['startDate', $date, $date],
-            'endDate'      => ['endDate', $date, $date],
-            'description'  => ['description', $description, $description],
-            'budget'       => ['budget', $budget, $budget],
-            'owner'        => ['owner', $owner, $owner],
-            'organization' => ['organization', $organization, $organization],
+        $properties = [
+            'id'           => ['id', 1],
+            'name'         => ['name', 'Some Name'],
+            'code'         => ['code', '123-abc'],
+            'startDate'    => ['startDate', new \DateTime()],
+            'endDate'      => ['endDate', new \DateTime()],
+            'description'  => ['description', 'some description'],
+            'budget'       => ['budget', 10.44],
+            'owner'        => ['owner', $this->createMock(User::class)],
+            'organization' => ['organization', $this->createMock(Organization::class)],
         ];
+
+        $entity = new Campaign();
+        self::assertPropertyAccessors($entity, $properties);
     }
 
-    public function testDates()
+    public function testPrePersist()
     {
-        $campaign = new Campaign();
-        $testDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $entity = new Campaign();
+        $entity->prePersist();
 
-        $campaign->prePersist();
-        $campaign->preUpdate();
+        self::assertNotNull($entity->getCreatedAt());
+        self::assertNotNull($entity->getUpdatedAt());
+        self::assertEquals($entity->getCreatedAt(), $entity->getUpdatedAt());
+        self::assertNotSame($entity->getCreatedAt(), $entity->getUpdatedAt());
 
-        $this->assertEquals($testDate->format('Y-m-d'), $campaign->getCreatedAt()->format('Y-m-d'));
-        $this->assertEquals($testDate->format('Y-m-d'), $campaign->getUpdatedAt()->format('Y-m-d'));
+        $existingCreatedAt = $entity->getCreatedAt();
+        $existingUpdatedAt = $entity->getUpdatedAt();
+        $entity->prePersist();
+        self::assertNotSame($existingCreatedAt, $entity->getCreatedAt());
+        self::assertNotSame($existingUpdatedAt, $entity->getUpdatedAt());
+        self::assertEquals($entity->getCreatedAt(), $entity->getUpdatedAt());
+        self::assertNotSame($entity->getCreatedAt(), $entity->getUpdatedAt());
+    }
+
+    public function testPreUpdate()
+    {
+        $entity = new Campaign();
+        $entity->preUpdate();
+
+        self::assertNotNull($entity->getUpdatedAt());
+
+        $existingUpdatedAt = $entity->getUpdatedAt();
+        $entity->preUpdate();
+        self::assertNotSame($existingUpdatedAt, $entity->getUpdatedAt());
     }
 
     public function testCombinedName()
     {
-        $campaign = new Campaign();
-        $campaign->setName('test name');
-        $campaign->setCode('test_code');
+        $entity = new Campaign();
+        $entity->setName('test name');
+        $entity->setCode('test_code');
+        self::assertNull($entity->getCombinedName());
 
-        $campaign->prePersist();
-        $this->assertEquals('test name (test_code)', $campaign->getCombinedName());
+        $entity->prePersist();
+        self::assertEquals('test name (test_code)', $entity->getCombinedName());
 
-        $campaign->setCode('new_code');
-        $campaign->preUpdate();
-        $this->assertEquals('test name (new_code)', $campaign->getCombinedName());
+        $entity->setCode('new_code');
+        $entity->preUpdate();
+        self::assertEquals('test name (new_code)', $entity->getCombinedName());
     }
 }

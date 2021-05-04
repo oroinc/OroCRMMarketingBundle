@@ -11,7 +11,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @package Oro\Bundle\OroCampaignBundle\Entity
+ * Represents a marketing campaign help track marketing budgets and outcomes of marketing actions.
+ *
  * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository")
  * @ORM\Table(
  *      name="orocrm_campaign",
