@@ -207,8 +207,8 @@ services:
             - '@logger'
             - '@oro_marketing_list.provider.marketing_list_allowed_classes'
         tags:
-            - { name: doctrine.event_listener, event: onFlush, connection: default }
-            - { name: doctrine.event_listener, event: postFlush, connection: default }
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
 
     oro_marketing_list.migration.demo_data_fixtures_listener.update_marketing_list:
         parent: oro_platform.event_listener.demo_data_fixtures_listener.abstract
