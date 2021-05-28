@@ -1,3 +1,17 @@
 "This value should contain only alphabetic symbols, underscore, hyphen and numbers.": "This value should contain only alphabetic symbols, underscore, hyphen and numbers."
 "This date should be earlier than End date": "This date should be earlier than End date"
 "This value is already used.": "This value is already used."
+
+oro:
+    campaign:
+        campaign:
+            start_date:
+                type:
+                    message: 'This value is not a valid date.'
+            end_date:
+                type:
+                    message: 'This value is not a valid date.'
+        email_campaign:
+            scheduled_for:
+                type:
+                    message: 'This value is not a valid date.'

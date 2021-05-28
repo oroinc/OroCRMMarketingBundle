@@ -246,33 +246,33 @@ class Campaign extends ExtendCampaign
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param \DateTime|null $startDate
      */
-    public function setStartDate($startDate)
+    public function setStartDate(\DateTime $startDate = null)
     {
         $this->startDate = $startDate;
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getStartDate()
+    public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param \DateTime|null $endDate
      */
-    public function setEndDate($endDate)
+    public function setEndDate(\DateTime $endDate = null)
     {
         $this->endDate = $endDate;
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getEndDate()
+    public function getEndDate(): ?\DateTime
     {
         return $this->endDate;
     }

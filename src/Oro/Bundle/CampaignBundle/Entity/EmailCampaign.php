@@ -454,18 +454,18 @@ class EmailCampaign extends ExtendEmailCampaign
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getScheduledFor()
+    public function getScheduledFor(): ?\DateTime
     {
         return $this->scheduledFor;
     }
 
     /**
-     * @param \DateTime $scheduledFor
+     * @param \DateTime|null $scheduledFor
      * @return EmailCampaign
      */
-    public function setScheduledFor($scheduledFor)
+    public function setScheduledFor(\DateTime $scheduledFor = null)
     {
         $this->scheduledFor = $scheduledFor;
 

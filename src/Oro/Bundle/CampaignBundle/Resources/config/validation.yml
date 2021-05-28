@@ -14,13 +14,17 @@ Oro\Bundle\CampaignBundle\Entity\Campaign:
             - Length:
                 max: 20
         startDate:
-            - Date: ~
+            - Type:
+                type: \DateTimeInterface
+                message: oro.campaign.campaign.start_date.type.message
             - Oro\Bundle\PlatformBundle\Validator\Constraints\DateEarlierThan:
                 field: endDate
                 message: This date should be earlier than End date
                 groups: [Campaign]
         endDate:
-            - Date: ~
+            - Type:
+                type: \DateTimeInterface
+                message: oro.campaign.campaign.end_date.type.message
         budget:
             - Range:
                 min: 0
@@ -41,7 +45,9 @@ Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
             - Length:
                 max: 100
         scheduledFor:
-            - DateTime: ~
+            - Type:
+                  type: \DateTimeInterface
+                  message: oro.campaign.email_campaign.scheduled_for.type.message
         marketingList:
             - NotBlank: ~
         owner:
