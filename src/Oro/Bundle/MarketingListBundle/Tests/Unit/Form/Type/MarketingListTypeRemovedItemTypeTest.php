@@ -1,20 +1,18 @@
 <?php
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListTypeRemovedItemType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MarketingListTypeRemovedItemTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingListTypeRemovedItemType
-     */
-    protected $type;
+    /** @var MarketingListTypeRemovedItemType */
+    private $type;
 
-    /**
-     * Setup test env
-     */
     protected function setUp(): void
     {
         $this->type = new MarketingListTypeRemovedItemType();
@@ -22,35 +20,28 @@ class MarketingListTypeRemovedItemTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildForm()
     {
-        $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $builder = $this->createMock(FormBuilder::class);
         $builder->expects($this->exactly(2))
             ->method('add')
-            ->will($this->returnSelf());
-
-        $builder->expects($this->at(0))
-            ->method('add')
-            ->with('entityId', IntegerType::class, ['required' => true]);
-
-        $builder->expects($this->at(1))
-            ->method('add')
-            ->with(
-                'marketingList',
-                EntityType::class,
+            ->withConsecutive(
+                ['entityId', IntegerType::class, ['required' => true]],
                 [
-                    'class'    => 'Oro\Bundle\MarketingListBundle\Entity\MarketingList',
-                    'required' => true
+                    'marketingList',
+                    EntityType::class,
+                    [
+                        'class'    => MarketingList::class,
+                        'required' => true
+                    ]
                 ]
-            );
+            )
+            ->willReturnSelf();
 
-        $this->type->buildForm($builder, array());
+        $this->type->buildForm($builder, []);
     }
 
     public function testConfigureOptions()
     {
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $resolver = $this->createMock(OptionsResolver::class);
         $resolver->expects($this->once())
             ->method('setDefaults')
             ->with($this->isType('array'));

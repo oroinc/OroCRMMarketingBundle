@@ -3,109 +3,48 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Oro\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingEventIdentificationPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class TrackingEventIdentificationPassTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
-    private $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')->getMock();
-    }
-
     public function testProcessNotRegisterProvider()
     {
-        $this->container->expects($this->once())
-            ->method('hasDefinition')
-            ->with($this->equalTo(TrackingEventIdentificationPass::PROVIDER_SERVICE_ID))
-            ->will($this->returnValue(false));
-
-        $this->container->expects($this->never())
-            ->method('getDefinition');
-        $this->container->expects($this->never())
-            ->method('findTaggedServiceIds');
-
+        $container = new ContainerBuilder();
         $compilerPass = new TrackingEventIdentificationPass();
-        $compilerPass->process($this->container);
-    }
-
-    public function testProcess()
-    {
-        $definition = $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')
-            ->getMock();
-
-        $definition->expects($this->at(0))
-            ->method('addMethodCall')
-            ->with(
-                $this->equalTo('addProvider'),
-                $this->equalTo([new Reference('provider4')])
-            );
-        $definition->expects($this->at(1))
-            ->method('addMethodCall')
-            ->with(
-                $this->equalTo('addProvider'),
-                $this->equalTo([new Reference('provider1')])
-            );
-        $definition->expects($this->at(2))
-            ->method('addMethodCall')
-            ->with(
-                $this->equalTo('addProvider'),
-                $this->equalTo([new Reference('provider2')])
-            );
-        $definition->expects($this->at(3))
-            ->method('addMethodCall')
-            ->with(
-                $this->equalTo('addProvider'),
-                $this->equalTo([new Reference('provider3')])
-            );
-
-        $serviceIds = [
-            'provider1' => [['class' => 'Test\Class1']],
-            'provider2' => [['class' => 'Test\Class2']],
-            'provider3' => [['class' => 'Test\Class1', 'priority' => 100]],
-            'provider4' => [['class' => 'Test\Class1', 'priority' => -100]]
-        ];
-
-        $this->container->expects($this->once())
-            ->method('hasDefinition')
-            ->with($this->equalTo(TrackingEventIdentificationPass::PROVIDER_SERVICE_ID))
-            ->will($this->returnValue(true));
-
-        $this->container->expects($this->once())
-            ->method('getDefinition')
-            ->with($this->equalTo(TrackingEventIdentificationPass::PROVIDER_SERVICE_ID))
-            ->will($this->returnValue($definition));
-        $this->container->expects($this->once())
-            ->method('findTaggedServiceIds')
-            ->with($this->equalTo(TrackingEventIdentificationPass::TAG))
-            ->will($this->returnValue($serviceIds));
-
-        $compilerPass = new TrackingEventIdentificationPass();
-        $compilerPass->process($this->container);
+        $compilerPass->process($container);
     }
 
     public function testProcessEmptyProviders()
     {
-        $this->container->expects($this->once())
-            ->method('hasDefinition')
-            ->with($this->equalTo(TrackingEventIdentificationPass::PROVIDER_SERVICE_ID))
-            ->will($this->returnValue(true));
-
-        $this->container->expects($this->once())
-            ->method('findTaggedServiceIds')
-            ->with($this->equalTo(TrackingEventIdentificationPass::TAG))
-            ->will($this->returnValue([]));
-
-        $this->container->expects($this->never())
-            ->method('getDefinition')
-            ->with($this->equalTo(TrackingEventIdentificationPass::PROVIDER_SERVICE_ID));
+        $container = new ContainerBuilder();
+        $identifierProviderDef = $container->register('oro_tracking.provider.identifier_provider');
 
         $compilerPass = new TrackingEventIdentificationPass();
-        $compilerPass->process($this->container);
+        $compilerPass->process($container);
+        self::assertSame([], $identifierProviderDef->getMethodCalls());
+    }
+
+    public function testProcess()
+    {
+        $container = new ContainerBuilder();
+        $identifierProviderDef = $container->register('oro_tracking.provider.identifier_provider');
+
+        $container->register('provider1')->addTag('oro_tracking.provider.identification');
+        $container->register('provider2')->addTag('oro_tracking.provider.identification');
+        $container->register('provider3')->addTag('oro_tracking.provider.identification', ['priority' => 100]);
+        $container->register('provider4')->addTag('oro_tracking.provider.identification', ['priority' => -100]);
+
+        $compilerPass = new TrackingEventIdentificationPass();
+        $compilerPass->process($container);
+        self::assertEquals(
+            [
+                ['addProvider', [new Reference('provider4')]],
+                ['addProvider', [new Reference('provider1')]],
+                ['addProvider', [new Reference('provider2')]],
+                ['addProvider', [new Reference('provider3')]]
+            ],
+            $identifierProviderDef->getMethodCalls()
+        );
     }
 }

@@ -2,57 +2,41 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Form\Type\CampaignType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Oro\Bundle\FormBundle\Form\Type\OroResizeableRichTextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignTypeTest extends \PHPUnit\Framework\TestCase
 {
     /** @var CampaignType */
-    protected $type;
+    private $type;
 
     protected function setUp(): void
     {
         $this->type = new CampaignType();
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->type);
-    }
-
     public function testAddEntityFields()
     {
-        $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $builder->expects($this->at(0))
+        $builder = $this->createMock(FormBuilder::class);
+        $builder->expects($this->exactly(7))
             ->method('add')
-            ->with('name', TextType::class)
-            ->will($this->returnSelf());
-        $builder->expects($this->at(1))
-            ->method('add')
-            ->with('code', TextType::class)
-            ->will($this->returnSelf());
-        $builder->expects($this->at(2))
-            ->method('add')
-            ->with('startDate', OroDateType::class)
-            ->will($this->returnSelf());
-        $builder->expects($this->at(3))
-            ->method('add')
-            ->with('endDate', OroDateType::class)
-            ->will($this->returnSelf());
-        $builder->expects($this->at(4))
-            ->method('add')
-            ->with('description', OroResizeableRichTextType::class)
-            ->will($this->returnSelf());
-        $builder->expects($this->at(5))
-            ->method('add')
-            ->with('budget', OroMoneyType::class)
-            ->will($this->returnSelf());
+            ->withConsecutive(
+                ['name', TextType::class],
+                ['code', TextType::class],
+                ['startDate', OroDateType::class],
+                ['endDate', OroDateType::class],
+                ['description', OroResizeableRichTextType::class],
+                ['budget', OroMoneyType::class],
+                ['reportPeriod', ChoiceType::class]
+            )
+            ->willReturnSelf();
 
         $this->type->buildForm($builder, []);
     }
@@ -66,11 +50,11 @@ class CampaignTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureOptions()
     {
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $resolver = $this->createMock(OptionsResolver::class);
         $resolver->expects($this->once())
             ->method('setDefaults')
             ->with([
-                'data_class' => 'Oro\Bundle\CampaignBundle\Entity\Campaign',
+                'data_class' => Campaign::class,
                 'validation_groups' => ['Campaign', 'Default']
             ]);
 
