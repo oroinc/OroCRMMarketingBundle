@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\Entity\Repository;
 
+use Oro\Bundle\ConfigBundle\Tests\Functional\Traits\ConfigManagerAwareTestTrait;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TrackingBundle\Entity\Repository\UniqueTrackingVisitRepository;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
@@ -11,6 +12,8 @@ use Oro\Bundle\TrackingBundle\Tests\Functional\DataFixtures\LoadTrackingWebsites
 
 class UniqueTrackingVisitRepositoryTest extends WebTestCase
 {
+    use ConfigManagerAwareTestTrait;
+
     /**
      * @var UniqueTrackingVisitRepository
      */
@@ -72,7 +75,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
      */
     private function getTimezone()
     {
-        $configManager = $this->getContainer()->get('oro_config.global');
+        $configManager = self::getConfigManager('global');
 
         $timezoneName = $configManager->get('oro_locale.timezone');
         if (!$timezoneName) {
