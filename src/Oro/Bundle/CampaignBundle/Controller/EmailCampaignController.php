@@ -45,7 +45,7 @@ class EmailCampaignController extends AbstractController
      * Create email campaign
      *
      * @Route("/create", name="oro_email_campaign_create")
-     * @Template("OroCampaignBundle:EmailCampaign:update.html.twig")
+     * @Template("@OroCampaign/EmailCampaign/update.html.twig")
      * @Acl(
      *      id="oro_email_campaign_create",
      *      type="entity",

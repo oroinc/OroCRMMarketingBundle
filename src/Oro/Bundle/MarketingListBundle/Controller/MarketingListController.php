@@ -66,7 +66,7 @@ class MarketingListController extends AbstractController
 
     /**
      * @Route("/create", name="oro_marketing_list_create")
-     * @Template("OroMarketingListBundle:MarketingList:update.html.twig")
+     * @Template("@OroMarketingList/MarketingList/update.html.twig")
      * @Acl(
      *      id="oro_marketing_list_create",
      *      type="entity",
