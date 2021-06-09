@@ -7,7 +7,7 @@ search:
             name: oro_marketing_list_view
             parameters:
                 id: id
-        search_template: OroMarketingListBundle:MarketingList:searchResult.html.twig
+        search_template: '@OroMarketingList/MarketingList/searchResult.html.twig'
         fields:
             -
                 name:                   name

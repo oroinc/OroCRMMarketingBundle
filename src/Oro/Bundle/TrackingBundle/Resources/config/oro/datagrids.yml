@@ -28,12 +28,12 @@ datagrids:
                 type:          twig
                 label:         oro.tracking.trackingwebsite.url.label
                 frontend_type: html
-                template:      OroTrackingBundle:TrackingWebsite:Property/url.html.twig
+                template:      '@OroTracking/TrackingWebsite/Property/url.html.twig'
             ownerName:
                 type:          twig
                 label:         oro.tracking.trackingwebsite.owner.label
                 frontend_type: html
-                template:      OroTrackingBundle:TrackingWebsite:Property/owner.html.twig
+                template:      '@OroTracking/TrackingWebsite/Property/owner.html.twig'
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
@@ -153,7 +153,7 @@ datagrids:
                 type: twig
                 label: oro.tracking.trackingevent.url.label
                 frontend_type: html
-                template: OroTrackingBundle:TrackingEvent:Property/url.html.twig
+                template: '@OroTracking/TrackingEvent/Property/url.html.twig'
             code:
                 label: oro.tracking.trackingevent.code.label
             loggedAt:

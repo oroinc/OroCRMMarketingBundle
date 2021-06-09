@@ -23,4 +23,4 @@ charts:
             chartHighlightColor: '#FF5E5E'
             groupingOption: name
         data_transformer: oro_campaign.data_transformer.multi_line
-        template: OroCampaignBundle:Chart:multiline.html.twig
+        template: '@OroCampaign/Chart/multiline.html.twig'

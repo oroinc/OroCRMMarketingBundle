@@ -195,8 +195,8 @@ services:
         class: Oro\Bundle\MarketingListBundle\EventListener\ExtendFieldValueBeforeRenderListener
         arguments:
             - "@oro_entity_config.provider.entity"
-            - phone: 'OroMarketingListBundle:MarketingList/ExtendField:phone.html.twig'
-              email: 'OroMarketingListBundle:MarketingList/ExtendField:email.html.twig'
+            - phone: '@@OroMarketingList/MarketingList/ExtendField/phone.html.twig'
+              email: '@@OroMarketingList/MarketingList/ExtendField/email.html.twig'
         tags:
             - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: beforeValueRender }
 
