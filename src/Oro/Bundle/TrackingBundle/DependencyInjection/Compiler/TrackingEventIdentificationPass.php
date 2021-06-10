@@ -6,6 +6,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Collects tracking provider identifier services by `oro_tracking.provider.identification` tag,
+ * sorts them and inject to the `oro_tracking.provider.identifier_provider`
+ */
 class TrackingEventIdentificationPass implements CompilerPassInterface
 {
     const TAG = 'oro_tracking.provider.identification';
@@ -34,7 +38,7 @@ class TrackingEventIdentificationPass implements CompilerPassInterface
 
         // sort by priority and flatten
         ksort($providers);
-        $providers = call_user_func_array('array_merge', $providers);
+        $providers = array_merge(...array_values($providers));
 
         // register
         $serviceDef = $container->getDefinition(self::PROVIDER_SERVICE_ID);
