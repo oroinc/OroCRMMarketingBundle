@@ -3,31 +3,27 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
 
 class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $doctrineHelper;
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    private $doctrineHelper;
 
-    /**
-     * @var ArrayCache
-     */
-    protected $arrayCache;
+    /** @var ArrayCache */
+    private $arrayCache;
 
-    /**
-     * @var MarketingListVirtualRelationProvider
-     */
-    protected $provider;
+    /** @var MarketingListVirtualRelationProvider */
+    private $provider;
 
     protected function setUp(): void
     {
-        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
 
         $this->arrayCache = new ArrayCache();
 
@@ -36,13 +32,13 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
 
     /**
      * @dataProvider fieldDataProvider
-     * @param string $className
-     * @param string $fieldName
-     * @param MarketingList $marketingList
-     * @param bool $supported
      */
-    public function testIsVirtualRelation($className, $fieldName, $marketingList, $supported)
-    {
+    public function testIsVirtualRelation(
+        string $className,
+        string $fieldName,
+        ?MarketingList $marketingList,
+        bool $supported
+    ) {
         if ('marketingList_virtual' === $fieldName) {
             $this->assertRepositoryCall($className, $marketingList);
         } else {
@@ -52,14 +48,9 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
         $this->assertEquals($supported, $this->provider->isVirtualRelation($className, $fieldName));
     }
 
-    /**
-     * @return array
-     */
-    public function fieldDataProvider()
+    public function fieldDataProvider(): array
     {
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
 
         return [
             'incorrect class incorrect field' => ['stdClass', 'test', null, false],
@@ -89,28 +80,21 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     public function testGetVirtualRelations()
     {
         $className = 'stdClass';
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
 
         $this->assertRepositoryCall($className, $marketingList);
         $this->doctrineHelper->expects($this->once())
             ->method('getSingleEntityIdentifierFieldName')
             ->with($className)
-            ->will($this->returnValue('id'));
+            ->willReturn('id');
 
         $result = $this->provider->getVirtualRelations($className);
         $this->assertArrayHasKey(MarketingListVirtualRelationProvider::RELATION_NAME, $result);
     }
 
-    /**
-     * @return array
-     */
-    public function relationsDataProvider()
+    public function relationsDataProvider(): array
     {
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
 
         return [
             'incorrect class incorrect field' => ['stdClass', null, false],
@@ -120,19 +104,19 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
 
     /**
      * @dataProvider fieldDataProvider
-     * @param string $className
-     * @param string $fieldName
-     * @param MarketingList $marketingList
-     * @param bool $supported
      */
-    public function tesGetVirtualRelationQueryUnsupportedClass($className, $fieldName, $marketingList, $supported)
-    {
+    public function tesGetVirtualRelationQueryUnsupportedClass(
+        string $className,
+        string $fieldName,
+        MarketingList $marketingList,
+        bool $supported
+    ) {
         $this->assertRepositoryCall($className, $marketingList);
         if ($supported) {
             $this->doctrineHelper->expects($this->once())
                 ->method('getSingleEntityIdentifierFieldName')
                 ->with($className)
-                ->will($this->returnValue('id'));
+                ->willReturn('id');
         }
 
         $result = $this->provider->getVirtualRelationQuery($className, $fieldName);
@@ -144,16 +128,9 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
         }
     }
 
-    /**
-     * @param string $className
-     * @param object $marketingList
-     */
-    protected function assertRepositoryCall($className, $marketingList)
+    private function assertRepositoryCall(string $className, ?MarketingList $marketingList)
     {
-        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->disableOriginalConstructor()
-            ->setMethods(['getArrayResult'])
-            ->getMockForAbstractClass();
+        $query = $this->createMock(AbstractQuery::class);
 
         $results = [];
         if ($marketingList) {
@@ -162,35 +139,31 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
 
         $query->expects($this->once())
             ->method('getArrayResult')
-            ->will($this->returnValue($results));
+            ->willReturn($results);
 
-        $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $queryBuilder = $this->createMock(QueryBuilder::class);
         $queryBuilder->expects($this->once())
             ->method('select')
             ->with('ml.entity')
-            ->will($this->returnSelf());
+            ->willReturnSelf();
         $queryBuilder->expects($this->once())
             ->method('distinct')
             ->with(true)
-            ->will($this->returnSelf());
+            ->willReturnSelf();
         $queryBuilder->expects($this->once())
             ->method('getQuery')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
-        $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(EntityRepository::class);
         $repository->expects($this->once())
             ->method('createQueryBuilder')
             ->with('ml')
-            ->will($this->returnValue($queryBuilder));
+            ->willReturn($queryBuilder);
 
         $this->doctrineHelper->expects($this->once())
             ->method('getEntityRepository')
             ->with(MarketingList::class)
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
     }
 
     public function testHasMarketingListMethodWithCache()
@@ -207,12 +180,9 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     }
 
     /**
-     * @param string $selectFieldName
-     * @param string $expected
-     *
      * @dataProvider targetJoinAliasDataProvider
      */
-    public function testGetTargetJoinAlias($selectFieldName, $expected)
+    public function testGetTargetJoinAlias(?string $selectFieldName, string $expected)
     {
         $this->assertEquals(
             $expected,
@@ -220,10 +190,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
         );
     }
 
-    /**
-     * @return array
-     */
-    public function targetJoinAliasDataProvider()
+    public function targetJoinAliasDataProvider(): array
     {
         return [
             [null, 'marketingList_virtual'],
