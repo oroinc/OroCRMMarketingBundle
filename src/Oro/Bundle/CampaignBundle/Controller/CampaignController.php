@@ -3,11 +3,14 @@
 namespace Oro\Bundle\CampaignBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * CRUD for marketing campaigns.
@@ -94,10 +97,25 @@ class CampaignController extends AbstractController
      */
     protected function update(Campaign $entity)
     {
-        return $this->get('oro_form.model.update_handler')->update(
+        return $this->get(UpdateHandler::class)->update(
             $entity,
             $this->get('oro_campaign.campaign.form'),
-            $this->get('translator')->trans('oro.campaign.controller.campaign.saved.message')
+            $this->get(TranslatorInterface::class)->trans('oro.campaign.controller.campaign.saved.message')
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TranslatorInterface::class,
+                UpdateHandler::class,
+                'oro_campaign.campaign.form' => Form::class,
+            ]
         );
     }
 }
