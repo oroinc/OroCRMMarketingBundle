@@ -3,8 +3,11 @@
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
+use Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper;
+use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,19 +63,20 @@ class MarketingActivityController extends AbstractController
      */
     public function widgetAction($entityClass, $entityId)
     {
-        $entity = $this->get('oro_entity.routing_helper')->getEntity($entityClass, $entityId);
+        $routingHelper = $this->get(EntityRoutingHelper::class);
+        $entity = $routingHelper->getEntity($entityClass, $entityId);
 
         $campaignEntityClass = Campaign::class;
-        $configurationEntityKey = $this->get('oro_entity.routing_helper')->getUrlSafeClassName($campaignEntityClass);
+        $configurationEntityKey = $routingHelper->getUrlSafeClassName($campaignEntityClass);
 
-        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
+        $entityClass = $routingHelper->resolveEntityClass($entityClass);
         $marketingActivitySectionItems = $this->getDoctrine()
             ->getRepository('OroMarketingActivityBundle:MarketingActivity')
             ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
             ->getQuery()
             ->getArrayResult();
 
-        $campaignFilterValues = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
+        $campaignFilterValues = $this->get(MarketingActivitySectionDataNormalizer::class)
             ->getCampaignFilterValues($marketingActivitySectionItems);
 
         return [
@@ -122,7 +126,7 @@ class MarketingActivityController extends AbstractController
      */
     public function listAction($entityClass, $entityId, Request $request)
     {
-        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
+        $entityClass = $this->get(EntityRoutingHelper::class)->resolveEntityClass($entityClass);
         $filter      = $request->get('filter');
         $pageFilter  = $request->get('pageFilter');
         /** @var MarketingActivityRepository $repository */
@@ -131,18 +135,34 @@ class MarketingActivityController extends AbstractController
         $queryBuilder = $repository
             ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter);
 
-        $this->get('oro_marketing_activity.section_data.filter.helper')
+        $this->get(MarketingActivitiesSectionFilterHelper::class)
             ->addFiltersToQuery($queryBuilder, $filter);
 
-        $items = $queryBuilder->setMaxResults($this->get('oro_config.manager')->get('oro_activity_list.per_page'))
+        $items = $queryBuilder->setMaxResults($this->get(ConfigManager::class)->get('oro_activity_list.per_page'))
             ->getQuery()
             ->getArrayResult();
 
         $repository->addEventTypeData($items, $entityClass, $entityId);
 
-        $results = $this->get('oro_marketing_activity.normalizer.marketing_activity.section_data')
+        $results = $this->get(MarketingActivitySectionDataNormalizer::class)
             ->getNormalizedData($items, $entityClass, $entityId);
 
         return new JsonResponse($results);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                EntityRoutingHelper::class,
+                MarketingActivitySectionDataNormalizer::class,
+                MarketingActivitiesSectionFilterHelper::class,
+                ConfigManager::class,
+            ]
+        );
     }
 }

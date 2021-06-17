@@ -1,5 +1,6 @@
 entity_config:
     entity:
+        # You can find out more about attributes in the documentation: https://doc.oroinc.com/backend/configuration/annotation/config-field.html#entity
         field:
             items:
                 contact_information:
@@ -9,8 +10,6 @@ entity_config:
                         type: Symfony\Component\Form\Extension\Core\Type\ChoiceType
                         options:
                             choices:
-                                # each contact_information type requires own template
-                                # e.g. phone => "@@OroMarketingList/MarketingList/ExtendField/phone.html.twig"
                                 oro.marketinglist.entity_config.choices.email: email
                                 oro.marketinglist.entity_config.choices.phone: phone
                             block: other

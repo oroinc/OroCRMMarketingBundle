@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Controller;
 
+use Oro\Bundle\FormBundle\Model\UpdateHandler;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
@@ -93,7 +94,7 @@ class TrackingWebsiteController extends AbstractController
      */
     protected function update(TrackingWebsite $trackingWebsite)
     {
-        return $this->get('oro_form.model.update_handler')->update(
+        return $this->get(UpdateHandler::class)->update(
             $trackingWebsite,
             $this->createForm(TrackingWebsiteType::class),
             $this->getTranslator()->trans('oro.tracking.trackingwebsite.saved_message')
@@ -105,6 +106,20 @@ class TrackingWebsiteController extends AbstractController
      */
     protected function getTranslator()
     {
-        return $this->get('translator');
+        return $this->get(TranslatorInterface::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                TranslatorInterface::class,
+                UpdateHandler::class,
+            ]
+        );
     }
 }
