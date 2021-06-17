@@ -16,9 +16,15 @@ services:
         tags:
             - { name: oro_featuretogle.feature, feature: 'marketingactivity' }
 
+    Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer:
+        alias: oro_marketing_activity.normalizer.marketing_activity.section_data
+
     oro_marketing_activity.normalizer.marketing_activity.section_data:
         class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer'
         public: true
+
+    Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper:
+        alias: oro_marketing_activity.section_data.filter.helper
 
     oro_marketing_activity.section_data.filter.helper:
         class: 'Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper'
