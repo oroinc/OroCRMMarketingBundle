@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UIBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Oro\Bundle\CampaignBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Oro\Bundle\CampaignBundle\DependencyInjection\Compiler\TransportPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
