@@ -7,36 +7,29 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator;
-use Oro\Component\Testing\Unit\EntityTrait;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode;
+use Oro\Component\Testing\ReflectionUtil;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
+class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
 {
-    use EntityTrait;
-
     /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
-    protected $registry;
+    private $registry;
 
     /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject */
-    protected $translator;
-
-    /** @var Constraint|\PHPUnit\Framework\MockObject\MockObject */
-    protected $constraint;
-
-    /** @var CampaignCodeValidator */
-    protected $validator;
+    private $translator;
 
     protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->constraint = $this->getMockBuilder(Constraint::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->validator = new CampaignCodeValidator($this->registry, $this->translator);
+        parent::setUp();
+    }
+
+    protected function createValidator()
+    {
+        return new CampaignCodeValidator($this->registry, $this->translator);
     }
 
     public function testValidateIncorrectInstance()
@@ -46,16 +39,17 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
         $this->registry->expects($this->never())
             ->method($this->anything());
 
-        $this->validator->validate($value, $this->constraint);
+        $constraint = new CampaignCode();
+        $this->validator->validate($value, $constraint);
+
+        $this->assertNoViolation();
     }
 
     public function testValidatePassed()
     {
         $codeHistory = $this->getCampaignCodeHistory();
 
-        $repository = $this->getMockBuilder(CampaignRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(CampaignRepository::class);
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with('OroCampaignBundle:CampaignCodeHistory')
@@ -65,9 +59,7 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
             ->with(['code' => 'test'])
             ->willReturn($codeHistory);
 
-        $value = $this->getMockBuilder(Campaign::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $value = $this->createMock(Campaign::class);
         $value->expects($this->once())
             ->method('getCode')
             ->willReturn('test');
@@ -75,22 +67,17 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
             ->method('getId')
             ->willReturn('1');
 
-        /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
-        $context = $this->createMock(ExecutionContextInterface::class);
-        $context->expects($this->never())
-            ->method($this->anything());
+        $constraint = new CampaignCode();
+        $this->validator->validate($value, $constraint);
 
-        $this->validator->initialize($context);
-        $this->validator->validate($value, $this->constraint);
+        $this->assertNoViolation();
     }
 
     public function testValidateFailed()
     {
         $codeHistory = $this->getCampaignCodeHistory();
 
-        $repository = $this->getMockBuilder(CampaignRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(CampaignRepository::class);
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with('OroCampaignBundle:CampaignCodeHistory')
@@ -100,9 +87,7 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
             ->with(['code' => 'test'])
             ->willReturn($codeHistory);
 
-        $value = $this->getMockBuilder(Campaign::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $value = $this->createMock(Campaign::class);
         $value->expects($this->once())
             ->method('getCode')
             ->willReturn('test');
@@ -110,29 +95,17 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
             ->method('getId')
             ->willReturn('2');
 
-        /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
-        $context = $this->createMock(ExecutionContextInterface::class);
-        $violation = $this->createMock(ConstraintViolationBuilderInterface::class);
-        $context->expects($this->once())
-            ->method('buildViolation')
-            ->with($this->constraint->message)
-            ->willReturn($violation);
-        $violation->expects($this->once())
-            ->method('atPath')
-            ->with('code')
-            ->willReturnSelf();
-        $violation->expects($this->once())
-            ->method('addViolation');
+        $constraint = new CampaignCode();
+        $this->validator->validate($value, $constraint);
 
-        $this->validator->initialize($context);
-        $this->validator->validate($value, $this->constraint);
+        $this->buildViolation($constraint->message)
+            ->atPath('property.path.code')
+            ->assertRaised();
     }
 
     public function testValidateCodeHistoryNotFound()
     {
-        $repository = $this->getMockBuilder(CampaignRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(CampaignRepository::class);
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with('OroCampaignBundle:CampaignCodeHistory')
@@ -142,34 +115,27 @@ class CampaignCodeValidatorTest extends \PHPUnit\Framework\TestCase
             ->with(['code' => 'test'])
             ->willReturn(null);
 
-        $value = $this->getMockBuilder(Campaign::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $value = $this->createMock(Campaign::class);
         $value->expects($this->once())
             ->method('getCode')
             ->willReturn('test');
 
-        /** @var ExecutionContextInterface|\PHPUnit\Framework\MockObject\MockObject $context */
-        $context = $this->createMock(ExecutionContextInterface::class);
-        $context->expects($this->never())
-            ->method($this->anything());
+        $constraint = new CampaignCode();
+        $this->validator->validate($value, $constraint);
 
-        $this->validator->initialize($context);
-        $this->validator->validate($value, $this->constraint);
+        $this->assertNoViolation();
     }
 
-    /**
-     * @return CampaignCodeHistory|object
-     */
-    public function getCampaignCodeHistory()
+    private function getCampaignCodeHistory(): CampaignCodeHistory
     {
-        return $this->getEntity(
-            'Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory',
-            [
-                'id' => 1,
-                'campaign' => $this->getEntity('Oro\Bundle\CampaignBundle\Entity\Campaign', ['id' => 1]),
-                'code' => 'test'
-            ]
-        );
+        $campaign = new Campaign();
+        ReflectionUtil::setId($campaign, 1);
+
+        $campaignCodeHistory = new CampaignCodeHistory();
+        ReflectionUtil::setId($campaignCodeHistory, 1);
+        $campaignCodeHistory->setCode('test');
+        $campaignCodeHistory->setCampaign($campaign);
+
+        return $campaignCodeHistory;
     }
 }
