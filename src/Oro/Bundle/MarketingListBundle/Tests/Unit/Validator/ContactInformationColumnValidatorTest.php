@@ -2,56 +2,44 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator;
 
+use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
 use Oro\Bundle\MarketingListBundle\Validator\ContactInformationColumnValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class ContactInformationColumnValidatorTest extends \PHPUnit\Framework\TestCase
+class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $contactInformationFieldHelper;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $context;
-
-    /**
-     * @var ContactInformationColumnValidator
-     */
-    protected $validator;
+    /** @var ContactInformationFieldHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $contactInformationFieldHelper;
 
     protected function setUp(): void
     {
-        $this->contactInformationFieldHelper = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->contactInformationFieldHelper = $this->createMock(ContactInformationFieldHelper::class);
+        parent::setUp();
+    }
 
-        $this->context = $this->createMock(ExecutionContextInterface::class);
-
-        $this->validator = new ContactInformationColumnValidator($this->contactInformationFieldHelper);
-        $this->validator->initialize($this->context);
+    protected function createValidator()
+    {
+        return new ContactInformationColumnValidator($this->contactInformationFieldHelper);
     }
 
     public function testValidateFieldException()
     {
-        $this->expectException(\Symfony\Component\Validator\Exception\UnexpectedTypeException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "string", "array" given');
 
         $constraint = new ContactInformationColumnConstraint();
         $constraint->field = ['test'];
 
-        $value = $this->getMockForAbstractClass('Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner');
+        $value = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
         $this->validator->validate($value, $constraint);
     }
 
     public function testValidateValueException()
     {
-        $this->expectException(\Symfony\Component\Validator\Exception\UnexpectedTypeException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "AbstractQueryDesigner", "string" given');
 
         $constraint = new ContactInformationColumnConstraint();
@@ -63,54 +51,44 @@ class ContactInformationColumnValidatorTest extends \PHPUnit\Framework\TestCase
     public function testValidateValid()
     {
         $constraint = new ContactInformationColumnConstraint();
-        $value = $this->getMockForAbstractClass('Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner');
+        $value = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
 
         $this->contactInformationFieldHelper->expects($this->once())
             ->method('getQueryContactInformationFields')
             ->with($value)
-            ->will($this->returnValue(['email' => ['testField']]));
-
-        $this->context->expects($this->never())
-            ->method($this->anything());
+            ->willReturn(['email' => ['testField']]);
 
         $this->validator->validate($value, $constraint);
+
+        $this->assertNoViolation();
     }
 
     /**
      * @dataProvider validatorDataProvider
-     * @param string $type
-     * @param array $contactInformationFields
      */
-    public function testValidateInvalidClass($type, array $contactInformationFields)
+    public function testValidateInvalidClass(?string $type, array $contactInformationFields)
     {
-        $constraint = new ContactInformationColumnConstraint();
-        $constraint->type = $type;
-        $value = $this->getMockForAbstractClass('Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner');
+        $value = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
 
         $this->contactInformationFieldHelper->expects($this->once())
             ->method('getQueryContactInformationFields')
             ->with($value)
-            ->will($this->returnValue($contactInformationFields));
+            ->willReturn($contactInformationFields);
 
-        $parameters = [];
-        if ($type) {
-            $message = $constraint->typeMessage;
-            $parameters['%type%'] = $type;
-        } else {
-            $message = $constraint->message;
-        }
-
-        $this->context->expects($this->once())
-            ->method('addViolation')
-            ->with($message, $parameters);
-
+        $constraint = new ContactInformationColumnConstraint(['type' => $type]);
         $this->validator->validate($value, $constraint);
+
+        if ($type) {
+            $this->buildViolation($constraint->typeMessage)
+                ->setParameter('%type%', $type)
+                ->assertRaised();
+        } else {
+            $this->buildViolation($constraint->message)
+                ->assertRaised();
+        }
     }
 
-    /**
-     * @return array
-     */
-    public function validatorDataProvider()
+    public function validatorDataProvider(): array
     {
         return [
             'no type' => [null, []],
@@ -121,46 +99,29 @@ class ContactInformationColumnValidatorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider validatorDataProvider
-     * @param string $type
-     * @param array $contactInformationFields
      */
-    public function testValidateInvalidField($type, array $contactInformationFields)
+    public function testValidateInvalidField(?string $type, array $contactInformationFields)
     {
-        $constraint = new ContactInformationColumnConstraint();
-        $constraint->field = 'test';
-        $constraint->type = $type;
         $value = new \stdClass();
-        $value->test = $this->getMockForAbstractClass('Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner');
+        $value->test = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
 
         $this->contactInformationFieldHelper->expects($this->once())
             ->method('getQueryContactInformationFields')
             ->with($value->test)
-            ->will($this->returnValue($contactInformationFields));
+            ->willReturn($contactInformationFields);
 
-        $parameters = [];
-        if ($type) {
-            $message = $constraint->typeMessage;
-            $parameters['%type%'] = $type;
-        } else {
-            $message = $constraint->message;
-        }
-
-        $builder = $this->createMock(ConstraintViolationBuilderInterface::class);
-        $this->context->expects($this->once())
-            ->method('buildViolation')
-            ->with($message)
-            ->willReturn($builder);
-        $builder->expects($this->once())
-            ->method('atPath')
-            ->with($constraint->field)
-            ->willReturnSelf();
-        $builder->expects($this->once())
-            ->method('setParameters')
-            ->with($parameters)
-            ->willReturnSelf();
-        $builder->expects($this->once())
-            ->method('addViolation');
-
+        $constraint = new ContactInformationColumnConstraint(['type' => $type, 'field' => 'test']);
         $this->validator->validate($value, $constraint);
+
+        if ($type) {
+            $this->buildViolation($constraint->typeMessage)
+                ->setParameter('%type%', $type)
+                ->atPath('property.path.test')
+                ->assertRaised();
+        } else {
+            $this->buildViolation($constraint->message)
+                ->atPath('property.path.test')
+                ->assertRaised();
+        }
     }
 }

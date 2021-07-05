@@ -24,62 +24,36 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
 {
-    const ENTITY_ID = 1;
+    /** @var EmailCampaignSender */
+    private $sender;
 
-    /**
-     * @var EmailCampaignSender
-     */
-    protected $sender;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|MarketingListProvider */
+    private $marketingListProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|MarketingListProvider
-     */
-    protected $marketingListProvider;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|EmailCampaignStatisticsConnector */
+    private $statisticsConnector;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ConfigManager
-     */
-    protected $configManager;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|ContactInformationFieldsProvider */
+    private $contactInformationFieldsProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|EmailCampaignStatisticsConnector
-     */
-    protected $statisticsConnector;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry */
+    private $registry;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ContactInformationFieldsProvider
-     */
-    protected $contactInformationFieldsProvider;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|LoggerInterface */
+    private $logger;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry
-     */
-    protected $registry;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|TransportInterface */
+    private $transport;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|LoggerInterface
-     */
-    protected $logger;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|EmailTransportProvider */
+    private $transportProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TransportInterface
-     */
-    protected $transport;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|EmailTransportProvider
-     */
-    protected $transportProvider;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ValidatorInterface
-     */
-    protected $validator;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|ValidatorInterface */
+    private $validator;
 
     protected function setUp(): void
     {
         $this->marketingListProvider = $this->createMock(MarketingListProvider::class);
-        $this->configManager = $this->createMock(ConfigManager::class);
         $this->statisticsConnector = $this->createMock(EmailCampaignStatisticsConnector::class);
         $this->contactInformationFieldsProvider = $this->createMock(ContactInformationFieldsProvider::class);
         $this->registry = $this->createMock(ManagerRegistry::class);
@@ -89,7 +63,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
 
         $this->sender = new EmailCampaignSender(
             $this->marketingListProvider,
-            $this->configManager,
+            $this->createMock(ConfigManager::class),
             $this->statisticsConnector,
             $this->contactInformationFieldsProvider,
             $this->registry,
@@ -101,27 +75,19 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $this->sender->setLogger($this->logger);
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->sender);
-    }
-
     public function testAssertTransport()
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Transport is required to perform send');
-
-        $campaign = new EmailCampaign();
 
         $this->sender->send();
     }
 
     public function testAssertTransportInvalidSettings()
     {
-        $this->transportProvider
-            ->expects($this->once())
+        $this->transportProvider->expects($this->once())
             ->method('getTransportByName')
-            ->will($this->returnValue($this->transport));
+            ->willReturn($this->transport);
 
         $transportSettings = $this->createMock(TransportSettings::class);
 
@@ -131,11 +97,11 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $constraint = $this->createMock(ConstraintViolationList::class);
         $constraint->expects($this->once())
             ->method('count')
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($transportSettings)
-            ->will($this->returnValue($constraint));
+            ->willReturn($constraint);
 
         $this->sender->setEmailCampaign($campaign);
 
@@ -143,15 +109,12 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $iterable
-     * @param array $to
-     * @param object $type
      * @dataProvider sendDataProvider
      */
-    public function testSend($iterable, $to, $type)
+    public function testSend(array $iterable, array $to, MarketingListType $type)
     {
         $segment = new Segment();
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
 
         $marketingList = new MarketingList();
         $marketingList->setSegment($segment);
@@ -169,22 +132,21 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $constraint = $this->createMock(ConstraintViolationList::class);
         $constraint->expects($this->once())
             ->method('count')
-            ->will($this->returnValue(0));
+            ->willReturn(0);
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($transportSettings)
-            ->will($this->returnValue($constraint));
+            ->willReturn($constraint);
 
         $itCount = count($iterable);
-        $this->marketingListProvider
-            ->expects($this->once())
+        $this->marketingListProvider->expects($this->once())
             ->method('getEntitiesIterator')
-            ->will($this->returnValue($iterable));
+            ->willReturn($iterable);
 
         $manager = $this->createMock(EntityManager::class);
         $this->registry->expects($this->once())
             ->method('getManager')
-            ->will($this->returnValue($manager));
+            ->willReturn($manager);
         $manager->expects($this->exactly($itCount))
             ->method('flush');
         $manager->expects($this->exactly($itCount))
@@ -198,11 +160,8 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
             $this->contactInformationFieldsProvider
                 ->expects($this->exactly($itCount * 2))
                 ->method('getTypedFieldsValues')
-                ->with(
-                    $this->equalTo($fields),
-                    $this->anything()
-                )
-                ->will($this->returnValue($to));
+                ->with($fields, $this->anything())
+                ->willReturn($to);
 
             $marketingListItem = $this->createMock(MarketingListItem::class);
             $marketingListItem->expects($this->exactly($itCount))
@@ -211,33 +170,26 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
             $statisticsRecord = $this->createMock(EmailCampaignStatistics::class);
             $statisticsRecord->expects($this->exactly($itCount))
                 ->method('getMarketingListItem')
-                ->will($this->returnValue($marketingListItem));
+                ->willReturn($marketingListItem);
             $this->statisticsConnector
                 ->expects($this->exactly($itCount))
                 ->method('getStatisticsRecord')
-                ->with(
-                    $this->equalTo($campaign),
-                    $this->isInstanceOf('stdClass')
-                )
-                ->will($this->returnValue($statisticsRecord));
+                ->with($this->identicalTo($campaign), $this->isInstanceOf(\stdClass::class))
+                ->willReturn($statisticsRecord);
         }
 
         $this->transport->expects($this->exactly($itCount))
             ->method('send');
 
-        $this->transportProvider
-            ->expects($this->once())
+        $this->transportProvider->expects($this->once())
             ->method('getTransportByName')
-            ->will($this->returnValue($this->transport));
+            ->willReturn($this->transport);
 
         $this->sender->setEmailCampaign($campaign);
         $this->sender->send();
     }
 
     /**
-     * @param array $marketingListItems
-     * @param string $marketingListTypeName
-     *
      * @dataProvider sendWithoutEmailContactInformationDataProvider
      */
     public function testSendWithoutEmailContactInformation(array $marketingListItems, string $marketingListTypeName)
@@ -245,7 +197,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $marketingListType = new MarketingListType($marketingListTypeName);
 
         $segment = new Segment();
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
 
         $marketingList = new MarketingList();
         $marketingList->setSegment($segment);
@@ -261,21 +213,20 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $constraint = $this->createMock(ConstraintViolationList::class);
         $constraint->expects($this->once())
             ->method('count')
-            ->will($this->returnValue(0));
+            ->willReturn(0);
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($transportSettings)
-            ->will($this->returnValue($constraint));
+            ->willReturn($constraint);
 
-        $this->marketingListProvider
-            ->expects($this->once())
+        $this->marketingListProvider->expects($this->once())
             ->method('getEntitiesIterator')
-            ->will($this->returnValue($marketingListItems));
+            ->willReturn($marketingListItems);
 
         $manager = $this->createMock(EntityManager::class);
         $this->registry->expects($this->once())
             ->method('getManager')
-            ->will($this->returnValue($manager));
+            ->willReturn($manager);
         $manager->expects($this->never())
             ->method('flush');
         $manager->expects($this->never())
@@ -285,34 +236,28 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
 
         $fields = ['email'];
         $this->assertFieldsCall($fields, $marketingList);
-        $this->contactInformationFieldsProvider
-            ->expects($this->any())
+        $this->contactInformationFieldsProvider->expects($this->any())
             ->method('getTypedFieldsValues')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
-        $this->statisticsConnector
-            ->expects($this->never())
+        $this->statisticsConnector->expects($this->never())
             ->method('getStatisticsRecord');
 
         $this->transport->expects($this->never())
             ->method('send');
 
-        $this->transportProvider
-            ->expects($this->once())
+        $this->transportProvider->expects($this->once())
             ->method('getTransportByName')
-            ->will($this->returnValue($this->transport));
+            ->willReturn($this->transport);
 
         $this->sender->setEmailCampaign($campaign);
         $this->sender->send();
     }
 
-    /**
-     * @return array
-     */
-    public function sendWithoutEmailContactInformationDataProvider()
+    public function sendWithoutEmailContactInformationDataProvider(): array
     {
-        $entity = $this->getMockBuilder('\stdClass')
-            ->setMethods(['getId'])
+        $entity = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['getId'])
             ->getMock();
 
         return [
@@ -335,7 +280,6 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $marketingList->setType(new MarketingListType(MarketingListType::TYPE_DYNAMIC));
         $marketingList->setEntity(\stdClass::class);
 
-        /** @var TransportSettings $transportSettings */
         $transportSettings = $this->createMock(TransportSettings::class);
         $campaign = new EmailCampaign();
         $campaign
@@ -356,8 +300,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $toFromFields = 'to@example.com';
         $toFromEntity = 'toFromEntity@example.com';
         $entity = new \stdClass();
-        $this->marketingListProvider
-            ->expects($this->once())
+        $this->marketingListProvider->expects($this->once())
             ->method('getEntitiesIterator')
             ->willReturn([
                 [
@@ -376,8 +319,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
 
         $fields = ['firstField'];
         $this->assertFieldsCall($fields, $marketingList);
-        $this->contactInformationFieldsProvider
-            ->expects($this->exactly(2))
+        $this->contactInformationFieldsProvider->expects($this->exactly(2))
             ->method('getTypedFieldsValues')
             ->withConsecutive(
                 [
@@ -401,8 +343,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $statisticsRecord->expects($this->once())
             ->method('getMarketingListItem')
             ->willReturn($marketingListItem);
-        $this->statisticsConnector
-            ->expects($this->once())
+        $this->statisticsConnector->expects($this->once())
             ->method('getStatisticsRecord')
             ->with($campaign, $entity)
             ->willReturn($statisticsRecord);
@@ -416,8 +357,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
                 [$toFromFields, $toFromEntity]
             );
 
-        $this->transportProvider
-            ->expects($this->once())
+        $this->transportProvider->expects($this->once())
             ->method('getTransportByName')
             ->willReturn($this->transport);
 
@@ -426,15 +366,12 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $iterable
-     * @param array $to
-     * @param object $type
      * @dataProvider sendDataProvider
      */
-    public function testSendError($iterable, $to, $type)
+    public function testSendError(array $iterable, array $to, MarketingListType $type)
     {
         $segment = new Segment();
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
 
         $marketingList = new MarketingList();
         $marketingList->setSegment($segment);
@@ -447,15 +384,14 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
             ->setSenderEmail(reset($to));
 
         $itCount = count($iterable);
-        $this->marketingListProvider
-            ->expects($this->once())
+        $this->marketingListProvider->expects($this->once())
             ->method('getEntitiesIterator')
-            ->will($this->returnValue($iterable));
+            ->willReturn($iterable);
 
         $manager = $this->createMock(EntityManager::class);
         $this->registry->expects($this->once())
             ->method('getManager')
-            ->will($this->returnValue($manager));
+            ->willReturn($manager);
         $manager->expects($this->never())
             ->method('flush');
         $manager->expects($this->exactly($itCount))
@@ -466,22 +402,14 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $fields = ['email'];
         $this->assertFieldsCall($fields, $marketingList);
         if ($itCount) {
-            $this->contactInformationFieldsProvider
-                ->expects($this->exactly($itCount * 2))
+            $this->contactInformationFieldsProvider->expects($this->exactly($itCount * 2))
                 ->method('getTypedFieldsValues')
-                ->with(
-                    $this->equalTo($fields),
-                    $this->anything()
-                )
-                ->will($this->returnValue($to));
+                ->with($fields, $this->anything())
+                ->willReturn($to);
 
-            $this->statisticsConnector
-                ->expects($this->exactly($itCount))
+            $this->statisticsConnector->expects($this->exactly($itCount))
                 ->method('getStatisticsRecord')
-                ->with(
-                    $this->equalTo($campaign),
-                    $this->isInstanceOf('stdClass')
-                )
+                ->with($this->identicalTo($campaign), $this->isInstanceOf(\stdClass::class))
                 ->willThrowException(new \Exception('Error'));
 
             $this->logger->expects($this->exactly($itCount))
@@ -491,30 +419,26 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $this->transport->expects($this->exactly($itCount))
             ->method('send');
 
-        $this->transportProvider
-            ->expects($this->once())
+        $this->transportProvider->expects($this->once())
             ->method('getTransportByName')
-            ->will($this->returnValue($this->transport));
+            ->willReturn($this->transport);
 
         $this->sender->setEmailCampaign($campaign);
         $this->sender->send();
     }
 
-    protected function assertFieldsCall($fields, MarketingList $marketingList)
+    private function assertFieldsCall(array $fields, MarketingList $marketingList)
     {
         $this->contactInformationFieldsProvider->expects($this->once())
             ->method('getMarketingListTypedFields')
             ->with($marketingList, ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL)
-            ->will($this->returnValue($fields));
+            ->willReturn($fields);
     }
 
-    /**
-     * @return array
-     */
-    public function sendDataProvider()
+    public function sendDataProvider(): array
     {
-        $entity = $this->getMockBuilder('\stdClass')
-            ->setMethods(['getId'])
+        $entity = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['getId'])
             ->getMock();
 
         $manualType = new MarketingListType(MarketingListType::TYPE_MANUAL);

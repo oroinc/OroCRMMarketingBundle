@@ -7,46 +7,29 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
+use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\MarketingActivityBundle\Placeholder\PlaceholderFilter;
 use Oro\Bundle\MarketingActivityBundle\Tests\Unit\Stub\EntityStub;
 
 class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper */
-    protected $doctrineHelper;
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $doctrineHelper;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|EntityProvider */
-    protected $entityProvider;
+    /** @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $entityProvider;
+
+    /** @var FeatureChecker|\PHPUnit\Framework\MockObject\MockObject */
+    private $featureChecker;
 
     /** @var PlaceholderFilter */
-    protected $filter;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
-    protected $featureChecker;
+    private $filter;
 
     protected function setUp(): void
     {
-        $this->doctrineHelper = $this
-            ->getMockBuilder('\Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->setMethods([
-                'isNewEntity',
-                'isManageableEntity',
-                'getEntityClass',
-                'getEntityRepository',
-                'getMarketingActivitySummaryCountByCampaign'
-            ])
-            ->getMock();
-
-        $this->entityProvider = $this->getMockBuilder('\Oro\Bundle\EntityBundle\Provider\EntityProvider')
-            ->disableOriginalConstructor()
-            ->setMethods(['getEntities'])
-            ->getMock();
-
-        $this->featureChecker = $this->getMockBuilder(FeatureChecker::class)
-            ->setMethods(['isFeatureEnabled'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $this->entityProvider = $this->createMock(EntityProvider::class);
+        $this->featureChecker = $this->createMock(FeatureChecker::class);
 
         $this->filter = new PlaceholderFilter(
             $this->doctrineHelper,
@@ -60,25 +43,25 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 if (method_exists($entity, 'getId')) {
                     return !(bool)$entity->getId();
                 }
 
                 return false;
-            }));
+            });
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
         $this->featureChecker->expects($this->any())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertFalse($this->filter->isApplicable(null));
         $this->assertFalse($this->filter->isApplicable(new EntityStub()));
@@ -88,19 +71,19 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 if (method_exists($entity, 'getId')) {
                     return !(bool)$entity->getId();
                 }
 
                 return false;
-            }));
+            });
 
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(false);
@@ -108,7 +91,7 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
         $this->featureChecker->expects($this->any())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertFalse($this->filter->isApplicable(new EntityStub(1)));
     }
@@ -117,31 +100,31 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 if (method_exists($entity, 'getId')) {
                     return !(bool)$entity->getId();
                 }
 
                 return false;
-            }));
+            });
 
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
 
         $this->entityProvider->expects($this->once())
             ->method('getEntities')
-            ->willReturn([['name' => 'Oro\Bundle\MarketingActivityBundle\Tests\Unit\Stub\EntityStub']]);
+            ->willReturn([['name' => EntityStub::class]]);
 
         $this->featureChecker->expects($this->any())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertTrue($this->filter->isApplicable(new EntityStub(1)));
     }
@@ -150,19 +133,19 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 if (method_exists($entity, 'getId')) {
                     return !(bool)$entity->getId();
                 }
 
                 return false;
-            }));
+            });
 
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
@@ -170,7 +153,7 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
         $this->featureChecker->expects($this->any())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->assertFalse($this->filter->isApplicable(new EntityStub(1)));
     }
@@ -179,19 +162,19 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 if (method_exists($entity, 'getId')) {
                     return !(bool)$entity->getId();
                 }
 
                 return false;
-            }));
+            });
 
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
         $this->doctrineHelper->expects($this->any())
             ->method('isManageableEntity')
             ->willReturn(true);
@@ -203,7 +186,7 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
         $this->featureChecker->expects($this->any())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertFalse($this->filter->isApplicable(new EntityStub(1)));
     }
@@ -212,31 +195,32 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     {
         $this->doctrineHelper->expects($this->any())
             ->method('isNewEntity')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 if (method_exists($entity, 'getId')) {
                     return !(bool)$entity->getId();
                 }
 
                 return false;
-            }));
+            });
 
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
+
+        $entityRepository = $this->createMock(MarketingActivityRepository::class);
         $this->doctrineHelper->expects($this->once())
             ->method('getEntityRepository')
-            ->willReturnSelf();
-
-        $this->doctrineHelper->expects($this->once())
+            ->willReturn($entityRepository);
+        $entityRepository->expects($this->once())
             ->method('getMarketingActivitySummaryCountByCampaign')
             ->willReturn(true);
 
         $this->featureChecker->expects($this->once())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertTrue($this->filter->isSummaryApplicable(1));
     }
@@ -248,21 +232,22 @@ class PlaceholderFilterTest extends \PHPUnit\Framework\TestCase
 
         $this->doctrineHelper->expects($this->never())
             ->method('getEntityClass')
-            ->will($this->returnCallback(function ($entity) {
+            ->willReturnCallback(function ($entity) {
                 return ClassUtils::getClass($entity);
-            }));
+            });
+
+        $entityRepository = $this->createMock(MarketingActivityRepository::class);
         $this->doctrineHelper->expects($this->never())
             ->method('getEntityRepository')
-            ->willReturnSelf();
-
-        $this->doctrineHelper->expects($this->never())
+            ->willReturn($entityRepository);
+        $entityRepository->expects($this->never())
             ->method('getMarketingActivitySummaryCountByCampaign')
             ->willReturn(true);
 
         $this->featureChecker->expects($this->once())
             ->method('isFeatureEnabled')
             ->with('marketingactivity', null)
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->assertFalse($this->filter->isSummaryApplicable(1));
     }
