@@ -37,7 +37,7 @@ class DashboardController extends AbstractController
      *      name="oro_campaign_dashboard_campaigns_leads_chart",
      *      requirements={"widget"="[\w\-]+"}
      * )
-     * @Template("OroCampaignBundle:Dashboard:campaignLeads.html.twig")
+     * @Template("@OroCampaign/Dashboard/campaignLeads.html.twig")
      * @param Request $request
      * @param mixed $widget
      * @return array
@@ -75,7 +75,7 @@ class DashboardController extends AbstractController
      *      name="oro_campaign_dashboard_campaigns_opportunity_chart",
      *      requirements={"widget"="[\w\-]+"}
      * )
-     * @Template("OroCampaignBundle:Dashboard:campaignOpportunity.html.twig")
+     * @Template("@OroCampaign/Dashboard/campaignOpportunity.html.twig")
      * @param Request $request
      * @param mixed $widget
      * @return array
@@ -114,7 +114,7 @@ class DashboardController extends AbstractController
      *      name="oro_campaign_dashboard_campaigns_by_close_revenue_chart",
      *      requirements={"widget"="[\w\-]+"}
      * )
-     * @Template("OroCampaignBundle:Dashboard:campaignByCloseRevenue.html.twig")
+     * @Template("@OroCampaign/Dashboard/campaignByCloseRevenue.html.twig")
      * @param Request $request
      * @param mixed $widget
      * @return array

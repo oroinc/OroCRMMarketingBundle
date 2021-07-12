@@ -54,7 +54,7 @@ class MarketingActivityController extends AbstractController
      *     name="oro_marketing_activity_widget_marketing_activities"
      * )
      * @AclAncestor("oro_marketing_activity_view")
-     * @Template("OroMarketingActivityBundle:MarketingActivity:marketingActivitiesSection.html.twig")
+     * @Template("@OroMarketingActivity/MarketingActivity/marketingActivitiesSection.html.twig")
      *
      * @param string  $entityClass The entity class which marketing activities should be rendered
      * @param integer $entityId    The entity object id which marketing activities should be rendered
@@ -93,7 +93,7 @@ class MarketingActivityController extends AbstractController
      *      requirements={"id"="\d+"},
      * )
      * @AclAncestor("oro_marketing_activity_view")
-     * @Template("OroMarketingActivityBundle:MarketingActivity/widget:marketingActivitySectionItemInfo.html.twig")
+     * @Template("@OroMarketingActivity/MarketingActivity/widget/marketingActivitySectionItemInfo.html.twig")
      *
      * @param integer $id The ID of Campaign entity
      * @param Request $request

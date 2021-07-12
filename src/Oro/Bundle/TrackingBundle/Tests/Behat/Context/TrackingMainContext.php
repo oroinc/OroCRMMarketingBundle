@@ -51,7 +51,7 @@ class TrackingMainContext extends OroFeatureContext
         self::assertNotNull($website, sprintf('Could not found tracking website "%s",', $identifier));
 
         $twig = $this->getContainer()->get('twig');
-        $trackingCode = $twig->render('OroTrackingBundle:TrackingWebsite:script.js.twig', ['entity' => $website]);
+        $trackingCode = $twig->render('@OroTracking/TrackingWebsite/script.js.twig', ['entity' => $website]);
         $url = $this->getMinkParameter('base_url');
         $scheme = parse_url($url, PHP_URL_SCHEME);
         $url = str_replace($scheme . '://', '', $url);

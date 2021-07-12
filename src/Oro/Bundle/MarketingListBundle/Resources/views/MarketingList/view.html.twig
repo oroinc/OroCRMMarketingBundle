@@ -1,13 +1,13 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroSegmentBundle::macros.html.twig' as segmentQD %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroSegment/macros.html.twig' as segmentQD %}
 
 {% oro_title_set({params : {"%entityName%": entity.name|default('N/A') }}) %}
 
 {% block navButtons %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
 
     {% placeholder marketing_list_nav_buttons with {entity: entity} %}
     {% if entity.type.name == constant('Oro\\Bundle\\MarketingListBundle\\Entity\\MarketingListType::TYPE_STATIC') and is_granted('EDIT', entity) %}
@@ -55,7 +55,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
 
     {%- set listInformation -%}
         <div class="row-fluid form-horizontal">

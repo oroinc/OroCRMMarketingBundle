@@ -27,7 +27,7 @@ datagrids:
             entity:
                 label:          oro.marketinglist.entity.label
                 type:           twig
-                template:       OroEntityBundle:Datagrid:Property/entity.html.twig
+                template:       '@OroEntity/Datagrid/Property/entity.html.twig'
                 frontend_type:  html
                 context:
                     entity_provider: '@oro_marketing_list.entity_provider'
@@ -36,7 +36,7 @@ datagrids:
                 type:           twig
                 choices:        '@oro_marketing_list.datagrid.marketing_list_type.provider->getListTypeChoices'
                 frontend_type:  html
-                template:       OroMarketingListBundle:MarketingList:Datagrid/Property/listType.html.twig
+                template:       '@OroMarketingList/MarketingList/Datagrid/Property/listType.html.twig'
             createdAt:
                 label:          oro.marketinglist.created_at.label
                 frontend_type:  datetime

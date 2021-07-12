@@ -1,12 +1,12 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
-{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroUserBundle::macros.html.twig' as U %}
+{% extends '@OroUI/actions/view.html.twig' %}
+{% import '@OroUI/macros.html.twig' as UI %}
+{% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
+{% import '@OroDataGrid/macros.html.twig' as dataGrid %}
+{% import '@OroUser/macros.html.twig' as U %}
 {% oro_title_set({params : {"%entity.name%": entity.name|default('N/A') }}) %}
 
 {% block navButtons %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
 
     {% if is_granted('EDIT', entity) %}
         {{ UI.editButton({
@@ -37,7 +37,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
 
     {%- set generalInformation -%}
     <div class="row-fluid">
@@ -73,7 +73,7 @@
                 <p><strong>{{ 'oro.tracking.help.secure'|trans }}</strong></p>
             {% endif %}
             <textarea class="code code-script">
-                {%- include 'OroTrackingBundle:TrackingWebsite:script.js.twig' -%}
+                {%- include '@OroTracking/TrackingWebsite/script.js.twig' -%}
             </textarea>
         </div>
     </div>

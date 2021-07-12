@@ -50,7 +50,7 @@ class TrackingWebsiteController extends AbstractController
      *      class="OroTrackingBundle:TrackingWebsite",
      *      permission="CREATE"
      * )
-     * @Template("OroTrackingBundle:TrackingWebsite:update.html.twig")
+     * @Template("@OroTracking/TrackingWebsite/update.html.twig")
      */
     public function createAction()
     {

@@ -1,4 +1,4 @@
-{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import '@OroUI/macros.html.twig' as UI %}
 {% set containerExtraClass = containerExtraClass is defined ? containerExtraClass : '' %}
 <div class="widget-content activity-list marketing-activities {{ containerExtraClass }}">
     {% set pager = {
@@ -11,7 +11,7 @@
     {% set configuration = {
         (configurationKey): {
             label: 'oro.campaign.entity_label'|trans,
-            template: 'OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig',
+            template: '@OroMarketingActivity/MarketingActivity/js/marketingActivitySectionItem.html.twig',
             has_comments: false,
             routes: {
                 itemView: 'oro_marketing_activity_widget_marketing_activities_info',
@@ -90,8 +90,8 @@
             <div class="container-fluid accordion"
                 data-page-component-module="oromarketingactivity/js/app/components/marketing-activities-section-component"
                 data-page-component-options="{{ options|json_encode }}"></div>
-            {% include 'OroMarketingActivityBundle:MarketingActivity:js/list.html.twig' with {'id': 'template-marketing-activities'} %}
-            {% include 'OroMarketingActivityBundle:MarketingActivity:js/marketingActivitySectionItem.html.twig' with {'id': 'template-marketing-activities-item'} %}
+            {% include '@OroMarketingActivity/MarketingActivity/js/list.html.twig' with {'id': 'template-marketing-activities'} %}
+            {% include '@OroMarketingActivity/MarketingActivity/js/marketingActivitySectionItem.html.twig' with {'id': 'template-marketing-activities-item'} %}
             {% for activityClass, activityOptions in configuration %}
                 {% include activityOptions.template with {'id': ('template-activity-item-' ~ activityClass) } %}
             {% endfor %}

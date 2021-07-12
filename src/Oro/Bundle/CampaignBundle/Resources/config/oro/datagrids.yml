@@ -292,7 +292,7 @@ datagrids:
                 label: oro.campaign.emailcampaign.schedule.label
                 type:          twig
                 frontend_type: html
-                template:      OroCampaignBundle:EmailCampaign:Property/schedule.html.twig
+                template:      '@OroCampaign/EmailCampaign/Property/schedule.html.twig'
             scheduledFor:
                 label: oro.campaign.emailcampaign.scheduled_for.label
                 frontend_type: datetime
@@ -438,27 +438,27 @@ datagrids:
                 label: oro.campaign.emailcampaign.stats.open.label
                 type: twig
                 frontend_type: html
-                template: OroCampaignBundle:EmailCampaign:Property/stats.html.twig
+                template: '@OroCampaign/EmailCampaign/Property/stats.html.twig'
             clickCount:
                 label: oro.campaign.emailcampaign.stats.click.label
                 type: twig
                 frontend_type: html
-                template: OroCampaignBundle:EmailCampaign:Property/stats.html.twig
+                template: '@OroCampaign/EmailCampaign/Property/stats.html.twig'
             bounceCount:
                 label: oro.campaign.emailcampaign.stats.bounce.label
                 type: twig
                 frontend_type: html
-                template: OroCampaignBundle:EmailCampaign:Property/stats.html.twig
+                template: '@OroCampaign/EmailCampaign/Property/stats.html.twig'
             abuseCount:
                 label: oro.campaign.emailcampaign.stats.abuse.label
                 type: twig
                 frontend_type: html
-                template: OroCampaignBundle:EmailCampaign:Property/stats.html.twig
+                template: '@OroCampaign/EmailCampaign/Property/stats.html.twig'
             unsubscribeCount:
                 label: oro.campaign.emailcampaign.stats.unsubscribe.label
                 type: twig
                 frontend_type: html
-                template: OroCampaignBundle:EmailCampaign:Property/stats.html.twig
+                template: '@OroCampaign/EmailCampaign/Property/stats.html.twig'
         filters:
             columns:
                 openCount:

@@ -7,7 +7,7 @@ search:
             name: oro_campaign_view
             parameters:
                 id: id
-        search_template: OroCampaignBundle:Campaign:searchResult.html.twig
+        search_template: '@OroCampaign/Campaign/searchResult.html.twig'
         fields:
             -
                 name:                   name
@@ -30,7 +30,7 @@ search:
             name: oro_email_campaign_view
             parameters:
                 id: id
-        search_template: OroCampaignBundle:EmailCampaign:searchResult.html.twig
+        search_template: '@OroCampaign/EmailCampaign/searchResult.html.twig'
         fields:
             -
                 name:                   name

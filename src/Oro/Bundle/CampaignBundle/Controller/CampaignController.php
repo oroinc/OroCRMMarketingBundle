@@ -35,7 +35,7 @@ class CampaignController extends AbstractController
      * Create campaign
      *
      * @Route("/create", name="oro_campaign_create")
-     * @Template("OroCampaignBundle:Campaign:update.html.twig")
+     * @Template("@OroCampaign/Campaign/update.html.twig")
      * @Acl(
      *      id="oro_campaign_create",
      *      type="entity",
