@@ -8,9 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class GridCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         $container->findDefinition('oro_tag.grid.tags_extension')

@@ -245,33 +245,21 @@ class Campaign extends ExtendCampaign
         return $this->code;
     }
 
-    /**
-     * @param \DateTime|null $startDate
-     */
     public function setStartDate(\DateTime $startDate = null)
     {
         $this->startDate = $startDate;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
     }
 
-    /**
-     * @param \DateTime|null $endDate
-     */
     public function setEndDate(\DateTime $endDate = null)
     {
         $this->endDate = $endDate;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getEndDate(): ?\DateTime
     {
         return $this->endDate;
@@ -309,9 +297,6 @@ class Campaign extends ExtendCampaign
         return $this->budget;
     }
 
-    /**
-     * @param User $owner
-     */
     public function setOwner(User $owner)
     {
         $this->owner = $owner;
@@ -423,7 +408,7 @@ class Campaign extends ExtendCampaign
     {
         return $this->organization;
     }
-    
+
     /**
      * @return string
      */

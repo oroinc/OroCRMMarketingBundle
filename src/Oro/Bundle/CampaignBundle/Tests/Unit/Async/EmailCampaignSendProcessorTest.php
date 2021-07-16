@@ -128,9 +128,6 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(EmailCampaignSendProcessor::ACK, $this->processor->process($message, $session));
     }
 
-    /**
-     * @param EmailCampaign|null $emailCampaign
-     */
     private function assertEmailCampaignFind(EmailCampaign $emailCampaign = null): void
     {
         $em = $this->createMock(EntityManagerInterface::class);

@@ -38,12 +38,6 @@ class EmailTransport implements TransportInterface
      */
     protected $emailAddressHelper;
 
-    /**
-     * @param Processor          $processor
-     * @param EmailRenderer      $emailRenderer
-     * @param DoctrineHelper     $doctrineHelper
-     * @param EmailAddressHelper $emailAddressHelper
-     */
     public function __construct(
         Processor $processor,
         EmailRenderer $emailRenderer,

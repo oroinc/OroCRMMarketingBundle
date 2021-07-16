@@ -23,10 +23,6 @@ class TransportSettingsListener implements EventSubscriberInterface
      */
     protected $doctrineHelper;
 
-    /**
-     * @param EmailTransportProvider $emailTransportProvider
-     * @param DoctrineHelper $doctrineHelper
-     */
     public function __construct(EmailTransportProvider $emailTransportProvider, DoctrineHelper $doctrineHelper)
     {
         $this->emailTransportProvider = $emailTransportProvider;
@@ -47,8 +43,6 @@ class TransportSettingsListener implements EventSubscriberInterface
 
     /**
      * Add Transport Settings form if any for existing entities.
-     *
-     * @param FormEvent $event
      */
     public function preSet(FormEvent $event)
     {
@@ -68,8 +62,6 @@ class TransportSettingsListener implements EventSubscriberInterface
 
     /**
      * Set correct transport setting value.
-     *
-     * @param FormEvent $event
      */
     public function postSet(FormEvent $event)
     {
@@ -87,8 +79,6 @@ class TransportSettingsListener implements EventSubscriberInterface
     /**
      * Change transport settings subform to form matching transport passed in request.
      * Pass top level data to transportSettings.
-     *
-     * @param FormEvent $event
      */
     public function preSubmit(FormEvent $event)
     {
@@ -120,10 +110,6 @@ class TransportSettingsListener implements EventSubscriberInterface
         $event->setData($data);
     }
 
-    /**
-     * @param TransportInterface $selectedTransport
-     * @param FormInterface $form
-     */
     protected function addTransportSettingsForm(TransportInterface $selectedTransport, FormInterface $form)
     {
         if ($selectedTransport) {

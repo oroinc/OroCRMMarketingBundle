@@ -41,8 +41,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Create oro_marketing_list_type table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMarketingListTypeTable(Schema $schema)
     {
@@ -55,8 +53,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Create oro_marketing_list table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMarketingListTable(Schema $schema)
     {
@@ -83,8 +79,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Create oro_ml_item_uns table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMlItemUnsTable(Schema $schema)
     {
@@ -100,8 +94,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Create oro_marketing_list_item table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMarketingListItemTable(Schema $schema)
     {
@@ -119,8 +111,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Create oro_ml_item_rm table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMlItemRmTable(Schema $schema)
     {
@@ -136,8 +126,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Add oro_marketing_list foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMarketingListForeignKeys(Schema $schema)
     {
@@ -170,8 +158,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Add oro_ml_item_uns foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMlItemUnsForeignKeys(Schema $schema)
     {
@@ -186,8 +172,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Add oro_marketing_list_item foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMarketingListItemForeignKeys(Schema $schema)
     {
@@ -202,8 +186,6 @@ class OroMarketingListBundleInstaller implements Installation
 
     /**
      * Add oro_ml_item_rm foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMlItemRmForeignKeys(Schema $schema)
     {

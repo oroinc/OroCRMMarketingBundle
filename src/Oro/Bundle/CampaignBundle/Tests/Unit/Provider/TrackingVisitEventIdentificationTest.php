@@ -62,7 +62,6 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider processData
-     * @param $isFind
      */
     public function testProcessEvent($isFind)
     {

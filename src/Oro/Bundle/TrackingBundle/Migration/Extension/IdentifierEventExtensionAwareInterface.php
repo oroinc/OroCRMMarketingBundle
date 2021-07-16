@@ -6,8 +6,6 @@ interface IdentifierEventExtensionAwareInterface
 {
     /**
      * Sets the identifier tracking visit association
-     *
-     * @param IdentifierEventExtension $extension
      */
     public function setIdentifierEventExtension(IdentifierEventExtension $extension);
 }

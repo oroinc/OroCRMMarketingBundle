@@ -41,7 +41,6 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-
     public function testToString()
     {
         $this->entity->setLabel('test');

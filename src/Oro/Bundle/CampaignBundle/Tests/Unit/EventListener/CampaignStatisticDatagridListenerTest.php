@@ -79,7 +79,6 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     *
      * @dataProvider preBuildDataProvider
      * @param bool $isSent
      * @param string $expectedMixin

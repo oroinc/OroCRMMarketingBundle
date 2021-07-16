@@ -28,26 +28,16 @@ class EmailCampaignType extends AbstractType
      */
     protected $emailTransportProvider;
 
-    /**
-     * @param EmailTransportProvider $emailTransportProvider
-     */
     public function __construct(EmailTransportProvider $emailTransportProvider)
     {
         $this->emailTransportProvider = $emailTransportProvider;
     }
 
-    /**
-     * @param EventSubscriberInterface $subscriber
-     */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
         $this->subscribers[] = $subscriber;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->subscribers as $subscriber) {
@@ -116,9 +106,6 @@ class EmailCampaignType extends AbstractType
         $this->addTransport($builder);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -144,9 +131,6 @@ class EmailCampaignType extends AbstractType
         return 'oro_email_campaign';
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     */
     protected function addTransport(FormBuilderInterface $builder)
     {
         $builder->addEventListener(

@@ -30,10 +30,6 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
      */
     protected $marketingActivityByEntity = [];
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param EntityProvider $entityProvider
-     */
     public function __construct(DoctrineHelper $doctrineHelper, EntityProvider $entityProvider)
     {
         $this->doctrineHelper = $doctrineHelper;

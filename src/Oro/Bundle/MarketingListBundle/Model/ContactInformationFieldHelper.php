@@ -27,11 +27,6 @@ class ContactInformationFieldHelper
     /** @var EntityFieldProvider */
     protected $fieldProvider;
 
-    /**
-     * @param ConfigProvider $configProvider
-     * @param DoctrineHelper $doctrineHelper
-     * @param EntityFieldProvider $fieldProvider
-     */
     public function __construct(
         ConfigProvider $configProvider,
         DoctrineHelper $doctrineHelper,

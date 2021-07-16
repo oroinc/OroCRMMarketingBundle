@@ -26,11 +26,6 @@ class UniqueTrackingVisitDumper
      */
     private $fillQuery;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param LoggerInterface $logger
-     * @param FillUniqueTrackingVisitsQuery $fillQuery
-     */
     public function __construct(
         ManagerRegistry $registry,
         LoggerInterface $logger,

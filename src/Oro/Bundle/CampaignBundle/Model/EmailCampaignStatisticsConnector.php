@@ -35,10 +35,6 @@ class EmailCampaignStatisticsConnector
      */
     protected $entityName;
 
-    /**
-     * @param MarketingListItemConnector $marketingListItemConnector
-     * @param DoctrineHelper $doctrineHelper
-     */
     public function __construct(
         MarketingListItemConnector $marketingListItemConnector,
         DoctrineHelper $doctrineHelper
@@ -74,7 +70,6 @@ class EmailCampaignStatisticsConnector
          * and new MarketingListItem for same $marketingList and $entityId will be persisted twice.
          *
          * Marketing list name used as key for cache because Id can be empty and name is unique
-         *
          */
         if (empty($this->marketingListItemCache[$marketingList->getName()][$entityId])) {
             // Mark marketing list item as contacted

@@ -31,7 +31,6 @@ class MarketingListRemovedItem implements MarketingListStateItemInterface
      */
     protected $entityId;
 
-
     /**
      * @var MarketingList
      *

@@ -38,11 +38,6 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
      */
     private $provider;
 
-    /**
-     * @param MessageProducerInterface $messageProducer
-     * @param LoggerInterface $logger
-     * @param MarketingListAllowedClassesProvider $provider
-     */
     public function __construct(
         MessageProducerInterface $messageProducer,
         LoggerInterface $logger,
@@ -53,9 +48,6 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
         $this->provider = $provider;
     }
 
-    /**
-     * @param OnFlushEventArgs $args
-     */
     public function onFlush(OnFlushEventArgs $args)
     {
         if (!$this->enabled) {
@@ -71,9 +63,6 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
         $this->scheduleClasses($uow->getScheduledEntityUpdates(), $allowedEntities);
     }
 
-    /**
-     * @param PostFlushEventArgs $args
-     */
     public function postFlush(PostFlushEventArgs $args)
     {
         foreach ($this->classesToUpdate as $class) {

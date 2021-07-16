@@ -11,9 +11,6 @@ class TransportPass implements CompilerPassInterface
     const TAG = 'oro_campaign.email_transport';
     const SERVICE = 'oro_campaign.email_transport.provider';
 
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition(self::SERVICE)) {

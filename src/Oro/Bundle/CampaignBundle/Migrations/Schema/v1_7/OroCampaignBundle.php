@@ -21,8 +21,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Create oro_campaign table
-     *
-     * @param Schema $schema
      */
     protected function updateOrocrmCampaignTable(Schema $schema)
     {
@@ -32,8 +30,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Create oro_campaign_te_summary table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignTeSummaryTable(Schema $schema)
     {
@@ -54,8 +50,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Add oro_campaign_te_summary foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignTeSummaryForeignKeys(Schema $schema)
     {
