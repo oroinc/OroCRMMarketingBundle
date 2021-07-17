@@ -22,9 +22,6 @@ class ContactInformationFieldsProvider
      */
     protected $contactInformationFieldHelper;
 
-    /**
-     * @param ContactInformationFieldHelper $contactInformationFieldHelper
-     */
     public function __construct(ContactInformationFieldHelper $contactInformationFieldHelper)
     {
         $this->contactInformationFieldHelper = $contactInformationFieldHelper;

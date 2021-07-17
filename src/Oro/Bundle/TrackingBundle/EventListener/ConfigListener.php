@@ -59,9 +59,6 @@ class ConfigListener
         $this->logsDir = $logsDir;
     }
 
-    /**
-     * @param ConfigUpdateEvent $event
-     */
     public function onUpdateAfter(ConfigUpdateEvent $event)
     {
         $changedData = array();
@@ -77,9 +74,6 @@ class ConfigListener
         }
     }
 
-    /**
-     * @param array $configuration
-     */
     protected function updateTrackingConfig(array $configuration)
     {
         foreach ($this->keys as $key) {

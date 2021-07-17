@@ -75,9 +75,6 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
         ];
     }
 
-    /**
-     * @return array
-     */
     private function getCachedAllowedEntities(): array
     {
         return [

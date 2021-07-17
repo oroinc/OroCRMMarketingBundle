@@ -25,9 +25,6 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $data
-     * @param array $expected
-     *
      * @dataProvider typeChoicesDataProvider
      */
     public function testGetListTypeChoices(array $data, array $expected)
@@ -58,7 +55,6 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
             ->method('getManagerForClass')
             ->with($this->equalTo(GridMarketingListTypeProvider::MARKETING_LIST_TYPE))
             ->will($this->returnValue($om));
-
 
         $this->assertEquals(
             $expected,

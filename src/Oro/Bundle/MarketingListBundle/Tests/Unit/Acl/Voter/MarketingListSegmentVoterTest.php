@@ -69,9 +69,6 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @param $marketingList
-     */
     private function assertMarketingListLoad($marketingList)
     {
         $repository = $this->createMock(EntityRepository::class);

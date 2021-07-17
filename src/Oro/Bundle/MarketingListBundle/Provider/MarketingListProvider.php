@@ -49,9 +49,6 @@ class MarketingListProvider
      */
     protected $columnInformation = [];
 
-    /**
-     * @param Manager $dataGridManager
-     */
     public function __construct(Manager $dataGridManager)
     {
         $this->dataGridManager = $dataGridManager;
@@ -195,11 +192,6 @@ class MarketingListProvider
         return $this->dataGrid[$resultKey];
     }
 
-    /**
-     * @param MarketingList $marketingList
-     * @param DatagridInterface $dataGrid
-     * @param QueryBuilder $qb
-     */
     protected function saveColumnInformation(
         MarketingList $marketingList,
         DatagridInterface $dataGrid,

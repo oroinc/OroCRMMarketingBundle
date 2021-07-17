@@ -67,7 +67,6 @@ class EmailCampaignTest extends AbstractEntityTestCase
         $entity->setSchedule('unknown');
     }
 
-
     public function testGetEntityName()
     {
         $marketingList = new MarketingList();

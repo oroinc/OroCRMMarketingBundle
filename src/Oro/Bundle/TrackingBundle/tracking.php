@@ -37,9 +37,6 @@ function passDataToUrl($url)
     curl_close($handle);
 }
 
-/**
- * @param array $data
- */
 function fillTrackingData(array &$data)
 {
     $data['loggedAt'] = getLoggedAt();

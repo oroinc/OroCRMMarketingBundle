@@ -12,9 +12,6 @@ class EmailTransportProvider
      */
     protected $transports = [];
 
-    /**
-     * @param TransportInterface $transport
-     */
     public function addTransport(TransportInterface $transport)
     {
         $this->transports[$transport->getName()] = $transport;

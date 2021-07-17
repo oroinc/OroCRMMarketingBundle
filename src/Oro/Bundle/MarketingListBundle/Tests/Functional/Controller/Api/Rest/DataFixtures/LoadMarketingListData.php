@@ -26,9 +26,6 @@ class LoadMarketingListData extends AbstractFixture implements ContainerAwareInt
         $this->container = $container;
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         $type = $manager

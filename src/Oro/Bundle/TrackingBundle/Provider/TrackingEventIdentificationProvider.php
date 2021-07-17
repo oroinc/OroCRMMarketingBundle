@@ -12,8 +12,6 @@ class TrackingEventIdentificationProvider
 
     /**
      * Add activity list provider
-     *
-     * @param TrackingEventIdentifierInterface $provider
      */
     public function addProvider(TrackingEventIdentifierInterface $provider)
     {

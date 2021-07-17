@@ -27,10 +27,6 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
      */
     private $cacheProvider;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param CacheProvider  $cacheProvider
-     */
     public function __construct(DoctrineHelper $doctrineHelper, CacheProvider $cacheProvider)
     {
         $this->doctrineHelper = $doctrineHelper;

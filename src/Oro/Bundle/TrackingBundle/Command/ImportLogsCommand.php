@@ -66,7 +66,6 @@ class ImportLogsCommand extends Command implements CronCommandInterface
             return false;
         }
 
-
         $finder
             ->files()
             ->notName($this->getIgnoredFilename())

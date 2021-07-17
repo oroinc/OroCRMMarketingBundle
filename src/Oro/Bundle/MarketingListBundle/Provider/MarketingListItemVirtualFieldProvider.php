@@ -22,9 +22,6 @@ class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInter
      */
     protected $relationProvider;
 
-    /**
-     * @param MarketingListVirtualRelationProvider $relationProvider
-     */
     public function __construct(MarketingListVirtualRelationProvider $relationProvider)
     {
         $this->relationProvider = $relationProvider;

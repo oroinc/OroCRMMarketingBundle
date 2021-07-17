@@ -20,19 +20,12 @@ class TrackingVisitEntityListener
      */
     private $registry;
 
-    /**
-     * @param ConfigManager $configManager
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ConfigManager $configManager, ManagerRegistry $registry)
     {
         $this->configManager = $configManager;
         $this->registry = $registry;
     }
 
-    /**
-     * @param TrackingVisit $trackingVisit
-     */
     public function prePersist(TrackingVisit $trackingVisit)
     {
         if (!$this->configManager->get('oro_tracking.precalculated_statistic_enabled')) {

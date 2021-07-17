@@ -21,10 +21,6 @@ class CampaignCodeValidator extends ConstraintValidator
      */
     protected $translator;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         ManagerRegistry $registry,
         TranslatorInterface $translator

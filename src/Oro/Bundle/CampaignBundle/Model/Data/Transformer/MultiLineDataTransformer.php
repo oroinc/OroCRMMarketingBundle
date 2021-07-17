@@ -106,9 +106,6 @@ class MultiLineDataTransformer implements TransformerInterface
     }
 
     /**
-     * @param DataInterface $data
-     * @param array         $chartOptions
-     *
      * @throws \InvalidArgumentException
      */
     protected function initialize(DataInterface $data, array $chartOptions)

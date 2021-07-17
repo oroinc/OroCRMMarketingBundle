@@ -308,9 +308,6 @@ class Campaign extends ExtendCampaign
         return $this->budget;
     }
 
-    /**
-     * @param User $owner
-     */
     public function setOwner(User $owner)
     {
         $this->owner = $owner;
@@ -422,7 +419,7 @@ class Campaign extends ExtendCampaign
     {
         return $this->organization;
     }
-    
+
     /**
      * @return string
      */
