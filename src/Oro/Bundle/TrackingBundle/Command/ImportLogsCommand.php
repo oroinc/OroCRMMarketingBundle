@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Command;
 
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Job\BatchStatus;
+use Oro\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
@@ -29,7 +30,7 @@ class ImportLogsCommand extends Command implements CronCommandInterface
     /** @var string */
     protected static $defaultName = 'oro:cron:import-tracking';
 
-    private DoctrineJobRepository $akeneoJobRepository;
+    private DoctrineJobRepository $doctrineJobRepository;
     private FeatureChecker $featureChecker;
     private JobExecutor $jobExecutor;
     private ConfigManager $configManager;
@@ -37,13 +38,13 @@ class ImportLogsCommand extends Command implements CronCommandInterface
     private string $kernelLogsDir;
 
     public function __construct(
-        DoctrineJobRepository $akeneoJobRepository,
+        DoctrineJobRepository $doctrineJobRepository,
         FeatureChecker $featureChecker,
         JobExecutor $jobExecutor,
         ConfigManager $configManager,
         string $kernelLogsDir
     ) {
-        $this->akeneoJobRepository = $akeneoJobRepository;
+        $this->doctrineJobRepository = $doctrineJobRepository;
         $this->featureChecker = $featureChecker;
         $this->jobExecutor = $jobExecutor;
         $this->configManager = $configManager;
@@ -183,10 +184,10 @@ HELP
 
     protected function isFileProcessed(array $options): bool
     {
-        $manager = $this->akeneoJobRepository->getJobManager();
+        $manager = $this->doctrineJobRepository->getJobManager();
 
         $qb = $manager
-            ->getRepository('Akeneo\Bundle\BatchBundle\Entity\JobExecution')
+            ->getRepository(JobExecution::class)
             ->createQueryBuilder('je');
 
         /** @var QueryBuilder $qb */

@@ -4,7 +4,7 @@ services:
 
     Oro\Bundle\TrackingBundle\Command\ImportLogsCommand:
         arguments:
-            - '@akeneo_batch.job_repository'
+            - '@oro_batch.job.repository'
             - '@oro_featuretoggle.checker.feature_checker'
             - '@oro_importexport.job_executor'
             - '@oro_config.user'
