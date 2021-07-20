@@ -33,11 +33,6 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
      */
     private $logger;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param EventDispatcherInterface $dispatcher
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         EventDispatcherInterface $dispatcher,

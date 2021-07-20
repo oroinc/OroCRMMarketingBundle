@@ -453,9 +453,6 @@ class EmailCampaign extends ExtendEmailCampaign
         return $this->schedule;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getScheduledFor(): ?\DateTime
     {
         return $this->scheduledFor;

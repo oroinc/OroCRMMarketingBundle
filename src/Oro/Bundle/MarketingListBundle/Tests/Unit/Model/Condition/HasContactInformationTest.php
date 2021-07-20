@@ -45,7 +45,6 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidOptionsDataProvider
-     * @param array $options
      */
     public function testInitializeException(array $options)
     {

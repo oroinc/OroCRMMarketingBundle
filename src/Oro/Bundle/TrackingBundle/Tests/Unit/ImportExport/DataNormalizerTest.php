@@ -94,9 +94,6 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $data
-     * @param array $expected
-     *
      * @dataProvider dataProvider
      */
     public function testUpdateData(array $data, array $expected)

@@ -46,9 +46,6 @@ class HasContactInformation extends AbstractCondition implements ContextAccessor
      */
     protected $type;
 
-    /**
-     * @param ContactInformationFieldsProvider $fieldsProvider
-     */
     public function __construct(ContactInformationFieldsProvider $fieldsProvider)
     {
         $this->fieldsProvider = $fieldsProvider;

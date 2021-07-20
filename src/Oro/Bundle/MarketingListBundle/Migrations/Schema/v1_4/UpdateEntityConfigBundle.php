@@ -17,9 +17,6 @@ class UpdateEntityConfigBundle implements Migration
         self::updateEntityConfigs($queries);
     }
 
-    /**
-     * @param QueryBag $queries
-     */
     public static function updateEntityConfigs(QueryBag $queries)
     {
         $queries->addQuery(

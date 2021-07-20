@@ -23,9 +23,6 @@ class LoadTrackingWebsiteData extends AbstractFixture implements ContainerAwareI
         $this->container = $container;
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         $owner = $manager

@@ -20,10 +20,6 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $data
-     * @param array $chartOptions
-     * @param array $expected
-     *
      * @dataProvider dataProvider
      */
     public function testTransform(array $data, array $chartOptions, array $expected)
@@ -39,7 +35,6 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
             new MappedData($mapping, $sourceData),
             $chartOptions
         );
-
 
         $this->assertEquals($expected, $result->toArray());
     }
@@ -290,7 +285,6 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
 
         $sourceData = new ArrayData([]);
         $data       = new MappedData([], $sourceData);
-
 
         $chartOptions = [
             'data_schema'      => [

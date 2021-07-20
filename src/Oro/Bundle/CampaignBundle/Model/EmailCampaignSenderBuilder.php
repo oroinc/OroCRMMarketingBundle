@@ -11,9 +11,6 @@ class EmailCampaignSenderBuilder
      */
     protected $campaignSender;
 
-    /**
-     * @param EmailCampaignSender $campaignSender
-     */
     public function __construct(EmailCampaignSender $campaignSender)
     {
         $this->campaignSender = $campaignSender;

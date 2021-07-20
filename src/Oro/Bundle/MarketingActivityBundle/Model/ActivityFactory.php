@@ -16,9 +16,6 @@ class ActivityFactory
      */
     protected $enumProvider;
 
-    /**
-     * @param EnumValueProvider $enumProvider
-     */
     public function __construct(EnumValueProvider $enumProvider)
     {
         $this->enumProvider = $enumProvider;

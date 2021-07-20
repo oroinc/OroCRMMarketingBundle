@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\TrackingBundle\ImportExport\ContextReader;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -39,18 +42,9 @@ class ContextReaderTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->contextRegistry = $this
-            ->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->context = $this
-            ->createMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
-
-        $this->stepExecution = $this
-            ->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->contextRegistry = $this->createMock(ContextRegistry::class);
+        $this->context = $this->createMock(ContextInterface::class);
+        $this->stepExecution = $this->createMock(StepExecution::class);
 
         $this->reader = new ContextReader($this->contextRegistry);
     }

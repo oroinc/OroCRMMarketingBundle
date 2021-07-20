@@ -29,9 +29,6 @@ class ContactInformationExclusionProvider extends AbstractExclusionProvider
      */
     protected $virtualFieldProvider;
 
-    /**
-     * @param VirtualFieldProviderInterface $virtualFieldProvider
-     */
     public function __construct(
         VirtualFieldProviderInterface $virtualFieldProvider,
         ConfigProvider $entityConfigProvider,

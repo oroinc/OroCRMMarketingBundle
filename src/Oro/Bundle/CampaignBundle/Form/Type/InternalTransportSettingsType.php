@@ -10,10 +10,6 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
 {
     const NAME = 'oro_campaign_internal_transport_settings';
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

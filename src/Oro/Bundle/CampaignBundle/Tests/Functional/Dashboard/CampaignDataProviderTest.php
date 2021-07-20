@@ -59,9 +59,6 @@ class CampaignDataProviderTest extends WebTestCase
         $this->assertEquals('Campaign1', $rowOne['label']);
     }
 
-    /**
-     * @return array
-     */
     private function getDateRange(): array
     {
         return [

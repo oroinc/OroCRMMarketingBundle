@@ -27,8 +27,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Create oro_campaign_email table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignEmailTable(Schema $schema)
     {
@@ -58,8 +56,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Create oro_campaign_email_stats table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmEmailCampaignStatisticsTable(Schema $schema)
     {
@@ -75,8 +71,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Create oro_cmpgn_transport_stngs table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCmpgnTransportStngsTable(Schema $schema)
     {
@@ -88,8 +82,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Update oro_cmpgn_transport_stngs table with internal transport settings.
-     *
-     * @param Schema $schema
      */
     protected function updateOrocrmCmpgnTransportStngsTableAddInternalEmailTransport(Schema $schema)
     {
@@ -100,8 +92,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Add oro_campaign_email foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignEmailForeignKeys(Schema $schema)
     {
@@ -134,8 +124,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Add oro_campaign_email_stats foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmEmailCampaignStatisticsForeignKeys(Schema $schema)
     {
@@ -156,8 +144,6 @@ class OroCampaignBundle implements Migration
 
     /**
      * Add oro_cmpgn_transport_stngs internal trnasport foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCmpgnTransportStngsForeignKeysForInternalTransport(Schema $schema)
     {

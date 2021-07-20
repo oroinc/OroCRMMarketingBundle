@@ -26,11 +26,6 @@ class EmailCampaignHandler
     /** @var FormInterface */
     protected $form;
 
-    /**
-     * @param RequestStack $requestStack
-     * @param FormInterface $form
-     * @param ManagerRegistry $registry
-     */
     public function __construct(
         RequestStack $requestStack,
         FormInterface $form,

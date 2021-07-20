@@ -64,8 +64,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Create oro_campaign table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignTable(Schema $schema)
     {
@@ -96,8 +94,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Create oro_campaign_email table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignEmailTable(Schema $schema)
     {
@@ -129,8 +125,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Create oro_campaign_email_stats table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmEmailCampaignStatisticsTable(Schema $schema)
     {
@@ -156,8 +150,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Create oro_campaign_te_summary table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignTeSummaryTable(Schema $schema)
     {
@@ -178,8 +170,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Create oro_cmpgn_transport_stngs table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCmpgnTransportStngsTable(Schema $schema)
     {
@@ -191,8 +181,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Update oro_cmpgn_transport_stngs table with internal transport settings.
-     *
-     * @param Schema $schema
      */
     protected function updateOrocrmCmpgnTransportStngsTableAddInternalEmailTransport(Schema $schema)
     {
@@ -203,8 +191,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Create orocrm_campaign_code_history table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignCodeHistoryTable(Schema $schema)
     {
@@ -219,8 +205,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Add oro_campaign foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignForeignKeys(Schema $schema)
     {
@@ -241,8 +225,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Add oro_campaign_email foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignEmailForeignKeys(Schema $schema)
     {
@@ -281,8 +263,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Add oro_campaign_email_stats foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmEmailCampaignStatisticsForeignKeys(Schema $schema)
     {
@@ -315,8 +295,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Add oro_campaign_te_summary foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignTeSummaryForeignKeys(Schema $schema)
     {
@@ -331,8 +309,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Add oro_cmpgn_transport_stngs internal trnasport foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCmpgnTransportStngsForeignKeysForInternalTransport(Schema $schema)
     {
@@ -347,8 +323,6 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 
     /**
      * Add orocrm_campaign_code_history foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignCodeHistoryForeignKeys(Schema $schema)
     {

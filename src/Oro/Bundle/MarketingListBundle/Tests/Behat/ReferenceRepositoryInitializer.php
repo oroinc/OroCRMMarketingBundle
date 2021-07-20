@@ -17,10 +17,6 @@ class ReferenceRepositoryInitializer implements ReferenceRepositoryInitializerIn
         $this->setMarketingListTypeReferences($doctrine, $referenceRepository);
     }
 
-    /**
-     * @param Registry $doctrine
-     * @param Collection $referenceRepository
-     */
     public function setMarketingListTypeReferences(Registry $doctrine, Collection $referenceRepository): void
     {
         /** @var MarketingListType[]|array $types */

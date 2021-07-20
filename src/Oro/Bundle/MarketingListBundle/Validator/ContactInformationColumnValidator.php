@@ -17,9 +17,6 @@ class ContactInformationColumnValidator extends ConstraintValidator
      */
     protected $contactInformationFieldHelper;
 
-    /**
-     * @param ContactInformationFieldHelper $contactInformationFieldHelper
-     */
     public function __construct(ContactInformationFieldHelper $contactInformationFieldHelper)
     {
         $this->contactInformationFieldHelper = $contactInformationFieldHelper;

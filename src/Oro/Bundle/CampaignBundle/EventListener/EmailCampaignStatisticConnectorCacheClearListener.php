@@ -12,9 +12,6 @@ class EmailCampaignStatisticConnectorCacheClearListener
     /** @var EmailCampaignStatisticsConnector */
     private $emailCampaignStatisticsConnector;
 
-    /**
-     * @param EmailCampaignStatisticsConnector $emailCampaignStatisticsConnector
-     */
     public function __construct(EmailCampaignStatisticsConnector $emailCampaignStatisticsConnector)
     {
         $this->emailCampaignStatisticsConnector = $emailCampaignStatisticsConnector;

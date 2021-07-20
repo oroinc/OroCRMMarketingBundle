@@ -19,8 +19,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Update oro_tracking_visit table
-     *
-     * @param Schema $schema
      */
     protected function updateOroTrackingVisitTable(Schema $schema)
     {
@@ -37,8 +35,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Update oro_tracking_visit_event table
-     *
-     * @param Schema $schema
      */
     protected function updateOroTrackingVisitEventTable(Schema $schema)
     {

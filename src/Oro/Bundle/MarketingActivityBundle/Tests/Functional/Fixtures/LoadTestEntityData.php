@@ -21,9 +21,6 @@ class LoadTestEntityData extends AbstractFixture
         self::TEST_ENTITY_3 => 3,
     ];
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         foreach ($this->entities as $name => $entityId) {

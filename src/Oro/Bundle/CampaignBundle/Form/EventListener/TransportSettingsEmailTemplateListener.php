@@ -27,10 +27,6 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
      */
     protected $tokenAccessor;
 
-    /**
-     * @param ManagerRegistry        $registry
-     * @param TokenAccessorInterface $tokenAccessor
-     */
     public function __construct(ManagerRegistry $registry, TokenAccessorInterface $tokenAccessor)
     {
         $this->registry = $registry;
@@ -50,8 +46,6 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 
     /**
      * Fill template choices based on existing EmailCampaign{MarketingList} entity class.
-     *
-     * @param FormEvent $event
      */
     public function preSet(FormEvent $event)
     {
@@ -61,8 +55,6 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 
     /**
      * Fill template choices based on new EmailCampaign{MarketingList} entity class
-     *
-     * @param FormEvent $event
      */
     public function preSubmit(FormEvent $event)
     {
