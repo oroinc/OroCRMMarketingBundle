@@ -76,7 +76,6 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit\Framework\TestCase
         /** @var SessionInterface|\PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->createMock(SessionInterface::class);
 
-
         $this->configManager->expects($this->once())
             ->method('get')
             ->with('oro_tracking.precalculated_statistic_enabled')
@@ -97,7 +96,6 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit\Framework\TestCase
         $message = $this->createMock(MessageInterface::class);
         /** @var SessionInterface|\PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->createMock(SessionInterface::class);
-
 
         $this->configManager->expects($this->once())
             ->method('get')

@@ -35,11 +35,6 @@ class ConfigurationProvider implements ConfigurationProviderInterface
      */
     private $configuration = [];
 
-    /**
-     * @param ConfigurationProviderInterface $chainConfigurationProvider
-     * @param ConfigProvider                 $configProvider
-     * @param MarketingListHelper            $helper
-     */
     public function __construct(
         ConfigurationProviderInterface $chainConfigurationProvider,
         ConfigProvider $configProvider,
@@ -63,9 +58,6 @@ class ConfigurationProvider implements ConfigurationProviderInterface
      *
      * Get segments or concrete entity grid configuration by marketing list type and entity.
      * This configuration will be used as marketing list items grid configuration.
-     *
-     * @param string $gridName
-     * @return DatagridConfiguration
      */
     public function getConfiguration(string $gridName): DatagridConfiguration
     {

@@ -235,9 +235,6 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $marketingListItems
-     * @param string $marketingListTypeName
-     *
      * @dataProvider sendWithoutEmailContactInformationDataProvider
      */
     public function testSendWithoutEmailContactInformation(array $marketingListItems, string $marketingListTypeName)

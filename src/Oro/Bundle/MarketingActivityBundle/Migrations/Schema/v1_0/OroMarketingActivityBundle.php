@@ -35,8 +35,6 @@ class OroMarketingActivityBundle implements Migration, ExtendExtensionAwareInter
 
     /**
      * Create orocrm_marketing_activity table
-     *
-     * @param Schema $schema
      */
     protected function createOroMarketingActivityTable(Schema $schema)
     {
@@ -63,8 +61,6 @@ class OroMarketingActivityBundle implements Migration, ExtendExtensionAwareInter
 
     /**
      * Add orocrm_marketing_activity foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroMarketingActivityForeignKeys(Schema $schema)
     {
@@ -83,9 +79,6 @@ class OroMarketingActivityBundle implements Migration, ExtendExtensionAwareInter
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
     protected function addTypeField(Schema $schema)
     {
         $this->extendExtension->addEnumField(

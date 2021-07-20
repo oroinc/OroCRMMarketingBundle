@@ -37,9 +37,6 @@ class MarketingListExtension extends AbstractExtension
      */
     protected $marketingListId;
 
-    /**
-     * @param MarketingListHelper $marketingListHelper
-     */
     public function __construct(MarketingListHelper $marketingListHelper)
     {
         $this->marketingListHelper = $marketingListHelper;
@@ -78,12 +75,6 @@ class MarketingListExtension extends AbstractExtension
         return $this->isMarketingListApplicable($marketingList, $config, $cacheKey);
     }
 
-    /**
-     * @param MarketingList|null $marketingList
-     * @param DatagridConfiguration $config
-     * @param string $cacheKey
-     * @return bool
-     */
     private function isMarketingListApplicable(
         ?MarketingList $marketingList,
         DatagridConfiguration $config,
@@ -187,10 +178,6 @@ class MarketingListExtension extends AbstractExtension
         return $itemsQb->getQuery()->getSQL();
     }
 
-    /**
-     * @param DatagridConfiguration $config
-     * @return string
-     */
     private function getCacheKey(DatagridConfiguration $config): string
     {
         return md5(json_encode($config->toArray()));

@@ -84,11 +84,6 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         return new \DateTimeZone($timezoneName);
     }
 
-    /**
-     * @param TrackingVisit $visit
-     * @param UniqueTrackingVisit $uniqueVisit
-     * @param \DateTimeZone $timezone
-     */
     private function assertUniqueVisitMatchesVisit(
         TrackingVisit $visit,
         UniqueTrackingVisit $uniqueVisit,

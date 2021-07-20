@@ -132,9 +132,6 @@ class MarketingListController extends AbstractController
         return $response;
     }
 
-    /**
-     * @param MarketingList $marketingList
-     */
     protected function checkMarketingList(MarketingList $marketingList)
     {
         if ($marketingList->getEntity() &&

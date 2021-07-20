@@ -27,11 +27,6 @@ class AggregateTrackingVisitsProcessor implements MessageProcessorInterface, Top
      */
     private $logger;
 
-    /**
-     * @param UniqueTrackingVisitDumper $trackingVisitDumper
-     * @param ConfigManager $configManager
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         UniqueTrackingVisitDumper $trackingVisitDumper,
         ConfigManager $configManager,

@@ -23,8 +23,6 @@ class AddUniqueTrackingVisit implements Migration
 
     /**
      * Create oro_tracking_unique_visit table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingUniqueVisitTable(Schema $schema)
     {
@@ -41,8 +39,6 @@ class AddUniqueTrackingVisit implements Migration
 
     /**
      * Add oro_tracking_unique_visit foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingUniqueVisitForeignKeys(Schema $schema)
     {

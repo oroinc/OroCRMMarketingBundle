@@ -20,11 +20,6 @@ class UpdateMarketingListDemoDataFixturesListener extends AbstractDemoDataFixtur
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
-    /**
-     * @param OptionalListenerManager $listenerManager
-     * @param EntityProvider $entityProvider
-     * @param EventDispatcherInterface $dispatcher
-     */
     public function __construct(
         OptionalListenerManager $listenerManager,
         EntityProvider $entityProvider,
@@ -46,9 +41,6 @@ class UpdateMarketingListDemoDataFixturesListener extends AbstractDemoDataFixtur
         $this->updateMarketingList($event->getObjectManager());
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     protected function updateMarketingList(ObjectManager $manager)
     {
         $classes = array_map(

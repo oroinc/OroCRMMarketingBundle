@@ -16,17 +16,11 @@ class MarketingListItemsListener
      */
     protected $marketingListHelper;
 
-    /**
-     * @param MarketingListHelper $marketingListHelper
-     */
     public function __construct(MarketingListHelper $marketingListHelper)
     {
         $this->marketingListHelper = $marketingListHelper;
     }
 
-    /**
-     * @param BuildBefore $event
-     */
     public function onBuildBefore(BuildBefore $event)
     {
         $dataGrid     = $event->getDatagrid();
@@ -40,8 +34,6 @@ class MarketingListItemsListener
 
     /**
      * Add marketingList instance to parameters.
-     *
-     * @param BuildAfter $event
      */
     public function onBuildAfter(BuildAfter $event)
     {

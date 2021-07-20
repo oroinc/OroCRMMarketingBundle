@@ -69,14 +69,6 @@ class EmailCampaignSender
      */
     protected $validator;
 
-    /**
-     * @param MarketingListProvider            $marketingListProvider
-     * @param ConfigManager                    $configManager
-     * @param EmailCampaignStatisticsConnector $statisticsConnector
-     * @param ContactInformationFieldsProvider $contactInformationFieldsProvider
-     * @param ManagerRegistry                  $registry
-     * @param EmailTransportProvider           $emailTransportProvider
-     */
     public function __construct(
         MarketingListProvider $marketingListProvider,
         ConfigManager $configManager,
@@ -93,17 +85,11 @@ class EmailCampaignSender
         $this->emailTransportProvider           = $emailTransportProvider;
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * @param EmailCampaign $emailCampaign
-     */
     public function setEmailCampaign(EmailCampaign $emailCampaign)
     {
         $this->emailCampaign = $emailCampaign;

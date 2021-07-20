@@ -26,19 +26,12 @@ class CampaignStatisticDatagridListener
      */
     protected $marketingListHelper;
 
-    /**
-     * @param MarketingListHelper $marketingListHelper
-     * @param ManagerRegistry $registry
-     */
     public function __construct(MarketingListHelper $marketingListHelper, ManagerRegistry $registry)
     {
         $this->marketingListHelper = $marketingListHelper;
         $this->registry = $registry;
     }
 
-    /**
-     * @param PreBuild $event
-     */
     public function onPreBuild(PreBuild $event)
     {
         $config = $event->getConfig();

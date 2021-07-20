@@ -47,11 +47,6 @@ class MarketingListHandler implements FormHandlerInterface
      */
     protected $translator;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param ValidatorInterface $validator
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         ManagerRegistry $registry,
         ValidatorInterface $validator,
@@ -82,8 +77,6 @@ class MarketingListHandler implements FormHandlerInterface
 
     /**
      * "Success" form handler
-     *
-     * @param MarketingList $entity
      */
     protected function onSuccess(MarketingList $entity)
     {
@@ -92,11 +85,6 @@ class MarketingListHandler implements FormHandlerInterface
         $manager->flush();
     }
 
-    /**
-     * @param MarketingList $marketingList
-     * @param FormInterface $form
-     * @param Request $request
-     */
     protected function processSegment(MarketingList $marketingList, FormInterface $form, Request $request)
     {
         $requestData = $request->get($form->getName());

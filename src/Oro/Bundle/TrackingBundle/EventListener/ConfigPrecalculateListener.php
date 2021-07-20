@@ -14,17 +14,11 @@ class ConfigPrecalculateListener
      */
     private $producer;
 
-    /**
-     * @param MessageProducerInterface $producer
-     */
     public function __construct(MessageProducerInterface $producer)
     {
         $this->producer = $producer;
     }
 
-    /**
-     * @param ConfigUpdateEvent $event
-     */
     public function onUpdateAfter(ConfigUpdateEvent $event)
     {
         if (!$event->getScope() === 'global') {

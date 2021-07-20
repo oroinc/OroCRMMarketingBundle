@@ -12,7 +12,6 @@ class TrackingDataControllerTest extends WebTestCase
     }
 
     /**
-     * @param array $options
      * @dataProvider optionsProvider
      */
     public function testCreate(array $options)
@@ -60,8 +59,6 @@ class TrackingDataControllerTest extends WebTestCase
     }
 
     /**
-     * @param array $options
-     * @param array $expectedMessages
      * @dataProvider validationProvider
      */
     public function testValidation(array $options, array $expectedMessages)

@@ -11,8 +11,6 @@ class CampaignCodeHistoryListener
 {
     /**
      * Before flush, create new campaign code
-     *
-     * @param OnFlushEventArgs $eventArgs
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
@@ -34,9 +32,6 @@ class CampaignCodeHistoryListener
 
     /**
      * Create new campaign code
-     *
-     * @param Campaign $campaign
-     * @param EntityManager $em
      */
     protected function createCampaignCodeHistory(Campaign $campaign, EntityManager $em)
     {

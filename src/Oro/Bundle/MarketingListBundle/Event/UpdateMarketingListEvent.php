@@ -23,10 +23,6 @@ class UpdateMarketingListEvent extends Event
         return $this;
     }
 
-    /**
-     * @param MarketingList $marketingList
-     * @return UpdateMarketingListEvent
-     */
     public function addMarketingList(MarketingList $marketingList) : UpdateMarketingListEvent
     {
         $this->marketingLists[] = $marketingList;

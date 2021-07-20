@@ -38,12 +38,6 @@ class EmailCampaignSendProcessor implements MessageProcessorInterface, TopicSubs
      */
     private $jobRunner;
 
-    /**
-     * @param LoggerInterface $logger
-     * @param ManagerRegistry $registry
-     * @param EmailCampaignSenderBuilder $senderBuilder
-     * @param JobRunner $jobRunner
-     */
     public function __construct(
         LoggerInterface $logger,
         ManagerRegistry $registry,
@@ -90,10 +84,6 @@ class EmailCampaignSendProcessor implements MessageProcessorInterface, TopicSubs
         return [Topics::SEND_EMAIL_CAMPAIGN];
     }
 
-    /**
-     * @param array $body
-     * @return EmailCampaign|null
-     */
     private function getEmailCampaign(array $body): ?EmailCampaign
     {
         $emailCampaignId = $body['email_campaign'];

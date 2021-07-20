@@ -31,7 +31,6 @@ class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
      */
     protected $entityId;
 
-
     /**
      * @var MarketingList
      *

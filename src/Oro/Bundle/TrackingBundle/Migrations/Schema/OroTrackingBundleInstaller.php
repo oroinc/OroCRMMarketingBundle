@@ -53,8 +53,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_data table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingDataTable(Schema $schema)
     {
@@ -69,8 +67,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_event table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingEventTable(Schema $schema)
     {
@@ -98,8 +94,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_website table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingWebsiteTable(Schema $schema)
     {
@@ -132,8 +126,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_data foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingDataForeignKeys(Schema $schema)
     {
@@ -148,8 +140,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_event foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingEventForeignKeys(Schema $schema)
     {
@@ -164,8 +154,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_website foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingWebsiteForeignKeys(Schema $schema)
     {
@@ -180,8 +168,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_visit table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingVisitTable(Schema $schema)
     {
@@ -213,8 +199,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_visit_event table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingVisitEventTable(Schema $schema)
     {
@@ -234,8 +218,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_event_lib table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingEventDictionaryTable(Schema $schema)
     {
@@ -249,8 +231,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Create oro_tracking_unique_visit table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingUniqueVisitTable(Schema $schema)
     {
@@ -267,8 +247,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_visit_event foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingVisitEventForeignKeys(Schema $schema)
     {
@@ -301,8 +279,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_event_dictionary foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingEventDictionaryForeignKeys(Schema $schema)
     {
@@ -317,8 +293,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_visit foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingVisitForeignKeys(Schema $schema)
     {
@@ -333,8 +307,6 @@ class OroTrackingBundleInstaller implements Installation
 
     /**
      * Add oro_tracking_unique_visit foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingUniqueVisitForeignKeys(Schema $schema)
     {

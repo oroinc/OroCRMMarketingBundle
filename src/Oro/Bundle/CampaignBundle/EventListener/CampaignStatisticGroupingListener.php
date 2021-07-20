@@ -25,10 +25,6 @@ class CampaignStatisticGroupingListener
      */
     protected $groupByHelper;
 
-    /**
-     * @param MarketingListHelper $marketingListHelper
-     * @param GroupByHelper $groupByHelper
-     */
     public function __construct(MarketingListHelper $marketingListHelper, GroupByHelper $groupByHelper)
     {
         $this->marketingListHelper = $marketingListHelper;
@@ -37,8 +33,6 @@ class CampaignStatisticGroupingListener
 
     /**
      * Add fields that are not mentioned in aggregate functions to GROUP BY.
-     *
-     * @param PreBuild $event
      */
     public function onPreBuild(PreBuild $event)
     {

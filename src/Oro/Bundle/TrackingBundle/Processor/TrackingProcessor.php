@@ -67,10 +67,6 @@ class TrackingProcessor implements LoggerAwareInterface
     /** Default max execution time (in minutes) */
     protected $maxExecTime = 5;
 
-    /**
-     * @param ManagerRegistry                     $doctrine
-     * @param TrackingEventIdentificationProvider $trackingIdentification
-     */
     public function __construct(ManagerRegistry $doctrine, TrackingEventIdentificationProvider $trackingIdentification)
     {
         $this->doctrine               = $doctrine;
@@ -667,9 +663,6 @@ class TrackingProcessor implements LoggerAwareInterface
         return $eventType;
     }
 
-    /**
-     * @param TrackingVisit $visit
-     */
     protected function identifyTrackingVisit(TrackingVisit $visit)
     {
         /**
@@ -742,8 +735,6 @@ class TrackingProcessor implements LoggerAwareInterface
 
     /**
      * Applies skipped items to query as filter
-     *
-     * @param $queryBuilder
      */
     protected function applySkipList(QueryBuilder $queryBuilder)
     {

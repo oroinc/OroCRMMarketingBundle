@@ -20,9 +20,6 @@ class PlaceholderFilter implements FeatureToggleableInterface
 
     /**
      * PlaceholderFilter constructor.
-     *
-     * @param DoctrineHelper $doctrineHelper
-     * @param EntityProvider $entityProvider
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,

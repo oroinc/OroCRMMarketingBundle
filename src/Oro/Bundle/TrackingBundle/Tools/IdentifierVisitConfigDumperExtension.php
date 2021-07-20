@@ -23,11 +23,6 @@ class IdentifierVisitConfigDumperExtension extends AbstractEntityConfigDumperExt
     /** @var AssociationBuilder */
     protected $associationBuilder;
 
-    /**
-     * @param TrackingEventIdentificationProvider $identifyProvider
-     * @param ConfigManager                       $configManager
-     * @param AssociationBuilder                  $associationBuilder
-     */
     public function __construct(
         TrackingEventIdentificationProvider $identifyProvider,
         ConfigManager $configManager,

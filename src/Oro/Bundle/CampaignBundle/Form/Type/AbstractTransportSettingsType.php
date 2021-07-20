@@ -15,18 +15,11 @@ abstract class AbstractTransportSettingsType extends AbstractType
      */
     protected $subscribers = [];
 
-    /**
-     * @param EventSubscriberInterface $subscriber
-     */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
         $this->subscribers[] = $subscriber;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->subscribers as $subscriber) {

@@ -34,8 +34,6 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
     }
 
     /**
-     * @param Campaign $campaign
-     * @param ObjectManager $manager
      * @throws \Exception
      */
     private function loadOpportunitiesWithLeads(Campaign $campaign, ObjectManager $manager)
@@ -52,13 +50,6 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
         $manager->flush();
     }
 
-    /**
-     * @param Campaign $campaign
-     * @param ObjectManager $manager
-     * @param string $name
-     * @param \DateTime $createdAt
-     * @return Lead
-     */
     private function createLead(Campaign $campaign, ObjectManager $manager, string $name, \DateTime $createdAt): Lead
     {
         $lead = new Lead();
@@ -74,11 +65,6 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
         return $lead;
     }
 
-    /**
-     * @param ObjectManager $manager
-     * @param string $name
-     * @param Lead $lead
-     */
     private function createOpportunity(
         ObjectManager $manager,
         string $name,

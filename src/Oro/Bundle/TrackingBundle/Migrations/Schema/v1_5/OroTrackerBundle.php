@@ -28,8 +28,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Create oro_tracking_visit table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingVisitTable(Schema $schema)
     {
@@ -53,8 +51,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Create oro_tracking_visit_event table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingVisitEventTable(Schema $schema)
     {
@@ -71,8 +67,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Add parsed column to the oro_tracking_event table
-     *
-     * @param Schema $schema
      */
     protected function updateOroTrackingEventTable(Schema $schema)
     {
@@ -84,8 +78,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Create oro_tracking_event_lib table
-     *
-     * @param Schema $schema
      */
     protected function createOroTrackingEventDictionaryTable(Schema $schema)
     {
@@ -99,8 +91,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Add oro_tracking_visit_event foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingVisitEventForeignKeys(Schema $schema)
     {
@@ -127,8 +117,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Add oro_tracking_event_dictionary foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingEventDictionaryForeignKeys(Schema $schema)
     {
@@ -143,8 +131,6 @@ class OroTrackerBundle implements Migration
 
     /**
      * Add oro_tracking_visit foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOroTrackingVisitForeignKeys(Schema $schema)
     {

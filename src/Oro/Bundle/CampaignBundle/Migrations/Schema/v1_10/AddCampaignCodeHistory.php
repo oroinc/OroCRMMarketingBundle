@@ -22,8 +22,6 @@ class AddCampaignCodeHistory implements Migration
 
     /**
      * Create orocrm_campaign_code_history table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCampaignCodeHistoryTable(Schema $schema)
     {
@@ -38,8 +36,6 @@ class AddCampaignCodeHistory implements Migration
 
     /**
      * Add orocrm_campaign_code_history foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCampaignCodeHistoryForeignKeys(Schema $schema)
     {

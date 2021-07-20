@@ -23,10 +23,6 @@ class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterfac
      */
     private $entityProvider;
 
-    /**
-     * @param CacheProvider $cacheProvider
-     * @param EntityProvider $entityProvider
-     */
     public function __construct(
         CacheProvider $cacheProvider,
         EntityProvider $entityProvider
