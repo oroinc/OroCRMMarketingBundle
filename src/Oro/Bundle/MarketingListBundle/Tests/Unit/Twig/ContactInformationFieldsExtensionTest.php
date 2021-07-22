@@ -11,28 +11,20 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
     use TwigExtensionTestCaseTrait;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject */
-    protected $helper;
+    private $helper;
 
     /** @var ContactInformationFieldsExtension */
-    protected $extension;
+    private $extension;
 
     protected function setUp(): void
     {
-        $this->helper = $this->getMockBuilder(ContactInformationFieldHelper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->helper = $this->createMock(ContactInformationFieldHelper::class);
 
         $container = self::getContainerBuilder()
             ->add('oro_marketing_list.contact_information_field_helper', $this->helper)
             ->getContainer($this);
 
         $this->extension = new ContactInformationFieldsExtension($container);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->extension);
-        unset($this->helper);
     }
 
     public function testGetContactInformationFieldsInfoNoEntity()
@@ -53,7 +45,7 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
         $this->helper->expects($this->once())
             ->method('getEntityContactInformationFieldsInfo')
             ->with($entity)
-            ->will($this->returnValue($contactInformation));
+            ->willReturn($contactInformation);
 
         $this->assertEquals(
             $contactInformation,
