@@ -35,11 +35,6 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
         unset($this->helper);
     }
 
-    public function testGetName()
-    {
-        $this->assertEquals(ContactInformationFieldsExtension::NAME, $this->extension->getName());
-    }
-
     public function testGetContactInformationFieldsInfoNoEntity()
     {
         $this->helper->expects($this->never())

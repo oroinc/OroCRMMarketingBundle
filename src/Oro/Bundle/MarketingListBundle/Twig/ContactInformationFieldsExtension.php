@@ -14,8 +14,6 @@ use Twig\TwigFunction;
  */
 class ContactInformationFieldsExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
-    const NAME = 'oro_marketing_list_contact_information_fields';
-
     /** @var ContainerInterface */
     protected $container;
 
@@ -57,14 +55,6 @@ class ContactInformationFieldsExtension extends AbstractExtension implements Ser
         }
 
         return $this->getHelper()->getEntityContactInformationFieldsInfo($entityClass);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
     }
 
     /**
