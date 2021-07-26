@@ -2,10 +2,10 @@ oro_behat_extension:
   suites:
     OroTrackingBundle:
       contexts:
-        - OroTrackingBundle::TrackingMainContext
+        - Oro\Bundle\TrackingBundle\Tests\Behat\Context\TrackingMainContext
         - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
-        - OroFormBundle::FormContext
-        - OroConfigBundle::FeatureContext
-        - OroDataGridBundle::GridContext
+        - Oro\Bundle\FormBundle\Tests\Behat\Context\FormContext
+        - Oro\Bundle\ConfigBundle\Tests\Behat\Context\FeatureContext
+        - Oro\Bundle\DataGridBundle\Tests\Behat\Context\GridContext
       paths:
         - '@OroTrackingBundle/Tests/Behat/Features'

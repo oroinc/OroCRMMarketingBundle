@@ -9,13 +9,13 @@ oro_behat_extension:
     OroCampaignBundle:
       contexts:
         - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
-        - OroDataGridBundle::GridContext
-        - OroNavigationBundle::FeatureContext
-        - OroNavigationBundle::PinbarContext
-        - OroCampaignBundle::CampaignFeatureToggleContext
-        - OroConfigBundle::FeatureContext
-        - OroFormBundle::FormContext
-        - OroFilterBundle::FilterContext
-        - OroMarketingListBundle::MarketingListContext
+        - Oro\Bundle\DataGridBundle\Tests\Behat\Context\GridContext
+        - Oro\Bundle\NavigationBundle\Tests\Behat\Context\FeatureContext
+        - Oro\Bundle\NavigationBundle\Tests\Behat\Context\PinbarContext
+        - Oro\Bundle\CampaignBundle\Tests\Behat\Context\CampaignFeatureToggleContext
+        - Oro\Bundle\ConfigBundle\Tests\Behat\Context\FeatureContext
+        - Oro\Bundle\FormBundle\Tests\Behat\Context\FormContext
+        - Oro\Bundle\FilterBundle\Tests\Behat\Context\FilterContext
+        - Oro\Bundle\MarketingListBundle\Tests\Behat\Context\MarketingListContext
       paths:
         - '@OroCampaignBundle/Tests/Behat/Features'

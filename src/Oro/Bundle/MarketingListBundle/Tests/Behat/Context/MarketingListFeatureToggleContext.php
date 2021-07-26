@@ -2,17 +2,21 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Behat\Context;
 
-use Behat\Symfony2Extension\Context\KernelAwareContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
 
 /**
  * This context save behat execution time, all detailed steps can be found at
  * - "Manage MarketingList Feature"
  */
-class MarketingListFeatureToggleContext extends OroFeatureContext implements KernelAwareContext
+class MarketingListFeatureToggleContext extends OroFeatureContext
 {
-    use KernelDictionary;
+    private ConfigManager $configManager;
+
+    public function __construct(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
+    }
 
     /**
      * @When /^(?:|I )enable Marketing List feature$/
@@ -37,8 +41,7 @@ class MarketingListFeatureToggleContext extends OroFeatureContext implements Ker
      */
     protected function setFeatureState($state, $section, $name)
     {
-        $configManager = $this->getContainer()->get('oro_config.global');
-        $configManager->set(sprintf('%s.%s', $section, $name), $state ? 1 : 0);
-        $configManager->flush();
+        $this->configManager->set(sprintf('%s.%s', $section, $name), $state ? 1 : 0);
+        $this->configManager->flush();
     }
 }
