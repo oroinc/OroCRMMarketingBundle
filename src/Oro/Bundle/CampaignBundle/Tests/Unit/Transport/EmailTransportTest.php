@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\CampaignBundle\Tests\Unit\Model\Data\Transformer;
+namespace Oro\Bundle\CampaignBundle\Tests\Unit\Transport;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\InternalTransportSettings;
