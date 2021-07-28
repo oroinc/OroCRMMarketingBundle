@@ -2,8 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Behat\Context;
 
-use Behat\Symfony2Extension\Context\KernelAwareContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
@@ -15,10 +14,16 @@ use Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\FixtureLoaderDictionary;
  * - "Manage MarketingList Feature"
  */
 class MarketingListContext extends OroFeatureContext implements
-    FixtureLoaderAwareInterface,
-    KernelAwareContext
+    FixtureLoaderAwareInterface
 {
-    use FixtureLoaderDictionary, KernelDictionary;
+    use FixtureLoaderDictionary;
+
+    private ManagerRegistry $managerRegistry;
+
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
+        $this->managerRegistry = $managerRegistry;
+    }
 
     /**
      * @When /^I load Marketing List fixture$/
@@ -40,6 +45,6 @@ class MarketingListContext extends OroFeatureContext implements
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine')->getManager();
+        return $this->managerRegistry->getManager();
     }
 }
