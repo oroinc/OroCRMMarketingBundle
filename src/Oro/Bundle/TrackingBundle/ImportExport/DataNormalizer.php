@@ -20,7 +20,7 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /**
      * @param string $entityName
      */
-    public function setEntityName($entityName)
+    public function setEntityName(string $entityName): void
     {
         $this->entityName = $entityName;
     }
@@ -28,11 +28,11 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         return parent::denormalize(
             $this->updateData($data),
-            $class,
+            $type,
             $format,
             $context
         );
@@ -41,7 +41,7 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, string $format = null, array $context = [])
     {
         throw new \Exception('Not implemented');
     }
@@ -49,7 +49,7 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null, array $context = array())
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = array()): bool
     {
         return is_array($data) && $type == $this->entityName;
     }
@@ -57,7 +57,7 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null, array $context = array())
+    public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return false;
     }
