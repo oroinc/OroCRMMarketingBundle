@@ -21,10 +21,9 @@ class TrackingWebsiteControllerTest extends WebTestCase
     {
         $website = $this->getReference('website');
 
-        $this->client->request(
+        $this->client->jsonRequest(
             'DELETE',
             $this->getUrl('oro_api_delete_tracking_website', ['id' => $website->getId()]),
-            [],
             [],
             $this->generateWsseAuthHeader()
         );

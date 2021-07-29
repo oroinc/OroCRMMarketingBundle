@@ -24,7 +24,7 @@ class MarketingListUnsubscribedItemControllerTest extends WebTestCase
             ->findOneBy([])
             ->getId();
 
-        $this->client->request(
+        $this->client->jsonRequest(
             'POST',
             $this->getUrl('oro_api_post_marketinglist_unsubscribeditem'),
             [
@@ -48,7 +48,7 @@ class MarketingListUnsubscribedItemControllerTest extends WebTestCase
      */
     public function testDelete($id)
     {
-        $this->client->request(
+        $this->client->jsonRequest(
             'DELETE',
             $this->getUrl('oro_api_delete_marketinglist_unsubscribeditem', ['id' => $id])
         );

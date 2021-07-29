@@ -33,10 +33,9 @@ class MarketingListControllerTest extends WebTestCase
 
         $this->assertNotNull($entity->getId());
 
-        $this->client->request(
+        $this->client->jsonRequest(
             'DELETE',
             $this->getUrl('oro_api_delete_marketinglist', ['id' => $entity->getId()]),
-            [],
             [],
             $this->generateWsseAuthHeader()
         );
