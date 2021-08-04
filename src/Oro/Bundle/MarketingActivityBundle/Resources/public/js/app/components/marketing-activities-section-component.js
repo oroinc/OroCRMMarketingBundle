@@ -10,7 +10,7 @@ define(function(require) {
         campaignTypeFilter: null,
 
         /**
-         * @inheritDoc
+         * @inheritdoc
          */
         constructor: function MarketingActivitiesSectionComponent(options) {
             MarketingActivitiesSectionComponent.__super__.constructor.call(this, options);
