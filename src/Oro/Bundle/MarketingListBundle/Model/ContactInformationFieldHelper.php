@@ -69,7 +69,13 @@ class ContactInformationFieldHelper
      */
     public function getEntityContactInformationFields($entity)
     {
-        $fields = array_column($this->fieldProvider->getFields($entity, false, true), 'name');
+        $fields = array_column(
+            $this->fieldProvider->getEntityFields(
+                $entity,
+                EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS
+            ),
+            'name'
+        );
         $contactInformationFields = [];
         foreach ($fields as $field) {
             if ($type = $this->getContactInformationFieldType($entity, $field)) {
@@ -88,7 +94,12 @@ class ContactInformationFieldHelper
     {
         $fields = [];
         $contactInformationFields = $this->getEntityContactInformationFields($entity);
-        $entityFields = $this->fieldProvider->getFields($entity, false, true);
+        $entityFields = $this->fieldProvider->getEntityFields(
+            $entity,
+            EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS
+            | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS
+            | EntityFieldProvider::OPTION_TRANSLATE
+        );
 
         foreach ($entityFields as $entityField) {
             if (array_key_exists($entityField['name'], $contactInformationFields)) {
@@ -122,7 +133,10 @@ class ContactInformationFieldHelper
             $fieldConfiguration = $this->configProvider->getConfig($className, $fieldName);
             $contactInformationType = $fieldConfiguration->get('contact_information');
         } else {
-            $entityFields = $this->fieldProvider->getFields($entity, false, true);
+            $entityFields = $this->fieldProvider->getEntityFields(
+                $entity,
+                EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS
+            );
             $fieldsNames = array_column($entityFields, 'name');
             $contactInformationType = in_array($fieldName, $fieldsNames, true) && $fieldName === 'contactInformation' ?
                 $fieldName : null;

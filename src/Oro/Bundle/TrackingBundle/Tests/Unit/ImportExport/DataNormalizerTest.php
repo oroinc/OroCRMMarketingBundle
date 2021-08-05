@@ -3,16 +3,15 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 
 use Oro\Bundle\EntityBundle\Helper\FieldHelper;
+use Oro\Bundle\TrackingBundle\Entity\TrackingData;
 use Oro\Bundle\TrackingBundle\ImportExport\DataNormalizer;
 use Oro\Component\Testing\ReflectionUtil;
 
 class DataNormalizerTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var FieldHelper|\PHPUnit\Framework\MockObject\MockObject */
-    private $fieldHelper;
+    private FieldHelper|\PHPUnit\Framework\MockObject\MockObject $fieldHelper;
 
-    /** @var DataNormalizer */
-    private $normalizer;
+    private DataNormalizer $normalizer;
 
     protected function setUp(): void
     {
@@ -21,14 +20,14 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
         $this->normalizer = new DataNormalizer($this->fieldHelper);
     }
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
-        $this->assertFalse(
+        self::assertFalse(
             $this->normalizer->supportsNormalization([])
         );
     }
 
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Not implemented');
@@ -44,11 +43,11 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
      *
      * @dataProvider supportProvider
      */
-    public function testSupportsDenormalization(array $data, $class, $passedClass, $result)
+    public function testSupportsDenormalization(array $data, $class, $passedClass, $result): void
     {
         $this->normalizer->setEntityName($class);
 
-        $this->assertEquals(
+        self::assertEquals(
             $result,
             $this->normalizer->supportsDenormalization($data, $passedClass)
         );
@@ -57,38 +56,38 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function supportProvider()
+    public function supportProvider(): array
     {
         return [
             [
                 [],
-                '\stdClass',
-                '\stdClass',
+                \stdClass::class,
+                \stdClass::class,
                 true
             ],
             [
                 [],
-                '\stdClass',
+                \stdClass::class,
                 'Namespace\Entity',
                 false
             ]
         ];
     }
 
-    public function testDenormalize()
+    public function testDenormalize(): void
     {
         $this->fieldHelper
-            ->expects($this->once())
-            ->method('getFields')
-            ->will($this->returnValue([]));
+            ->expects(self::once())
+            ->method('getEntityFields')
+            ->willReturn([]);
 
         $result = $this->normalizer->denormalize(
             [],
-            'Oro\Bundle\TrackingBundle\Entity\TrackingData'
+            TrackingData::class
         );
 
-        $this->assertInstanceOf(
-            'Oro\Bundle\TrackingBundle\Entity\TrackingData',
+        self::assertInstanceOf(
+            TrackingData::class,
             $result
         );
     }
@@ -96,9 +95,9 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testUpdateData(array $data, array $expected)
+    public function testUpdateData(array $data, array $expected): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             ReflectionUtil::callMethod($this->normalizer, 'updateData', [$data])
         );
@@ -107,7 +106,7 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
-    public function dataProvider()
+    public function dataProvider(): array
     {
         $data = [
             'website'        => 'id1',

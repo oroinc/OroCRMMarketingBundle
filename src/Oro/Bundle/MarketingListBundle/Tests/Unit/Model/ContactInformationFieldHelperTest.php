@@ -12,49 +12,31 @@ use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 
 class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $configProvider;
+    private ConfigProvider|\PHPUnit\Framework\MockObject\MockObject $configProvider;
 
-    /**
-     * @var AbstractQueryDesigner|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $queryDesigner;
+    private AbstractQueryDesigner|\PHPUnit\Framework\MockObject\MockObject $queryDesigner;
 
-    /**
-     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $doctrineHelper;
+    private DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper;
 
-    /**
-     * @var EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $fieldProvider;
+    private EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject $fieldProvider;
 
-    /**
-     * @var ContactInformationFieldHelper
-     */
-    protected $helper;
+    private ContactInformationFieldHelper $helper;
 
-    /**
-     * @var array
-     */
-    protected $fieldMappings = [
+    private array $fieldMappings = [
         'one' => [
-            'fieldName'  => 'one',
+            'fieldName' => 'one',
             'columnName' => 'col1',
         ],
         'two' => [
-            'fieldName'  => 'two',
+            'fieldName' => 'two',
             'columnName' => 'col2',
         ],
         'three' => [
-            'fieldName'  => 'three',
+            'fieldName' => 'three',
             'columnName' => 'col3',
         ],
         'four' => [
-            'fieldName'  => 'four',
+            'fieldName' => 'four',
             'columnName' => 'col4',
         ],
     ];
@@ -73,47 +55,51 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testGetContactInformationFieldsNoDefinition()
+    public function testGetContactInformationFieldsNoDefinition(): void
     {
-        $this->assertEmpty($this->helper->getQueryContactInformationFields($this->queryDesigner));
+        self::assertEmpty($this->helper->getQueryContactInformationFields($this->queryDesigner));
     }
 
-    public function testGetContactInformationFieldsNoColumns()
+    public function testGetContactInformationFieldsNoColumns(): void
     {
-        $this->queryDesigner->expects($this->once())
+        $this->queryDesigner->expects(self::once())
             ->method('getDefinition')
             ->willReturn(QueryDefinitionUtil::encodeDefinition(['columns' => []]));
-        $this->assertEmpty($this->helper->getQueryContactInformationFields($this->queryDesigner));
+        self::assertEmpty($this->helper->getQueryContactInformationFields($this->queryDesigner));
     }
 
-    public function testGetContactInformationFields()
+    public function testGetContactInformationFields(): void
     {
         $entity = \stdClass::class;
 
-        $this->queryDesigner->expects($this->once())
+        $this->queryDesigner->expects(self::once())
             ->method('getDefinition')
-            ->willReturn(QueryDefinitionUtil::encodeDefinition([
-                'columns' => [
-                    ['name' => 'one'],
-                    ['name' => 'two'],
-                    ['name' => 'three'],
-                    ['name' => 'four']
-                ]
-            ]));
+            ->willReturn(
+                QueryDefinitionUtil::encodeDefinition(
+                    [
+                        'columns' => [
+                            ['name' => 'one'],
+                            ['name' => 'two'],
+                            ['name' => 'three'],
+                            ['name' => 'four'],
+                        ],
+                    ]
+                )
+            );
 
-        $this->queryDesigner->expects($this->once())
+        $this->queryDesigner->expects(self::once())
             ->method('getEntity')
-            ->will($this->returnValue($entity));
-        $this->fieldProvider->expects($this->any())
-            ->method('getFields')
-            ->will($this->returnValue([]));
+            ->willReturn($entity);
+        $this->fieldProvider->expects(self::any())
+            ->method('getEntityFields')
+            ->willReturn([]);
 
         $this->assertContactInformationConfig($entity);
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'email' => [['name' => 'one']],
-                'phone' => [['name' => 'two']]
+                'phone' => [['name' => 'two']],
             ],
             $this->helper->getQueryContactInformationFields($this->queryDesigner)
         );
@@ -122,18 +108,20 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
     /**
      * @param mixed $entity
      */
-    protected function assertContactInformationConfig($entity)
+    private function assertContactInformationConfig($entity): void
     {
-        $this->configProvider->expects($this->atLeastOnce())
+        $this->configProvider->expects(self::atLeastOnce())
             ->method('hasConfig')
-            ->willReturnMap([
-                [$entity, null, true],
-                [$entity, 'one', true],
-                [$entity, 'two', true],
-                [$entity, 'three', true],
-                [$entity, 'four', false],
-                [$entity, 'contactInformation', false]
-            ]);
+            ->willReturnMap(
+                [
+                    [$entity, null, true],
+                    [$entity, 'one', true],
+                    [$entity, 'two', true],
+                    [$entity, 'three', true],
+                    [$entity, 'four', false],
+                    [$entity, 'contactInformation', false],
+                ]
+            );
 
         $entityConfig = $this->getConfig(
             'contact_information',
@@ -147,57 +135,60 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
             'contact_information',
             null
         );
-        $this->configProvider->expects($this->atLeastOnce())
+        $this->configProvider->expects(self::atLeastOnce())
             ->method('getConfig')
-            ->willReturnMap([
-                [$entity, null, $entityConfig],
-                [$entity, 'one', $fieldNoInfoConfig],
-                [$entity, 'two', $fieldWithInfoConfig],
-                [$entity, 'three', $fieldNoInfoConfig]
-            ]);
+            ->willReturnMap(
+                [
+                    [$entity, null, $entityConfig],
+                    [$entity, 'one', $fieldNoInfoConfig],
+                    [$entity, 'two', $fieldWithInfoConfig],
+                    [$entity, 'three', $fieldNoInfoConfig],
+                ]
+            );
     }
 
     /**
      * @dataProvider fieldTypesDataProvider
+     *
      * @param string $field
      * @param string $expectedType
      */
-    public function testGetContactInformationFieldType($field, $expectedType)
+    public function testGetContactInformationFieldType($field, $expectedType): void
     {
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
         $fields = [
             [
                 'name' => 'one',
-                'label' => 'One label'
+                'label' => 'One label',
             ],
             [
                 'name' => 'two',
-                'label' => 'Two label'
+                'label' => 'Two label',
             ],
             [
                 'name' => 'three',
-                'label' => 'Three label'
+                'label' => 'Three label',
             ],
             [
                 'name' => 'four',
-                'label' => 'Four label'
+                'label' => 'Four label',
             ],
             [
                 'name' => 'contactInformation',
-                'label' => 'Contact information'
-            ]
+                'label' => 'Contact information',
+            ],
         ];
-        $this->fieldProvider->expects($this->any())
-            ->method('getFields')
-            ->will($this->returnValue($fields));
+        $this->fieldProvider->expects(self::any())
+            ->method('getEntityFields')
+            ->willReturn($fields);
         $this->assertContactInformationConfig($entity);
-        $this->assertEquals($expectedType, $this->helper->getContactInformationFieldType($entity, $field));
+        self::assertEquals($expectedType, $this->helper->getContactInformationFieldType($entity, $field));
     }
 
     /**
      * @return array
      */
-    public function fieldTypesDataProvider()
+    public function fieldTypesDataProvider(): array
     {
         return [
             ['one', 'email'],
@@ -208,79 +199,98 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testGetEntityContactInformationFields()
+    public function testGetEntityContactInformationFields(): void
     {
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
         $fields = [
             [
                 'name' => 'one',
-                'label' => 'One label'
+                'label' => 'One label',
             ],
             [
                 'name' => 'two',
-                'label' => 'Two label'
+                'label' => 'Two label',
             ],
             [
                 'name' => 'three',
-                'label' => 'Three label'
+                'label' => 'Three label',
             ],
             [
                 'name' => 'four',
-                'label' => 'Four label'
-            ]
+                'label' => 'Four label',
+            ],
         ];
-        $this->fieldProvider->expects($this->exactly(2))
-            ->method('getFields')
-            ->with($entity, false, true)
-            ->will($this->returnValue($fields));
+        $this->fieldProvider->expects(self::exactly(2))
+            ->method('getEntityFields')
+            ->with(
+                $entity,
+                EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS
+                | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS
+            )
+            ->willReturn($fields);
 
         $this->assertContactInformationConfig($entity);
-        $this->assertEquals(
+        self::assertEquals(
             ['one' => 'email', 'two' => 'phone'],
             $this->helper->getEntityContactInformationFields($entity)
         );
     }
 
-    public function testGetEntityContactInformationFieldsInfo()
+    public function testGetEntityContactInformationFieldsInfo(): void
     {
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
 
         $this->assertContactInformationConfig($entity);
 
         $fields = [
             [
                 'name' => 'one',
-                'label' => 'One label'
+                'label' => 'One label',
             ],
             [
                 'name' => 'two',
-                'label' => 'Two label'
+                'label' => 'Two label',
             ],
             [
                 'name' => 'three',
-                'label' => 'Three label'
+                'label' => 'Three label',
             ],
             [
                 'name' => 'four',
-                'label' => 'Four label'
-            ]
+                'label' => 'Four label',
+            ],
         ];
-        $this->fieldProvider->expects($this->exactly(3))
-            ->method('getFields')
-            ->with($entity, false, true)
-            ->will($this->returnValue($fields));
-        $this->assertEquals(
+        $this->fieldProvider->expects(self::exactly(3))
+            ->method('getEntityFields')
+            ->withConsecutive(
+                [
+                    $entity,
+                    EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS,
+                ],
+                [
+                    $entity,
+                    EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS,
+                ],
+                [
+                    $entity,
+                    EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS
+                    | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS
+                    | EntityFieldProvider::OPTION_TRANSLATE,
+                ]
+            )
+            ->willReturn($fields);
+        self::assertEquals(
             [
                 [
                     'name' => 'one',
                     'label' => 'One label',
-                    'contact_information_type' => 'email'
+                    'contact_information_type' => 'email',
                 ],
                 [
                     'name' => 'two',
                     'label' => 'Two label',
-                    'contact_information_type' => 'phone'
-                ]
+                    'contact_information_type' => 'phone',
+                ],
             ],
             $this->helper->getEntityContactInformationFieldsInfo($entity)
         );
@@ -289,15 +299,16 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $key
      * @param mixed $data
+     *
      * @return \PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getConfig($key, $data)
+    private function getConfig($key, $data): \PHPUnit\Framework\MockObject\MockObject
     {
         $config = $this->createMock(ConfigInterface::class);
-        $config->expects($this->any())
+        $config->expects(self::any())
             ->method('get')
             ->with($key)
-            ->will($this->returnValue($data));
+            ->willReturn($data);
 
         return $config;
     }
