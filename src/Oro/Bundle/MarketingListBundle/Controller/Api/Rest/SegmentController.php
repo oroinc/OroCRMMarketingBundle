@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
@@ -11,17 +9,12 @@ use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * API CRUD controller for Segment entity.
- *
- * @Rest\RouteResource("marketinglist_segment")
- * @Rest\NamePrefix("oro_api_")
+ * REST API CRUD controller for Segment entity.
  */
-class SegmentController extends RestController implements ClassResourceInterface
+class SegmentController extends RestController
 {
     /**
      * @param int $id
-     *
-     * @Rest\Post(requirements={"id"="\d+"})
      *
      * @ApiDoc(
      *      description="Run Static Marketing List Segment",

@@ -3,8 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
 use Doctrine\ORM\EntityNotFoundException;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
@@ -14,11 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * REST API Marketing List Removed Item Controller
- * @Rest\RouteResource("marketinglist_removeditem")
- * @Rest\NamePrefix("oro_api_")
+ * REST API controller for marketing list removed items.
  */
-class MarketingListRemovedItemController extends RestController implements ClassResourceInterface
+class MarketingListRemovedItemController extends RestController
 {
     /**
      * REST POST
@@ -39,8 +35,6 @@ class MarketingListRemovedItemController extends RestController implements Class
      *
      * @param int $id
      *
-     * @Rest\Delete(requirements={"id"="\d+"})
-     *
      * @ApiDoc(
      *     description="Delete MarketingListRemovedItem",
      *     resource=true
@@ -60,10 +54,6 @@ class MarketingListRemovedItemController extends RestController implements Class
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Delete(
-     *      "/marketinglist/{marketingList}/remove/{id}",
-     *      requirements={"marketingList"="\d+", "id"="\d+"}
-     * )
      * @ApiDoc(description="Remove marketing list entity item", resource=true)
      * @AclAncestor("oro_marketing_list_removed_item_delete")
      *
@@ -111,10 +101,6 @@ class MarketingListRemovedItemController extends RestController implements Class
      * @param MarketingList $marketingList
      * @param int           $id
      *
-     * @Rest\Post(
-     *      "/marketinglist/{marketingList}/unremove/{id}",
-     *      requirements={"marketingList"="\d+", "id"="\d+"}
-     * )
      * @ApiDoc(
      *     description="Delete MarketingListRemovedItem by marketing list entity",
      *     resource=true

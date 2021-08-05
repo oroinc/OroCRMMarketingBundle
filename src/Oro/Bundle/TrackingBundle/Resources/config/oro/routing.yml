@@ -3,12 +3,35 @@ oro_tracking:
     type:         annotation
     prefix:       /
 
-oro_tracking_website_api:
-    resource:     "@OroTrackingBundle/Controller/Api/Rest/TrackingWebsiteController.php"
-    type:         rest
-    prefix:       api/rest/{version}/
-    requirements:
-        version:  latest|v1
-        _format:  json
+
+#
+# DEPRECATED OLD REST API ROUTES
+#
+
+oro_api_options_tracking_websites:
+    path: '/api/rest/{version}/tracking/websites.{_format}'
+    methods: [OPTIONS]
     defaults:
-        version:  latest
+        _controller: 'Oro\Bundle\TrackingBundle\Controller\Api\Rest\TrackingWebsiteController::optionsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json
+        version: latest|v1
+
+
+#
+# OLD REST API ROUTES
+#
+
+oro_api_delete_tracking_website:
+    path: '/api/rest/{version}/trackings/{id}/website.{_format}'
+    methods: [DELETE]
+    defaults:
+        _controller: 'Oro\Bundle\TrackingBundle\Controller\Api\Rest\TrackingWebsiteController::deleteAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json
+        version: latest|v1

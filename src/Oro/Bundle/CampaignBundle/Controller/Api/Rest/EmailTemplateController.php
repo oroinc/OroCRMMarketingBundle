@@ -2,19 +2,13 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller\Api\Rest;
 
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\Annotations\NamePrefix;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * API controller for EmailTemplate entity.
- *
- * @RouteResource("emailcampaign_email_template")
- * @NamePrefix("oro_api_")
+ * REST API controller for EmailTemplate entity.
  */
 class EmailTemplateController extends RestController
 {
@@ -22,8 +16,6 @@ class EmailTemplateController extends RestController
      * REST GET email campaign templates by entity name
      *
      * @param int|null $id
-     *
-     * @Rest\Get(requirements={"id"="\d*"})
      *
      * @ApiDoc(
      *     description="Get email campaign templates by entity name",

@@ -3,8 +3,6 @@
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
 use Doctrine\ORM\EntityNotFoundException;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
@@ -14,11 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * REST API Marketing List Unsubscribed Item Controller
- * @Rest\RouteResource("marketinglist_unsubscribeditem")
- * @Rest\NamePrefix("oro_api_")
+ * REST API controller for marketing list unsubscribed item.
  */
-class MarketingListUnsubscribedItemController extends RestController implements ClassResourceInterface
+class MarketingListUnsubscribedItemController extends RestController
 {
     /**
      * REST POST
@@ -39,8 +35,6 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      *
      * @param int $id
      *
-     * @Rest\Delete(requirements={"id"="\d+"})
-     *
      * @ApiDoc(
      *     description="Delete MarketingListRemovedItem",
      *     resource=true
@@ -60,10 +54,6 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      * Returns
      * - HTTP_OK (200)
      *
-     * @Rest\Post(
-     *      "/marketinglist/{marketingList}/unsubscribe/{id}",
-     *      requirements={"marketingList"="\d+", "id"="\d+"}
-     * )
      * @ApiDoc(description="Unsubscribe marketing list entity item", resource=true)
      * @AclAncestor("oro_marketinglist_unsubscribed_item_create")
      *
@@ -111,10 +101,6 @@ class MarketingListUnsubscribedItemController extends RestController implements 
      * @param MarketingList $marketingList
      * @param int           $id
      *
-     * @Rest\Post(
-     *      "/marketinglist/{marketingList}/subscribe/{id}",
-     *      requirements={"marketingList"="\d+", "id"="\d+"}
-     * )
      * @ApiDoc(
      *     description="Delete MarketingListUnsubscribedItem by marketing list entity",
      *     resource=true

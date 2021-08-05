@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -12,19 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Handles api requests related to the marketing lists.
- *
- * @Rest\RouteResource("marketinglist")
- * @Rest\NamePrefix("oro_api_")
+ * REST API controller for marketing lists.
  */
-class MarketingListController extends RestController implements ClassResourceInterface
+class MarketingListController extends RestController
 {
     /**
      * REST DELETE
      *
      * @param int $id
-     *
-     * @Rest\Delete(requirements={"id"="\d+"})
      *
      * @ApiDoc(
      *      description="Delete Marketing List",
@@ -40,9 +33,6 @@ class MarketingListController extends RestController implements ClassResourceInt
     }
 
     /**
-     * @Rest\Get(
-     *      "/marketinglist/contact-information/field/type"
-     * )
      * @ApiDoc(
      *     description="Get contact information field type by field name",
      *     resource=true
@@ -65,9 +55,6 @@ class MarketingListController extends RestController implements ClassResourceInt
     }
 
     /**
-     * @Rest\Get(
-     *      "/marketinglist/contact-information/entity/fields"
-     * )
      * @ApiDoc(
      *     description="Get entity contact information fields",
      *     resource=true

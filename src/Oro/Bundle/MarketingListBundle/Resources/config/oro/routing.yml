@@ -3,43 +3,11 @@ oro_marketing_list_bundle:
     type:         annotation
     prefix:       /
 
-oro_marketing_list_api:
-    resource:     "@OroMarketingListBundle/Controller/Api/Rest/MarketingListController.php"
-    type:         rest
-    prefix:       api/rest/{version}
-    requirements:
-        version:  latest|v1
-    defaults:
-        version:  latest
 
-oro_marketing_list_removed_item_api:
-    resource:     "@OroMarketingListBundle/Controller/Api/Rest/MarketingListRemovedItemController.php"
-    type:         rest
-    prefix:       api/rest/{version}
-    requirements:
-        version:  latest|v1
-    defaults:
-        version:  latest
+#
+# DEPRECATED OLD REST API ROUTES
+#
 
-oro_marketing_list_unsubscribed_item_api:
-    resource:     "@OroMarketingListBundle/Controller/Api/Rest/MarketingListUnsubscribedItemController.php"
-    type:         rest
-    prefix:       api/rest/{version}
-    requirements:
-        version:  latest|v1
-    defaults:
-        version:  latest
-
-oro_marketing_list_segment_api:
-    resource:     "@OroMarketingListBundle/Controller/Api/Rest/SegmentController.php"
-    type:         rest
-    prefix:       api/rest/{version}
-    requirements:
-        version:  latest|v1
-    defaults:
-        version:  latest
-
-# deprecated API routes
 oro_api_post_marketinglist_removeditem_deprecated:
     path:            /api/rest/{version}/marketinglist/removeditem.{_format}
     methods:         [POST]
@@ -72,3 +40,196 @@ oro_api_post_marketinglist_unsubscribeditem_deprecated:
     requirements:
         _format:     json|html
         version:     latest|v1
+
+oro_api_options_marketinglists:
+    path: '/api/rest/{version}/marketinglists.{_format}'
+    methods: [OPTIONS]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListController::optionsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_options_marketinglist_removeditems:
+    path: '/api/rest/{version}/marketinglist/removeditems.{_format}'
+    methods: [OPTIONS]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::optionsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_options_marketinglist_unsubscribeditems:
+    path: '/api/rest/{version}/marketinglist/unsubscribeditems.{_format}'
+    methods: [OPTIONS]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListUnsubscribedItemController::optionsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_options_marketinglist_segments:
+    path: '/api/rest/{version}/marketinglist/segments.{_format}'
+    methods: [OPTIONS]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\SegmentController::optionsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+
+#
+# OLD REST API ROUTES
+#
+
+oro_api_contact_marketinglist_information_field_type:
+    path: '/api/rest/{version}/marketinglist/contact-information/field/type.{_format}'
+    methods: [GET]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListController::contactInformationFieldTypeAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_entity_marketinglist_contact_information_fields:
+    path: '/api/rest/{version}/marketinglist/contact-information/entity/fields.{_format}'
+    methods: [GET]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListController::entityContactInformationFieldsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_delete_marketinglist:
+    path: '/api/rest/{version}/marketinglists/{id}.{_format}'
+    methods: [DELETE]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListController::deleteAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_remove_marketinglist_removeditem:
+    path: '/api/rest/{version}/marketinglist/{marketingList}/remove/{id}.{_format}'
+    methods: [DELETE]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::removeAction'
+        _format: json
+        version: latest
+    requirements:
+        marketingList: \d+
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_unremove_marketinglist_removeditem:
+    path: '/api/rest/{version}/marketinglist/{marketingList}/unremove/{id}.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::unremoveAction'
+        _format: json
+        version: latest
+    requirements:
+        marketingList: \d+
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_post_marketinglist_removeditem:
+    path: '/api/rest/{version}/marketinglists/removeditems.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::postAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_delete_marketinglist_removeditem:
+    path: '/api/rest/{version}/marketinglists/{id}/removeditem.{_format}'
+    methods: [DELETE]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListRemovedItemController::deleteAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_unsubscribe_marketinglist_unsubscribeditem:
+    path: '/api/rest/{version}/marketinglist/{marketingList}/unsubscribe/{id}.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListUnsubscribedItemController::unsubscribeAction'
+        _format: json
+        version: latest
+    requirements:
+        marketingList: \d+
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_subscribe_marketinglist_unsubscribeditem:
+    path: '/api/rest/{version}/marketinglist/{marketingList}/subscribe/{id}.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListUnsubscribedItemController::subscribeAction'
+        _format: json
+        version: latest
+    requirements:
+        marketingList: \d+
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_post_marketinglist_unsubscribeditem:
+    path: '/api/rest/{version}/marketinglists/unsubscribeditems.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListUnsubscribedItemController::postAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+oro_api_delete_marketinglist_unsubscribeditem:
+    path: '/api/rest/{version}/marketinglists/{id}/unsubscribeditem.{_format}'
+    methods: [DELETE]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\MarketingListUnsubscribedItemController::deleteAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_post_marketinglist_segment_run:
+    path: '/api/rest/{version}/marketinglists/{id}/segments/runs.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MarketingListBundle\Controller\Api\Rest\SegmentController::postRunAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1

@@ -1,3 +1,0 @@
-oro_email_campaign_template_api:
-    resource:     "@OroCampaignBundle/Controller/Api/Rest/EmailTemplateController.php"
-    type:         rest
