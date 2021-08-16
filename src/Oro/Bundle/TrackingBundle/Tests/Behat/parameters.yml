@@ -1,8 +1,0 @@
-services:
-    Oro\Bundle\TrackingBundle\Tests\Behat\Context\TrackingMainContext:
-        public: true
-        arguments:
-            - '@twig'
-            - '@filesystem'
-            - '@doctrine'
-            - '%kernel.project_dir%'

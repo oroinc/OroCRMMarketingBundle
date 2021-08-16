@@ -1,5 +1,0 @@
-services:
-    Oro\Bundle\CampaignBundle\Tests\Behat\Context\CampaignFeatureToggleContext:
-        public: true
-        arguments:
-            - '@oro_config.global'

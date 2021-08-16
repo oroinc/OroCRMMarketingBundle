@@ -2,36 +2,13 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Behat\Context;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
-use Symfony\Component\Filesystem\Filesystem;
-use Twig\Environment;
 
 class TrackingMainContext extends OroFeatureContext
 {
     const TRACKING_FILENAME_KEY = 'tracking';
-
-    private Environment $twig;
-
-    private Filesystem $filesystem;
-
-    private ManagerRegistry $managerRegistry;
-
-    private string $projectDir;
-
-    public function __construct(
-        Environment $twig,
-        Filesystem $filesystem,
-        ManagerRegistry $managerRegistry,
-        string $projectDir
-    ) {
-        $this->twig = $twig;
-        $this->filesystem = $filesystem;
-        $this->managerRegistry = $managerRegistry;
-        $this->projectDir = $projectDir;
-    }
 
     /**
      * Removes "var/logs/tracking/settings.ser" file which is generated on tracking configuration save
@@ -43,7 +20,7 @@ class TrackingMainContext extends OroFeatureContext
      */
     public function removeTrackingSettingsFile()
     {
-        $filePath = $this->projectDir . '/var/logs/tracking/settings.ser';
+        $filePath = $this->getAppKernel()->getProjectDir() . '/var/logs/tracking/settings.ser';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -62,7 +39,7 @@ class TrackingMainContext extends OroFeatureContext
     public function generateHtmlPageWithTrackingCode($identifier)
     {
         // the public path where the generated page can be requested by direct link.
-        $filePath = $this->projectDir . '/public/media/' . $this->getHtmlFilename($identifier);
+        $filePath = $this->getAppKernel()->getProjectDir() . '/public/media/' . $this->getHtmlFilename($identifier);
         if (file_exists($filePath)) {
             unlink($filePath);
         }
@@ -70,7 +47,8 @@ class TrackingMainContext extends OroFeatureContext
         $website = $this->getRepository(TrackingWebsite::class)->findOneBy(['identifier' => $identifier]);
         self::assertNotNull($website, sprintf('Could not found tracking website "%s",', $identifier));
 
-        $trackingCode = $this->twig->render('@OroTracking/TrackingWebsite/script.js.twig', ['entity' => $website]);
+        $twig = $this->getAppContainer()->get('twig');
+        $trackingCode = $twig->render('@OroTracking/TrackingWebsite/script.js.twig', ['entity' => $website]);
         $url = $this->getMinkParameter('base_url');
         $scheme = parse_url($url, PHP_URL_SCHEME);
         $url = str_replace($scheme . '://', '', $url);
@@ -81,7 +59,9 @@ class TrackingMainContext extends OroFeatureContext
             $trackingCode
         );
 
-        $this->filesystem->dumpFile(
+        $filesystem = $this->getAppContainer()->get('filesystem');
+
+        $filesystem->dumpFile(
             $filePath,
             $this->getHtmlContent($trackingCode)
         );
@@ -109,7 +89,8 @@ class TrackingMainContext extends OroFeatureContext
      */
     private function getRepository($className)
     {
-        return $this->managerRegistry
+        return $this->getAppContainer()
+            ->get('doctrine')
             ->getManagerForClass($className)
             ->getRepository($className);
     }
