@@ -4,65 +4,41 @@ namespace Oro\Bundle\TrackingBundle\EventListener;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Updates "settings.ser" file when depended configs are changed.
+ */
 class ConfigListener
 {
-    /**
-     * @var string
-     */
-    protected $dynamicTrackingRouteName = 'oro_tracking_data_create';
-
-    /**
-     * @var string
-     */
-    protected $prefix = 'oro_tracking';
-
-    /**
-     * @var array
-     */
-    protected $keys = array(
+    private const DYNAMIC_TRACKING_ROUTE_NAME = 'oro_tracking_data_create';
+    private const KEY_PREFIX = 'oro_tracking.';
+    private const KEYS = [
         'dynamic_tracking_enabled',
         'dynamic_tracking_base_url',
         'log_rotate_interval',
         'piwik_host',
         'piwik_token_auth'
-    );
+    ];
 
-    /**
-     * @var ConfigManager
-     */
-    protected $configManager;
+    private ConfigManager $configManager;
+    private RouterInterface $router;
+    private string $logsDir;
 
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
-     * @var string
-     */
-    protected $logsDir;
-
-    /**
-     * @param ConfigManager $configManager
-     * @param Router $router
-     * @param string $logsDir
-     */
     public function __construct(
         ConfigManager $configManager,
-        Router $router,
-        $logsDir
+        RouterInterface $router,
+        string $logsDir
     ) {
         $this->configManager = $configManager;
         $this->router = $router;
         $this->logsDir = $logsDir;
     }
 
-    public function onUpdateAfter(ConfigUpdateEvent $event)
+    public function onUpdateAfter(ConfigUpdateEvent $event): void
     {
-        $changedData = array();
-        foreach ($this->keys as $key) {
+        $changedData = [];
+        foreach (self::KEYS as $key) {
             $configKey = $this->getKeyName($key);
             if ($event->isChanged($configKey)) {
                 $changedData[$key] = $event->getNewValue($configKey);
@@ -74,9 +50,9 @@ class ConfigListener
         }
     }
 
-    protected function updateTrackingConfig(array $configuration)
+    private function updateTrackingConfig(array $configuration): void
     {
-        foreach ($this->keys as $key) {
+        foreach (self::KEYS as $key) {
             if (!array_key_exists($key, $configuration)) {
                 $value = $this->configManager->get($this->getKeyName($key));
                 $value = is_array($value) ? $value['value'] : $value;
@@ -87,7 +63,7 @@ class ConfigListener
         if (!empty($configuration['dynamic_tracking_enabled'])) {
             /** This fix remove index.php or other entry point from url if they are present. @see CRM-8338 */
             $baseUrl = $this->router->getContext()->getBaseUrl();
-            $configuration['dynamic_tracking_endpoint'] = $this->router->generate($this->dynamicTrackingRouteName);
+            $configuration['dynamic_tracking_endpoint'] = $this->router->generate(self::DYNAMIC_TRACKING_ROUTE_NAME);
             $configuration['dynamic_tracking_base_url'] = $baseUrl;
         } else {
             $configuration['dynamic_tracking_endpoint'] = null;
@@ -103,12 +79,8 @@ class ConfigListener
         file_put_contents($settingsFile, serialize($configuration));
     }
 
-    /**
-     * @param string $key
-     * @return string
-     */
-    protected function getKeyName($key)
+    private function getKeyName(string $key): string
     {
-        return $this->prefix . '.' . $key;
+        return self::KEY_PREFIX . $key;
     }
 }
