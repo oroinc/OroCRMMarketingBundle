@@ -11,18 +11,13 @@ use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
  */
 class MarketingListSegmentVoter extends AbstractEntityVoter
 {
-    /**
-     * @var array
-     */
+    /** {@inheritDoc} */
     protected $supportedAttributes = [BasicPermission::EDIT, BasicPermission::DELETE];
 
-    /**
-     * @var array
-     */
-    protected $marketingListBySegment = [];
+    private array $marketingListBySegment = [];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getPermissionForAttribute($class, $identifier, $attribute)
     {
@@ -33,11 +28,7 @@ class MarketingListSegmentVoter extends AbstractEntityVoter
         return self::ACCESS_ABSTAIN;
     }
 
-    /**
-     * @param int $segmentId
-     * @return MarketingList|null
-     */
-    protected function getMarketingListBySegment($segmentId)
+    private function getMarketingListBySegment(int $segmentId): ?MarketingList
     {
         if (empty($this->marketingListBySegment[$segmentId])) {
             $segment = $this->doctrineHelper->getEntityReference($this->className, $segmentId);

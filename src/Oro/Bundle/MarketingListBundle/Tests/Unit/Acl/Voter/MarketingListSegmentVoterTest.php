@@ -8,10 +8,11 @@ use Oro\Bundle\MarketingListBundle\Acl\Voter\MarketingListSegmentVoter;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
     /** @var MarketingListSegmentVoter */
@@ -27,7 +28,7 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider attributesDataProvider
      */
-    public function testVote($attributes, $marketingList, $expected)
+    public function testVote(array $attributes, ?MarketingList $marketingList, int $expected)
     {
         $object = new Segment();
 
@@ -36,49 +37,39 @@ class MarketingListSegmentVoterTest extends \PHPUnit\Framework\TestCase
         $this->doctrineHelper->expects($this->once())
             ->method('getSingleEntityIdentifier')
             ->with($object, false)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
 
-        $this->assertMarketingListLoad($marketingList);
+        $repository = $this->createMock(EntityRepository::class);
+        $repository->expects($this->any())
+            ->method('findOneBy')
+            ->willReturn($marketingList);
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityRepository')
+            ->willReturn($repository);
 
         $token = $this->createMock(TokenInterface::class);
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             $this->voter->vote($token, $object, $attributes)
         );
     }
 
-    /**
-     * @return array
-     */
-    public function attributesDataProvider()
+    public function attributesDataProvider(): array
     {
         $marketingList = new MarketingList();
 
         return [
-            [['VIEW'], null, MarketingListSegmentVoter::ACCESS_ABSTAIN],
-            [['CREATE'], null, MarketingListSegmentVoter::ACCESS_ABSTAIN],
-            [['EDIT'], null, MarketingListSegmentVoter::ACCESS_ABSTAIN],
-            [['DELETE'], null, MarketingListSegmentVoter::ACCESS_ABSTAIN],
-            [['ASSIGN'], null, MarketingListSegmentVoter::ACCESS_ABSTAIN],
+            [['VIEW'], null, VoterInterface::ACCESS_ABSTAIN],
+            [['CREATE'], null, VoterInterface::ACCESS_ABSTAIN],
+            [['EDIT'], null, VoterInterface::ACCESS_ABSTAIN],
+            [['DELETE'], null, VoterInterface::ACCESS_ABSTAIN],
+            [['ASSIGN'], null, VoterInterface::ACCESS_ABSTAIN],
 
-            [['VIEW'], $marketingList, MarketingListSegmentVoter::ACCESS_ABSTAIN],
-            [['CREATE'], $marketingList, MarketingListSegmentVoter::ACCESS_ABSTAIN],
-            [['EDIT'], $marketingList, MarketingListSegmentVoter::ACCESS_DENIED],
-            [['DELETE'], $marketingList, MarketingListSegmentVoter::ACCESS_DENIED],
-            [['ASSIGN'], $marketingList, MarketingListSegmentVoter::ACCESS_ABSTAIN],
+            [['VIEW'], $marketingList, VoterInterface::ACCESS_ABSTAIN],
+            [['CREATE'], $marketingList, VoterInterface::ACCESS_ABSTAIN],
+            [['EDIT'], $marketingList, VoterInterface::ACCESS_DENIED],
+            [['DELETE'], $marketingList, VoterInterface::ACCESS_DENIED],
+            [['ASSIGN'], $marketingList, VoterInterface::ACCESS_ABSTAIN],
         ];
-    }
-
-    private function assertMarketingListLoad($marketingList)
-    {
-        $repository = $this->createMock(EntityRepository::class);
-
-        $repository->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValue($marketingList));
-
-        $this->doctrineHelper->expects($this->any())
-            ->method('getEntityRepository')
-            ->will($this->returnValue($repository));
     }
 }
