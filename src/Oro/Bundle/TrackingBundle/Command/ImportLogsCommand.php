@@ -180,6 +180,8 @@ HELP
                 }
             }
         }
+
+        return 0;
     }
 
     protected function isFileProcessed(array $options): bool
