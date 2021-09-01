@@ -146,6 +146,8 @@ services:
 
     oro_tracking.provider.identifier_provider:
         class: Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider
+        arguments:
+            - !tagged_iterator oro_tracking.provider.identification
 
     oro_tracking.migration.fill_unique_tracking_visits_query:
         class: Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery

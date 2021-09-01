@@ -5,17 +5,20 @@ namespace Oro\Bundle\TrackingBundle\Provider;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 
+/**
+ * Delegates a work to child TrackingEventIdentifierInterface providers.
+ */
 class TrackingEventIdentificationProvider
 {
-    /** @var TrackingEventIdentifierInterface[] */
-    protected $providers = [];
+    /** @var iterable<TrackingEventIdentifierInterface> */
+    protected iterable $providers = [];
 
     /**
-     * Add activity list provider
+     * @param iterable<TrackingEventIdentifierInterface> $providers
      */
-    public function addProvider(TrackingEventIdentifierInterface $provider)
+    public function __construct(iterable $providers)
     {
-        $this->providers[] = $provider;
+        $this->providers = $providers;
     }
 
     /**

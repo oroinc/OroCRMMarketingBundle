@@ -5,7 +5,7 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@oro_marketing_list.entity_provider.contact_information'
         tags:
-            - { name: oro_entity.virtual_relation_provider, priority: 150 }
+            - { name: oro_entity.virtual_relation_provider, priority: -150 }
 
     oro_marketing_activity.placeholder.filter:
         class: 'Oro\Bundle\MarketingActivityBundle\Placeholder\PlaceholderFilter'

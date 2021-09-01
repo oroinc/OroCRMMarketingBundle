@@ -170,14 +170,14 @@ services:
             - "@oro_entity.doctrine_helper"
             - '@oro_marketing_list.virtual_relation_cache'
         tags:
-            - { name: oro_entity.virtual_relation_provider, priority: 150 }
+            - { name: oro_entity.virtual_relation_provider, priority: -150 }
 
     oro_marketing_list.virtual_field_provider.marketing_list_item:
         class: Oro\Bundle\MarketingListBundle\Provider\MarketingListItemVirtualFieldProvider
         arguments:
             - "@oro_marketing_list.virtual_relation_provider.marketing_list"
         tags:
-            - { name: oro_entity.virtual_field_provider, priority: 150 }
+            - { name: oro_entity.virtual_field_provider, priority: -150 }
 
     oro_marketing_list.marketing_list.cache:
         parent: oro.cache.abstract

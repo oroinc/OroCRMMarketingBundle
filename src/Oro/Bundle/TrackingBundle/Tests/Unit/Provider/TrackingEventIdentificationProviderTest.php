@@ -9,43 +9,40 @@ use Oro\Bundle\TrackingBundle\Tests\Unit\Fixture\TestProvider;
 
 class TrackingEventIdentificationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var TrackingEventIdentificationProvider */
-    protected $provider;
+    private TrackingEventIdentificationProvider $provider;
 
     protected function setUp(): void
     {
-        $testIdentifier = new TestProvider();
-        $this->provider = new TrackingEventIdentificationProvider();
-        $this->provider->addProvider($testIdentifier);
+        $this->provider = new TrackingEventIdentificationProvider([new TestProvider()]);
     }
 
-    public function testIdentify()
+    public function testIdentify(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             'identity',
             $this->provider->identify(new TrackingVisit())->value
         );
     }
 
-    public function testGetTargetIdentityEntities()
+    public function testGetTargetIdentityEntities(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             ['\stdClassIdentity'],
             $this->provider->getTargetIdentityEntities()
         );
     }
 
-    public function testGetEventTargetEntities()
+    public function testGetEventTargetEntities(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             ['\stdClass'],
             $this->provider->getEventTargetEntities()
         );
     }
 
-    public function testProcessEvent()
+    public function testProcessEvent(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             'event',
             $this->provider->processEvent(new TrackingVisitEvent())[0]->value
         );
