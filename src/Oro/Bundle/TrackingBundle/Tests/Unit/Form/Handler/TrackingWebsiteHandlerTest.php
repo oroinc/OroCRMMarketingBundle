@@ -40,13 +40,9 @@ class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $method
-     * @param bool   $isFormValid
-     * @param bool   $isFlushCalled
-     *
      * @dataProvider processProvider
      */
-    public function testProcess($method, $isFormValid, $isFlushCalled)
+    public function testProcess(string $method, bool $isFormValid, bool $isFlushCalled): void
     {
         $entity = new TrackingWebsite();
 
@@ -61,14 +57,14 @@ class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
         $this->form
             ->expects($this->any())
             ->method('isValid')
-            ->will($this->returnValue($isFormValid));
+            ->willReturn($isFormValid);
 
         if ($isFlushCalled) {
             $this->manager
                 ->expects($this->once())
                 ->method('persist')
                 ->with($this->equalTo($entity))
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
             $this->manager
                 ->expects($this->once())
@@ -86,10 +82,7 @@ class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
         $handler->process($entity);
     }
 
-    /**
-     * @return array
-     */
-    public function processProvider()
+    public function processProvider(): array
     {
         return [
             ['POST', false, false],

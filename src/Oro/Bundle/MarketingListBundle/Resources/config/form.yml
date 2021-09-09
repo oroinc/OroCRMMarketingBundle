@@ -20,7 +20,7 @@ services:
         public: true
         factory: ['@form.factory', createNamed]
         arguments:
-            - ~
+            - ''
             - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListRemovedItemApiType
 
     oro_marketing_list.form.handler.marketing_list_removed_item:
@@ -44,7 +44,7 @@ services:
         public: true
         factory: ['@form.factory', createNamed]
         arguments:
-            - ~
+            - ''
             - Oro\Bundle\MarketingListBundle\Form\Type\MarketingListUnsubscribedItemApiType
 
     oro_marketing_list.form.handler.marketing_list_unsubscribed_item:
