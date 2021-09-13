@@ -23,6 +23,7 @@ class OroMarketingListExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form.yml');
         $loader->load('controllers.yml');
+        $loader->load('controllers_api.yml');
 
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }

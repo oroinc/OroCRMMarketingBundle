@@ -2,33 +2,19 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\DependencyInjection;
 
+use Oro\Bundle\TestFrameworkBundle\Test\DependencyInjection\ExtensionTestCase;
+use Oro\Bundle\TrackingBundle\Controller\Api\Rest\TrackingWebsiteController;
 use Oro\Bundle\TrackingBundle\DependencyInjection\OroTrackingExtension;
 
-class OroTrackingExtensionTest extends \PHPUnit\Framework\TestCase
+class OroTrackingExtensionTest extends ExtensionTestCase
 {
-    /**
-     * @var OroTrackingExtension
-     */
-    protected $extension;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $container;
-
-    protected function setUp(): void
+    public function testLoad(): void
     {
-        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->extension = new OroTrackingExtension();
-    }
+        $expectedDefinitions = [
+            TrackingWebsiteController::class,
+        ];
 
-    public function testLoad()
-    {
-        $this->container->expects($this->once())
-            ->method('prependExtensionConfig')
-            ->with('oro_tracking', $this->isType('array'));
-        $this->extension->load([], $this->container);
+        $this->loadExtension(new OroTrackingExtension());
+        $this->assertDefinitionsLoaded($expectedDefinitions);
     }
 }
