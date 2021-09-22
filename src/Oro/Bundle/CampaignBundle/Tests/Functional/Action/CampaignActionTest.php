@@ -2,12 +2,15 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Functional\Action;
 
+use Oro\Bundle\ActionBundle\Tests\Functional\OperationAwareTestTrait;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadCampaignData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class CampaignActionTest extends WebTestCase
 {
+    use OperationAwareTestTrait;
+
     protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
@@ -52,30 +55,5 @@ class CampaignActionTest extends WebTestCase
             ->find($campaignId);
 
         static::assertNull($removedCampaign);
-    }
-
-    /**
-     * @param $operationName
-     * @param $entityId
-     * @param $entityClass
-     *
-     * @return array
-     */
-    protected function getOperationExecuteParams($operationName, $entityId, $entityClass)
-    {
-        $actionContext = [
-            'entityId'    => $entityId,
-            'entityClass' => $entityClass
-        ];
-        $container = self::getContainer();
-        $operation = $container->get('oro_action.operation_registry')->findByName($operationName);
-        $actionData = $container->get('oro_action.helper.context')->getActionData($actionContext);
-
-        $tokenData = $container
-            ->get('oro_action.operation.execution.form_provider')
-            ->createTokenData($operation, $actionData);
-        $container->get('session')->save();
-
-        return $tokenData;
     }
 }

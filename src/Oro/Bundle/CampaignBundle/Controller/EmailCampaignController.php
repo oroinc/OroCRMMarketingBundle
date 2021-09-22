@@ -15,9 +15,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -53,9 +53,9 @@ class EmailCampaignController extends AbstractController
      *      class="OroCampaignBundle:EmailCampaign"
      * )
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new EmailCampaign());
+        return $this->update(new EmailCampaign(), $request);
     }
 
     /**
@@ -72,9 +72,9 @@ class EmailCampaignController extends AbstractController
      * @param EmailCampaign $entity
      * @return array
      */
-    public function updateAction(EmailCampaign $entity)
+    public function updateAction(EmailCampaign $entity, Request $request)
     {
-        return $this->update($entity);
+        return $this->update($entity, $request);
     }
 
     /**
@@ -109,9 +109,10 @@ class EmailCampaignController extends AbstractController
      * Process save email campaign entity
      *
      * @param EmailCampaign $entity
+     * @param Request $request
      * @return array|Response
      */
-    protected function update(EmailCampaign $entity)
+    protected function update(EmailCampaign $entity, Request $request)
     {
         $factory = $this->get(FormFactoryInterface::class);
         $form = $factory->createNamed('oro_email_campaign', EmailCampaignType::class);
@@ -120,7 +121,7 @@ class EmailCampaignController extends AbstractController
         $handler = new EmailCampaignHandler($requestStack, $form, $this->getDoctrine());
 
         if ($handler->process($entity)) {
-            $this->get(SessionInterface::class)->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
                 $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.saved.message')
             );
@@ -154,9 +155,10 @@ class EmailCampaignController extends AbstractController
      * )
      *
      * @param EmailCampaign $emailCampaign
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function sendAction(EmailCampaign $emailCampaign)
+    public function sendAction(EmailCampaign $emailCampaign, Request $request)
     {
         if ($this->isManualSendAllowed($emailCampaign)) {
             // Schedule email campaign sending
@@ -169,12 +171,12 @@ class EmailCampaignController extends AbstractController
             $manager->persist($emailCampaign);
             $manager->flush($emailCampaign);
 
-            $this->get(SessionInterface::class)->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'success',
                 $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.sent')
             );
         } else {
-            $this->get(SessionInterface::class)->getFlashBag()->add(
+            $request->getSession()->getFlashBag()->add(
                 'error',
                 $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.send_disallowed')
             );
@@ -222,7 +224,6 @@ class EmailCampaignController extends AbstractController
                 EmailCampaignSenderBuilder::class,
                 RequestStack::class,
                 Router::class,
-                SessionInterface::class,
                 TranslatorInterface::class,
                 ValidatorInterface::class,
                 MessageProducerInterface::class

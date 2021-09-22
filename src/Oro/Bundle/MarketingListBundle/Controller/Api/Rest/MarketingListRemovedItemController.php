@@ -78,7 +78,7 @@ class MarketingListRemovedItemController extends RestController
         $em->persist($item);
         $em->flush($item);
 
-        $entityName = $this
+        $entityName = (string) $this
             ->get('oro_entity_config.provider.entity')
             ->getConfig($marketingList->getEntity())
             ->get('label');
@@ -130,7 +130,7 @@ class MarketingListRemovedItemController extends RestController
             }
         }
 
-        $entityName = $this
+        $entityName = (string) $this
             ->get('oro_entity_config.provider.entity')
             ->getConfig($marketingList->getEntity())
             ->get('label');
