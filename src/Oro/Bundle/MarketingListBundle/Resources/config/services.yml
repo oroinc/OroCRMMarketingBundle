@@ -237,7 +237,3 @@ services:
             - '@logger'
         tags:
             - { name: oro_message_queue.client.message_processor }
-
-    Oro\Bundle\MarketingListBundle\Config\Validation\EntityFieldConfiguration:
-        tags:
-            - oro_entity_config.validation.entity_config
