@@ -2,45 +2,40 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
+use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
 {
     /** @var EmailCampaignType */
-    protected $type;
+    private $type;
 
     protected function setUp(): void
     {
-        $transportProvider = $this
-            ->getMockBuilder('Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $transportProvider = $this->createMock(EmailTransportProvider::class);
 
         $this->type = new EmailCampaignType($transportProvider);
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->type);
-    }
-
     public function testAddEntityFields()
     {
-        $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $builder = $this->createMock(FormBuilder::class);
 
         $builder->expects($this->atLeastOnce())
             ->method('add')
             ->with($this->isType('string'), $this->isType('string'))
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
         $builder->expects($this->once())
             ->method('addEventListener')
             ->with(FormEvents::PRE_SET_DATA);
 
-        $subscriber = $this->createMock('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $subscriber = $this->createMock(EventSubscriberInterface::class);
         $builder->expects($this->once())
             ->method('addEventSubscriber')
             ->with($subscriber);
@@ -58,15 +53,10 @@ class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureOptions()
     {
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
-        $resolver
-            ->expects($this->once())
+        $resolver = $this->createMock(OptionsResolver::class);
+        $resolver->expects($this->once())
             ->method('setDefaults')
-            ->with(
-                [
-                    'data_class'         => 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign',
-                ]
-            );
+            ->with(['data_class' => EmailCampaign::class]);
 
         $this->type->configureOptions($resolver);
     }

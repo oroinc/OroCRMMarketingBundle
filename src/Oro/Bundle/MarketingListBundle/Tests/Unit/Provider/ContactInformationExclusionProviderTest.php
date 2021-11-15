@@ -13,45 +13,27 @@ use Oro\Bundle\MarketingListBundle\Provider\ContactInformationExclusionProvider;
 
 class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ContactInformationExclusionProvider
-     */
-    protected $provider;
+    /** @var VirtualFieldProviderInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $virtualFieldProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $registry;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $configProvider;
+    /** @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $configProvider;
 
-    /**
-     * @var VirtualFieldProviderInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $virtualFieldProvider;
+    /** @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject */
+    private $metadata;
 
-    /**
-     * @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $metadata;
+    /** @var ContactInformationExclusionProvider */
+    private $provider;
 
     protected function setUp(): void
     {
-        $this->virtualFieldProvider = $this
-            ->createMock(VirtualFieldProviderInterface::class);
-        $this->metadata = $this
-            ->getMockBuilder(ClassMetadata::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $this->virtualFieldProvider = $this->createMock(VirtualFieldProviderInterface::class);
         $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->configProvider = $this
-            ->getMockBuilder(ConfigProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->configProvider = $this->createMock(ConfigProvider::class);
+        $this->metadata = $this->createMock(ClassMetadata::class);
 
         $this->provider = new ContactInformationExclusionProvider(
             $this->virtualFieldProvider,
@@ -67,7 +49,7 @@ class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCas
         $this->virtualFieldProvider->expects($this->once())
             ->method('isVirtualField')
             ->with($className, 'contactInformation')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertFalse($this->provider->isIgnoredEntity($className));
     }
@@ -79,7 +61,7 @@ class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCas
         $this->virtualFieldProvider->expects($this->once())
             ->method('isVirtualField')
             ->with($className, 'contactInformation')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->assertTrue($this->provider->isIgnoredEntity($className));
     }
@@ -108,9 +90,7 @@ class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCas
 
     private function configureRegistry($className, $withContactInformation = false)
     {
-        $om = $this->getMockBuilder(ObjectManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $om = $this->createMock(ObjectManager::class);
 
         $om->expects($this->once())
             ->method('getClassMetadata')
@@ -137,13 +117,11 @@ class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCas
             $fieldNames = ['email'];
         }
 
-        $this->metadata
-            ->expects($this->once())
+        $this->metadata->expects($this->once())
             ->method('getFieldNames')
             ->willReturn($fieldNames);
 
-        $this->registry
-            ->expects($this->once())
+        $this->registry->expects($this->once())
             ->method('getManagerForClass')
             ->with($this->equalTo($className))
             ->willReturn($om);

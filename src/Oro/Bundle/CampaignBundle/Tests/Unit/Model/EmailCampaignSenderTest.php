@@ -24,32 +24,32 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var EmailCampaignSender */
-    private $sender;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|MarketingListProvider */
+    /** @var MarketingListProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $marketingListProvider;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|EmailCampaignStatisticsConnector */
+    /** @var EmailCampaignStatisticsConnector|\PHPUnit\Framework\MockObject\MockObject */
     private $statisticsConnector;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ContactInformationFieldsProvider */
+    /** @var ContactInformationFieldsProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $contactInformationFieldsProvider;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $registry;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|LoggerInterface */
+    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $logger;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|TransportInterface */
+    /** @var TransportInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $transport;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|EmailTransportProvider */
+    /** @var EmailTransportProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $transportProvider;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ValidatorInterface */
+    /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $validator;
+
+    /** @var EmailCampaignSender */
+    private $sender;
 
     protected function setUp(): void
     {
@@ -60,6 +60,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->transport = $this->createMock(TransportInterface::class);
         $this->transportProvider = $this->createMock(EmailTransportProvider::class);
+        $this->validator = $this->createMock(ValidatorInterface::class);
 
         $this->sender = new EmailCampaignSender(
             $this->marketingListProvider,
@@ -69,8 +70,6 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
             $this->registry,
             $this->transportProvider
         );
-
-        $this->validator = $this->createMock(ValidatorInterface::class);
         $this->sender->setValidator($this->validator);
         $this->sender->setLogger($this->logger);
     }
@@ -157,8 +156,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $fields = ['email'];
         $this->assertFieldsCall($fields, $marketingList);
         if ($itCount) {
-            $this->contactInformationFieldsProvider
-                ->expects($this->exactly($itCount * 2))
+            $this->contactInformationFieldsProvider->expects($this->exactly($itCount * 2))
                 ->method('getTypedFieldsValues')
                 ->with($fields, $this->anything())
                 ->willReturn($to);
@@ -171,8 +169,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
             $statisticsRecord->expects($this->exactly($itCount))
                 ->method('getMarketingListItem')
                 ->willReturn($marketingListItem);
-            $this->statisticsConnector
-                ->expects($this->exactly($itCount))
+            $this->statisticsConnector->expects($this->exactly($itCount))
                 ->method('getStatisticsRecord')
                 ->with($this->identicalTo($campaign), $this->isInstanceOf(\stdClass::class))
                 ->willReturn($statisticsRecord);

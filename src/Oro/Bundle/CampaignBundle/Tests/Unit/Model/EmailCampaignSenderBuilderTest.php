@@ -3,26 +3,20 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Model;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Model\EmailCampaignSender;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 
 class EmailCampaignSenderBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $campaignSender;
+    /** @var EmailCampaignSender|\PHPUnit\Framework\MockObject\MockObject */
+    private $campaignSender;
 
-    /**
-     * @var EmailCampaignSenderBuilder
-     */
-    protected $factory;
+    /** @var EmailCampaignSenderBuilder */
+    private $factory;
 
     protected function setUp(): void
     {
-        $this->campaignSender = $this
-            ->getMockBuilder('Oro\Bundle\CampaignBundle\Model\EmailCampaignSender')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->campaignSender = $this->createMock(EmailCampaignSender::class);
 
         $this->factory = new EmailCampaignSenderBuilder($this->campaignSender);
     }
@@ -31,8 +25,7 @@ class EmailCampaignSenderBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $emailCampaign = new EmailCampaign();
 
-        $this->campaignSender
-            ->expects($this->once())
+        $this->campaignSender->expects($this->once())
             ->method('setEmailCampaign')
             ->with($this->equalTo($emailCampaign));
 

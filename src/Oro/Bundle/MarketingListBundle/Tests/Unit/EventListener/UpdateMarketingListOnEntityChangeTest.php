@@ -20,54 +20,31 @@ use Psr\Log\LoggerInterface;
 
 class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var UpdateMarketingListOnEntityChange
-     */
-    private $listener;
-
-    /**
-     * @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $messageProducer;
 
-    /**
-     * @var MarketingListAllowedClassesProvider|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var MarketingListAllowedClassesProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $entityProvider;
 
-    /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $logger;
 
-    /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $entityManager;
 
-    /**
-     * @var UnitOfWork|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var UnitOfWork|\PHPUnit\Framework\MockObject\MockObject */
     private $unitOfWork;
+
+    /** @var UpdateMarketingListOnEntityChange */
+    private $listener;
 
     protected function setUp(): void
     {
-        $this->messageProducer = $this->getMockBuilder(MessageProducerInterface::class)
-            ->getMock();
-
-        $this->entityProvider = $this->getMockBuilder(MarketingListAllowedClassesProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->logger = $this->getMockBuilder(LoggerInterface::class)
-            ->getMock();
-
-        $this->unitOfWork = $this->getMockBuilder(UnitOfWork::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->getMock();
+        $this->messageProducer = $this->createMock(MessageProducerInterface::class);
+        $this->entityProvider = $this->createMock(MarketingListAllowedClassesProvider::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->unitOfWork = $this->createMock(UnitOfWork::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
         $this->entityManager->expects($this->any())
             ->method('getUnitOfWork')
@@ -89,7 +66,9 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         $this->messageProducer->expects($this->never())
             ->method('send');
 
-        $this->disableListener();
+        $this->assertInstanceOf(OptionalListenerInterface::class, $this->listener);
+        $this->listener->setEnabled(false);
+
         $this->listener->onFlush($args);
     }
 
@@ -150,11 +129,8 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
      * This method verifies if $topic is correct
      * and if message is array, with key "class" existing
      * and if classes that are allowed are pushed through that message
-     *
-     * @param string $topic
-     * @param array $message
      */
-    public function assertTopicAndMessageAreValid($topic, $message)
+    public function assertTopicAndMessageAreValid(string $topic, array $message): void
     {
         if ($topic !== UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_MESSAGE) {
             $this->fail(
@@ -219,11 +195,5 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
             User::class,
             Organization::class,
         ];
-    }
-
-    protected function disableListener()
-    {
-        $this->assertInstanceOf(OptionalListenerInterface::class, $this->listener);
-        $this->listener->setEnabled(false);
     }
 }

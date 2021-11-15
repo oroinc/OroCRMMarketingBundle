@@ -6,7 +6,6 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
 use Oro\Bundle\TrackingBundle\EventListener\ConfigListener;
 use Oro\Component\Testing\TempDirExtension;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -30,8 +29,6 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
     {
         $logsDir = $this->getTempDir('tracking_log');
         $trackingDir = $logsDir . DIRECTORY_SEPARATOR . 'tracking';
-        $fs = new Filesystem();
-        $fs->mkdir($logsDir);
 
         $this->settingsFile = $trackingDir . DIRECTORY_SEPARATOR . 'settings.ser';
 

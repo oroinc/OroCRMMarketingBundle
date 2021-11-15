@@ -9,9 +9,11 @@ use Oro\Component\Testing\ReflectionUtil;
 
 class DataNormalizerTest extends \PHPUnit\Framework\TestCase
 {
-    private FieldHelper|\PHPUnit\Framework\MockObject\MockObject $fieldHelper;
+    /** @var FieldHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $fieldHelper;
 
-    private DataNormalizer $normalizer;
+    /** @var DataNormalizer */
+    private $normalizer;
 
     protected function setUp(): void
     {
@@ -36,14 +38,9 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array  $data
-     * @param string $class
-     * @param string $passedClass
-     * @param bool   $result
-     *
      * @dataProvider supportProvider
      */
-    public function testSupportsDenormalization(array $data, $class, $passedClass, $result): void
+    public function testSupportsDenormalization(array $data, string $class, string $passedClass, bool $result): void
     {
         $this->normalizer->setEntityName($class);
 
@@ -53,9 +50,6 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function supportProvider(): array
     {
         return [
@@ -76,8 +70,7 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
 
     public function testDenormalize(): void
     {
-        $this->fieldHelper
-            ->expects(self::once())
+        $this->fieldHelper->expects(self::once())
             ->method('getEntityFields')
             ->willReturn([]);
 
@@ -103,9 +96,6 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
     public function dataProvider(): array
     {
         $data = [

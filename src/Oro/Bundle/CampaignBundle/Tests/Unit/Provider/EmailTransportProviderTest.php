@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
+use Oro\Bundle\CampaignBundle\Transport\TransportInterface;
 
 class EmailTransportProviderTest extends \PHPUnit\Framework\TestCase
 {
@@ -10,10 +11,10 @@ class EmailTransportProviderTest extends \PHPUnit\Framework\TestCase
     {
         $provider = new EmailTransportProvider();
         $name = 'test';
-        $transport = $this->createMock('Oro\Bundle\CampaignBundle\Transport\TransportInterface');
+        $transport = $this->createMock(TransportInterface::class);
         $transport->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue($name));
+            ->willReturn($name);
 
         $this->assertEmpty($provider->getTransports());
         $this->assertFalse($provider->hasTransport($name));
@@ -28,30 +29,30 @@ class EmailTransportProviderTest extends \PHPUnit\Framework\TestCase
     {
         $choices = ['Transport 1' => 't1', 'Transport 2' => 't2'];
         $provider = new EmailTransportProvider();
-        $transportOne = $this->createMock('Oro\Bundle\CampaignBundle\Transport\TransportInterface');
+        $transportOne = $this->createMock(TransportInterface::class);
         $transportOne->expects($this->exactly(2))
             ->method('getName')
-            ->will($this->returnValue('t1'));
+            ->willReturn('t1');
         $transportOne->expects($this->once())
             ->method('getLabel')
-            ->will($this->returnValue('Transport 1'));
-        $transportTwo = $this->createMock('Oro\Bundle\CampaignBundle\Transport\TransportInterface');
+            ->willReturn('Transport 1');
+        $transportTwo = $this->createMock(TransportInterface::class);
         $transportTwo->expects($this->exactly(2))
             ->method('getName')
-            ->will($this->returnValue('t2'));
+            ->willReturn('t2');
         $transportTwo->expects($this->once())
             ->method('getLabel')
-            ->will($this->returnValue('Transport 2'));
-        $transportTree = $this->createMock('Oro\Bundle\CampaignBundle\Tests\Unit\Provider\TransportStub');
+            ->willReturn('Transport 2');
+        $transportTree = $this->createMock(TransportStub::class);
         $transportTree->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('t3'));
+            ->willReturn('t3');
         $transportTree->expects($this->never())
             ->method('getLabel')
-            ->will($this->returnValue('Transport 3'));
+            ->willReturn('Transport 3');
         $transportTree->expects($this->once())
             ->method('isVisibleInForm')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $provider->addTransport($transportOne);
         $provider->addTransport($transportTwo);

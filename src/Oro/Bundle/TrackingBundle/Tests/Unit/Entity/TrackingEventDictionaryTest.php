@@ -9,22 +9,11 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingEventDictionary */
-    protected $trackingEvents;
+    private $trackingEvents;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->trackingEvents = new TrackingEventDictionary();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        unset($this->trackingEvents);
     }
 
     public function testId()
@@ -33,13 +22,9 @@ class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
-     *
      * @dataProvider propertyProvider
      */
-    public function testProperties($property, $value, $expected)
+    public function testProperties(string $property, mixed $value, mixed $expected)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->assertNull(
@@ -54,10 +39,7 @@ class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function propertyProvider()
+    public function propertyProvider(): array
     {
         $website = new TrackingWebsite();
 

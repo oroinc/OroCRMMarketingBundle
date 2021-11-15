@@ -7,54 +7,35 @@ use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider
 
 class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $relationProvider;
+    /** @var MarketingListVirtualRelationProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $relationProvider;
 
-    /**
-     * @var MarketingListItemVirtualFieldProvider
-     */
-    protected $fieldProvider;
+    /** @var MarketingListItemVirtualFieldProvider */
+    private $fieldProvider;
 
     protected function setUp(): void
     {
-        $this->relationProvider = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->relationProvider = $this->createMock(MarketingListVirtualRelationProvider::class);
 
         $this->fieldProvider = new MarketingListItemVirtualFieldProvider($this->relationProvider);
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->fieldProvider, $this->relationProvider);
-    }
-
     /**
      * @dataProvider virtualFieldDataProvider
-     *
-     * @param bool $hasMarketingList
-     * @param string $fieldName
-     * @param bool $expected
      */
-    public function testIsVirtualField($hasMarketingList, $fieldName, $expected)
+    public function testIsVirtualField(bool $hasMarketingList, string $fieldName, bool $expected)
     {
         $className = 'stdClass';
 
         $this->relationProvider->expects($this->any())
             ->method('hasMarketingList')
             ->with($className)
-            ->will($this->returnValue($hasMarketingList));
+            ->willReturn($hasMarketingList);
 
         $this->assertEquals($expected, $this->fieldProvider->isVirtualField($className, $fieldName));
     }
 
-    /**
-     * @return array
-     */
-    public function virtualFieldDataProvider()
+    public function virtualFieldDataProvider(): array
     {
         return [
             [false, 'test', false],
@@ -66,26 +47,20 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
 
     /**
      * @dataProvider fieldsDataProvider
-     *
-     * @param bool $hasMarketingList
-     * @param array $expected
      */
-    public function testGetVirtualFields($hasMarketingList, array $expected)
+    public function testGetVirtualFields(bool $hasMarketingList, array $expected)
     {
         $className = 'stdClass';
 
         $this->relationProvider->expects($this->once())
             ->method('hasMarketingList')
             ->with($className)
-            ->will($this->returnValue($hasMarketingList));
+            ->willReturn($hasMarketingList);
 
         $this->assertEquals($expected, $this->fieldProvider->getVirtualFields($className));
     }
 
-    /**
-     * @return array
-     */
-    public function fieldsDataProvider()
+    public function fieldsDataProvider(): array
     {
         return [
             [
@@ -109,10 +84,8 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
 
     /**
      * @dataProvider queryDataProvider
-     * @param string $fieldName
-     * @param array $expected
      */
-    public function testGetVirtualFieldQuery($fieldName, array $expected)
+    public function testGetVirtualFieldQuery(string $fieldName, array $expected)
     {
         $className = 'stdClass';
 
@@ -128,16 +101,13 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
         $this->relationProvider->expects($this->once())
             ->method('getRelationDefinition')
             ->with($className)
-            ->will($this->returnValue($definition));
+            ->willReturn($definition);
 
         $expected['join'] = $definition['query']['join'];
         $this->assertEquals($expected, $this->fieldProvider->getVirtualFieldQuery($className, $fieldName));
     }
 
-    /**
-     * @return array
-     */
-    public function queryDataProvider()
+    public function queryDataProvider(): array
     {
         $mliAlias = MarketingListVirtualRelationProvider::MARKETING_LIST_ITEM_RELATION_NAME;
 

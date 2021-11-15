@@ -10,41 +10,32 @@ use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelation
 
 class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $doctrineHelper;
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $doctrineHelper;
 
-    /**
-     * @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $entityProvider;
+    /** @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $entityProvider;
 
-    /**
-     * @var MarketingActivityVirtualRelationProvider
-     */
-    protected $provider;
+    /** @var MarketingActivityVirtualRelationProvider */
+    private $provider;
 
     protected function setUp(): void
     {
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->entityProvider = $this->getMockBuilder(EntityProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $this->entityProvider = $this->createMock(EntityProvider::class);
+
         $this->provider = new MarketingActivityVirtualRelationProvider($this->doctrineHelper, $this->entityProvider);
     }
 
     /**
      * @dataProvider fieldDataProvider
-     * @param string $className
-     * @param string $fieldName
-     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
-     * @param bool $expected
      */
-    public function testIsVirtualRelation($className, $fieldName, $marketingActivity, $expected)
-    {
+    public function testIsVirtualRelation(
+        string $className,
+        string $fieldName,
+        ?MarketingActivity $marketingActivity,
+        bool $expected
+    ) {
         if ('marketingActivity' === $fieldName) {
             $this->assertEntityProviderCall($className, $marketingActivity);
         } else {
@@ -56,13 +47,13 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
 
     /**
      * @dataProvider fieldDataProvider
-     * @param string $className
-     * @param string $fieldName
-     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
-     * @param bool $expected
      */
-    public function testGetVirtualRelationQuery($className, $fieldName, $marketingActivity, $expected)
-    {
+    public function testGetVirtualRelationQuery(
+        string $className,
+        string $fieldName,
+        ?MarketingActivity $marketingActivity,
+        bool $expected
+    ) {
         $this->assertEntityProviderCall($className, $marketingActivity);
         $result = $this->provider->getVirtualRelationQuery($className, $fieldName);
         if ($expected) {
@@ -72,15 +63,10 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
         }
     }
 
-    /**
-     * @return array
-     */
-    public function fieldDataProvider()
+    public function fieldDataProvider(): array
     {
         $className = 'stdClass';
-        $marketingActivity = $this->getMockBuilder(MarketingActivity::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingActivity = $this->createMock(MarketingActivity::class);
 
         return [
             'incorrect class incorrect field' => [$className, 'test', null, false],
@@ -92,11 +78,8 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
 
     /**
      * @dataProvider relationsDataProvider
-     * @param string $className
-     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
-     * @param bool $expected
      */
-    public function testGetVirtualRelations($className, $marketingActivity, $expected)
+    public function testGetVirtualRelations(string $className, ?MarketingActivity $marketingActivity, bool $expected)
     {
         $this->assertEntityProviderCall($className, $marketingActivity);
         $result = $this->provider->getVirtualRelations($className);
@@ -107,15 +90,10 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
         }
     }
 
-    /**
-     * @return array
-     */
-    public function relationsDataProvider()
+    public function relationsDataProvider(): array
     {
         $className = 'stdClass';
-        $marketingActivity = $this->getMockBuilder(MarketingActivity::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingActivity = $this->createMock(MarketingActivity::class);
 
         return [
             'incorrect class' => [$className, null, false],
@@ -164,11 +142,7 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
         $this->provider->hasMarketingActivity(\stdClass::class);
     }
 
-    /**
-     * @param string $className
-     * @param MarketingActivity|\PHPUnit\Framework\MockObject\MockObject $marketingActivity
-     */
-    protected function assertEntityProviderCall($className, $marketingActivity)
+    private function assertEntityProviderCall(string $className, ?MarketingActivity $marketingActivity): void
     {
         $results = [];
         if ($marketingActivity) {
@@ -183,6 +157,6 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
         $this->entityProvider->expects($this->once())
             ->method('getEntity')
             ->with($className)
-            ->will($this->returnValue($results));
+            ->willReturn($results);
     }
 }

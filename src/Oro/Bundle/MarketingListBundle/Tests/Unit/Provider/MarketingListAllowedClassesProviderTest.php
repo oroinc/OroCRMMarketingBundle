@@ -11,28 +11,24 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var CacheProvider
-     */
+    /** @var CacheProvider */
     private $cacheProvider;
 
-    /**
-     * @var EntityProvider
-     */
-    private $entityProvider;
+    /** @var MarketingListAllowedClassesProvider */
+    private $provider;
 
     protected function setUp(): void
     {
         $this->cacheProvider = new ArrayCache();
 
-        $this->entityProvider = $this->createMock(EntityProvider::class);
-        $this->entityProvider->expects($this->any())
+        $entityProvider = $this->createMock(EntityProvider::class);
+        $entityProvider->expects($this->any())
             ->method('getEntities')
             ->willReturn($this->getAllowedEntities());
 
         $this->provider = new MarketingListAllowedClassesProvider(
             $this->cacheProvider,
-            $this->entityProvider
+            $entityProvider
         );
     }
 
@@ -64,9 +60,6 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
         $this->assertEquals($this->getCachedAllowedEntities(), $entities);
     }
 
-    /**
-     * @return string[]
-     */
     private function getAllowedEntities(): array
     {
         return [

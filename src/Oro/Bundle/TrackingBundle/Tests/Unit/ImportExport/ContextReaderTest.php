@@ -5,40 +5,22 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\TrackingBundle\ImportExport\ContextReader;
-use Symfony\Component\Filesystem\Filesystem;
 
 class ContextReaderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var string
-     */
-    protected $directory;
+    /** @var ContextRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $contextRegistry;
 
-    /**
-     * @var Filesystem
-     */
-    protected $fs;
+    /** @var ContextInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $context;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $contextRegistry;
+    /** @var StepExecution|\PHPUnit\Framework\MockObject\MockObject */
+    private $stepExecution;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $context;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $stepExecution;
-
-    /**
-     * @var ContextReader
-     */
-    protected $reader;
+    /** @var ContextReader */
+    private $reader;
 
     protected function setUp(): void
     {
@@ -56,21 +38,18 @@ class ContextReaderTest extends \PHPUnit\Framework\TestCase
             'value' => 'done'
         ];
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('getOption')
-            ->will($this->returnValue($data));
+            ->willReturn($data);
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('hasOption')
             ->with($this->equalTo('data'))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $this->contextRegistry
-            ->expects($this->once())
+        $this->contextRegistry->expects($this->once())
             ->method('getByStepExecution')
-            ->will($this->returnValue($this->context));
+            ->willReturn($this->context);
 
         $this->reader->setStepExecution($this->stepExecution);
         $result = $this->reader->read();
@@ -79,19 +58,17 @@ class ContextReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testReadFailed()
     {
-        $this->expectException(\Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Configuration reader must contain "data".');
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('hasOption')
             ->with($this->equalTo('data'))
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $this->contextRegistry
-            ->expects($this->once())
+        $this->contextRegistry->expects($this->once())
             ->method('getByStepExecution')
-            ->will($this->returnValue($this->context));
+            ->willReturn($this->context);
 
         $this->reader->setStepExecution($this->stepExecution);
         $this->reader->read();

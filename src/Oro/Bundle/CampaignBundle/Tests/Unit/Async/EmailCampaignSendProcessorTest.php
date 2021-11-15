@@ -10,39 +10,29 @@ use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSender;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\MessageQueueBundle\Entity\Job;
+use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Component\MessageQueue\Util\JSON;
+use Oro\Component\Testing\ReflectionUtil;
 use Psr\Log\LoggerInterface;
 
 class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
 {
-    use EntityTrait;
-
-    /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $logger;
 
-    /**
-     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $registry;
 
-    /**
-     * @var EmailCampaignSenderBuilder|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var EmailCampaignSenderBuilder|\PHPUnit\Framework\MockObject\MockObject */
     private $senderBuilder;
 
-    /**
-     * @var JobRunner|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var JobRunner|\PHPUnit\Framework\MockObject\MockObject */
     private $jobRunner;
 
-    /**
-     * @var EmailCampaignSendProcessor
-     */
+    /** @var EmailCampaignSendProcessor */
     private $processor;
 
     protected function setUp(): void
@@ -75,27 +65,27 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
         $message = $this->createMock(MessageInterface::class);
         $message->expects($this->any())
             ->method('getBody')
-            ->willReturn(json_encode(['email_campaign' => $emailCampaignId]));
+            ->willReturn(JSON::encode(['email_campaign' => $emailCampaignId]));
 
         $this->logger->expects($this->once())
             ->method('notice')
             ->with('Email campaign with id 1 was not found');
 
-        $this->assertEquals(EmailCampaignSendProcessor::REJECT, $this->processor->process($message, $session));
+        $this->assertEquals(MessageProcessorInterface::REJECT, $this->processor->process($message, $session));
     }
 
     public function testProcess()
     {
         $emailCampaignId = 1;
-        /** @var EmailCampaign $emailCampaign */
-        $emailCampaign = $this->getEntity(EmailCampaign::class, ['id' => $emailCampaignId]);
+        $emailCampaign = new EmailCampaign();
+        ReflectionUtil::setId($emailCampaign, $emailCampaignId);
         $this->assertEmailCampaignFind($emailCampaign);
 
         $session = $this->createMock(SessionInterface::class);
         $message = $this->createMock(MessageInterface::class);
         $message->expects($this->any())
             ->method('getBody')
-            ->willReturn(json_encode(['email_campaign' => $emailCampaignId]));
+            ->willReturn(JSON::encode(['email_campaign' => $emailCampaignId]));
         $message->expects($this->any())
             ->method('getMessageId')
             ->willReturn('MID');
@@ -112,20 +102,17 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
             ->with($emailCampaign)
             ->willReturn($sender);
 
-        /** @var Job|\PHPUnit\Framework\MockObject\MockObject $job */
         $job = $this->createMock(Job::class);
         $this->jobRunner->expects($this->once())
             ->method('runUnique')
-            ->willReturnCallback(
-                function ($ownerId, $name, $closure) use ($job, $emailCampaignId) {
-                    $this->assertEquals('MID', $ownerId);
-                    $this->assertEquals(Topics::SEND_EMAIL_CAMPAIGN . ':' . $emailCampaignId, $name);
+            ->willReturnCallback(function ($ownerId, $name, $closure) use ($job, $emailCampaignId) {
+                $this->assertEquals('MID', $ownerId);
+                $this->assertEquals(Topics::SEND_EMAIL_CAMPAIGN . ':' . $emailCampaignId, $name);
 
-                    return $closure($this->jobRunner, $job);
-                }
-            );
+                return $closure($this->jobRunner, $job);
+            });
 
-        $this->assertEquals(EmailCampaignSendProcessor::ACK, $this->processor->process($message, $session));
+        $this->assertEquals(MessageProcessorInterface::ACK, $this->processor->process($message, $session));
     }
 
     private function assertEmailCampaignFind(EmailCampaign $emailCampaign = null): void

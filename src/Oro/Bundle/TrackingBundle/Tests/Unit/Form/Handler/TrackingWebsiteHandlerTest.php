@@ -2,41 +2,43 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Form\Handler;
 
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Form\Handler\TrackingWebsiteHandler;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    const FORM_DATA = ['field' => 'value'];
+    private const FORM_DATA = ['field' => 'value'];
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $form;
+    /** @var Form|\PHPUnit\Framework\MockObject\MockObject */
+    private $form;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    /** @var Request */
+    private $request;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $manager;
+    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject */
+    private $manager;
+
+    /** @var TrackingWebsiteHandler */
+    private $handler;
 
     protected function setUp(): void
     {
-        $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $this->form = $this->createMock(Form::class);
         $this->request = new Request();
+        $this->manager = $this->createMock(ObjectManager::class);
 
-        $this->manager = $this->getMockBuilder('Doctrine\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
+
+        $this->handler = new TrackingWebsiteHandler(
+            $this->form,
+            $requestStack,
+            $this->manager
+        );
     }
 
     /**
@@ -49,37 +51,24 @@ class TrackingWebsiteHandlerTest extends \PHPUnit\Framework\TestCase
         $this->request->initialize([], self::FORM_DATA);
         $this->request->setMethod($method);
 
-        $this->form
-            ->expects($this->any())
+        $this->form->expects($this->any())
             ->method('submit')
             ->with(self::FORM_DATA);
 
-        $this->form
-            ->expects($this->any())
+        $this->form->expects($this->any())
             ->method('isValid')
             ->willReturn($isFormValid);
 
         if ($isFlushCalled) {
-            $this->manager
-                ->expects($this->once())
+            $this->manager->expects($this->once())
                 ->method('persist')
                 ->with($this->equalTo($entity))
                 ->willReturn(true);
-
-            $this->manager
-                ->expects($this->once())
+            $this->manager->expects($this->once())
                 ->method('flush');
         }
 
-        $requestStack = new RequestStack();
-        $requestStack->push($this->request);
-        $handler = new TrackingWebsiteHandler(
-            $this->form,
-            $requestStack,
-            $this->manager
-        );
-
-        $handler->process($entity);
+        $this->handler->process($entity);
     }
 
     public function processProvider(): array

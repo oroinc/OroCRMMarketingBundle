@@ -3,46 +3,35 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Form\Type\EmailTransportSelectType;
+use Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailTransportSelectTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var EmailTransportSelectType
-     */
-    protected $type;
+    /** @var EmailTransportProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $emailTransportProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $emailTransportProvider;
+    /** @var EmailTransportSelectType */
+    private $type;
 
-    /**
-     * Setup test env
-     */
     protected function setUp(): void
     {
-        $this->emailTransportProvider = $this
-            ->getMockBuilder('Oro\Bundle\CampaignBundle\Provider\EmailTransportProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->emailTransportProvider = $this->createMock(EmailTransportProvider::class);
+
         $this->type = new EmailTransportSelectType($this->emailTransportProvider);
     }
 
     public function testConfigureOptions()
     {
         $choices = ['internal' => 'oro.campaign.emailcampaign.transport.internal'];
-        $this->emailTransportProvider
-            ->expects($this->once())
+        $this->emailTransportProvider->expects($this->once())
             ->method('getVisibleTransportChoices')
-            ->will($this->returnValue($choices));
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
-        $resolver
-            ->expects($this->once())
+            ->willReturn($choices);
+        $resolver = $this->createMock(OptionsResolver::class);
+        $resolver->expects($this->once())
             ->method('setDefaults')
-            ->with([
-                'choices' => $choices,
-            ]);
+            ->with(['choices' => $choices]);
         $this->type->configureOptions($resolver);
     }
 

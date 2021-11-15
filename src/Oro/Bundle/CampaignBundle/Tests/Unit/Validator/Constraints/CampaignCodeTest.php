@@ -7,19 +7,12 @@ use Symfony\Component\Validator\Constraint;
 
 class CampaignCodeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var |\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $options;
-
-    /**
-     * @var CampaignCode
-     */
-    protected $constraint;
+    /** @var CampaignCode */
+    private $constraint;
 
     protected function setUp(): void
     {
-        $this->constraint = new CampaignCode($this->options);
+        $this->constraint = new CampaignCode();
     }
 
     public function testGetTargets()

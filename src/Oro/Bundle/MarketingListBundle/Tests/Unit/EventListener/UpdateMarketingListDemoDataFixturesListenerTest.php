@@ -12,48 +12,42 @@ use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListDemoDataFixt
 use Oro\Bundle\MigrationBundle\Event\MigrationDataFixturesEvent;
 use Oro\Bundle\PlatformBundle\Manager\OptionalListenerManager;
 use Oro\Bundle\TestFrameworkBundle\Entity\Item;
-use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit\Framework\TestCase
 {
-    const LISTENERS = [
+    private const LISTENERS = [
         'test_listener_1',
         'test_listener_2',
     ];
 
-    use EntityTrait;
-
     /** @var OptionalListenerManager|\PHPUnit\Framework\MockObject\MockObject */
-    protected $listenerManager;
+    private $listenerManager;
 
     /** @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject */
-    protected $entityProvider;
+    private $entityProvider;
 
     /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject */
-    protected $dispatcher;
+    private $dispatcher;
 
     /** @var MigrationDataFixturesEvent|\PHPUnit\Framework\MockObject\MockObject */
-    protected $event;
+    private $event;
 
     /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    protected $entityManager;
+    private $entityManager;
 
     /** @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject */
-    protected $entityRepository;
+    private $entityRepository;
 
     /** @var UpdateMarketingListDemoDataFixturesListener */
-    protected $listener;
+    private $listener;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function setUp(): void
     {
         $this->listenerManager = $this->createMock(OptionalListenerManager::class);
         $this->entityProvider = $this->createMock(EntityProvider::class);
         $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
-
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->entityRepository = $this->createMock(EntityRepository::class);
         $this->event = $this->createMock(MigrationDataFixturesEvent::class);
@@ -94,7 +88,8 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit\Framework
 
     public function testOnPostLoad()
     {
-        $marketingList = $this->getEntity(MarketingList::class, ['id' => 1]);
+        $marketingList = new MarketingList();
+        ReflectionUtil::setId($marketingList, 1);
 
         $this->event->expects($this->once())
             ->method('isDemoFixtures')

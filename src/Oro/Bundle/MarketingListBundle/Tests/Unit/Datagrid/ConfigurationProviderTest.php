@@ -2,42 +2,34 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $chainConfigurationProvider;
+    /** @var ConfigurationProviderInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $chainConfigurationProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $configProvider;
+    /** @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $configProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $helper;
+    /** @var MarketingListHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $helper;
 
-    /**
-     * @var ConfigurationProvider
-     */
-    protected $provider;
+    /** @var ConfigurationProvider */
+    private $provider;
 
     protected function setUp(): void
     {
-        $this->chainConfigurationProvider = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface')
-            ->getMock();
-        $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->helper = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\MarketingListHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->chainConfigurationProvider = $this->createMock(ConfigurationProviderInterface::class);
+        $this->configProvider = $this->createMock(ConfigProvider::class);
+        $this->helper = $this->createMock(MarketingListHelper::class);
 
         $this->provider = new ConfigurationProvider(
             $this->chainConfigurationProvider,
@@ -52,7 +44,7 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->assertTrue($this->provider->isApplicable($gridName));
     }
 
@@ -65,11 +57,11 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->helper->expects($this->once())
             ->method('getMarketingList')
             ->with(1)
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->provider->getConfiguration($gridName);
     }
@@ -77,33 +69,31 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
     public function testGetConfigurationManualExceptionNoConfiguration()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Grid not found for entity "\stdClass"');
+        $this->expectExceptionMessage('Grid not found for entity "stdClass"');
 
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
-        $entityName = '\stdClass';
+        $entityName = \stdClass::class;
 
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $marketingList->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue($entityName));
+            ->willReturn($entityName);
 
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->helper->expects($this->once())
             ->method('getMarketingList')
             ->with(1)
-            ->will($this->returnValue($marketingList));
+            ->willReturn($marketingList);
 
         $this->configProvider->expects($this->once())
             ->method('hasConfig')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $this->configProvider->expects($this->never())
             ->method('getConfig');
 
@@ -113,43 +103,40 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
     public function testGetConfigurationManualExceptionNoConfiguredGrid()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Grid not found for entity "\stdClass"');
+        $this->expectExceptionMessage('Grid not found for entity "stdClass"');
 
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
-        $entityName = '\stdClass';
+        $entityName = \stdClass::class;
 
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $marketingList->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue($entityName));
+            ->willReturn($entityName);
 
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->helper->expects($this->once())
             ->method('getMarketingList')
             ->with(1)
-            ->will($this->returnValue($marketingList));
+            ->willReturn($marketingList);
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
-            ->getMock();
+        $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->once())
             ->method('get')
             ->with('grid_name')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
         $this->configProvider->expects($this->once())
             ->method('hasConfig')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $this->configProvider->expects($this->once())
             ->method('getConfig')
             ->with($entityName)
-            ->will($this->returnValue($config));
+            ->willReturn($config);
 
         $this->provider->getConfiguration($gridName);
     }
@@ -158,40 +145,37 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
     {
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
         $actualGridName = 'test_grid';
-        $entityName = '\stdClass';
+        $entityName = \stdClass::class;
 
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $marketingList->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue($entityName));
+            ->willReturn($entityName);
 
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->helper->expects($this->once())
             ->method('getMarketingList')
             ->with(1)
-            ->will($this->returnValue($marketingList));
+            ->willReturn($marketingList);
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
-            ->getMock();
+        $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->once())
             ->method('get')
             ->with('grid_name')
-            ->will($this->returnValue($actualGridName));
+            ->willReturn($actualGridName);
         $this->configProvider->expects($this->once())
             ->method('hasConfig')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $this->configProvider->expects($this->once())
             ->method('getConfig')
             ->with($entityName)
-            ->will($this->returnValue($config));
+            ->willReturn($config);
 
         $configuration = $this->assertConfigurationGet($gridName, $actualGridName);
 
@@ -203,52 +187,46 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
         $actualGridName = Segment::GRID_PREFIX . '2_postfix';
 
-        $segment = $this->getMockBuilder('Oro\Bundle\SegmentBundle\Entity\Segment')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $segment = $this->createMock(Segment::class);
         $segment->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue(2));
+            ->willReturn(2);
 
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $marketingList->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $marketingList->expects($this->once())
             ->method('getSegment')
-            ->will($this->returnValue($segment));
+            ->willReturn($segment);
 
         $this->helper->expects($this->once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $this->helper->expects($this->once())
             ->method('getMarketingList')
             ->with(1)
-            ->will($this->returnValue($marketingList));
+            ->willReturn($marketingList);
 
         $configuration = $this->assertConfigurationGet($gridName, $actualGridName);
 
         $this->assertEquals($configuration, $this->provider->getConfiguration($gridName));
     }
 
-    protected function assertConfigurationGet($gridName, $actualGridName)
+    private function assertConfigurationGet($gridName, $actualGridName)
     {
-        $configuration = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $configuration = $this->createMock(DatagridConfiguration::class);
         $configuration->expects($this->once())
             ->method('setName')
             ->with($gridName);
         $this->chainConfigurationProvider->expects($this->once())
             ->method('getConfiguration')
             ->with($actualGridName)
-            ->will($this->returnValue($configuration));
+            ->willReturn($configuration);
 
         return $configuration;
     }

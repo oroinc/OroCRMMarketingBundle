@@ -2,9 +2,15 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -13,19 +19,12 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class MarketingListTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingList
-     */
-    protected $entity;
+    /** @var MarketingList */
+    private $entity;
 
     protected function setUp(): void
     {
         $this->entity = new MarketingList();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->entity);
     }
 
     public function testGetId()
@@ -39,41 +38,36 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider propertiesDataProvider
-     * @param string $property
-     * @param mixed $value
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $accessor->setValue($this->entity, $property, $value);
         $this->assertEquals($value, $accessor->getValue($this->entity, $property));
     }
 
-    public function propertiesDataProvider()
+    public function propertiesDataProvider(): array
     {
-        $type = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingListType')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $type = $this->createMock(MarketingListType::class);
 
-        return array(
-            array('name', 'test'),
-            array('description', 'test'),
-            array('entity', 'Test'),
-            array('type', $type),
-            array('segment', $this->createMock('Oro\Bundle\SegmentBundle\Entity\Segment')),
-            array('owner', $this->createMock('Oro\Bundle\UserBundle\Entity\User')),
-            array('organization', $this->createMock('Oro\Bundle\OrganizationBundle\Entity\Organization')),
-            array('lastRun', new \DateTime()),
-            array('createdAt', new \DateTime()),
-            array('updatedAt', new \DateTime()),
-        );
+        return [
+            ['name', 'test'],
+            ['description', 'test'],
+            ['entity', 'Test'],
+            ['type', $type],
+            ['segment', $this->createMock(Segment::class)],
+            ['owner', $this->createMock(User::class)],
+            ['organization', $this->createMock(Organization::class)],
+            ['lastRun', new \DateTime()],
+            ['createdAt', new \DateTime()],
+            ['updatedAt', new \DateTime()],
+        ];
     }
 
     public function testMarketingListItems()
     {
         $this->assertCollectionMethods(
-            'Oro\Bundle\MarketingListBundle\Entity\MarketingListItem',
+            MarketingListItem::class,
             'MarketingListItem'
         );
     }
@@ -81,7 +75,7 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
     public function testMarketingListRemovedItems()
     {
         $this->assertCollectionMethods(
-            'Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem',
+            MarketingListRemovedItem::class,
             'MarketingListRemovedItem'
         );
     }
@@ -89,7 +83,7 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
     public function testMarketingListUnsubscribedItems()
     {
         $this->assertCollectionMethods(
-            'Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem',
+            MarketingListUnsubscribedItem::class,
             'MarketingListUnsubscribedItem'
         );
     }
@@ -103,7 +97,7 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
     public function testSetDefinition()
     {
         $definition = 'test';
-        $segment = $this->createMock('Oro\Bundle\SegmentBundle\Entity\Segment');
+        $segment = $this->createMock(Segment::class);
         $segment->expects($this->once())
             ->method('setDefinition')
             ->with($definition);
@@ -114,14 +108,14 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
     public function testGetDefinition()
     {
         $definition = 'test';
-        $segment = $this->createMock('Oro\Bundle\SegmentBundle\Entity\Segment');
+        $segment = $this->createMock(Segment::class);
         $segment->expects($this->once())
             ->method('getDefinition')
-            ->will($this->returnValue($definition));
+            ->willReturn($definition);
 
         $this->assertNull($this->entity->getDefinition());
         $this->entity->setSegment($segment);
-        $this->assertEquals($definition, $this->entity->getDefinition($definition));
+        $this->assertEquals($definition, $this->entity->getDefinition());
     }
 
     public function testBeforeSave()
@@ -129,18 +123,18 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->entity->getCreatedAt());
         $this->assertNull($this->entity->getUpdatedAt());
         $this->entity->beforeSave();
-        $this->assertInstanceOf('\DateTime', $this->entity->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $this->entity->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getUpdatedAt());
     }
 
     public function testDoUpdate()
     {
         $this->assertNull($this->entity->getUpdatedAt());
         $this->entity->doUpdate();
-        $this->assertInstanceOf('\DateTime', $this->entity->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getUpdatedAt());
     }
 
-    protected function assertCollectionMethods($entityClass, $entityShortName)
+    private function assertCollectionMethods($entityClass, $entityShortName)
     {
         $addMethodName = 'add' . $entityShortName;
         $removeMethodName = 'remove' . $entityShortName;
@@ -150,7 +144,7 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
         $itemOne = $this->createMock($entityClass);
         $itemTwo = $this->createMock($entityClass);
 
-        $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->entity->{$getMethodName}());
+        $this->assertInstanceOf(Collection::class, $this->entity->{$getMethodName}());
         $this->assertCount(0, $this->entity->{$getMethodName}());
         $this->entity->{$addMethodName}($itemOne);
         $this->entity->{$addMethodName}($itemTwo);
@@ -158,9 +152,9 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
         $this->entity->{$removeMethodName}($itemOne);
         $this->assertCount(1, $this->entity->{$getMethodName}());
         $this->assertEquals($itemTwo, $this->entity->{$getMethodName}()->first());
-        $this->entity->{$resetMethodName}(array());
+        $this->entity->{$resetMethodName}([]);
         $this->assertCount(0, $this->entity->{$getMethodName}());
-        $this->entity->{$resetMethodName}(array($itemOne, $itemTwo));
+        $this->entity->{$resetMethodName}([$itemOne, $itemTwo]);
         $this->assertCount(2, $this->entity->{$getMethodName}());
     }
 

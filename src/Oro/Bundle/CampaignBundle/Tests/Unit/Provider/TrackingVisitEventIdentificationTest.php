@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Provider;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Provider\TrackingVisitEventIdentification;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
@@ -10,23 +13,21 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 
 class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var TrackingVisitEventIdentification */
-    protected $provider;
+    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject */
+    private $em;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
-    protected $em;
+    /** @var TrackingVisitEventIdentification */
+    private $provider;
 
     protected function setUp(): void
     {
-        $this->em = $this->getMockBuilder('Doctrine\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $doctrine = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->em = $this->createMock(ObjectManager::class);
+
+        $doctrine = $this->createMock(ManagerRegistry::class);
         $doctrine->expects($this->any())
             ->method('getManagerForClass')
             ->willReturn($this->em);
+
         $this->provider = new TrackingVisitEventIdentification($doctrine);
     }
 
@@ -44,7 +45,7 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             [
-                'Oro\Bundle\CampaignBundle\Entity\Campaign'
+                Campaign::class
             ],
             $this->provider->getEventTargets()
         );
@@ -63,7 +64,7 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider processData
      */
-    public function testProcessEvent($isFind)
+    public function testProcessEvent(bool $isFind)
     {
         $event = new TrackingVisitEvent();
         $webEvent = new TrackingEvent();
@@ -72,24 +73,20 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
 
         $testResult = new \stdClass();
 
-        $repo = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repo = $this->createMock(CampaignRepository::class);
         $this->em->expects($this->once())
             ->method('getRepository')
             ->with(Campaign::class)
             ->willReturn($repo);
-        $repo->expects($this->once())->method('findOneByCode')
+        $repo->expects($this->once())
+            ->method('findOneByCode')
             ->with('test')
             ->willReturn($isFind ? $testResult : null);
 
         $this->assertEquals($isFind ? [$testResult] : [], $this->provider->processEvent($event));
     }
 
-    /**
-     * @return array
-     */
-    public function processData()
+    public function processData(): array
     {
         return [
             [true],

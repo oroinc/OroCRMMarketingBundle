@@ -2,25 +2,20 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Form\Type\ContactInformationEntityChoiceType;
 
 class ContactInformationEntityChoiceTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $provider;
+    /** @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $provider;
 
-    /**
-     * @var ContactInformationEntityChoiceType
-     */
-    protected $type;
+    /** @var ContactInformationEntityChoiceType */
+    private $type;
 
     protected function setUp(): void
     {
-        $this->provider = $this->getMockBuilder('Oro\Bundle\EntityBundle\Provider\EntityProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->provider = $this->createMock(EntityProvider::class);
 
         $this->type = new ContactInformationEntityChoiceType($this->provider);
     }

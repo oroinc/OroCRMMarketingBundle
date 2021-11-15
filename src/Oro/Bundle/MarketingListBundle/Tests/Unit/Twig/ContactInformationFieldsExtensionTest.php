@@ -10,7 +10,7 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
 {
     use TwigExtensionTestCaseTrait;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    /** @var ContactInformationFieldHelper|\PHPUnit\Framework\MockObject\MockObject */
     private $helper;
 
     /** @var ContactInformationFieldsExtension */
@@ -39,7 +39,7 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testGetContactInformationFieldsInfo()
     {
-        $entity = '\stdClass';
+        $entity = \stdClass::class;
         $contactInformation = [['name' => 'test']];
 
         $this->helper->expects($this->once())

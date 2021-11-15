@@ -1,10 +1,11 @@
 <?php
 
-namespace Oro\Bundle\TrackingBundle\Tests\Functional\ImportExport;
+namespace Oro\Bundle\TrackingBundle\Tests\Unit\ImportExport;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\TrackingBundle\ImportExport\LogReader;
 use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
@@ -13,25 +14,17 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
 {
     use TempDirExtension;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $contextRegistry;
+    /** @var ContextRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $contextRegistry;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $context;
+    /** @var ContextInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $context;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $stepExecution;
+    /** @var StepExecution|\PHPUnit\Framework\MockObject\MockObject */
+    private $stepExecution;
 
-    /**
-     * @var LogReader
-     */
-    protected $reader;
+    /** @var LogReader */
+    private $reader;
 
     protected function setUp(): void
     {
@@ -42,10 +35,7 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
         $this->reader = new LogReader($this->contextRegistry);
     }
 
-    /**
-     * @return Filesystem
-     */
-    private function getFilesystem()
+    private function getFilesystem(): Filesystem
     {
         return new Filesystem();
     }
@@ -58,23 +48,20 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
         ];
 
         $filename = $this->getTempDir('tracking') . DIRECTORY_SEPARATOR . 'valid.log';
-        $this->getFilesystem()->dumpFile($filename, json_encode($data));
+        $this->getFilesystem()->dumpFile($filename, json_encode($data, JSON_THROW_ON_ERROR));
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('getOption')
-            ->will($this->returnValue($filename));
+            ->willReturn($filename);
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('hasOption')
             ->with($this->equalTo('file'))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $this->contextRegistry
-            ->expects($this->exactly(3))
+        $this->contextRegistry->expects($this->exactly(3))
             ->method('getByStepExecution')
-            ->will($this->returnValue($this->context));
+            ->willReturn($this->context);
 
         $this->reader->setStepExecution($this->stepExecution);
         $result = $this->reader->read();
@@ -83,19 +70,17 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testReadFailed()
     {
-        $this->expectException(\Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Configuration reader must contain "file".');
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('hasOption')
             ->with($this->equalTo('file'))
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $this->contextRegistry
-            ->expects($this->once())
+        $this->contextRegistry->expects($this->once())
             ->method('getByStepExecution')
-            ->will($this->returnValue($this->context));
+            ->willReturn($this->context);
 
         $this->reader->setStepExecution($this->stepExecution);
         $this->reader->read();
@@ -106,21 +91,18 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
         $filename = $this->getTempDir('tracking') . DIRECTORY_SEPARATOR . 'not_valid.log';
         $this->getFilesystem()->touch($filename);
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('hasOption')
             ->with($this->equalTo('file'))
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $this->context
-            ->expects($this->once())
+        $this->context->expects($this->once())
             ->method('getOption')
-            ->will($this->returnValue($filename));
+            ->willReturn($filename);
 
-        $this->contextRegistry
-            ->expects($this->exactly(3))
+        $this->contextRegistry->expects($this->exactly(3))
             ->method('getByStepExecution')
-            ->will($this->returnValue($this->context));
+            ->willReturn($this->context);
 
         $this->reader->setStepExecution($this->stepExecution);
         $this->assertNull($this->reader->read());

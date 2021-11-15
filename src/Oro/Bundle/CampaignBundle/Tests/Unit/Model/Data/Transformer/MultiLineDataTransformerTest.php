@@ -9,10 +9,8 @@ use Oro\Bundle\ChartBundle\Model\Data\MappedData;
 
 class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MultiLineDataTransformer
-     */
-    protected $transformer;
+    /** @var MultiLineDataTransformer */
+    private $transformer;
 
     protected function setUp(): void
     {
@@ -40,11 +38,9 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array
-     *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             'one_label'   => [
@@ -274,7 +270,7 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('Options "groupingOption" is not set');
 
         $sourceData = new ArrayData([]);
-        $data       = new MappedData([], $sourceData);
+        $data = new MappedData([], $sourceData);
         $this->transformer->transform($data, []);
     }
 
@@ -284,7 +280,7 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('Options "period" is not set');
 
         $sourceData = new ArrayData([]);
-        $data       = new MappedData([], $sourceData);
+        $data = new MappedData([], $sourceData);
 
         $chartOptions = [
             'data_schema'      => [
@@ -305,8 +301,8 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testEmptyData()
     {
-        $sourceData   = new ArrayData([]);
-        $data         = new MappedData([], $sourceData);
+        $sourceData = new ArrayData([]);
+        $data = new MappedData([], $sourceData);
         $chartOptions = [
             'data_schema'      => [
                 'label' => [

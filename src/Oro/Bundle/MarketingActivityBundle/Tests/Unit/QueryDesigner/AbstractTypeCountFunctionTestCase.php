@@ -15,7 +15,7 @@ abstract class AbstractTypeCountFunctionTestCase extends \PHPUnit\Framework\Test
 
     public function testGetExpression()
     {
-        $qc = $this->getMockBuilder(AbstractQueryConverter::class)->disableOriginalConstructor()->getMock();
+        $qc = $this->createMock(AbstractQueryConverter::class);
         $expression = $this->function->getExpression('alias', 'fieldName', 'type_enum.id', 'columnAlias', $qc);
         $expected = sprintf(
             "SUM(CASE WHEN type_enum.id = '%s' THEN 1 ELSE 0 END)",

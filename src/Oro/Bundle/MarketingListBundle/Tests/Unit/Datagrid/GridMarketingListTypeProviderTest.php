@@ -2,24 +2,23 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\MarketingListBundle\Datagrid\GridMarketingListTypeProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
 class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $registry;
 
-    /**
-     * @var GridMarketingListTypeProvider
-     */
-    protected $provider;
+    /** @var GridMarketingListTypeProvider */
+    private $provider;
 
     protected function setUp(): void
     {
-        $this->registry = $this->createMock('Doctrine\Persistence\ManagerRegistry');
+        $this->registry = $this->createMock(ManagerRegistry::class);
 
         $this->provider = new GridMarketingListTypeProvider($this->registry);
     }
@@ -29,32 +28,23 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetListTypeChoices(array $data, array $expected)
     {
-        $repository = $this
-            ->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
 
-        $repository
-            ->expects($this->any())
+        $repository->expects($this->any())
             ->method('findBy')
-            ->will($this->returnValue($data));
+            ->willReturn($data);
 
-        $om = $this
-            ->getMockBuilder('Doctrine\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $om = $this->createMock(ObjectManager::class);
 
-        $om
-            ->expects($this->any())
+        $om->expects($this->any())
             ->method('getRepository')
             ->with($this->equalTo(GridMarketingListTypeProvider::MARKETING_LIST_TYPE))
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
 
-        $this->registry
-            ->expects($this->any())
+        $this->registry->expects($this->any())
             ->method('getManagerForClass')
             ->with($this->equalTo(GridMarketingListTypeProvider::MARKETING_LIST_TYPE))
-            ->will($this->returnValue($om));
+            ->willReturn($om);
 
         $this->assertEquals(
             $expected,
@@ -62,10 +52,7 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function typeChoicesDataProvider()
+    public function typeChoicesDataProvider(): array
     {
         return [
             [[], []],
@@ -82,16 +69,11 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @param string $type
-     * @param string $label
-     *
-     * @return MarketingListType
-     */
-    protected function getMarketingListType($type, $label)
+    private function getMarketingListType(string $type, string $label): MarketingListType
     {
         $listType = new MarketingListType($type);
+        $listType->setLabel($label);
 
-        return $listType->setLabel($label);
+        return $listType;
     }
 }

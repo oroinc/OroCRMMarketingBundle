@@ -2,74 +2,58 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\EventListener;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\EventListener\CampaignStatisticDatagridListener;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
+use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 
 class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var CampaignStatisticDatagridListener
-     */
-    protected $listener;
+    /** @var MarketingListHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $marketingListHelper;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $marketingListHelper;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $registry;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    /** @var CampaignStatisticDatagridListener */
+    private $listener;
 
     protected function setUp(): void
     {
-        $this->marketingListHelper = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Model\MarketingListHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->registry = $this
-            ->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
-            ->getMock();
+        $this->marketingListHelper = $this->createMock(MarketingListHelper::class);
+        $this->registry = $this->createMock(ManagerRegistry::class);
 
         $this->listener = new CampaignStatisticDatagridListener($this->marketingListHelper, $this->registry);
     }
 
     /**
      * @dataProvider applicableDataProvider
-     * @param string $gridName
-     * @param bool $hasCampaign
-     * @param int|null $id
-     * @param bool $expected
      */
-    public function testIsApplicable($gridName, $hasCampaign, $id, $expected)
+    public function testIsApplicable(string $gridName, bool $hasCampaign, ?int $id, bool $expected)
     {
-        $parametersBag = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\ParameterBag')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $parametersBag = $this->createMock(ParameterBag::class);
         $parametersBag->expects($this->once())
             ->method('has')
             ->with('emailCampaign')
-            ->will($this->returnValue($hasCampaign));
+            ->willReturn($hasCampaign);
 
         if ($hasCampaign) {
             $this->marketingListHelper->expects($this->once())
                 ->method('getMarketingListIdByGridName')
                 ->with($gridName)
-                ->will($this->returnValue($id));
+                ->willReturn($id);
         }
 
         $this->assertEquals($expected, $this->listener->isApplicable($gridName, $parametersBag));
     }
 
-    /**
-     * @return array
-     */
-    public function applicableDataProvider()
+    public function applicableDataProvider(): array
     {
         return [
             ['test_grid', false, null, false],
@@ -80,10 +64,8 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider preBuildDataProvider
-     * @param bool $isSent
-     * @param string $expectedMixin
      */
-    public function testOnPreBuildSentCampaign($isSent, $expectedMixin)
+    public function testOnPreBuildSentCampaign(bool $isSent, string $expectedMixin)
     {
         $id = 1;
         $gridName = ConfigurationProvider::GRID_PREFIX;
@@ -99,18 +81,15 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        $this->marketingListHelper
-            ->expects($this->any())
+        $this->marketingListHelper->expects($this->any())
             ->method('getMarketingListIdByGridName')
             ->with($this->equalTo($gridName))
-            ->will($this->returnValue($id));
+            ->willReturn($id);
 
-        $marketingList = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(EmailCampaign::class);
         $marketingList->expects($this->once())
             ->method('isSent')
-            ->will($this->returnValue($isSent));
+            ->willReturn($isSent);
         $this->assertEntityFind($id, $marketingList);
 
         $this->listener->onPreBuild(new PreBuild($config, $parameters));
@@ -122,10 +101,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedMixin, $parameters->get(MixinListener::GRID_MIXIN));
     }
 
-    /**
-     * @return array
-     */
-    public function preBuildDataProvider()
+    public function preBuildDataProvider(): array
     {
         return [
             'not sent' => [false, CampaignStatisticDatagridListener::MIXIN_UNSENT_NAME],
@@ -133,24 +109,18 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @param int $id
-     * @param object $entity
-     */
-    protected function assertEntityFind($id, $entity)
+    private function assertEntityFind(int $id, object $entity): void
     {
-        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
         $repository->expects($this->once())
             ->method('find')
             ->with($id)
-            ->will($this->returnValue($entity));
+            ->willReturn($entity);
 
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with('OroCampaignBundle:EmailCampaign')
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
     }
 
     public function testOnPreBuildNotApplicable()
@@ -160,8 +130,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
 
         $event = new PreBuild($config, new ParameterBag([]));
 
-        $this->marketingListHelper
-            ->expects($this->any())
+        $this->marketingListHelper->expects($this->any())
             ->method('getMarketingListIdByGridName')
             ->with($this->equalTo($gridName));
         $this->registry->expects($this->never())

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\TrackingBundle\DependencyInjection\Configuration;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends \PHPUnit\Framework\TestCase
@@ -10,22 +11,22 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
     public function testGetConfigTreeBuilder()
     {
         $configuration = new Configuration();
-        $builder       = $configuration->getConfigTreeBuilder();
+        $builder = $configuration->getConfigTreeBuilder();
 
-        $this->assertInstanceOf('Symfony\Component\Config\Definition\Builder\TreeBuilder', $builder);
+        $this->assertInstanceOf(TreeBuilder::class, $builder);
     }
 
     /**
      * @dataProvider processConfigurationDataProvider
      */
-    public function testProcessConfiguration($configs, $expected)
+    public function testProcessConfiguration(array $configs, array $expected)
     {
         $configuration = new Configuration();
-        $processor     = new Processor();
+        $processor = new Processor();
         $this->assertEquals($expected, $processor->processConfiguration($configuration, $configs));
     }
 
-    public function processConfigurationDataProvider()
+    public function processConfigurationDataProvider(): array
     {
         return [
             'empty' => [

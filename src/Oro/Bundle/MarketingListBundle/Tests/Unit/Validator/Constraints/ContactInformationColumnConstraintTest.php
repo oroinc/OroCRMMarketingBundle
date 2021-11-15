@@ -3,13 +3,12 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator\Constraints;
 
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
+use Symfony\Component\Validator\Constraint;
 
 class ContactInformationColumnConstraintTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ContactInformationColumnConstraint
-     */
-    protected $constraint;
+    /** @var ContactInformationColumnConstraint */
+    private $constraint;
 
     protected function setUp(): void
     {
@@ -19,10 +18,10 @@ class ContactInformationColumnConstraintTest extends \PHPUnit\Framework\TestCase
     public function testGetTargets()
     {
         $this->assertEquals(
-            array(
-                ContactInformationColumnConstraint::CLASS_CONSTRAINT,
-                ContactInformationColumnConstraint::PROPERTY_CONSTRAINT
-            ),
+            [
+                Constraint::CLASS_CONSTRAINT,
+                Constraint::PROPERTY_CONSTRAINT
+            ],
             $this->constraint->getTargets()
         );
     }

@@ -12,22 +12,11 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingVisitEvent */
-    protected $trackingVisitEvent;
+    private $trackingVisitEvent;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->trackingVisitEvent = new TrackingVisitEvent();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        unset($this->trackingVisitEvent);
     }
 
     public function testId()
@@ -44,13 +33,9 @@ class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
-     *
      * @dataProvider propertyProvider
      */
-    public function testProperties($property, $value, $expected)
+    public function testProperties(string $property, mixed $value, mixed $expected)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->assertNull(
@@ -65,15 +50,12 @@ class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function propertyProvider()
+    public function propertyProvider(): array
     {
-        $visit    = new TrackingVisit();
-        $event    = new TrackingEventDictionary();
+        $visit = new TrackingVisit();
+        $event = new TrackingEventDictionary();
         $webEvent = new TrackingEvent();
-        $website  = new TrackingWebsite();
+        $website = new TrackingWebsite();
 
         return [
             ['visit', $visit, $visit],

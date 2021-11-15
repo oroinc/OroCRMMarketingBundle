@@ -2,16 +2,15 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class TrackingWebsiteTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var TrackingWebsite
-     */
-    protected $website;
+    /** @var TrackingWebsite */
+    private $website;
 
     protected function setUp(): void
     {
@@ -27,24 +26,20 @@ class TrackingWebsiteTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->website->getCreatedAt());
         $this->website->prePersist();
-        $this->assertInstanceOf('\DateTime', $this->website->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->website->getCreatedAt());
     }
 
     public function testPreUpdate()
     {
         $this->assertNull($this->website->getUpdatedAt());
         $this->website->preUpdate();
-        $this->assertInstanceOf('\DateTime', $this->website->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->website->getUpdatedAt());
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
-     *
      * @dataProvider propertyProvider
      */
-    public function testProperties($property, $value, $expected)
+    public function testProperties(string $property, mixed $value, mixed $expected)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->assertNull(
@@ -59,14 +54,11 @@ class TrackingWebsiteTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function propertyProvider()
+    public function propertyProvider(): array
     {
         $date = new \DateTime();
         $user = new User();
-        $organization = $this->createMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
+        $organization = $this->createMock(Organization::class);
 
         return [
             ['name', 'test', 'test'],

@@ -2,25 +2,19 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListItemTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingListItem
-     */
-    protected $entity;
+    /** @var MarketingListItem */
+    private $entity;
 
     protected function setUp(): void
     {
         $this->entity = new MarketingListItem();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->entity);
     }
 
     public function testGetId()
@@ -34,32 +28,30 @@ class MarketingListItemTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider propertiesDataProvider
-     * @param string $property
-     * @param mixed $value
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $accessor->setValue($this->entity, $property, $value);
         $this->assertEquals($value, $accessor->getValue($this->entity, $property));
     }
 
-    public function propertiesDataProvider()
+    public function propertiesDataProvider(): array
     {
-        return array(
-            array('entityId', 2),
-            array('contactedTimes', 3),
-            array('marketingList', $this->createMock('Oro\Bundle\MarketingListBundle\Entity\MarketingList')),
-            array('lastContactedAt', new \DateTime()),
-            array('createdAt', new \DateTime()),
-        );
+        return [
+            ['entityId', 2],
+            ['contactedTimes', 3],
+            ['marketingList', $this->createMock(MarketingList::class)],
+            ['lastContactedAt', new \DateTime()],
+            ['createdAt', new \DateTime()],
+        ];
     }
 
     public function testBeforeSave()
     {
         $this->assertNull($this->entity->getCreatedAt());
         $this->entity->beforeSave();
-        $this->assertInstanceOf('\DateTime', $this->entity->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getCreatedAt());
     }
 
     public function testContact()
@@ -68,6 +60,6 @@ class MarketingListItemTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($this->entity->getLastContactedAt());
         $this->entity->contact();
         $this->assertEquals(1, $this->entity->getContactedTimes());
-        $this->assertInstanceOf('\DateTime', $this->entity->getLastContactedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getLastContactedAt());
     }
 }

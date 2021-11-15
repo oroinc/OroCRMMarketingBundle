@@ -8,10 +8,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class TrackingVisitTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var TrackingVisit
-     */
-    protected $trackingVisit;
+    /** @var TrackingVisit */
+    private $trackingVisit;
 
     protected function setUp(): void
     {
@@ -24,14 +22,9 @@ class TrackingVisitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
-     * @param bool   $isBool
-     *
      * @dataProvider propertyProvider
      */
-    public function testProperties($property, $value, $expected, $isBool = false)
+    public function testProperties(string $property, mixed $value, mixed $expected, bool $isBool = false)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -58,13 +51,10 @@ class TrackingVisitTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function propertyProvider()
+    public function propertyProvider(): array
     {
         $website = new TrackingWebsite();
-        $date    = new \DateTime();
+        $date = new \DateTime();
 
         return [
             ['visitorUid', 'a0cde23', 'a0cde23'],

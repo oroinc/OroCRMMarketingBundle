@@ -8,14 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignSelectTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var CampaignSelectType
-     */
-    protected $type;
+    /** @var CampaignSelectType */
+    private $type;
 
-    /**
-     * Setup test env
-     */
     protected function setUp(): void
     {
         $this->type = new CampaignSelectType();
@@ -23,8 +18,7 @@ class CampaignSelectTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureOptions()
     {
-        /** @var OptionsResolver $resolver */
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $resolver = $this->createMock(OptionsResolver::class);
         $resolver->expects($this->once())
             ->method('setDefaults')
             ->with($this->isType('array'));

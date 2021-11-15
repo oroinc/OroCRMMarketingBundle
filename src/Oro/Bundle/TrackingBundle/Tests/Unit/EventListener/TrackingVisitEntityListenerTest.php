@@ -12,19 +12,13 @@ use Oro\Bundle\TrackingBundle\EventListener\TrackingVisitEntityListener;
 
 class TrackingVisitEntityListenerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ConfigManager|\PHPUnit\Framework\MockObject\MockObject */
     private $configManager;
 
-    /**
-     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $registry;
 
-    /**
-     * @var TrackingVisitEntityListener
-     */
+    /** @var TrackingVisitEntityListener */
     private $listener;
 
     protected function setUp(): void

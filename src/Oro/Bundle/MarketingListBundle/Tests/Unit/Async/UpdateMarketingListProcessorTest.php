@@ -12,66 +12,42 @@ use Oro\Bundle\OrderBundle\Entity\Order;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
-use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Component\Testing\ReflectionUtil;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
 {
-    use EntityTrait;
-
-    /**
-     * @var UpdateMarketingListProcessor
-     */
-    private $processor;
-
-    /**
-     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $doctrineHelper;
-
-    /**
-     * @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $eventDispatcher;
 
-    /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $logger;
 
-    /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $repository;
+
+    /** @var UpdateMarketingListProcessor */
+    private $processor;
 
     protected function setUp(): void
     {
-        $this->repository = $this->getMockBuilder(EntityRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->repository = $this->createMock(EntityRepository::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
-        $entityManager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->getMock();
+        $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager->expects($this->any())
             ->method('getRepository')
             ->willReturn($this->repository);
 
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->doctrineHelper->expects($this->any())
+        $doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $doctrineHelper->expects($this->any())
             ->method('getEntityManager')
             ->willReturn($entityManager);
 
-        $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
-            ->getMock();
-
-        $this->logger = $this->getMockBuilder(LoggerInterface::class)
-            ->getMock();
-
         $this->processor = new UpdateMarketingListProcessor(
-            $this->doctrineHelper,
+            $doctrineHelper,
             $this->eventDispatcher,
             $this->logger
         );
@@ -79,11 +55,18 @@ class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
 
     public function testProcess()
     {
-        $message = $this->getMessage(JSON::encode(['class' => Order::class]));
+        $message = $this->createMock(MessageInterface::class);
+        $message->expects($this->any())
+            ->method('getBody')
+            ->willReturn(JSON::encode(['class' => Order::class]));
+
+        $marketingList = new MarketingList();
+        ReflectionUtil::setId($marketingList, 1);
+        $marketingList->setName('test');
 
         $this->repository->expects($this->once())
             ->method('findBy')
-            ->willReturn([$this->getEntity(MarketingList::class, ['id' => 1, 'name' => 'test'])]);
+            ->willReturn([$marketingList]);
 
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
@@ -95,32 +78,6 @@ class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
         $this->logger->expects($this->once())
             ->method('info');
 
-        $this->processor->process($message, $this->getSessionInterface());
-    }
-
-    /**
-     * @return SessionInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getSessionInterface()
-    {
-        return $this->getMockBuilder(SessionInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
-     * @param $body
-     * @return MessageInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getMessage($body)
-    {
-        $message = $this->getMockBuilder(MessageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $message->expects($this->any())
-            ->method('getBody')
-            ->willReturn($body);
-        return $message;
+        $this->processor->process($message, $this->createMock(SessionInterface::class));
     }
 }

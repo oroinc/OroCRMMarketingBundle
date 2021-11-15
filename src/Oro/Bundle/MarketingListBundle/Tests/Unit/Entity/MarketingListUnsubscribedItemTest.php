@@ -2,25 +2,19 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
 use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListUnsubscribedItemTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingListUnsubscribedItem
-     */
-    protected $entity;
+    /** @var MarketingListUnsubscribedItem */
+    private $entity;
 
     protected function setUp(): void
     {
         $this->entity = new MarketingListUnsubscribedItem();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->entity);
     }
 
     public function testGetId()
@@ -34,29 +28,27 @@ class MarketingListUnsubscribedItemTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider propertiesDataProvider
-     * @param string $property
-     * @param mixed $value
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $accessor->setValue($this->entity, $property, $value);
         $this->assertEquals($value, $accessor->getValue($this->entity, $property));
     }
 
-    public function propertiesDataProvider()
+    public function propertiesDataProvider(): array
     {
-        return array(
-            array('entityId', 2),
-            array('marketingList', $this->createMock('Oro\Bundle\MarketingListBundle\Entity\MarketingList')),
-            array('createdAt', new \DateTime()),
-        );
+        return [
+            ['entityId', 2],
+            ['marketingList', $this->createMock(MarketingList::class)],
+            ['createdAt', new \DateTime()],
+        ];
     }
 
     public function testBeforeSave()
     {
         $this->assertNull($this->entity->getCreatedAt());
         $this->entity->beforeSave();
-        $this->assertInstanceOf('\DateTime', $this->entity->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getCreatedAt());
     }
 }

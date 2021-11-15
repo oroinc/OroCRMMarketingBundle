@@ -10,7 +10,7 @@ class RemoveVisitEventAssociationQueryTest extends \PHPUnit\Framework\TestCase
     public function testInitialized()
     {
         $query = new RemoveVisitEventAssociationQuery('Some\Entity', 'some_table', true);
-        static::assertEquals(
+        self::assertEquals(
             'Remove association relation from Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent entity '
             . 'to Some\Entity (association kind: association, relation type: manyToOne, '
             . 'drop relation column/table: yes, source table: oro_tracking_visit_event, target table: some_table).',

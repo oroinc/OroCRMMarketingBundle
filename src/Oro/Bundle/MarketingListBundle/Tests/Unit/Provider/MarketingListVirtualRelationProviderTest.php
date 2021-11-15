@@ -12,7 +12,7 @@ use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider
 
 class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
     /** @var ArrayCache */
@@ -24,7 +24,6 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
-
         $this->arrayCache = new ArrayCache();
 
         $this->provider = new MarketingListVirtualRelationProvider($this->doctrineHelper, $this->arrayCache);
@@ -121,11 +120,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
 
         $result = $this->provider->getVirtualRelationQuery($className, $fieldName);
 
-        if ($supported) {
-            $this->assertNotEmpty($result);
-        } else {
-            $this->assertNotEmpty($result);
-        }
+        $this->assertNotEmpty($result);
     }
 
     private function assertRepositoryCall(string $className, ?MarketingList $marketingList)

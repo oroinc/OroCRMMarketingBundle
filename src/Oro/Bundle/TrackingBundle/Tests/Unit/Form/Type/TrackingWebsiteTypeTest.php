@@ -2,46 +2,40 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrackingWebsiteTypeTest extends FormIntegrationTestCase
 {
-    /**
-     * @var TrackingWebsiteType
-     */
-    protected $type;
+    /** @var TrackingWebsiteType */
+    private $type;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->type = new TrackingWebsiteType(
-            'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
-        );
+        $this->type = new TrackingWebsiteType(TrackingWebsite::class);
     }
 
     public function testBuildForm()
     {
-        $builder = $this
-            ->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $builder = $this->createMock(FormBuilder::class);
 
-        $builder
-            ->expects($this->exactly(3))
+        $builder->expects($this->exactly(3))
             ->method('add')
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
         $this->type->buildForm($builder, []);
     }
 
     public function testConfigureOptions()
     {
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $resolver = $this->createMock(OptionsResolver::class);
 
-        $resolver
-            ->expects($this->once())
+        $resolver->expects($this->once())
             ->method('setDefaults')
             ->with($this->isType('array'));
 

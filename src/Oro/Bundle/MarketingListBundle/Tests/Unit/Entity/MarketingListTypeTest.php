@@ -7,38 +7,29 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingListType
-     */
-    protected $entity;
+    /** @var MarketingListType */
+    private $entity;
 
     protected function setUp(): void
     {
         $this->entity = new MarketingListType(MarketingListType::TYPE_DYNAMIC);
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->entity);
-    }
-
     /**
      * @dataProvider propertiesDataProvider
-     * @param string $property
-     * @param mixed $value
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $accessor->setValue($this->entity, $property, $value);
         $this->assertEquals($value, $accessor->getValue($this->entity, $property));
     }
 
-    public function propertiesDataProvider()
+    public function propertiesDataProvider(): array
     {
-        return array(
-            array('label', 'test'),
-        );
+        return [
+            ['label', 'test'],
+        ];
     }
 
     public function testToString()

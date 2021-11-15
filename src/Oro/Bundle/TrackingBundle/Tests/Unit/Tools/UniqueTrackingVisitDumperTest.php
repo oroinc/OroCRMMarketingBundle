@@ -12,24 +12,16 @@ use Psr\Log\LoggerInterface;
 
 class UniqueTrackingVisitDumperTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $registry;
 
-    /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $logger;
 
-    /**
-     * @var FillUniqueTrackingVisitsQuery|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var FillUniqueTrackingVisitsQuery|\PHPUnit\Framework\MockObject\MockObject */
     private $fillQuery;
 
-    /**
-     * @var UniqueTrackingVisitDumper
-     */
+    /** @var UniqueTrackingVisitDumper */
     private $dumper;
 
     protected function setUp(): void
@@ -47,7 +39,6 @@ class UniqueTrackingVisitDumperTest extends \PHPUnit\Framework\TestCase
         $em->expects($this->once())
             ->method('beginTransaction');
 
-        /** @var Connection $connection */
         $connection = $this->createMock(Connection::class);
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
@@ -80,7 +71,6 @@ class UniqueTrackingVisitDumperTest extends \PHPUnit\Framework\TestCase
         $em->expects($this->once())
             ->method('beginTransaction');
 
-        /** @var Connection $connection */
         $connection = $this->createMock(Connection::class);
         $this->registry->expects($this->once())
             ->method('getManagerForClass')

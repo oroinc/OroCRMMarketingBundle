@@ -10,22 +10,11 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class TrackingEventTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TrackingEvent */
-    protected $event;
+    private $event;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->event = new TrackingEvent();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        unset($this->event);
     }
 
     public function testId()
@@ -37,18 +26,13 @@ class TrackingEventTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->event->getCreatedAt());
         $this->event->prePersist();
-        $this->assertInstanceOf('\DateTime', $this->event->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->event->getCreatedAt());
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
-     * @param bool   $isBool
-     *
      * @dataProvider propertyProvider
      */
-    public function testProperties($property, $value, $expected, $isBool = false)
+    public function testProperties(string $property, mixed $value, mixed $expected, bool $isBool = false)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -70,14 +54,11 @@ class TrackingEventTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function propertyProvider()
+    public function propertyProvider(): array
     {
-        $website   = new TrackingWebsite();
+        $website = new TrackingWebsite();
         $eventData = new TrackingData();
-        $date      = new \DateTime();
+        $date = new \DateTime();
 
         return [
             ['name', 'name', 'name'],

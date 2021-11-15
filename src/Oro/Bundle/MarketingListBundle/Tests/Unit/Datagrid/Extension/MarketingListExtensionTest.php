@@ -5,6 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Datagrid\Extension;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\ORM\QueryBuilder;
@@ -20,17 +21,14 @@ use Oro\Component\DoctrineUtils\ORM\Walker\UnionOutputResultModifier;
 
 class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 {
+    /** @var MarketingListHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $marketingListHelper;
+
+    /** @var Configuration|\PHPUnit\Framework\MockObject\MockObject */
+    private $emConfiguration;
+
     /** @var MarketingListExtension */
-    protected $extension;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|MarketingListHelper */
-    protected $marketingListHelper;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|EntityManager */
-    protected $em;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|Configuration */
-    protected $emConfiguration;
+    private $extension;
 
     protected function setUp(): void
     {
@@ -42,39 +40,33 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testIsApplicableIncorrectDataSource()
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|DatagridConfiguration $config */
         $config = $this->createMock(DatagridConfiguration::class);
-        $config
-            ->expects($this->once())
+        $config->expects($this->once())
             ->method('isOrmDatasource')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $config
-            ->expects($this->any())
+        $config->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('grid'));
+            ->willReturn('grid');
 
         $this->assertFalse($this->extension->isApplicable($config));
     }
 
     public function testIsApplicableVisitTwice()
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|DatagridConfiguration $config */
         $config = $this->createMock(DatagridConfiguration::class);
-        $config
-            ->expects($this->atLeastOnce())
+        $config->expects($this->atLeastOnce())
             ->method('isOrmDatasource')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $config
-            ->expects($this->atLeastOnce())
+        $config->expects($this->atLeastOnce())
             ->method('getName')
-            ->will($this->returnValue(ConfigurationProvider::GRID_PREFIX . '1'));
+            ->willReturn(ConfigurationProvider::GRID_PREFIX . '1');
 
         $this->marketingListHelper->expects($this->any())
             ->method('getMarketingListIdByGridName')
             ->with(ConfigurationProvider::GRID_PREFIX . '1')
-            ->will($this->returnValue(1));
+            ->willReturn(1);
 
         $marketingList = new MarketingList();
         $marketingList->setSegment(new Segment())->setDefinition(json_encode(['filters' => ['filter' => 'dummy']]));
@@ -88,21 +80,18 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 
         $qb = $this->getQbMock();
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
 
         $condition = new Andx();
         $condition->add('argument');
 
-        $qb
-            ->expects($this->once())
+        $qb->expects($this->once())
             ->method('getDQLParts')
-            ->will($this->returnValue(['where' => $condition]));
+            ->willReturn(['where' => $condition]);
 
-        $dataSource
-            ->expects($this->once())
+        $dataSource->expects($this->once())
             ->method('getQueryBuilder')
-            ->will($this->returnValue($qb));
+            ->willReturn($qb);
 
         $this->extension->visitDatasource($config, $dataSource);
         $this->assertFalse($this->extension->isApplicable($config));
@@ -110,48 +99,48 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider applicableDataProvider
-     *
-     * @param int|null    $marketingListId
-     * @param object|null $marketingList
-     * @param bool        $expected
      */
-    public function testIsApplicable($marketingListId, $marketingList, $expected)
+    public function testIsApplicable(?int $marketingListId, ?object $marketingList, bool $expected)
     {
         $gridName = 'test_grid';
-        $config   = $this->assertIsApplicable($marketingListId, $marketingList, $gridName);
+        $config = $this->assertIsApplicable($marketingListId, $marketingList, $gridName);
 
         $this->assertEquals($expected, $this->extension->isApplicable($config));
     }
 
-    /**
-     * @return array
-     */
-    public function applicableDataProvider()
+    public function applicableDataProvider(): array
     {
         $nonManualMarketingList = $this->createMock(MarketingList::class);
-        $nonManualMarketingList->expects($this->any())->method('isUnion')->will($this->returnValue(true));
+        $nonManualMarketingList->expects($this->any())
+            ->method('isUnion')
+            ->willReturn(true);
         $nonManualMarketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $nonManualMarketingList->expects($this->once())
             ->method('getDefinition')
             ->willReturn(json_encode(['filters' => ['filter' => 'dummy']]));
 
         $manualMarketingList = $this->createMock(MarketingList::class);
-        $manualMarketingList->expects($this->any())->method('isUnion')->will($this->returnValue(true));
+        $manualMarketingList->expects($this->any())
+            ->method('isUnion')
+            ->willReturn(true);
         $manualMarketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $manualMarketingList->expects($this->never())
             ->method('getDefinition');
 
         $nonManualMarketingListWithoutFilters = $this->createMock(MarketingList::class);
-        $nonManualMarketingListWithoutFilters->expects($this->any())->method('isUnion')->will($this->returnValue(true));
+        $nonManualMarketingListWithoutFilters->expects($this->any())
+            ->method('isUnion')
+            ->willReturn(true);
         $nonManualMarketingListWithoutFilters->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $nonManualMarketingListWithoutFilters->expects($this->once())
-            ->method('getDefinition')->willReturn(json_encode(['filters' => []]));
+            ->method('getDefinition')
+            ->willReturn(json_encode(['filters' => []]));
 
         return [
             [null, null, false],
@@ -163,29 +152,27 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $dqlParts
-     * @param bool  $expected
-     *
      * @dataProvider dataSourceDataProvider
      */
-    public function testVisitDatasource($dqlParts, $expected)
+    public function testVisitDatasource(array $dqlParts, bool $expected)
     {
-        $marketingListId        = 1;
+        $marketingListId = 1;
         $nonManualMarketingList = $this->createMock(MarketingList::class);
-        $nonManualMarketingList->expects($this->any())->method('isUnion')->will($this->returnValue(true));
+        $nonManualMarketingList->expects($this->any())
+            ->method('isUnion')
+            ->willReturn(true);
 
         $nonManualMarketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $nonManualMarketingList->expects($this->once())->method('getDefinition')->willReturn(
-            json_encode(['filters' => ['filter' => 'dummy']])
-        );
+        $nonManualMarketingList->expects($this->once())
+            ->method('getDefinition')
+            ->willReturn(json_encode(['filters' => ['filter' => 'dummy']]));
 
         $gridName = 'test_grid';
-        $config   = $this->assertIsApplicable($marketingListId, $nonManualMarketingList, $gridName);
+        $config = $this->assertIsApplicable($marketingListId, $nonManualMarketingList, $gridName);
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
 
         $qb = $this->getQbMock();
@@ -195,8 +182,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
             $where = $dqlParts['where'];
             $parts = $where->getParts();
 
-            $qb
-                ->expects($this->exactly(count($parts)))
+            $qb->expects($this->exactly(count($parts)))
                 ->method('andWhere');
 
             $functionParts = array_filter(
@@ -207,8 +193,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
             );
 
             if ($functionParts && $expected) {
-                $this->emConfiguration
-                    ->expects($this->exactly(2))
+                $this->emConfiguration->expects($this->exactly(2))
                     ->method('setDefaultQueryHint')
                     ->withConsecutive(
                         [UnionOutputResultModifier::HINT_UNION_KEY],
@@ -218,49 +203,41 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
         }
 
         if ($expected) {
-            $qb
-                ->expects($this->once())
+            $qb->expects($this->once())
                 ->method('getDQLParts')
-                ->will($this->returnValue($dqlParts));
+                ->willReturn($dqlParts);
 
-            $dataSource
-                ->expects($this->once())
+            $dataSource->expects($this->once())
                 ->method('getQueryBuilder')
-                ->will($this->returnValue($qb));
+                ->willReturn($qb);
         }
 
         $this->extension->visitDatasource($config, $dataSource);
     }
 
-    /**
-     * @param int|null    $marketingListId
-     * @param object|null $marketingList
-     * @param string      $gridName
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|DatagridConfiguration
-     */
-    protected function assertIsApplicable($marketingListId, $marketingList, $gridName)
-    {
+    private function assertIsApplicable(
+        ?int $marketingListId,
+        ?object $marketingList,
+        string $gridName
+    ): DatagridConfiguration {
         $config = $this->createMock(DatagridConfiguration::class);
-        $config
-            ->expects($this->atLeastOnce())
+        $config->expects($this->atLeastOnce())
             ->method('isOrmDatasource')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $config
-            ->expects($this->any())
+        $config->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue($gridName));
+            ->willReturn($gridName);
 
         $this->marketingListHelper->expects($this->any())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
-            ->will($this->returnValue($marketingListId));
+            ->willReturn($marketingListId);
         if ($marketingListId) {
             $this->marketingListHelper->expects($this->any())
                 ->method('getMarketingList')
                 ->with($marketingListId)
-                ->will($this->returnValue($marketingList));
+                ->willReturn($marketingList);
         } else {
             $this->marketingListHelper->expects($this->never())
                 ->method('getMarketingList');
@@ -270,71 +247,47 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|QueryBuilder
+     * @return QueryBuilder|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getQbMock()
+    private function getQbMock()
     {
-        $this->em = $this->createMock(EntityManager::class);
-
-        $qb = $this
-            ->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->setConstructorArgs([$this->em])
-            ->getMock();
-
-        $qb
-            ->expects($this->any())
+        $em = $this->createMock(EntityManager::class);
+        $query = $this->createMock(AbstractQuery::class);
+        $qb = $this->createMock(QueryBuilder::class);
+        $qb->expects($this->any())
             ->method('from')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('leftJoin')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('select')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('andWhere')
-            ->will($this->returnSelf());
-
-        $expr = $this
-            ->getMockBuilder('Doctrine\ORM\Query\Expr')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('expr')
-            ->will($this->returnValue($expr));
-
+            ->willReturn($this->createMock(Expr::class));
         $qb->expects($this->any())
             ->method('getEntityManager')
-            ->will($this->returnValue($this->em));
-
-        $query = $this->createMock(AbstractQuery::class);
+            ->willReturn($em);
         $qb->expects($this->any())
             ->method('getQuery')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $this->emConfiguration = $this->createMock(Configuration::class);
-        $this->em->expects($this->any())
+        $em->expects($this->any())
             ->method('getConfiguration')
-            ->will($this->returnValue($this->emConfiguration));
-        $this->em->expects($this->any())
+            ->willReturn($this->emConfiguration);
+        $em->expects($this->any())
             ->method('createQueryBuilder')
-            ->will($this->returnValue($qb));
+            ->willReturn($qb);
 
         return $qb;
     }
 
-    /**
-     * @return array
-     */
-    public function dataSourceDataProvider()
+    public function dataSourceDataProvider(): array
     {
         return [
             [['where' => []], true],
@@ -358,7 +311,8 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
         $configChanged = DatagridConfiguration::createNamed('grid1', ['param1' => true]);
         $configChanged->setDatasourceType(OrmDatasource::TYPE);
 
-        $this->marketingListHelper->expects($this->exactly(2))->method('getMarketingListIdByGridName');
+        $this->marketingListHelper->expects($this->exactly(2))
+            ->method('getMarketingListIdByGridName');
 
         $this->assertFalse($this->extension->isApplicable($config));
         $this->assertFalse($this->extension->isApplicable($config));
@@ -369,7 +323,6 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
     {
         $config = $this->assertIsApplicable(1, new MarketingList(), 'test_grid');
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|OrmDatasource $dataSource */
         $dataSource = $this->createMock(OrmDatasource::class);
         $dataSource->expects($this->never())
             ->method('getQueryBuilder');

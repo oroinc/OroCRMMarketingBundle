@@ -12,34 +12,20 @@ use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 
 class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
 {
-    private ConfigProvider|\PHPUnit\Framework\MockObject\MockObject $configProvider;
+    /** @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $configProvider;
 
-    private AbstractQueryDesigner|\PHPUnit\Framework\MockObject\MockObject $queryDesigner;
+    /** @var AbstractQueryDesigner|\PHPUnit\Framework\MockObject\MockObject */
+    private $queryDesigner;
 
-    private DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper;
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $doctrineHelper;
 
-    private EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject $fieldProvider;
+    /** @var EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $fieldProvider;
 
-    private ContactInformationFieldHelper $helper;
-
-    private array $fieldMappings = [
-        'one' => [
-            'fieldName' => 'one',
-            'columnName' => 'col1',
-        ],
-        'two' => [
-            'fieldName' => 'two',
-            'columnName' => 'col2',
-        ],
-        'three' => [
-            'fieldName' => 'three',
-            'columnName' => 'col3',
-        ],
-        'four' => [
-            'fieldName' => 'four',
-            'columnName' => 'col4',
-        ],
-    ];
+    /** @var ContactInformationFieldHelper */
+    private $helper;
 
     protected function setUp(): void
     {
@@ -105,23 +91,18 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @param mixed $entity
-     */
-    private function assertContactInformationConfig($entity): void
+    private function assertContactInformationConfig(string $entity): void
     {
         $this->configProvider->expects(self::atLeastOnce())
             ->method('hasConfig')
-            ->willReturnMap(
-                [
-                    [$entity, null, true],
-                    [$entity, 'one', true],
-                    [$entity, 'two', true],
-                    [$entity, 'three', true],
-                    [$entity, 'four', false],
-                    [$entity, 'contactInformation', false],
-                ]
-            );
+            ->willReturnMap([
+                [$entity, null, true],
+                [$entity, 'one', true],
+                [$entity, 'two', true],
+                [$entity, 'three', true],
+                [$entity, 'four', false],
+                [$entity, 'contactInformation', false],
+            ]);
 
         $entityConfig = $this->getConfig(
             'contact_information',
@@ -137,23 +118,18 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         );
         $this->configProvider->expects(self::atLeastOnce())
             ->method('getConfig')
-            ->willReturnMap(
-                [
-                    [$entity, null, $entityConfig],
-                    [$entity, 'one', $fieldNoInfoConfig],
-                    [$entity, 'two', $fieldWithInfoConfig],
-                    [$entity, 'three', $fieldNoInfoConfig],
-                ]
-            );
+            ->willReturnMap([
+                [$entity, null, $entityConfig],
+                [$entity, 'one', $fieldNoInfoConfig],
+                [$entity, 'two', $fieldWithInfoConfig],
+                [$entity, 'three', $fieldNoInfoConfig],
+            ]);
     }
 
     /**
      * @dataProvider fieldTypesDataProvider
-     *
-     * @param string $field
-     * @param string $expectedType
      */
-    public function testGetContactInformationFieldType($field, $expectedType): void
+    public function testGetContactInformationFieldType(string $field, ?string $expectedType): void
     {
         $entity = \stdClass::class;
         $fields = [
@@ -185,9 +161,6 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         self::assertEquals($expectedType, $this->helper->getContactInformationFieldType($entity, $field));
     }
 
-    /**
-     * @return array
-     */
     public function fieldTypesDataProvider(): array
     {
         return [
@@ -296,13 +269,7 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @param string $key
-     * @param mixed $data
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getConfig($key, $data): \PHPUnit\Framework\MockObject\MockObject
+    private function getConfig(string $key, mixed $data): ConfigInterface
     {
         $config = $this->createMock(ConfigInterface::class);
         $config->expects(self::any())

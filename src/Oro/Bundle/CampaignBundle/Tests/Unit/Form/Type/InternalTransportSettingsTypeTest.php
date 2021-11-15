@@ -3,18 +3,16 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InternalTransportSettingsTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var InternalTransportSettingsType
-     */
-    protected $type;
+    /** @var InternalTransportSettingsType */
+    private $type;
 
-    /**
-     * Setup test env
-     */
     protected function setUp(): void
     {
         $this->type = new InternalTransportSettingsType();
@@ -22,9 +20,8 @@ class InternalTransportSettingsTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureOptions()
     {
-        $resolver = $this->createMock('Symfony\Component\OptionsResolver\OptionsResolver');
-        $resolver
-            ->expects($this->once())
+        $resolver = $this->createMock(OptionsResolver::class);
+        $resolver->expects($this->once())
             ->method('setDefaults')
             ->with($this->isType('array'));
 
@@ -33,28 +30,22 @@ class InternalTransportSettingsTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildForm()
     {
-        $formBuilder = $this
-            ->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $subscriber  = $this->createMock('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $formBuilder = $this->createMock(FormBuilder::class);
+        $subscriber = $this->createMock(EventSubscriberInterface::class);
 
-        $formBuilder
-            ->expects($this->once())
+        $formBuilder->expects($this->once())
             ->method('add')
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
-        $formBuilder
-            ->expects($this->once())
+        $formBuilder->expects($this->once())
             ->method('addEventSubscriber')
             ->with($this->equalTo($subscriber))
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
-        $formBuilder
-            ->expects($this->once())
+        $formBuilder->expects($this->once())
             ->method('addEventListener')
             ->with($this->equalTo(FormEvents::PRE_SUBMIT), $this->isType('callable'))
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
         $this->type->addSubscriber($subscriber);
         $this->type->buildForm($formBuilder, []);

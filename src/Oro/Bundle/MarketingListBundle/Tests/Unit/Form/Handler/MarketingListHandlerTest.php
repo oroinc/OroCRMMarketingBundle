@@ -21,70 +21,53 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    const FORM_DATA = ['definition' => 'test'];
-    const FORM_NAME = 'test_form';
+    private const FORM_DATA = ['definition' => 'test'];
+    private const FORM_NAME = 'test_form';
 
-    /**
-     * @var MarketingListHandler
-     */
-    protected $handler;
+    /** @var Form|\PHPUnit\Framework\MockObject\MockObject */
+    private $form;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|Form
-     */
-    protected $form;
+    /** @var Request */
+    private $request;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    /** @var EntityManager|\PHPUnit\Framework\MockObject\MockObject */
+    private $manager;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $manager;
+    /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $validator;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ValidatorInterface
-     */
-    protected $validator;
+    /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $translator;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|TranslatorInterface
-     */
-    protected $translator;
+    /** @var MarketingList */
+    private $testEntity;
 
-    /**
-     * @var MarketingList
-     */
-    protected $testEntity;
+    /** @var MarketingListHandler */
+    private $handler;
 
     protected function setUp(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry $registry */
-        $registry = $this->createMock(ManagerRegistry::class);
-
-        $this->manager = $this->createMock(EntityManager::class);
-        $registry->expects($this->any())
-            ->method('getManagerForClass')
-            ->will($this->returnValue($this->manager));
-
         $this->form = $this->createMock(Form::class);
-
         $this->request = new Request();
-
+        $this->manager = $this->createMock(EntityManager::class);
         $this->validator = $this->createMock(ValidatorInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
-
         $this->testEntity = new MarketingList();
-        $this->handler = new MarketingListHandler(
-            $registry,
-            $this->validator,
-            $this->translator
-        );
+
+        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine->expects($this->any())
+            ->method('getManagerForClass')
+            ->willReturn($this->manager);
+
         $this->form->expects($this->once())
             ->method('setData')
             ->with($this->testEntity);
+
+        $this->handler = new MarketingListHandler(
+            $doctrine,
+            $this->validator,
+            $this->translator
+        );
     }
 
     public function testProcess()
@@ -99,17 +82,16 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->form->expects($this->exactly(2))
             ->method('isValid')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $this->translator
-            ->expects($this->once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with($this->isType('string'), $this->isType('array'))
-            ->will($this->returnValue('Marketing List test segment'));
+            ->willReturn('Marketing List test segment');
 
         $this->form->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue(self::FORM_NAME));
+            ->willReturn(self::FORM_NAME);
 
         $this->manager->expects($this->once())
             ->method('persist')
@@ -119,7 +101,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($this->isInstanceOf(Segment::class), null, ['Default', 'marketing_list'])
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->assertTrue($this->handler->process($this->testEntity, $this->form, $this->request));
 
@@ -144,7 +126,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(self::FORM_NAME);
         $this->form->expects($this->once())
             ->method('isValid')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->manager->expects($this->never())
             ->method('persist');
@@ -177,28 +159,27 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $violation = $this->createMock(ConstraintViolationInterface::class);
         $violation->expects($this->once())
             ->method('getMessage')
-            ->will($this->returnValue('message'));
+            ->willReturn('message');
         $violation->expects($this->once())
             ->method('getMessageTemplate')
-            ->will($this->returnValue('message template'));
+            ->willReturn('message template');
         $violation->expects($this->once())
             ->method('getParameters')
-            ->will($this->returnValue(['test']));
+            ->willReturn(['test']);
         $violation->expects($this->once())
             ->method('getPlural')
-            ->will($this->returnValue(1));
+            ->willReturn(1);
         $errors = new ConstraintViolationList([$violation]);
 
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($this->isInstanceOf(Segment::class), null, ['Default', 'marketing_list'])
-            ->will($this->returnValue($errors));
+            ->willReturn($errors);
 
-        $this->translator
-            ->expects($this->once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with($this->isType('string'), $this->isType('array'))
-            ->will($this->returnValue('Marketing List test segment'));
+            ->willReturn('Marketing List test segment');
 
         $this->form->expects($this->once())
             ->method('addError')
@@ -221,15 +202,14 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSegmentData();
     }
 
-    protected function assertProcessSegment()
+    private function assertProcessSegment()
     {
         $businessUnit = $this->createMock(BusinessUnit::class);
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|User $owner */
         $owner = $this->createMock(User::class);
         $owner->expects($this->atLeastOnce())
             ->method('getOwner')
-            ->will($this->returnValue($businessUnit));
+            ->willReturn($businessUnit);
 
         $this->testEntity->setName('test')
             ->setDescription('description')
@@ -240,10 +220,10 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $this->manager->expects($this->once())
             ->method('find')
             ->with('OroSegmentBundle:SegmentType', MarketingListType::TYPE_DYNAMIC)
-            ->will($this->returnValue($segmentType));
+            ->willReturn($segmentType);
     }
 
-    protected function assertSegmentData()
+    private function assertSegmentData()
     {
         $segmentType = new SegmentType(SegmentType::TYPE_DYNAMIC);
         $segment = $this->testEntity->getSegment();

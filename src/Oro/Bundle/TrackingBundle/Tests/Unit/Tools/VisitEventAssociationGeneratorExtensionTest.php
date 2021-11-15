@@ -12,27 +12,22 @@ use Oro\Component\PhpUtils\ClassGenerator;
 
 class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    protected VisitEventAssociationGeneratorExtension $extension;
+    private VisitEventAssociationGeneratorExtension $extension;
 
     protected function setUp(): void
     {
         $this->extension = new VisitEventAssociationGeneratorExtension();
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->extension);
-    }
-
     /**
      * @dataProvider supportsProvider
      */
-    public function testSupports($schema, $expected)
+    public function testSupports(array $schema, bool $expected)
     {
-        static::assertEquals($expected, $this->extension->supports($schema));
+        self::assertEquals($expected, $this->extension->supports($schema));
     }
 
-    public function supportsProvider()
+    public function supportsProvider(): array
     {
         return [
             [
@@ -170,6 +165,6 @@ class VisitEventAssociationGeneratorExtensionTest extends \PHPUnit\Framework\Tes
         $this->extension->generate($schema, $class);
 
         $expectedBody = \file_get_contents(__DIR__ . '/Fixtures/generationAssociationResult.txt');
-        static::assertEquals(\trim($expectedBody), \trim($class->print()));
+        self::assertEquals(\trim($expectedBody), \trim($class->print()));
     }
 }

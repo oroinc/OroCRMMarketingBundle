@@ -12,27 +12,22 @@ use Oro\Component\PhpUtils\ClassGenerator;
 
 class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    protected IdentifierVisitGeneratorExtension $extension;
+    private IdentifierVisitGeneratorExtension $extension;
 
     protected function setUp(): void
     {
         $this->extension = new IdentifierVisitGeneratorExtension();
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->extension);
-    }
-
     /**
      * @dataProvider supportsProvider
      */
-    public function testSupports($schema, $expected)
+    public function testSupports(array $schema, bool $expected)
     {
-        static::assertEquals($expected, $this->extension->supports($schema));
+        self::assertEquals($expected, $this->extension->supports($schema));
     }
 
-    public function supportsProvider()
+    public function supportsProvider(): array
     {
         return [
             [
@@ -166,6 +161,6 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
 
         $this->extension->generate($schema, $class);
         $expectedCode = \file_get_contents(__DIR__ . '/Fixtures/generationIdentifierResult.txt');
-        static::assertEquals(\trim($expectedCode), \trim($class->print()));
+        self::assertEquals(\trim($expectedCode), \trim($class->print()));
     }
 }

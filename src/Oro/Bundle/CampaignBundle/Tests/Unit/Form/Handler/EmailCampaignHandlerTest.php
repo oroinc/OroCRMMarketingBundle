@@ -2,53 +2,45 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Form\Handler;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    const FORM_DATA = ['field' => 'value'];
+    private const FORM_DATA = ['field' => 'value'];
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    /** @var Request */
+    private $request;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $form;
+    /** @var Form|\PHPUnit\Framework\MockObject\MockObject */
+    private $form;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $registry;
 
-    /**
-     * @var EmailCampaignHandler
-     */
-    protected $handler;
+    /** @var EmailCampaignHandler */
+    private $handler;
 
     protected function setUp(): void
     {
         $this->request = new Request();
+        $this->form = $this->createMock(Form::class);
+        $this->registry = $this->createMock(ManagerRegistry::class);
+
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
-        $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->registry = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
-            ->getMockForAbstractClass();
 
         $this->handler = new EmailCampaignHandler($requestStack, $this->form, $this->registry);
     }
 
     public function testProcessGet()
     {
-        $data = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $data = $this->createMock(EmailCampaign::class);
 
         $this->form->expects($this->once())
             ->method('setData')
@@ -63,9 +55,7 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
 
     public function testProcessUpdateInvalid()
     {
-        $data = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $data = $this->createMock(EmailCampaign::class);
 
         $this->form->expects($this->once())
             ->method('setData')
@@ -81,16 +71,14 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->form->expects($this->once())
             ->method('isValid')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->assertFalse($this->handler->process($data));
     }
 
     public function testProcessUpdateMarker()
     {
-        $data = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $data = $this->createMock(EmailCampaign::class);
 
         $this->form->expects($this->once())
             ->method('setData')
@@ -120,9 +108,7 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
 
     public function testProcess()
     {
-        $data = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $data = $this->createMock(EmailCampaign::class);
 
         $this->form->expects($this->once())
             ->method('setData')
@@ -134,9 +120,7 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
             ->method('submit')
             ->with(self::FORM_DATA);
 
-        $manager = $this->getMockBuilder('\Doctrine\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createMock(ObjectManager::class);
         $manager->expects($this->once())
             ->method('persist')
             ->with($data);
@@ -145,11 +129,11 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
             ->with('OroCampaignBundle:EmailCampaign')
-            ->will($this->returnValue($manager));
+            ->willReturn($manager);
 
         $this->form->expects($this->once())
             ->method('isValid')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->assertTrue($this->handler->process($data));
     }

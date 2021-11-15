@@ -2,49 +2,37 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Model;
 
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListItemConnector;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $registry;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $doctrineHelper;
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $doctrineHelper;
 
-    /**
-     * @var MarketingListItemConnector
-     */
-    protected $connector;
+    /** @var MarketingListItemConnector */
+    private $connector;
 
     protected function setUp(): void
     {
-        $this->registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\ManagerRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->connector = new MarketingListItemConnector($this->registry, $this->doctrineHelper);
-    }
+        $this->registry = $this->createMock(ManagerRegistry::class);
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
 
-    protected function tearDown(): void
-    {
-        unset($this->connector);
-        unset($this->doctrineHelper);
-        unset($this->registry);
+        $this->connector = new MarketingListItemConnector($this->registry, $this->doctrineHelper);
     }
 
     public function testContactExisting()
     {
         $entityId = 42;
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingListItem = $this->assertContactedExisting($marketingList, $entityId);
 
         $this->assertEquals($marketingListItem, $this->connector->contact($marketingList, $entityId));
@@ -53,61 +41,53 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
     public function testContactNew()
     {
         $entityId = 42;
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
 
-        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
         $repository->expects($this->once())
             ->method('findOneBy')
-            ->with(array('marketingList' => $marketingList, 'entityId' => $entityId))
-            ->will($this->returnValue(null));
+            ->with(['marketingList' => $marketingList, 'entityId' => $entityId])
+            ->willReturn(null);
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with(MarketingListItemConnector::MARKETING_LIST_ITEM_ENTITY)
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
 
-        $em = $this->getMockBuilder('\Doctrine\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $em = $this->createMock(ObjectManager::class);
         $em->expects($this->once())
             ->method('persist')
-            ->with($this->isInstanceOf('Oro\Bundle\MarketingListBundle\Entity\MarketingListItem'));
+            ->with($this->isInstanceOf(MarketingListItem::class));
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
             ->with(MarketingListItemConnector::MARKETING_LIST_ITEM_ENTITY)
-            ->will($this->returnValue($em));
+            ->willReturn($em);
 
         $marketingListItem = $this->connector->contact($marketingList, $entityId);
         $this->assertInstanceOf(
-            'Oro\Bundle\MarketingListBundle\Entity\MarketingListItem',
+            MarketingListItem::class,
             $marketingListItem
         );
 
         $this->assertEquals(1, $marketingListItem->getContactedTimes());
-        $this->assertInstanceOf('\DateTime', $marketingListItem->getLastContactedAt());
+        $this->assertInstanceOf(\DateTime::class, $marketingListItem->getLastContactedAt());
     }
 
     public function testContactResultRow()
     {
         $entityId = 42;
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue('\stdClass'));
+            ->willReturn(\stdClass::class);
         $this->doctrineHelper->expects($this->once())
             ->method('getSingleEntityIdentifierFieldName')
-            ->with('\stdClass')
-            ->will($this->returnValue('id'));
+            ->with(\stdClass::class)
+            ->willReturn('id');
 
         $this->assertContactedExisting($marketingList, $entityId);
-        $marketingListItem = $this->connector->contactResultRow($marketingList, array('id' => $entityId));
+        $marketingListItem = $this->connector->contactResultRow($marketingList, ['id' => $entityId]);
         $this->assertInstanceOf(
-            'Oro\Bundle\MarketingListBundle\Entity\MarketingListItem',
+            MarketingListItem::class,
             $marketingListItem
         );
     }
@@ -118,38 +98,32 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('Result row must contain identifier field');
 
         $entityId = 42;
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('getEntity')
-            ->will($this->returnValue('\stdClass'));
+            ->willReturn(\stdClass::class);
         $this->doctrineHelper->expects($this->once())
             ->method('getSingleEntityIdentifierFieldName')
-            ->with('\stdClass')
-            ->will($this->returnValue('id'));
-        $this->connector->contactResultRow($marketingList, array('some' => $entityId));
+            ->with(\stdClass::class)
+            ->willReturn('id');
+        $this->connector->contactResultRow($marketingList, ['some' => $entityId]);
     }
 
-    public function assertContactedExisting($marketingList, $entityId)
+    public function assertContactedExisting(MarketingList $marketingList, int $entityId): MarketingListItem
     {
-        $marketingListItem = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingListItem')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingListItem = $this->createMock(MarketingListItem::class);
         $marketingListItem->expects($this->once())
             ->method('contact');
 
-        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
         $repository->expects($this->once())
             ->method('findOneBy')
-            ->with(array('marketingList' => $marketingList, 'entityId' => $entityId))
-            ->will($this->returnValue($marketingListItem));
+            ->with(['marketingList' => $marketingList, 'entityId' => $entityId])
+            ->willReturn($marketingListItem);
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with(MarketingListItemConnector::MARKETING_LIST_ITEM_ENTITY)
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
 
         return $marketingListItem;
     }

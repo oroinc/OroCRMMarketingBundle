@@ -8,10 +8,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class TrackingDataTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var TrackingData
-     */
-    protected $data;
+    /** @var TrackingData */
+    private $data;
 
     protected function setUp(): void
     {
@@ -27,17 +25,13 @@ class TrackingDataTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->data->getCreatedAt());
         $this->data->prePersist();
-        $this->assertInstanceOf('\DateTime', $this->data->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->data->getCreatedAt());
     }
 
     /**
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
-     *
      * @dataProvider propertyProvider
      */
-    public function testProperties($property, $value, $expected)
+    public function testProperties(string $property, mixed $value, mixed $expected)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->assertNull(
@@ -52,12 +46,9 @@ class TrackingDataTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function propertyProvider()
+    public function propertyProvider(): array
     {
-        $date  = new \DateTime();
+        $date = new \DateTime();
         $event = new TrackingEvent();
 
         return [

@@ -9,15 +9,11 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $producer;
 
-    /**
-     * @var ConfigPrecalculateListener
-     */
-    protected $listener;
+    /** @var ConfigPrecalculateListener */
+    private $listener;
 
     protected function setUp(): void
     {
@@ -28,7 +24,6 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterNonGlobalScope()
     {
-        /** @var ConfigUpdateEvent|\PHPUnit\Framework\MockObject\MockObject $event */
         $event = $this->createMock(ConfigUpdateEvent::class);
         $event->expects($this->once())
             ->method('getScope')
@@ -42,7 +37,6 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterNothingChanged()
     {
-        /** @var ConfigUpdateEvent|\PHPUnit\Framework\MockObject\MockObject $event */
         $event = $this->createMock(ConfigUpdateEvent::class);
         $event->expects($this->once())
             ->method('getScope')
@@ -60,7 +54,6 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterRecalculationDisabled()
     {
-        /** @var ConfigUpdateEvent|\PHPUnit\Framework\MockObject\MockObject $event */
         $event = $this->createMock(ConfigUpdateEvent::class);
         $event->expects($this->once())
             ->method('getScope')
@@ -82,7 +75,6 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterTimezoneChanged()
     {
-        /** @var ConfigUpdateEvent|\PHPUnit\Framework\MockObject\MockObject $event */
         $event = $this->createMock(ConfigUpdateEvent::class);
         $event->expects($this->once())
             ->method('getScope')
@@ -101,7 +93,6 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterCalculationEnabled()
     {
-        /** @var ConfigUpdateEvent|\PHPUnit\Framework\MockObject\MockObject $event */
         $event = $this->createMock(ConfigUpdateEvent::class);
         $event->expects($this->once())
             ->method('getScope')
