@@ -68,10 +68,12 @@ services:
     oro_campaign.transport.email:
         class: Oro\Bundle\CampaignBundle\Transport\EmailTransport
         arguments:
-            - "@oro_email.mailer.processor"
+            - "@oro_email.sender.email_model_sender"
             - "@oro_email.email_renderer"
             - "@oro_entity.doctrine_helper"
             - "@oro_email.email.address.helper"
+        calls:
+            - [setLogger, ['@logger']]
         tags:
             - { name: "oro_campaign.email_transport" }
 

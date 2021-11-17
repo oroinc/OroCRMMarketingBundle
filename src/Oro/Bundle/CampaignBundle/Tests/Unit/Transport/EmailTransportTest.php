@@ -7,57 +7,59 @@ use Oro\Bundle\CampaignBundle\Entity\InternalTransportSettings;
 use Oro\Bundle\CampaignBundle\Transport\EmailTransport;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 class EmailTransportTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Processor|\PHPUnit\Framework\MockObject\MockObject */
-    private $processor;
+    private EmailModelSender|\PHPUnit\Framework\MockObject\MockObject $emailModelSender;
 
-    /** @var EmailRenderer|\PHPUnit\Framework\MockObject\MockObject */
-    private $renderer;
+    private EmailRenderer|\PHPUnit\Framework\MockObject\MockObject $emailRenderer;
 
-    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
-    private $helper;
+    private DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper;
 
-    /** @var EmailAddressHelper|\PHPUnit\Framework\MockObject\MockObject */
-    private $emailHelper;
+    private EmailAddressHelper|\PHPUnit\Framework\MockObject\MockObject $emailAddressHelper;
 
-    /** @var EmailTransport */
-    private $transport;
+    private EmailTransport $transport;
 
     protected function setUp(): void
     {
-        $this->processor = $this->createMock(Processor::class);
-        $this->renderer = $this->createMock(EmailRenderer::class);
-        $this->helper = $this->createMock(DoctrineHelper::class);
-        $this->emailHelper = $this->createMock(EmailAddressHelper::class);
+        $this->emailModelSender = $this->createMock(EmailModelSender::class);
+        $this->emailRenderer = $this->createMock(EmailRenderer::class);
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $this->emailAddressHelper = $this->createMock(EmailAddressHelper::class);
 
-        $this->transport = new EmailTransport($this->processor, $this->renderer, $this->helper, $this->emailHelper);
+        $this->transport = new EmailTransport(
+            $this->emailModelSender,
+            $this->emailRenderer,
+            $this->doctrineHelper,
+            $this->emailAddressHelper
+        );
     }
 
     /**
      * @dataProvider sendDataProvider
      */
     public function testSend(
-        int|string|null $id,
+        string|int|null $id,
         ?string $entity,
         array $from,
         array $to,
         ?string $subject,
         ?string $body
-    ) {
+    ): void {
         $emails = array_keys($from);
 
-        $this->helper->expects($this->once())
+        $this->doctrineHelper
+            ->expects(self::once())
             ->method('getSingleEntityIdentifier')
             ->willReturn($id);
 
-        $this->emailHelper->expects($this->once())
+        $this->emailAddressHelper
+            ->expects(self::once())
             ->method('buildFullEmailAddress')
             ->willReturn(sprintf('%s <%s>', reset($emails), reset($from)));
 
@@ -74,7 +76,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setMarketingList($marketingList)
             ->setTransportSettings($settings);
 
-        $this->renderer->expects($this->once())
+        $this->emailRenderer
+            ->expects(self::once())
             ->method('compileMessage')
             ->willReturn([$subject, $body]);
 
@@ -88,37 +91,77 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setSubject($subject)
             ->setBody($body);
 
-        $this->processor->expects($this->once())
-            ->method('process')
-            ->with($this->equalTo($emailModel));
+        $this->emailModelSender
+            ->expects(self::once())
+            ->method('send')
+            ->with($emailModel);
 
         $this->transport->send($campaign, $entity, $from, $to);
     }
 
+    /**
+     * @return array
+     */
     public function sendDataProvider(): array
     {
         return [
             [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
             [null, \stdClass::class, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
             ['string', \stdClass::class, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], ['test@example.com'], 'subject', 'body'],
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, 'body'],
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], ['test@example.com'], 'subject', null],
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, null],
+            [
+                1,
+                \stdClass::class,
+                ['sender@example.com' => 'Sender Name'],
+                ['test@example.com'],
+                'subject',
+                'body',
+            ],
+            [
+                1,
+                \stdClass::class,
+                ['sender@example.com' => 'Sender Name'],
+                ['test@example.com'],
+                null,
+                'body',
+            ],
+            [
+                1,
+                \stdClass::class,
+                ['sender@example.com' => 'Sender Name'],
+                ['test@example.com'],
+                'subject',
+                null,
+            ],
+            [
+                1,
+                \stdClass::class,
+                ['sender@example.com' => 'Sender Name'],
+                ['test@example.com'],
+                null,
+                null,
+            ],
             [1, null, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, null],
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, null],
+            [
+                1,
+                \stdClass::class,
+                ['sender@example.com' => 'Sender Name'],
+                ['test@example.com'],
+                null,
+                null,
+            ],
             [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], [null], null, null],
         ];
     }
 
-    public function testFromEmpty()
+    public function testFromEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Sender email and name is empty');
 
         $entity = new \stdClass();
 
-        $this->helper->expects($this->once())
+        $this->doctrineHelper
+            ->expects(self::once())
             ->method('getSingleEntityIdentifier')
             ->willReturn(1);
 
@@ -135,7 +178,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setMarketingList($marketingList)
             ->setTransportSettings($settings);
 
-        $this->renderer->expects($this->never())
+        $this->emailRenderer
+            ->expects(self::never())
             ->method('compileMessage');
 
         $this->transport->send($campaign, $entity, [], []);

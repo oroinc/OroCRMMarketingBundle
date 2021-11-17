@@ -6,48 +6,42 @@ use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 /**
  * Implements the transport to send campaigns emails.
  */
-class EmailTransport implements TransportInterface
+class EmailTransport implements TransportInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const NAME = 'internal';
 
-    /**
-     * @var Processor $processor
-     */
-    protected $processor;
+    private EmailModelSender $emailModelSender;
 
-    /**
-     * @var EmailRenderer
-     */
-    protected $emailRenderer;
+    private EmailRenderer $emailRenderer;
 
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    private DoctrineHelper $doctrineHelper;
 
-    /**
-     * @var EmailAddressHelper
-     */
-    protected $emailAddressHelper;
+    private EmailAddressHelper $emailAddressHelper;
 
     public function __construct(
-        Processor $processor,
+        EmailModelSender $emailModelSender,
         EmailRenderer $emailRenderer,
         DoctrineHelper $doctrineHelper,
         EmailAddressHelper $emailAddressHelper
     ) {
-        $this->processor          = $processor;
-        $this->emailRenderer      = $emailRenderer;
-        $this->doctrineHelper     = $doctrineHelper;
+        $this->emailModelSender = $emailModelSender;
+        $this->emailRenderer = $emailRenderer;
+        $this->doctrineHelper = $doctrineHelper;
         $this->emailAddressHelper = $emailAddressHelper;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -61,7 +55,7 @@ class EmailTransport implements TransportInterface
 
         /** @var EmailTemplate $template */
         $template = $campaign->getTransportSettings()->getSettingsBag()->get('template');
-        list($subjectRendered, $templateRendered) = $this->emailRenderer->compileMessage(
+        [$subjectRendered, $templateRendered] = $this->emailRenderer->compileMessage(
             $template,
             ['entity' => $entity]
         );
@@ -76,7 +70,18 @@ class EmailTransport implements TransportInterface
             ->setSubject($subjectRendered)
             ->setBody($templateRendered);
 
-        $this->processor->process($emailModel, null, false);
+        try {
+            $this->emailModelSender->send($emailModel, null, false);
+        } catch (\RuntimeException $exception) {
+            $this->logger->error(
+                sprintf(
+                    'Failed to send email model to %s: %s',
+                    implode(', ', $emailModel->getTo()),
+                    $exception->getMessage()
+                ),
+                ['exception' => $exception, 'emailModel' => $emailModel]
+            );
+        }
     }
 
     /**
