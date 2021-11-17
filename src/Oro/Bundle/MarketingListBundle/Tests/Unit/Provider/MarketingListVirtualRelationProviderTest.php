@@ -2,20 +2,23 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
+use Oro\Component\Testing\Unit\Cache\CacheTrait;
 
 class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
+    use CacheTrait;
+
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
-    /** @var ArrayCache */
+    /** @var CacheProvider */
     private $arrayCache;
 
     /** @var MarketingListVirtualRelationProvider */
@@ -24,7 +27,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
-        $this->arrayCache = new ArrayCache();
+        $this->arrayCache = $this->getArrayCache();
 
         $this->provider = new MarketingListVirtualRelationProvider($this->doctrineHelper, $this->arrayCache);
     }

@@ -2,33 +2,39 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Component\Testing\Unit\Cache\CacheTrait;
 
 class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var CacheProvider */
+    use CacheTrait;
+
+    /**
+     * @var CacheProvider
+     */
     private $cacheProvider;
 
-    /** @var MarketingListAllowedClassesProvider */
-    private $provider;
+    /**
+     * @var EntityProvider
+     */
+    private $entityProvider;
 
     protected function setUp(): void
     {
-        $this->cacheProvider = new ArrayCache();
+        $this->cacheProvider = $this->getArrayCache();
 
-        $entityProvider = $this->createMock(EntityProvider::class);
-        $entityProvider->expects($this->any())
+        $this->entityProvider = $this->createMock(EntityProvider::class);
+        $this->entityProvider->expects($this->any())
             ->method('getEntities')
             ->willReturn($this->getAllowedEntities());
 
         $this->provider = new MarketingListAllowedClassesProvider(
             $this->cacheProvider,
-            $entityProvider
+            $this->entityProvider
         );
     }
 
@@ -60,6 +66,9 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
         $this->assertEquals($this->getCachedAllowedEntities(), $entities);
     }
 
+    /**
+     * @return string[]
+     */
     private function getAllowedEntities(): array
     {
         return [
