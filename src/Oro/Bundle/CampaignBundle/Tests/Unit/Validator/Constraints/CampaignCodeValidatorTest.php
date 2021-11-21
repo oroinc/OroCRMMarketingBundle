@@ -1,42 +1,37 @@
 <?php
 
-namespace Oro\Bundle\CampaignBundle\Tests\Unit\Validator;
+namespace Oro\Bundle\CampaignBundle\Tests\Unit\Validator\Constraints;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
-use Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator;
 use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode;
+use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCodeValidator;
 use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
 {
     /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
-    private $registry;
-
-    /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $translator;
+    private $doctrine;
 
     protected function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->doctrine = $this->createMock(ManagerRegistry::class);
         parent::setUp();
     }
 
     protected function createValidator()
     {
-        return new CampaignCodeValidator($this->registry, $this->translator);
+        return new CampaignCodeValidator($this->doctrine);
     }
 
     public function testValidateIncorrectInstance()
     {
         $value = new \stdClass();
 
-        $this->registry->expects($this->never())
+        $this->doctrine->expects($this->never())
             ->method($this->anything());
 
         $constraint = new CampaignCode();
@@ -50,9 +45,9 @@ class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
         $codeHistory = $this->getCampaignCodeHistory();
 
         $repository = $this->createMock(CampaignRepository::class);
-        $this->registry->expects($this->once())
+        $this->doctrine->expects($this->once())
             ->method('getRepository')
-            ->with('OroCampaignBundle:CampaignCodeHistory')
+            ->with(CampaignCodeHistory::class)
             ->willReturn($repository);
         $repository->expects($this->once())
             ->method('findOneBy')
@@ -78,9 +73,9 @@ class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
         $codeHistory = $this->getCampaignCodeHistory();
 
         $repository = $this->createMock(CampaignRepository::class);
-        $this->registry->expects($this->once())
+        $this->doctrine->expects($this->once())
             ->method('getRepository')
-            ->with('OroCampaignBundle:CampaignCodeHistory')
+            ->with(CampaignCodeHistory::class)
             ->willReturn($repository);
         $repository->expects($this->once())
             ->method('findOneBy')
@@ -106,9 +101,9 @@ class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
     public function testValidateCodeHistoryNotFound()
     {
         $repository = $this->createMock(CampaignRepository::class);
-        $this->registry->expects($this->once())
+        $this->doctrine->expects($this->once())
             ->method('getRepository')
-            ->with('OroCampaignBundle:CampaignCodeHistory')
+            ->with(CampaignCodeHistory::class)
             ->willReturn($repository);
         $repository->expects($this->once())
             ->method('findOneBy')

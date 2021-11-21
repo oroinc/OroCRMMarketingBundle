@@ -42,11 +42,11 @@ services:
             - "@oro_query_designer.entity_field_provider"
 
     oro_marketing_list.contact_information_column_validator:
-        class: Oro\Bundle\MarketingListBundle\Validator\ContactInformationColumnValidator
+        class: Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnValidator
         arguments:
             - "@oro_marketing_list.contact_information_field_helper"
         tags:
-            - { name: validator.constraint_validator, alias: oro_marketing_list.contact_information_column_validator }
+            - { name: validator.constraint_validator }
 
     oro_marketing_list.provider.contact_information_exclusion:
         class: Oro\Bundle\MarketingListBundle\Provider\ContactInformationExclusionProvider

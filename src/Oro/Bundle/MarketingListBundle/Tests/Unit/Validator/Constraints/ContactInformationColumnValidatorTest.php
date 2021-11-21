@@ -1,11 +1,12 @@
 <?php
 
-namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator;
+namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Validator\Constraints;
 
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
-use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
-use Oro\Bundle\MarketingListBundle\Validator\ContactInformationColumnValidator;
+use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumn;
+use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnValidator;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
@@ -25,24 +26,37 @@ class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
         return new ContactInformationColumnValidator($this->contactInformationFieldHelper);
     }
 
+    public function testUnexpectedConstraint()
+    {
+        $this->expectException(UnexpectedTypeException::class);
+
+        $this->validator->validate(
+            $this->createMock(AbstractQueryDesigner::class),
+            $this->createMock(Constraint::class)
+        );
+    }
+
     public function testValidateFieldException()
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "string", "array" given');
 
-        $constraint = new ContactInformationColumnConstraint();
+        $constraint = new ContactInformationColumn();
         $constraint->field = ['test'];
 
-        $value = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
+        $value = $this->createMock(AbstractQueryDesigner::class);
         $this->validator->validate($value, $constraint);
     }
 
     public function testValidateValueException()
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->expectExceptionMessage('Expected argument of type "AbstractQueryDesigner", "string" given');
+        $this->expectExceptionMessage(sprintf(
+            'Expected argument of type "%s", "string" given',
+            AbstractQueryDesigner::class
+        ));
 
-        $constraint = new ContactInformationColumnConstraint();
+        $constraint = new ContactInformationColumn();
 
         $value = 'test';
         $this->validator->validate($value, $constraint);
@@ -50,8 +64,8 @@ class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
 
     public function testValidateValid()
     {
-        $constraint = new ContactInformationColumnConstraint();
-        $value = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
+        $constraint = new ContactInformationColumn();
+        $value = $this->createMock(AbstractQueryDesigner::class);
 
         $this->contactInformationFieldHelper->expects($this->once())
             ->method('getQueryContactInformationFields')
@@ -68,14 +82,14 @@ class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidateInvalidClass(?string $type, array $contactInformationFields)
     {
-        $value = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
+        $value = $this->createMock(AbstractQueryDesigner::class);
 
         $this->contactInformationFieldHelper->expects($this->once())
             ->method('getQueryContactInformationFields')
             ->with($value)
             ->willReturn($contactInformationFields);
 
-        $constraint = new ContactInformationColumnConstraint(['type' => $type]);
+        $constraint = new ContactInformationColumn(['type' => $type]);
         $this->validator->validate($value, $constraint);
 
         if ($type) {
@@ -103,14 +117,14 @@ class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
     public function testValidateInvalidField(?string $type, array $contactInformationFields)
     {
         $value = new \stdClass();
-        $value->test = $this->getMockForAbstractClass(AbstractQueryDesigner::class);
+        $value->test = $this->createMock(AbstractQueryDesigner::class);
 
         $this->contactInformationFieldHelper->expects($this->once())
             ->method('getQueryContactInformationFields')
             ->with($value->test)
             ->willReturn($contactInformationFields);
 
-        $constraint = new ContactInformationColumnConstraint(['type' => $type, 'field' => 'test']);
+        $constraint = new ContactInformationColumn(['type' => $type, 'field' => 'test']);
         $this->validator->validate($value, $constraint);
 
         if ($type) {

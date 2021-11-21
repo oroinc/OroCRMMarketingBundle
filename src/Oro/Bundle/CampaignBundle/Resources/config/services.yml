@@ -190,9 +190,8 @@ services:
             - { name: oro_message_queue.client.message_processor }
 
     oro_campaign.validator.campaign_code:
-        class: Oro\Bundle\CampaignBundle\Validator\CampaignCodeValidator
+        class: Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCodeValidator
         arguments:
             - '@doctrine'
-            - '@translator'
         tags:
-            - { name: validator.constraint_validator, alias: oro_campaign.campaign_code_validator }
+            - { name: validator.constraint_validator }

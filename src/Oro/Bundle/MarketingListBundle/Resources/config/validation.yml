@@ -19,7 +19,7 @@ Oro\Bundle\MarketingListBundle\Entity\MarketingList:
 
 Oro\Bundle\SegmentBundle\Entity\Segment:
     constraints:
-        - Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint:
+        - Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumn:
             groups: [ marketing_list ]
 
 Oro\Bundle\MarketingListBundle\Entity\MarketingListItem:
