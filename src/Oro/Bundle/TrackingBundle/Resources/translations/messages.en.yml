@@ -118,7 +118,7 @@ oro:
 
         help:
             event_tooltip: |
-                Make sure this code is on every page of your website before the </body> tag.
+                Make sure this code is on every page of your website before the closing body tag.
                 To track custom events, please uncomment the trackEvent string and replace
                 [name], [value], and [user_identifier] parameters with your values.
                 The script will log an event with the [name] name and optional [value].

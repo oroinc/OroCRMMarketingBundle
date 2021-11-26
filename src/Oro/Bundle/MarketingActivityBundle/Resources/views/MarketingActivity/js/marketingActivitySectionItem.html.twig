@@ -17,7 +17,7 @@
             </div>
             <div class="actions">
                 {% set action %}
-                    <a href="<%= routing.generate('oro_campaign_view', {'id': id}) %>"
+                    <a href="<%- routing.generate('oro_campaign_view', {'id': id}) %>"
                        title="{{ 'oro.marketingactivity.view_campaign.label'|trans }}"><i
                                 class="fa-eye hide-text">{{ 'oro.marketingactivity.view_campaign.label'|trans }}</i>
                         {{ 'oro.marketingactivity.view_campaign.label'|trans }}
