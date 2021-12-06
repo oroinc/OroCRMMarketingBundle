@@ -29,12 +29,12 @@ class MarketingActivityControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
         $expectedTypes = [
-            "Send" => '1',
-            "Open" => '1',
-            "Click" => '3',
-            "Soft Bounce" => '1',
-            "Hard Bounce" => '1',
-            "Unsubscribe" => '2',
+            'Send' => '1',
+            'Open' => '1',
+            'Click' => '3',
+            'Soft Bounce' => '1',
+            'Hard Bounce' => '1',
+            'Unsubscribe' => '2',
         ];
         foreach ($expectedTypes as $type => $value) {
             $typeXpath = '//div[contains(@class, "attribute-item")]/label[text() = "' . $type . '"]/'
@@ -64,9 +64,9 @@ class MarketingActivityControllerTest extends WebTestCase
             . ' "oromarketingactivity/js/app/components/marketing-activities-section-component")]'
             . '/@data-page-component-options')
             ->text();
-        $componentOptions = json_decode($componentOptionsJson, true);
+        $componentOptions = json_decode($componentOptionsJson, true, 512, JSON_THROW_ON_ERROR);
         $this->assertNotEmpty($componentOptions['activityListData']);
-        $activityListData = json_decode($componentOptions['activityListData'], true);
+        $activityListData = json_decode($componentOptions['activityListData'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals(2, $activityListData['count']);
         $campaign1 = $this->getReference('Campaign.Campaign1');
         $campaign2 = $this->getReference('Campaign.Campaign2');
@@ -114,9 +114,9 @@ class MarketingActivityControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $expectedTypes = [
-            "Send" => '1',
-            "Open" => '1',
-            "Click" => '1',
+            'Send' => '1',
+            'Open' => '1',
+            'Click' => '1',
         ];
         foreach ($expectedTypes as $type => $value) {
             $typeXpath = '//div[contains(@class, "attribute-item")]/label[text() = "' . $type . '"]/'

@@ -53,13 +53,11 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
     ): void {
         $emails = array_keys($from);
 
-        $this->doctrineHelper
-            ->expects(self::once())
+        $this->doctrineHelper->expects(self::once())
             ->method('getSingleEntityIdentifier')
             ->willReturn($id);
 
-        $this->emailAddressHelper
-            ->expects(self::once())
+        $this->emailAddressHelper->expects(self::once())
             ->method('buildFullEmailAddress')
             ->willReturn(sprintf('%s <%s>', reset($emails), reset($from)));
 
@@ -76,8 +74,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setMarketingList($marketingList)
             ->setTransportSettings($settings);
 
-        $this->emailRenderer
-            ->expects(self::once())
+        $this->emailRenderer->expects(self::once())
             ->method('compileMessage')
             ->willReturn([$subject, $body]);
 
@@ -91,8 +88,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setSubject($subject)
             ->setBody($body);
 
-        $this->emailModelSender
-            ->expects(self::once())
+        $this->emailModelSender->expects(self::once())
             ->method('send')
             ->with($emailModel);
 
@@ -160,8 +156,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
 
         $entity = new \stdClass();
 
-        $this->doctrineHelper
-            ->expects(self::once())
+        $this->doctrineHelper->expects(self::once())
             ->method('getSingleEntityIdentifier')
             ->willReturn(1);
 
@@ -178,8 +173,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setMarketingList($marketingList)
             ->setTransportSettings($settings);
 
-        $this->emailRenderer
-            ->expects(self::never())
+        $this->emailRenderer->expects(self::never())
             ->method('compileMessage');
 
         $this->transport->send($campaign, $entity, [], []);

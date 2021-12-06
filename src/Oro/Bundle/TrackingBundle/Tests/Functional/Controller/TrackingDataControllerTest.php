@@ -76,7 +76,7 @@ class TrackingDataControllerTest extends WebTestCase
         $this->assertArrayNotHasKey('errors', $result);
         $errors = implode(', ', $result['validation']);
         foreach ($expectedMessages as $expectedMessage) {
-            static::assertStringContainsString($expectedMessage, $errors);
+            self::assertStringContainsString($expectedMessage, $errors);
         }
 
         $this->runCommand('oro:cron:batch:cleanup', ['-i' => '1 day']);

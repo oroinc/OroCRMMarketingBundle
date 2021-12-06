@@ -18,8 +18,7 @@ class MarketingListControllerTest extends WebTestCase
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        $type = $em
-            ->getRepository('OroMarketingListBundle:MarketingListType')
+        $type = $em->getRepository(MarketingListType::class)
             ->find(MarketingListType::TYPE_DYNAMIC);
 
         $entity = new MarketingList();

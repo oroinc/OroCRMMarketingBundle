@@ -40,7 +40,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        static::assertStringContainsString("Tracking Website saved", $crawler->html());
+        self::assertStringContainsString('Tracking Website saved', $crawler->html());
     }
 
     /**
@@ -103,7 +103,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        static::assertStringContainsString("Tracking Website saved", $crawler->html());
+        self::assertStringContainsString('Tracking Website saved', $crawler->html());
     }
 
     /**
@@ -114,6 +114,6 @@ class TrackingWebsiteControllerTest extends WebTestCase
         $this->client->request('GET', $this->getUrl('oro_tracking_website_index'));
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        static::assertStringContainsString('unique2', $result->getContent());
+        self::assertStringContainsString('unique2', $result->getContent());
     }
 }

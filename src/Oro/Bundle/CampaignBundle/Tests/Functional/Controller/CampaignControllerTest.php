@@ -6,8 +6,8 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class CampaignControllerTest extends WebTestCase
 {
-    const TEST_CODE         = 'code-1234';
-    const UPDATED_TEST_CODE = 'updated-code-1234';
+    private const TEST_CODE = 'code-1234';
+    private const UPDATED_TEST_CODE = 'updated-code-1234';
 
     protected function setUp(): void
     {
@@ -17,21 +17,21 @@ class CampaignControllerTest extends WebTestCase
 
     public function testCreate()
     {
-        $crawler                                   = $this->client->request(
+        $crawler = $this->client->request(
             'GET',
             $this->getUrl('oro_campaign_create')
         );
-        $form                                      = $crawler->selectButton('Save and Close')->form();
-        $form['oro_campaign_form[name]']        = 'new name';
-        $form['oro_campaign_form[code]']        = self::TEST_CODE;
+        $form = $crawler->selectButton('Save and Close')->form();
+        $form['oro_campaign_form[name]'] = 'new name';
+        $form['oro_campaign_form[code]'] = self::TEST_CODE;
         $form['oro_campaign_form[description]'] = 'some description';
-        $form['oro_campaign_form[budget]']      = 154.54;
+        $form['oro_campaign_form[budget]'] = 154.54;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
-        $result  = $this->client->getResponse();
+        $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        static::assertStringContainsString("Campaign saved", $crawler->html());
+        self::assertStringContainsString('Campaign saved', $crawler->html());
     }
 
     /**
@@ -40,24 +40,24 @@ class CampaignControllerTest extends WebTestCase
     public function testUpdate()
     {
         $response = $this->client->requestGrid('oro-campaign-grid');
-        $result   = $this->getJsonResponseContent($response, 200);
-        $result   = reset($result['data']);
-        $crawler  = $this->client->request(
+        $result = $this->getJsonResponseContent($response, 200);
+        $result = reset($result['data']);
+        $crawler = $this->client->request(
             'GET',
             $this->getUrl('oro_campaign_update', ['id' => $result['id']])
         );
 
-        $form                                 = $crawler->selectButton('Save and Close')->form();
-        $form['oro_campaign_form[name]']   = 'new name';
+        $form = $crawler->selectButton('Save and Close')->form();
+        $form['oro_campaign_form[name]'] = 'new name';
         $form['oro_campaign_form[budget]'] = 177;
-        $form['oro_campaign_form[code]']   = self::UPDATED_TEST_CODE;
+        $form['oro_campaign_form[code]'] = self::UPDATED_TEST_CODE;
 
         $this->client->followRedirects(true);
 
         $crawler = $this->client->submit($form);
-        $result  = $this->client->getResponse();
+        $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        static::assertStringContainsString("Campaign saved", $crawler->html());
+        self::assertStringContainsString('Campaign saved', $crawler->html());
     }
 
     /**
@@ -66,8 +66,8 @@ class CampaignControllerTest extends WebTestCase
     public function testGrid()
     {
         $response = $this->client->requestGrid('oro-campaign-grid');
-        $result   = $this->getJsonResponseContent($response, 200);
-        $result   = reset($result['data']);
+        $result = $this->getJsonResponseContent($response, 200);
+        $result = reset($result['data']);
         $this->assertEquals('new name', $result['name']);
         $this->assertEquals('177.0000', $result['budget']);
         $this->assertEquals(self::UPDATED_TEST_CODE, $result['code']);

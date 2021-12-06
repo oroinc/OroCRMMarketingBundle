@@ -33,10 +33,7 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
         $this->loadOpportunitiesWithLeads($campaign1, $manager);
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function loadOpportunitiesWithLeads(Campaign $campaign, ObjectManager $manager)
+    private function loadOpportunitiesWithLeads(Campaign $campaign, ObjectManager $manager): void
     {
         $createdToday = new \DateTime('now', new \DateTimeZone('UTC'));
         $createdPastYear = new \DateTime('-1 year', new \DateTimeZone('UTC'));

@@ -15,11 +15,7 @@ class CampaignActionTest extends WebTestCase
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->client->useHashNavigation(true);
-        $this->loadFixtures(
-            [
-                LoadCampaignData::class,
-            ]
-        );
+        $this->loadFixtures([LoadCampaignData::class]);
     }
 
     public function testDelete()
@@ -49,11 +45,9 @@ class CampaignActionTest extends WebTestCase
 
         self::getContainer()->get('doctrine')->getManagerForClass($entityClass)->clear();
 
-        $removedCampaign = static::getContainer()
-            ->get('doctrine')
-            ->getRepository('OroCampaignBundle:Campaign')
+        $removedCampaign = self::getContainer()->get('doctrine')->getRepository(Campaign::class)
             ->find($campaignId);
 
-        static::assertNull($removedCampaign);
+        self::assertNull($removedCampaign);
     }
 }

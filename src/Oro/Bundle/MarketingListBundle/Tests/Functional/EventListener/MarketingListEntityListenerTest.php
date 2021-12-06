@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\EventListener;
 
 use Doctrine\Common\Cache\CacheProvider;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\DataFixtures\LoadMarketingListData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -13,8 +13,8 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
  */
 class MarketingListEntityListenerTest extends WebTestCase
 {
-    const CACHE_KEY = 'some';
-    const CACHE_VALUE = 'value';
+    private const CACHE_KEY = 'some';
+    private const CACHE_VALUE = 'value';
 
     protected function setUp(): void
     {
@@ -62,18 +62,12 @@ class MarketingListEntityListenerTest extends WebTestCase
         $this->assertFalse($this->getCacheProvider()->contains(self::CACHE_KEY));
     }
 
-    /**
-     * @return EntityManager
-     */
-    private function getEntityManager()
+    private function getEntityManager(): EntityManagerInterface
     {
         return self::getContainer()->get('doctrine')->getManagerForClass(MarketingList::class);
     }
 
-    /**
-     * @return CacheProvider
-     */
-    private function getCacheProvider()
+    private function getCacheProvider(): CacheProvider
     {
         return self::getContainer()->get('oro_marketing_list.virtual_relation_cache');
     }

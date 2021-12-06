@@ -2,28 +2,19 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Datagrid;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Oro\Bundle\MarketingListBundle\Datagrid\GridMarketingListTypeProvider;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class GridMarketingListTypeProviderTest extends WebTestCase
 {
-    /**
-     * @var GridMarketingListTypeProvider
-     */
-    protected $provider;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
+    /** @var GridMarketingListTypeProvider */
+    private $provider;
 
     protected function setUp(): void
     {
         $this->initClient();
 
-        $this->registry = $this->getContainer()->get('doctrine');
-        $this->provider = new GridMarketingListTypeProvider($this->registry);
+        $this->provider = new GridMarketingListTypeProvider($this->getContainer()->get('doctrine'));
     }
 
     public function testGetListTypeChoices()

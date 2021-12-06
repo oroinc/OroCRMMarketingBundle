@@ -14,20 +14,15 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
 {
     use ConfigManagerAwareTestTrait;
 
-    /**
-     * @var UniqueTrackingVisitRepository
-     */
-    private $repository;
-
     protected function setUp(): void
     {
         $this->initClient([], $this->generateBasicAuthHeader());
-        $this->loadFixtures([
-            LoadTrackingVisits::class
-        ]);
-        $this->repository = $this->getContainer()->get('doctrine')
-            ->getManagerForClass(UniqueTrackingVisit::class)
-            ->getRepository(UniqueTrackingVisit::class);
+        $this->loadFixtures([LoadTrackingVisits::class]);
+    }
+
+    private function getRepository(): UniqueTrackingVisitRepository
+    {
+        return self::getContainer()->get('doctrine')->getRepository(UniqueTrackingVisit::class);
     }
 
     public function testGetUniqueRecordByTrackingVisit()
@@ -37,7 +32,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
 
         $timezone = $this->getTimezone();
 
-        $uniqueVisit = $this->repository->getUniqueRecordByTrackingVisit($visit, $timezone);
+        $uniqueVisit = $this->getRepository()->getUniqueRecordByTrackingVisit($visit, $timezone);
         $this->assertInstanceOf(UniqueTrackingVisit::class, $uniqueVisit);
         $this->assertSame(1, $uniqueVisit->getVisitCount());
 
@@ -52,7 +47,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         $newVisit->setFirstActionTime(new \DateTime('2011-11-11 11:11:11', new \DateTimeZone('UTC')));
 
         $timezone = $this->getTimezone();
-        $loggedUniqueVisit = $this->repository->logTrackingVisit($newVisit, $timezone);
+        $loggedUniqueVisit = $this->getRepository()->logTrackingVisit($newVisit, $timezone);
         $this->assertInstanceOf(UniqueTrackingVisit::class, $loggedUniqueVisit);
         $this->assertSame(1, $loggedUniqueVisit->getVisitCount());
         $this->assertUniqueVisitMatchesVisit($newVisit, $loggedUniqueVisit, $timezone);
@@ -64,18 +59,15 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         $visit = $this->getReference(LoadTrackingVisits::TRACKING_VISIT_2);
 
         $timezone = $this->getTimezone();
-        $loggedUniqueVisit = $this->repository->logTrackingVisit($visit, $timezone);
+        $loggedUniqueVisit = $this->getRepository()->logTrackingVisit($visit, $timezone);
         $this->assertInstanceOf(UniqueTrackingVisit::class, $loggedUniqueVisit);
         $this->assertSame(2, $loggedUniqueVisit->getVisitCount());
         $this->assertUniqueVisitMatchesVisit($visit, $loggedUniqueVisit, $timezone);
     }
 
-    /**
-     * @return \DateTimeZone
-     */
-    private function getTimezone()
+    private function getTimezone(): \DateTimeZone
     {
-        $configManager = self::getConfigManager('global');
+        $configManager = self::getConfigManager();
 
         $timezoneName = $configManager->get('oro_locale.timezone');
         if (!$timezoneName) {
@@ -88,7 +80,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         TrackingVisit $visit,
         UniqueTrackingVisit $uniqueVisit,
         \DateTimeZone $timezone
-    ) {
+    ): void {
         $this->assertSame($visit->getTrackingWebsite(), $uniqueVisit->getTrackingWebsite());
         $this->assertSame(md5($visit->getUserIdentifier()), $uniqueVisit->getUserIdentifier());
         $visitDate = clone $visit->getFirstActionTime();

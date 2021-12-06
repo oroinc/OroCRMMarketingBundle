@@ -3,6 +3,9 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Functional\Command;
 
 use Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand;
+use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
+use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadCampaignData;
+use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadTrackingEventData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class CalculateTrackingEventSummaryCommandTest extends WebTestCase
@@ -10,12 +13,7 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
     protected function setUp(): void
     {
         $this->initClient();
-        $this->loadFixtures(
-            [
-                'Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadCampaignData',
-                'Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadTrackingEventData',
-            ]
-        );
+        $this->loadFixtures([LoadCampaignData::class, LoadTrackingEventData::class]);
     }
 
     public function testReportUpdate()
@@ -73,13 +71,10 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
         $this->assertEquals($expectedData, $summaryData);
     }
 
-    /**
-     * @return array
-     */
-    protected function getSummaryData()
+    private function getSummaryData(): array
     {
         return $this->getContainer()->get('doctrine')
-            ->getRepository('OroCampaignBundle:TrackingEventSummary')
+            ->getRepository(TrackingEventSummary::class)
             ->createQueryBuilder('q')
             ->select(['q.code', 'q.name', 'q.visitCount', 'DATE(q.loggedAt) as loggedAtDate'])
             ->addOrderBy('q.code, q.name, q.loggedAt')

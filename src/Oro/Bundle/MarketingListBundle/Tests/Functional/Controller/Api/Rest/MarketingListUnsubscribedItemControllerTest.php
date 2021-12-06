@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest;
 
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\DataFixtures\LoadMarketingListData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,17 +12,12 @@ class MarketingListUnsubscribedItemControllerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->initClient([], $this->generateWsseAuthHeader());
-
-        $this->loadFixtures(
-            [ __NAMESPACE__ . '\\DataFixtures\\LoadMarketingListData']
-        );
+        $this->loadFixtures([LoadMarketingListData::class]);
     }
 
     public function testCreate()
     {
-        $marketingListId = $this->getContainer()
-            ->get('doctrine')
-            ->getRepository('OroMarketingListBundle:MarketingList')
+        $marketingListId = $this->getContainer()->get('doctrine')->getRepository(MarketingList::class)
             ->findOneBy([])
             ->getId();
 
@@ -43,10 +40,8 @@ class MarketingListUnsubscribedItemControllerTest extends WebTestCase
 
     /**
      * @depends testCreate
-     *
-     * @param integer $id
      */
-    public function testDelete($id)
+    public function testDelete(int $id)
     {
         $this->client->jsonRequest(
             'DELETE',
