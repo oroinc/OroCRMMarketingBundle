@@ -2,6 +2,17 @@ The upgrade instructions are available at [Oro documentation website](https://do
 
 The current file describes significant changes in the code that may affect the upgrade of your customizations.
 
+## Not released
+
+### Added
+
+#### CampaignBundle
+* Added entity name providers for `Campaign` and `EmailCampaign` entities
+
+#### MarketingListBundle
+* Added entity name provider for `MarketingList` entity
+
+
 ## 5.0.0-rc (2021-12-07)
 [Show detailed list of changes](incompatibilities-5-0-rc.md)
 

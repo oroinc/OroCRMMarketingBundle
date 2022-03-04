@@ -1,7 +1,6 @@
 search:
     Oro\Bundle\MarketingListBundle\Entity\MarketingList:
         alias: oro_marketing_list
-        title_fields: [name]
         label: oro.marketinglist.entity_plural_label
         route:
             name: oro_marketing_list_view

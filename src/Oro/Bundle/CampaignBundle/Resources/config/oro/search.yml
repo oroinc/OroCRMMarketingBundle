@@ -1,7 +1,6 @@
 search:
     Oro\Bundle\CampaignBundle\Entity\Campaign:
         alias: oro_campaign
-        title_fields: [name]
         label: oro.campaign.entity_plural_label
         route:
             name: oro_campaign_view
@@ -24,7 +23,6 @@ search:
 
     Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
         alias: oro_email_campaign
-        title_fields: [name]
         label: oro.email_campaign.entity_plural_label
         route:
             name: oro_email_campaign_view
