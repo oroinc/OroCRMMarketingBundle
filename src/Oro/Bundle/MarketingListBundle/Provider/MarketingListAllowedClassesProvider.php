@@ -2,63 +2,41 @@
 
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Component\Config\Cache\WarmableConfigCacheInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * The provider that can be used to get a list of entities are allowed to be used in marketing lists.
  */
 class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterface
 {
-    const MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY = 'oro_marketing_list.allowed_entities';
+    private const MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY = 'oro_marketing_list.allowed_entities';
 
-    /**
-     * @var CacheProvider
-     */
-    private $cacheProvider;
-
-    /**
-     * @var EntityProvider
-     */
-    private $entityProvider;
+    private CacheInterface $cacheProvider;
+    private EntityProvider $entityProvider;
 
     public function __construct(
-        CacheProvider $cacheProvider,
+        CacheInterface $cacheProvider,
         EntityProvider $entityProvider
     ) {
         $this->cacheProvider = $cacheProvider;
         $this->entityProvider = $entityProvider;
     }
 
-    /**
-     * @return string[]
-     */
     public function getList(): array
     {
-        $entitiesList = $this->cacheProvider->fetch(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY);
-        if (false === $entitiesList) {
-            $entitiesList = $this->getEntitiesList();
-            $this->cacheProvider->save(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY, $entitiesList);
-        }
-
-        return $entitiesList;
+        return $this->cacheProvider->get(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY, function () {
+            return $this->getEntitiesList();
+        });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function warmUpCache(): void
     {
-        $this->cacheProvider->save(
-            static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY,
-            $this->getEntitiesList()
-        );
+        $this->cacheProvider->delete(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY);
+        $this->getList();
     }
 
-    /**
-     * @return string[]
-     */
     private function getEntitiesList(): array
     {
         $entities = $this->entityProvider->getEntities(false, true, false);
@@ -66,11 +44,7 @@ class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterfac
         return $this->extractEntitiesNames($entities);
     }
 
-    /**
-     * @param array $entities
-     * @return string[]
-     */
-    private function extractEntitiesNames($entities): array
+    private function extractEntitiesNames(array $entities): array
     {
         return array_map(function ($entity) {
             return $entity['name'];

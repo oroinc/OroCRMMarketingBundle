@@ -2,30 +2,21 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Component\Testing\Unit\Cache\CacheTrait;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCase
 {
-    use CacheTrait;
-
-    /**
-     * @var CacheProvider
-     */
-    private $cacheProvider;
-
-    /**
-     * @var EntityProvider
-     */
-    private $entityProvider;
+    private CacheInterface $cacheProvider;
+    private EntityProvider $entityProvider;
 
     protected function setUp(): void
     {
-        $this->cacheProvider = $this->getArrayCache();
+        $this->cacheProvider = $this->createMock(CacheInterface::class);
 
         $this->entityProvider = $this->createMock(EntityProvider::class);
         $this->entityProvider->expects($this->any())
@@ -40,19 +31,25 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
 
     public function testWarmUpCache()
     {
+        $this->cacheProvider->expects($this->once())
+            ->method('delete')
+            ->with('oro_marketing_list.allowed_entities');
+        $this->cacheProvider->expects($this->once())
+            ->method('get')
+            ->with('oro_marketing_list.allowed_entities')
+            ->willReturnCallback(function ($cacheKey, $callback) {
+                $item = $this->createMock(ItemInterface::class);
+                return $callback($item);
+            });
         $this->provider->warmUpCache();
-        $this->assertEquals(
-            $this->getCachedAllowedEntities(),
-            $this->cacheProvider->fetch(MarketingListAllowedClassesProvider::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY)
-        );
     }
 
     public function testGetListCached()
     {
-        $this->cacheProvider->save(
-            MarketingListAllowedClassesProvider::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY,
-            $this->getCachedAllowedEntities()
-        );
+        $this->cacheProvider->expects($this->once())
+            ->method('get')
+            ->with('oro_marketing_list.allowed_entities')
+            ->willReturn($this->getCachedAllowedEntities());
 
         $entities = $this->provider->getList();
 
@@ -61,6 +58,13 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
 
     public function testGetListNotCached()
     {
+        $this->cacheProvider->expects($this->once())
+            ->method('get')
+            ->with('oro_marketing_list.allowed_entities')
+            ->willReturnCallback(function ($cacheKey, $callback) {
+                $item = $this->createMock(ItemInterface::class);
+                return $callback($item);
+            });
         $entities = $this->provider->getList();
 
         $this->assertEquals($this->getCachedAllowedEntities(), $entities);

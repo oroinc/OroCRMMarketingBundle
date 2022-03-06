@@ -2,51 +2,38 @@
 
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Provides virtual relations between an entity and a marketing list that is based on this entity.
  */
 class MarketingListVirtualRelationProvider implements VirtualRelationProviderInterface
 {
-    const RELATION_NAME = 'marketingList_virtual';
-    const MARKETING_LIST_ITEM_RELATION_NAME = 'marketingListItems';
-    const MARKETING_LIST_BY_ENTITY_CACHE_KEY = 'oro_marketing_list.lists_by_entities';
+    private const RELATION_NAME = 'marketingList_virtual';
+    public const MARKETING_LIST_ITEM_RELATION_NAME = 'marketingListItems';
+    private const MARKETING_LIST_BY_ENTITY_CACHE_KEY = 'oro_marketing_list.lists_by_entities';
 
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    private DoctrineHelper $doctrineHelper;
+    private CacheInterface $cacheProvider;
 
-    /**
-     * @var CacheProvider
-     */
-    private $cacheProvider;
-
-    public function __construct(DoctrineHelper $doctrineHelper, CacheProvider $cacheProvider)
+    public function __construct(DoctrineHelper $doctrineHelper, CacheInterface $cacheProvider)
     {
         $this->doctrineHelper = $doctrineHelper;
         $this->cacheProvider = $cacheProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isVirtualRelation($className, $fieldName)
+    public function isVirtualRelation($className, $fieldName): bool
     {
         return
             $fieldName === self::RELATION_NAME
             && $this->hasMarketingList($className);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVirtualRelationQuery($className, $fieldName)
+    public function getVirtualRelationQuery($className, $fieldName): array
     {
         $relations = $this->getVirtualRelations($className);
         if (array_key_exists($fieldName, $relations)) {
@@ -56,10 +43,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVirtualRelations($className)
+    public function getVirtualRelations($className): array
     {
         if ($this->hasMarketingList($className)) {
             return [self::RELATION_NAME => $this->getRelationDefinition($className)];
@@ -68,10 +52,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTargetJoinAlias($className, $fieldName, $selectFieldName = null)
+    public function getTargetJoinAlias($className, $fieldName, $selectFieldName = null): string
     {
         $isItemField = in_array(
             $selectFieldName,
@@ -87,16 +68,10 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         return self::RELATION_NAME;
     }
 
-    /**
-     * @param string $className
-     * @return bool
-     */
-    public function hasMarketingList($className)
+    public function hasMarketingList(string $className): bool
     {
-        $marketingListByEntity = $this->cacheProvider->fetch(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY);
-        if (false === $marketingListByEntity) {
+        $marketingListByEntity = $this->cacheProvider->get(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY, function () {
             $marketingListByEntity = [];
-
             $repository = $this->doctrineHelper->getEntityRepository(MarketingList::class);
             $qb = $repository->createQueryBuilder('ml')
                 ->select('ml.entity')
@@ -105,18 +80,13 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
             foreach ($entities as $entity) {
                 $marketingListByEntity[$entity['entity']] = true;
             }
-
-            $this->cacheProvider->save(static::MARKETING_LIST_BY_ENTITY_CACHE_KEY, $marketingListByEntity);
-        }
+            return $marketingListByEntity;
+        });
 
         return !empty($marketingListByEntity[$className]);
     }
 
-    /**
-     * @param string $className
-     * @return array
-     */
-    public function getRelationDefinition($className)
+    public function getRelationDefinition(string $className): array
     {
         $idField = $this->doctrineHelper->getSingleEntityIdentifierFieldName($className);
 

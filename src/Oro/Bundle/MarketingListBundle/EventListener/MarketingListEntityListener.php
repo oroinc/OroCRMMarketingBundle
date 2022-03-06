@@ -2,37 +2,34 @@
 
 namespace Oro\Bundle\MarketingListBundle\EventListener;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * This listener invalidates marketing list cache when marketing list entities set is changed.
  */
 class MarketingListEntityListener
 {
-    /**
-     * @var CacheProvider
-     */
-    private $cacheProvider;
+    private CacheInterface $cacheProvider;
 
-    public function __construct(CacheProvider $cacheProvider)
+    public function __construct(CacheInterface $cacheProvider)
     {
         $this->cacheProvider = $cacheProvider;
     }
 
     public function postUpdate(MarketingList $marketingList, LifecycleEventArgs $event)
     {
-        $this->cacheProvider->deleteAll();
+        $this->cacheProvider->clear();
     }
 
     public function postPersist(MarketingList $marketingList, LifecycleEventArgs $event)
     {
-        $this->cacheProvider->deleteAll();
+        $this->cacheProvider->clear();
     }
 
     public function postRemove(MarketingList $marketingList, LifecycleEventArgs $event)
     {
-        $this->cacheProvider->deleteAll();
+        $this->cacheProvider->clear();
     }
 }

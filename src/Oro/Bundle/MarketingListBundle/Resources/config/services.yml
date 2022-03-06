@@ -160,9 +160,9 @@ services:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\MarketingListBundle\Entity\MarketingList', event: postRemove }
 
     oro_marketing_list.virtual_relation_cache:
-          parent: oro.cache.abstract
-          calls:
-              - [setNamespace, [ 'oro_marketing_list' ] ]
+        parent: oro.data.cache
+        tags:
+            - { name: 'cache.pool', namespace: 'oro_marketing_list' }
 
     oro_marketing_list.virtual_relation_provider.marketing_list:
         class: Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider
@@ -180,9 +180,9 @@ services:
             - { name: oro_entity.virtual_field_provider, priority: -150 }
 
     oro_marketing_list.marketing_list.cache:
-        parent: oro.cache.abstract
-        calls:
-            - [ setNamespace, [ 'oro_marketing_list' ] ]
+        parent: oro.data.cache
+        tags:
+            - { name: 'cache.pool', namespace: 'oro_marketing_list' }
 
     oro_marketing_list.provider.marketing_list_allowed_classes:
         class: Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider

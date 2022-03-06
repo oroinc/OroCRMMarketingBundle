@@ -2,23 +2,22 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Provider;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListVirtualRelationProvider;
-use Oro\Component\Testing\Unit\Cache\CacheTrait;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    use CacheTrait;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
-    /** @var CacheProvider */
+    /** @var CacheInterface */
     private $arrayCache;
 
     /** @var MarketingListVirtualRelationProvider */
@@ -27,7 +26,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
-        $this->arrayCache = $this->getArrayCache();
+        $this->arrayCache = $this->createMock(CacheInterface::class);
 
         $this->provider = new MarketingListVirtualRelationProvider($this->doctrineHelper, $this->arrayCache);
     }
@@ -43,6 +42,13 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     ) {
         if ('marketingList_virtual' === $fieldName) {
             $this->assertRepositoryCall($className, $marketingList);
+            $this->arrayCache->expects($this->once())
+                ->method('get')
+                ->with('oro_marketing_list.lists_by_entities')
+                ->willReturnCallback(function ($cacheKey, $callback) {
+                    $item = $this->createMock(ItemInterface::class);
+                    return $callback($item);
+                });
         } else {
             $this->doctrineHelper->expects($this->never())
                 ->method('getEntityRepository');
@@ -58,12 +64,12 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
             'incorrect class incorrect field' => ['stdClass', 'test', null, false],
             'incorrect class correct field' => [
                 'stdClass',
-                MarketingListVirtualRelationProvider::RELATION_NAME,
+                'marketingList_virtual',
                 null,
                 false
             ],
             'incorrect field' => ['stdClass', 'test', $marketingList, false],
-            'correct' => ['stdClass', MarketingListVirtualRelationProvider::RELATION_NAME, $marketingList, true],
+            'correct' => ['stdClass', 'marketingList_virtual', $marketingList, true],
         ];
     }
 
@@ -71,6 +77,13 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     {
         $className = 'stdClass';
 
+        $this->arrayCache->expects($this->once())
+            ->method('get')
+            ->with('oro_marketing_list.lists_by_entities')
+            ->willReturnCallback(function ($cacheKey, $callback) {
+                $item = $this->createMock(ItemInterface::class);
+                return $callback($item);
+            });
         $this->assertRepositoryCall($className, null);
         $result = $this->provider->getVirtualRelations($className);
 
@@ -84,6 +97,13 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
         $className = 'stdClass';
         $marketingList = $this->createMock(MarketingList::class);
 
+        $this->arrayCache->expects($this->once())
+            ->method('get')
+            ->with('oro_marketing_list.lists_by_entities')
+            ->willReturnCallback(function ($cacheKey, $callback) {
+                $item = $this->createMock(ItemInterface::class);
+                return $callback($item);
+            });
         $this->assertRepositoryCall($className, $marketingList);
         $this->doctrineHelper->expects($this->once())
             ->method('getSingleEntityIdentifierFieldName')
@@ -91,7 +111,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
             ->willReturn('id');
 
         $result = $this->provider->getVirtualRelations($className);
-        $this->assertArrayHasKey(MarketingListVirtualRelationProvider::RELATION_NAME, $result);
+        $this->assertArrayHasKey('marketingList_virtual', $result);
     }
 
     public function relationsDataProvider(): array
@@ -166,12 +186,10 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
 
     public function testHasMarketingListMethodWithCache()
     {
-        $this->arrayCache->save(
-            MarketingListVirtualRelationProvider::MARKETING_LIST_BY_ENTITY_CACHE_KEY,
-            [
-                \stdClass::class => true,
-            ]
-        );
+        $this->arrayCache->expects($this->exactly(2))
+            ->method('get')
+            ->with('oro_marketing_list.lists_by_entities')
+            ->willReturn([\stdClass::class => true]);
 
         $this->assertTrue($this->provider->hasMarketingList('stdClass'));
         $this->assertFalse($this->provider->hasMarketingList('nonExistingClass'));

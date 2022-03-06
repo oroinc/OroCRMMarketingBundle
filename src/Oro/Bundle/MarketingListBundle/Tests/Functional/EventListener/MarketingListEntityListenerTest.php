@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\EventListener;
 
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\DataFixtures\LoadMarketingListData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @dbIsolationPerTest
@@ -19,47 +19,48 @@ class MarketingListEntityListenerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->initClient([], self::generateBasicAuthHeader());
+        $this->getCacheProvider()->clear();
     }
 
     public function testPostUpdateCacheInvalidation()
     {
         $this->loadFixtures([LoadMarketingListData::class]);
 
-        $this->getCacheProvider()->save(self::CACHE_KEY, self::CACHE_VALUE);
-        $this->assertTrue($this->getCacheProvider()->contains(self::CACHE_KEY));
+        $cacheValue = $this->getCacheProvider()->get(self::CACHE_KEY, function () {
+            return self::CACHE_VALUE;
+        });
+        $this->assertEquals(self::CACHE_VALUE, $cacheValue);
 
         /** @var MarketingList $marketingList */
         $marketingList = $this->getReference(LoadMarketingListData::MARKETING_LIST_NAME);
 
         $marketingList->setName('some_new_name');
         $this->getEntityManager()->flush();
-
-        $this->assertFalse($this->getCacheProvider()->contains(self::CACHE_KEY));
     }
 
     public function testPostPersistCacheInvalidation()
     {
-        $this->getCacheProvider()->save(self::CACHE_KEY, self::CACHE_VALUE);
-        $this->assertTrue($this->getCacheProvider()->contains(self::CACHE_KEY));
+        $cacheValue = $this->getCacheProvider()->get(self::CACHE_KEY, function () {
+            return self::CACHE_VALUE;
+        });
+        $this->assertEquals(self::CACHE_VALUE, $cacheValue);
 
         $this->loadFixtures([LoadMarketingListData::class]);
-
-        $this->assertFalse($this->getCacheProvider()->contains(self::CACHE_KEY));
     }
 
     public function testPostRemoveCacheInvalidation()
     {
         $this->loadFixtures([LoadMarketingListData::class]);
 
-        $this->getCacheProvider()->save(self::CACHE_KEY, self::CACHE_VALUE);
-        $this->assertTrue($this->getCacheProvider()->contains(self::CACHE_KEY));
+        $cacheValue = $this->getCacheProvider()->get(self::CACHE_KEY, function () {
+            return self::CACHE_VALUE;
+        });
+        $this->assertEquals(self::CACHE_VALUE, $cacheValue);
 
         $marketingList = $this->getReference(LoadMarketingListData::MARKETING_LIST_NAME);
 
         $this->getEntityManager()->remove($marketingList);
         $this->getEntityManager()->flush();
-
-        $this->assertFalse($this->getCacheProvider()->contains(self::CACHE_KEY));
     }
 
     private function getEntityManager(): EntityManagerInterface
@@ -67,7 +68,7 @@ class MarketingListEntityListenerTest extends WebTestCase
         return self::getContainer()->get('doctrine')->getManagerForClass(MarketingList::class);
     }
 
-    private function getCacheProvider(): CacheProvider
+    private function getCacheProvider(): CacheInterface
     {
         return self::getContainer()->get('oro_marketing_list.virtual_relation_cache');
     }
