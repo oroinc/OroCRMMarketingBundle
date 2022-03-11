@@ -13,7 +13,7 @@
                 <span class="fa-volume-up" aria-hidden="true"></span>
             </div>
             <div class="campaign-name" id="<%- labelId %>">
-                <strong><%= campaignName %></strong>
+                <strong><%- campaignName %></strong>
             </div>
             <div class="actions">
                 {% set action %}
@@ -38,10 +38,10 @@
             </div>
             <div class="extra-info">
                 <div class="marketing-activity-type">
-                    {{ 'oro.marketingactivity.last_event_type.label'|trans }}: <%= eventType %>
+                    {{ 'oro.marketingactivity.last_event_type.label'|trans }}: <%- eventType %>
                 </div>
                 <div class="marketing-activity-date">
-                    {{ 'oro.marketingactivity.last_activity_date.label'|trans }}: <%= dateFormatter.formatDateTime(eventDate) %>
+                    {{ 'oro.marketingactivity.last_activity_date.label'|trans }}: <%- dateFormatter.formatDateTime(eventDate) %>
                 </div>
             </div>
         </div>
