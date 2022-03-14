@@ -68,7 +68,8 @@ class EmailTransport implements TransportInterface, LoggerAwareInterface
             ->setEntityId($entityId)
             ->setTo($to)
             ->setSubject($subjectRendered)
-            ->setBody($templateRendered);
+            ->setBody($templateRendered)
+            ->setOrganization($campaign->getOrganization());
 
         try {
             $this->emailModelSender->send($emailModel, null, false);

@@ -12,6 +12,7 @@ use Oro\Bundle\EmailBundle\Sender\EmailModelSender;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class EmailTransportTest extends \PHPUnit\Framework\TestCase
 {
@@ -51,6 +52,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         ?string $subject,
         ?string $body
     ): void {
+        $organization = new Organization();
+        $organization->setId(12);
         $emails = array_keys($from);
 
         $this->doctrineHelper->expects(self::once())
@@ -72,7 +75,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         $campaign = new EmailCampaign();
         $campaign
             ->setMarketingList($marketingList)
-            ->setTransportSettings($settings);
+            ->setTransportSettings($settings)
+            ->setOrganization($organization);
 
         $this->emailRenderer->expects(self::once())
             ->method('compileMessage')
@@ -86,7 +90,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setEntityId($id)
             ->setTo($to)
             ->setSubject($subject)
-            ->setBody($body);
+            ->setBody($body)
+            ->setOrganization($organization);
 
         $this->emailModelSender->expects(self::once())
             ->method('send')
@@ -151,6 +156,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
 
     public function testFromEmpty(): void
     {
+        $organization = new Organization();
+        $organization->setId(13);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Sender email and name is empty');
 
@@ -171,7 +178,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         $campaign = new EmailCampaign();
         $campaign
             ->setMarketingList($marketingList)
-            ->setTransportSettings($settings);
+            ->setTransportSettings($settings)
+            ->setOrganization($organization);
 
         $this->emailRenderer->expects(self::never())
             ->method('compileMessage');
