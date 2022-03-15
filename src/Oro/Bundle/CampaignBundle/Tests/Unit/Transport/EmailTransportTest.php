@@ -8,6 +8,7 @@ use Oro\Bundle\CampaignBundle\Transport\EmailTransport;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class EmailTransportTest extends \PHPUnit\Framework\TestCase
 {
@@ -59,17 +60,19 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param int    $id
-     * @param string $entity
-     * @param array  $from
-     * @param array  $to
-     * @param string $subject
-     * @param string $body
-     *
      * @dataProvider sendDataProvider
      */
-    public function testSend($id, $entity, array $from, array $to, $subject, $body, $expects)
-    {
+    public function testSend(
+        $id,
+        ?string $entity,
+        array $from,
+        array $to,
+        ?string $subject,
+        ?string $body,
+        $expects
+    ): void {
+        $organization = new Organization();
+        $organization->setId(12);
         $emails = array_keys($from);
 
         $this->helper
@@ -93,7 +96,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         $campaign = new EmailCampaign();
         $campaign
             ->setMarketingList($marketingList)
-            ->setTransportSettings($settings);
+            ->setTransportSettings($settings)
+            ->setOrganization($organization);
 
         $this->renderer
             ->expects($this->once())
@@ -108,7 +112,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->setEntityId($id)
             ->setTo($to)
             ->setSubject($subject)
-            ->setBody($body);
+            ->setBody($body)
+            ->setOrganization($organization);
 
         $this->processor
             ->expects($expects)
@@ -163,6 +168,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
 
     public function testFromEmpty()
     {
+        $organization = new Organization();
+        $organization->setId(13);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Sender email and name is empty');
 
@@ -184,7 +191,8 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         $campaign = new EmailCampaign();
         $campaign
             ->setMarketingList($marketingList)
-            ->setTransportSettings($settings);
+            ->setTransportSettings($settings)
+            ->setOrganization($organization);
 
         $this->renderer
             ->expects($this->never())
