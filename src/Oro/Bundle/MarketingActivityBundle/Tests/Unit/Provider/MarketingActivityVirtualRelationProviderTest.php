@@ -33,11 +33,14 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
     public function testIsVirtualRelation(
         string $className,
         string $fieldName,
-        ?MarketingActivity $marketingActivity,
+        bool $isIgnoredEntity,
         bool $expected
     ) {
         if ('marketingActivity' === $fieldName) {
-            $this->assertEntityProviderCall($className, $marketingActivity);
+            $this->entityProvider->expects($this->once())
+                ->method('isIgnoredEntity')
+                ->with($className)
+                ->willReturn($isIgnoredEntity);
         } else {
             $this->entityProvider->expects($this->never())
                 ->method('isIgnoredEntity');
@@ -51,10 +54,13 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
     public function testGetVirtualRelationQuery(
         string $className,
         string $fieldName,
-        ?MarketingActivity $marketingActivity,
+        bool $isIgnoredEntity,
         bool $expected
     ) {
-        $this->assertEntityProviderCall($className, $marketingActivity);
+        $this->entityProvider->expects($this->once())
+            ->method('isIgnoredEntity')
+            ->with($className)
+            ->willReturn($isIgnoredEntity);
         $result = $this->provider->getVirtualRelationQuery($className, $fieldName);
         if ($expected) {
             $this->assertNotEmpty($result);
@@ -65,40 +71,36 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
 
     public function fieldDataProvider(): array
     {
-        $className = 'stdClass';
-        $marketingActivity = $this->createMock(MarketingActivity::class);
-
         return [
-            'incorrect class incorrect field' => [$className, 'test', null, false],
-            'incorrect class correct field' => [$className, 'marketingActivity', null, false],
-            'correct class incorrect field' => [$className, 'test', $marketingActivity, false],
-            'correct class correct field' => [$className, 'marketingActivity', $marketingActivity, true],
+            'incorrect class incorrect field' => [\stdClass::class, 'test', true, false],
+            'incorrect class correct field' => [\stdClass::class, 'marketingActivity', true, false],
+            'correct class incorrect field' => [\stdClass::class, 'test', false, false],
+            'correct class correct field' => [\stdClass::class, 'marketingActivity', false, true],
         ];
     }
 
-    /**
-     * @dataProvider relationsDataProvider
-     */
-    public function testGetVirtualRelations(string $className, ?MarketingActivity $marketingActivity, bool $expected)
+    public function testGetVirtualRelationsForIgnoredEntity()
     {
-        $this->assertEntityProviderCall($className, $marketingActivity);
-        $result = $this->provider->getVirtualRelations($className);
-        if ($expected) {
-            $this->assertNotEmpty($result);
-        } else {
-            $this->assertEmpty($result);
-        }
+        $className = \stdClass::class;
+
+        $this->entityProvider->expects($this->once())
+            ->method('isIgnoredEntity')
+            ->with($className)
+            ->willReturn(true);
+
+        $this->assertEmpty($this->provider->getVirtualRelations($className));
     }
 
-    public function relationsDataProvider(): array
+    public function testGetVirtualRelationsForNotIgnoredEntity()
     {
-        $className = 'stdClass';
-        $marketingActivity = $this->createMock(MarketingActivity::class);
+        $className = \stdClass::class;
 
-        return [
-            'incorrect class' => [$className, null, false],
-            'correct class' => [$className, $marketingActivity, true],
-        ];
+        $this->entityProvider->expects($this->once())
+            ->method('isIgnoredEntity')
+            ->with($className)
+            ->willReturn(false);
+
+        $this->assertNotEmpty($this->provider->getVirtualRelations($className));
     }
 
     public function testGetTargetJoinAlias()
@@ -122,8 +124,10 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
                                 'join' => MarketingActivity::class,
                                 'alias' => 'marketingActivity',
                                 'conditionType' => Join::WITH,
-                                'condition' => "marketingActivity.entityClass = '{$className}'"
-                                    . ' AND marketingActivity.entityId = entity.id'
+                                'condition' => sprintf(
+                                    'marketingActivity.entityClass = \'%s\' AND marketingActivity.entityId = entity.id',
+                                    $className
+                                )
                             ]
                         ]
                     ]
@@ -135,28 +139,14 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
 
     public function testHasMarketingActivityCachedResultOnSecondCallSameClass()
     {
-        $marketingActivity = new MarketingActivity();
-        $this->assertEntityProviderCall(\stdClass::class, $marketingActivity);
-
-        $this->provider->hasMarketingActivity(\stdClass::class);
-        $this->provider->hasMarketingActivity(\stdClass::class);
-    }
-
-    private function assertEntityProviderCall(string $className, ?MarketingActivity $marketingActivity): void
-    {
-        $results = [];
-        if ($marketingActivity) {
-            $results[] = ['name' => $className];
-        }
+        $className = \stdClass::class;
 
         $this->entityProvider->expects($this->once())
             ->method('isIgnoredEntity')
             ->with($className)
             ->willReturn(false);
 
-        $this->entityProvider->expects($this->once())
-            ->method('getEntity')
-            ->with($className)
-            ->willReturn($results);
+        $this->provider->hasMarketingActivity($className);
+        $this->provider->hasMarketingActivity($className);
     }
 }

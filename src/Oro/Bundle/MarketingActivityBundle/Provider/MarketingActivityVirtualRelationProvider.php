@@ -15,19 +15,13 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
 {
     const RELATION_NAME = 'marketingActivity';
 
-    /**
-     * @var DoctrineHelper
-     */
+    /** @var DoctrineHelper */
     protected $doctrineHelper;
 
-    /**
-     * @var EntityProvider
-     */
+    /** @var EntityProvider */
     protected $entityProvider;
 
-    /**
-     * @var array|null
-     */
+    /** @var array */
     protected $marketingActivityByEntity = [];
 
     public function __construct(DoctrineHelper $doctrineHelper, EntityProvider $entityProvider)
@@ -52,7 +46,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
     public function getVirtualRelationQuery($className, $fieldName)
     {
         $relations = $this->getVirtualRelations($className);
-        if (array_key_exists($fieldName, $relations)) {
+        if (\array_key_exists($fieldName, $relations)) {
             return $relations[$fieldName]['query'];
         }
 
@@ -87,12 +81,8 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
      */
     public function hasMarketingActivity($className)
     {
-        if (!array_key_exists($className, $this->marketingActivityByEntity)) {
-            if (!$this->entityProvider->isIgnoredEntity($className)) {
-                $this->marketingActivityByEntity[$className] = !empty($this->entityProvider->getEntity($className));
-            } else {
-                $this->marketingActivityByEntity[$className] = false;
-            }
+        if (!isset($this->marketingActivityByEntity[$className])) {
+            $this->marketingActivityByEntity[$className] = !$this->entityProvider->isIgnoredEntity($className);
         }
 
         return $this->marketingActivityByEntity[$className];
