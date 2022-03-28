@@ -3,16 +3,12 @@
 namespace Oro\Bundle\MarketingActivityBundle\Tests\Unit\Provider;
 
 use Doctrine\ORM\Query\Expr\Join;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider;
 
 class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
-    private $doctrineHelper;
-
     /** @var EntityProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $entityProvider;
 
@@ -21,10 +17,9 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
 
     protected function setUp(): void
     {
-        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
         $this->entityProvider = $this->createMock(EntityProvider::class);
 
-        $this->provider = new MarketingActivityVirtualRelationProvider($this->doctrineHelper, $this->entityProvider);
+        $this->provider = new MarketingActivityVirtualRelationProvider($this->entityProvider);
     }
 
     /**
@@ -33,11 +28,14 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
     public function testIsVirtualRelation(
         string $className,
         string $fieldName,
-        ?MarketingActivity $marketingActivity,
+        bool $isIgnoredEntity,
         bool $expected
     ) {
         if ('marketingActivity' === $fieldName) {
-            $this->assertEntityProviderCall($className, $marketingActivity);
+            $this->entityProvider->expects($this->once())
+                ->method('isIgnoredEntity')
+                ->with($className)
+                ->willReturn($isIgnoredEntity);
         } else {
             $this->entityProvider->expects($this->never())
                 ->method('isIgnoredEntity');
@@ -51,10 +49,13 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
     public function testGetVirtualRelationQuery(
         string $className,
         string $fieldName,
-        ?MarketingActivity $marketingActivity,
+        bool $isIgnoredEntity,
         bool $expected
     ) {
-        $this->assertEntityProviderCall($className, $marketingActivity);
+        $this->entityProvider->expects($this->once())
+            ->method('isIgnoredEntity')
+            ->with($className)
+            ->willReturn($isIgnoredEntity);
         $result = $this->provider->getVirtualRelationQuery($className, $fieldName);
         if ($expected) {
             $this->assertNotEmpty($result);
@@ -65,98 +66,65 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
 
     public function fieldDataProvider(): array
     {
-        $className = 'stdClass';
-        $marketingActivity = $this->createMock(MarketingActivity::class);
-
         return [
-            'incorrect class incorrect field' => [$className, 'test', null, false],
-            'incorrect class correct field' => [$className, 'marketingActivity', null, false],
-            'correct class incorrect field' => [$className, 'test', $marketingActivity, false],
-            'correct class correct field' => [$className, 'marketingActivity', $marketingActivity, true],
+            'incorrect class incorrect field' => [\stdClass::class, 'test', true, false],
+            'incorrect class correct field' => [\stdClass::class, 'marketingActivity', true, false],
+            'correct class incorrect field' => [\stdClass::class, 'test', false, false],
+            'correct class correct field' => [\stdClass::class, 'marketingActivity', false, true],
         ];
     }
 
-    /**
-     * @dataProvider relationsDataProvider
-     */
-    public function testGetVirtualRelations(string $className, ?MarketingActivity $marketingActivity, bool $expected)
+    public function testGetVirtualRelationsForIgnoredEntity()
     {
-        $this->assertEntityProviderCall($className, $marketingActivity);
-        $result = $this->provider->getVirtualRelations($className);
-        if ($expected) {
-            $this->assertNotEmpty($result);
-        } else {
-            $this->assertEmpty($result);
-        }
+        $className = \stdClass::class;
+
+        $this->entityProvider->expects($this->once())
+            ->method('isIgnoredEntity')
+            ->with($className)
+            ->willReturn(true);
+
+        $this->assertSame([], $this->provider->getVirtualRelations($className));
     }
 
-    public function relationsDataProvider(): array
+    public function testGetVirtualRelationsForNotIgnoredEntity()
     {
-        $className = 'stdClass';
-        $marketingActivity = $this->createMock(MarketingActivity::class);
-
-        return [
-            'incorrect class' => [$className, null, false],
-            'correct class' => [$className, $marketingActivity, true],
-        ];
-    }
-
-    public function testGetTargetJoinAlias()
-    {
-        $this->assertEquals('marketingActivity', $this->provider->getTargetJoinAlias(null, null, null));
-    }
-
-    public function testGetRelationDefinition()
-    {
-        $className = 'stdObject';
-
-        $this->assertEquals(
-            [
-                'label' => 'oro.marketingactivity.entity_label',
-                'relation_type' => 'oneToMany',
-                'related_entity_name' => MarketingActivity::class,
-                'query' => [
-                    'join' => [
-                        'left' => [
-                            [
-                                'join' => MarketingActivity::class,
-                                'alias' => 'marketingActivity',
-                                'conditionType' => Join::WITH,
-                                'condition' => "marketingActivity.entityClass = '{$className}'"
-                                    . ' AND marketingActivity.entityId = entity.id'
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            $this->provider->getRelationDefinition($className)
-        );
-    }
-
-    public function testHasMarketingActivityCachedResultOnSecondCallSameClass()
-    {
-        $marketingActivity = new MarketingActivity();
-        $this->assertEntityProviderCall(\stdClass::class, $marketingActivity);
-
-        $this->provider->hasMarketingActivity(\stdClass::class);
-        $this->provider->hasMarketingActivity(\stdClass::class);
-    }
-
-    private function assertEntityProviderCall(string $className, ?MarketingActivity $marketingActivity): void
-    {
-        $results = [];
-        if ($marketingActivity) {
-            $results[] = ['name' => $className];
-        }
+        $className = \stdClass::class;
 
         $this->entityProvider->expects($this->once())
             ->method('isIgnoredEntity')
             ->with($className)
             ->willReturn(false);
 
-        $this->entityProvider->expects($this->once())
-            ->method('getEntity')
-            ->with($className)
-            ->willReturn($results);
+        $this->assertEquals(
+            [
+                'marketingActivity' => [
+                    'label' => 'oro.marketingactivity.entity_label',
+                    'relation_type' => 'oneToMany',
+                    'related_entity_name' => MarketingActivity::class,
+                    'query' => [
+                        'join' => [
+                            'left' => [
+                                [
+                                    'join' => MarketingActivity::class,
+                                    'alias' => 'marketingActivity',
+                                    'conditionType' => Join::WITH,
+                                    'condition' => sprintf(
+                                        'marketingActivity.entityClass = \'%s\''
+                                        . ' AND marketingActivity.entityId = entity.id',
+                                        $className
+                                    )
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            $this->provider->getVirtualRelations($className)
+        );
+    }
+
+    public function testGetTargetJoinAlias()
+    {
+        $this->assertEquals('marketingActivity', $this->provider->getTargetJoinAlias(null, null, null));
     }
 }

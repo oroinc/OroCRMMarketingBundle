@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MarketingActivityBundle\Provider;
 
 use Doctrine\ORM\Query\Expr\Join;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
@@ -13,26 +12,13 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
  */
 class MarketingActivityVirtualRelationProvider implements VirtualRelationProviderInterface
 {
-    const RELATION_NAME = 'marketingActivity';
+    private const RELATION_NAME = 'marketingActivity';
 
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    private EntityProvider $entityProvider;
+    private array $marketingActivityByEntity = [];
 
-    /**
-     * @var EntityProvider
-     */
-    protected $entityProvider;
-
-    /**
-     * @var array|null
-     */
-    protected $marketingActivityByEntity = [];
-
-    public function __construct(DoctrineHelper $doctrineHelper, EntityProvider $entityProvider)
+    public function __construct(EntityProvider $entityProvider)
     {
-        $this->doctrineHelper = $doctrineHelper;
         $this->entityProvider = $entityProvider;
     }
 
@@ -42,7 +28,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
     public function isVirtualRelation($className, $fieldName)
     {
         return
-            $fieldName === self::RELATION_NAME
+            self::RELATION_NAME === $fieldName
             && $this->hasMarketingActivity($className);
     }
 
@@ -52,7 +38,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
     public function getVirtualRelationQuery($className, $fieldName)
     {
         $relations = $this->getVirtualRelations($className);
-        if (array_key_exists($fieldName, $relations)) {
+        if (\array_key_exists($fieldName, $relations)) {
             return $relations[$fieldName]['query'];
         }
 
@@ -80,31 +66,18 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
     }
 
     /**
-     * Check whether marketing activities are enabled for the given class name
-     *
-     * @param string $className
-     * @return bool
+     * Checks whether marketing activities are enabled for the given entity.
      */
-    public function hasMarketingActivity($className)
+    private function hasMarketingActivity(string $className): bool
     {
-        if (!array_key_exists($className, $this->marketingActivityByEntity)) {
-            if (!$this->entityProvider->isIgnoredEntity($className)) {
-                $this->marketingActivityByEntity[$className] = !empty($this->entityProvider->getEntity($className));
-            } else {
-                $this->marketingActivityByEntity[$className] = false;
-            }
+        if (!isset($this->marketingActivityByEntity[$className])) {
+            $this->marketingActivityByEntity[$className] = !$this->entityProvider->isIgnoredEntity($className);
         }
 
         return $this->marketingActivityByEntity[$className];
     }
 
-    /**
-     * Returns virtual relation definition
-     *
-     * @param string $className
-     * @return array
-     */
-    public function getRelationDefinition($className)
+    private function getRelationDefinition(string $className): array
     {
         return [
             'label' => 'oro.marketingactivity.entity_label',
@@ -117,7 +90,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
                             'join' => MarketingActivity::class,
                             'alias' => self::RELATION_NAME,
                             'conditionType' => Join::WITH,
-                            'condition' => self::RELATION_NAME . ".entityClass = '{$className}'"
+                            'condition' => self::RELATION_NAME . ".entityClass = '" . $className . "'"
                                 . ' AND ' .  self::RELATION_NAME . '.entityId = entity.id'
                         ]
                     ]

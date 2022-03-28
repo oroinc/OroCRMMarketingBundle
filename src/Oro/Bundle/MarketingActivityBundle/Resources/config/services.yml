@@ -2,7 +2,6 @@ services:
     oro_marketing_activity.virtual_relation_provider.marketing_activity:
         class: 'Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivityVirtualRelationProvider'
         arguments:
-            - '@oro_entity.doctrine_helper'
             - '@oro_marketing_list.entity_provider.contact_information'
         tags:
             - { name: oro_entity.virtual_relation_provider, priority: -150 }
