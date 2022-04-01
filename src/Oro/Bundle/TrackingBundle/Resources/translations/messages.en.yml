@@ -70,6 +70,7 @@ oro:
             visitor_uid.label:         Unique visitor ID
             identifier_detected.label: Is UID detected
             tracking_website.label:    Tracking website
+            code.label: Code
 
         trackingvisitevent:
             entity_label:        Visitor event
@@ -98,6 +99,7 @@ oro:
             type.label:              Type
             event_date.label:        Event date
             identifier_detected.label: Identified
+            code.label: Code
 
         trackingeventdictionary:
             entity_label:        Tracking Visit Library
