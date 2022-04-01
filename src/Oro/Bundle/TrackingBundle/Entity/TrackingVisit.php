@@ -27,6 +27,8 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisit;
  */
 class TrackingVisit extends ExtendTrackingVisit
 {
+    public const INVALID_CODE = 'invalid';
+
     /**
      * @var integer
      *
@@ -155,6 +157,13 @@ class TrackingVisit extends ExtendTrackingVisit
      * @ORM\Column(name="bot", type="boolean", nullable=true)
      */
     protected $bot;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     */
+    protected $code;
 
     /**
      * @return int
@@ -486,6 +495,18 @@ class TrackingVisit extends ExtendTrackingVisit
     public function setBot($bot)
     {
         $this->bot = $bot;
+
+        return $this;
+    }
+
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }
