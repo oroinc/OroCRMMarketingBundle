@@ -21,7 +21,7 @@ class OroTrackingBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_13';
+        return 'v1_14';
     }
 
     /**
@@ -190,6 +190,7 @@ class OroTrackingBundleInstaller implements Installation
         $table->addColumn('parsing_count', 'integer', ['default' => '0']);
         $table->addColumn('parsed_uid', 'integer', ['default' => '0']);
         $table->addColumn('identifier_detected', 'boolean', ['default' => '0']);
+        $table->addColumn('code', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['website_id'], 'idx_d204b98018f45c82', []);
         $table->addIndex(['visitor_uid'], 'visit_visitorUid_idx', []);
@@ -209,6 +210,7 @@ class OroTrackingBundleInstaller implements Installation
         $table->addColumn('visit_id', 'integer', ['notnull' => false]);
         $table->addColumn('web_event_id', 'integer', ['notnull' => false]);
         $table->addColumn('parsing_count', 'integer', ['default' => '0']);
+        $table->addColumn('code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addIndex(['event_id'], 'idx_b39eee8f71f7e88b', []);
         $table->addIndex(['visit_id'], 'idx_b39eee8f75fa0ff2', []);
         $table->addIndex(['website_id'], 'idx_b39eeebf18f45c82', []);

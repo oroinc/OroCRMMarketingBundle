@@ -44,7 +44,7 @@ class TrackCommand extends Command implements CronCommandInterface
             return false;
         }
 
-        return $this->trackingProcessor->hasEntitiesToProcess();
+        return $this->trackingProcessor->hasTrackingEventsToProcess();
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */

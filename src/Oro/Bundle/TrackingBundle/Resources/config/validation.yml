@@ -39,3 +39,10 @@ Oro\Bundle\TrackingBundle\Entity\TrackingData:
             - NotBlank: ~
         event:
             - Valid: ~
+
+Oro\Bundle\TrackingBundle\Entity\TrackingVisit:
+    properties:
+        visitorUid:
+            - Length:
+                  max: 255
+                  maxMessage: The value {{ value }} is too long. It should have {{ limit }} characters or less.

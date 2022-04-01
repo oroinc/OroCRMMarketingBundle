@@ -8,6 +8,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\TrackingBundle\Model\ExtendTrackingEvent;
 
 /**
+ * Represent a tracking event.
+ *
  * @ORM\Table(name="oro_tracking_event", indexes={
  *     @ORM\Index(name="event_name_idx", columns={"name"}),
  *     @ORM\Index(name="event_loggedAt_idx", columns={"logged_at"}),
@@ -15,7 +17,7 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingEvent;
  *     @ORM\Index(name="event_parsed_idx", columns={"parsed"}),
  *     @ORM\Index(name="code_idx", columns={"code"})
  * })
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\TrackingBundle\Entity\Repository\TrackingEventRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *  defaultValues={
@@ -30,6 +32,8 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingEvent;
  */
 class TrackingEvent extends ExtendTrackingEvent
 {
+    public const INVALID_CODE = 'invalid';
+
     /**
      * @var integer
      *

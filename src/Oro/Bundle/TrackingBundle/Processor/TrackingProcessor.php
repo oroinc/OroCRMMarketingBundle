@@ -2,465 +2,244 @@
 
 namespace Oro\Bundle\TrackingBundle\Processor;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingEventRepository;
+use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitEventRepository;
+use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitRepository;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
-use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
-use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Processes (parses) tracking logs.
+ *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class TrackingProcessor implements LoggerAwareInterface
+class TrackingProcessor extends AbstractTrackingProcessor
 {
-    use LoggerAwareTrait;
+    private DeviceDetectorFactory $deviceDetector;
+    private TrackingEventIdentificationProvider $trackingIdentification;
+    private ValidatorInterface $validator;
 
-    const TRACKING_EVENT_ENTITY       = 'OroTrackingBundle:TrackingEvent';
-    const TRACKING_VISIT_ENTITY       = 'OroTrackingBundle:TrackingVisit';
-    const TRACKING_VISIT_EVENT_ENTITY = 'OroTrackingBundle:TrackingVisitEvent';
+    private array $collectedVisits = [];
+    private array $eventDictionary = [];
+    private array $skipList = [];
+    private int $processedBatches = 0;
 
-    /** Batch size for tracking events */
-    const BATCH_SIZE = 100;
-
-    /** Max retries to identify tracking visit */
-    const MAX_RETRIES = 5;
-
-    /** @var ManagerRegistry */
-    protected $doctrine;
-
-    /** @var array */
-    protected $collectedVisits = [];
-
-    /** @var array */
-    protected $eventDictionary = [];
-
-    /** @var TrackingEventIdentificationProvider */
-    protected $trackingIdentification;
-
-    /** @var int */
-    protected $processedBatches = 0;
-
-    /** @var array */
-    protected $skipList = [];
-
-    /** @var DeviceDetectorFactory */
-    protected $deviceDetector;
-
-    /** @var \DateTime start time */
-    protected $startTime = null;
-
-    /** @var \DateInterval|bool */
-    protected $maxExecTimeout = false;
-
-    /** Default max execution time (in minutes) */
-    protected $maxExecTime = 5;
-
-    public function __construct(ManagerRegistry $doctrine, TrackingEventIdentificationProvider $trackingIdentification)
-    {
-        $this->doctrine               = $doctrine;
+    public function __construct(
+        ManagerRegistry $doctrine,
+        TrackingEventIdentificationProvider $trackingIdentification,
+        ValidatorInterface $validator
+    ) {
+        parent::__construct($doctrine);
         $this->trackingIdentification = $trackingIdentification;
-        $this->deviceDetector         = new DeviceDetectorFactory();
-
-        $this->startTime      = $this->getCurrentUtcDateTime();
-        $this->maxExecTimeout = $this->maxExecTime > 0
-            ? new \DateInterval('PT' . $this->maxExecTime . 'M')
-            : false;
+        $this->validator = $validator;
+        $this->deviceDetector = new DeviceDetectorFactory();
     }
 
-    /**
-     * @param integer $minutes
-     */
-    public function setMaxExecutionTime($minutes = null)
+    public function process(): void
     {
-        if ($minutes !== null) {
-            $this->maxExecTime    = $minutes;
-            $this->maxExecTimeout = $minutes > 0 ? new \DateInterval('PT' . $minutes . 'M') : false;
-        }
+        $this->turnOffDoctrineLogger();
+
+        $this->checkNewVisits();
+        $this->recheckPreviousVisitIdentifiers();
+        $this->recheckPreviousVisitEvents();
+
+        $this->logger?->info('<info>Done</info>');
     }
 
-    /**
-     * @return bool
-     */
-    public function hasEntitiesToProcess()
+    private function checkNewVisits(): void
     {
-        return $this->getEventsCount() > 0;
-    }
-
-    /**
-     * Process tracking data
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    public function process()
-    {
-        /** To avoid memory leaks, we turn off doctrine logger */
-        $this->getEntityManager()->getConnection()->getConfiguration()->setSQLLogger(null);
-
-        if ($this->logger === null) {
-            $this->logger = new NullLogger();
-        }
-
-        $this->logger->info('Check new visits...');
-        $totalEvents = $this->getEventsCount();
-        if ($totalEvents > 0) {
-            $totalBatches = number_format(ceil($totalEvents / $this->getBatchSize()));
-            $this->logger->info(
-                sprintf(
-                    '<info>Total visits to be processed - %s (%s batches).</info>',
-                    number_format($totalEvents),
-                    $totalBatches
-                )
-            );
-            while ($this->processVisits()) {
-                $this->logBatch(++$this->processedBatches, $totalBatches);
+        $this->logger?->info('Check new visits...');
+        $totalEvents = $this->getTrackingEventsCount();
+        if ($totalEvents) {
+            $message = '<info>Total visits to be processed - %s (%s batches).</info>';
+            while ($this->processTracking($this->calculateBatches($totalEvents, $message))) {
                 if ($this->checkMaxExecutionTime()) {
                     return;
                 }
             }
         }
+    }
 
-        $this->logger->info('Recheck previous visit identifiers...');
-        $totalEvents = $this->getIdentifyPrevVisitsCount();
-        if ($totalEvents > 0) {
-            $totalBatches           = number_format(ceil($totalEvents / $this->getBatchSize()));
+    private function recheckPreviousVisitIdentifiers(): void
+    {
+        $this->logger?->info('Recheck previous visit identifiers...');
+        $totalVisits = $this->getTrackingVisitsCount();
+        if ($totalVisits) {
             $this->processedBatches = 0;
-            $this->logger->info(
-                sprintf(
-                    '<info>Total previous visit identifiers to be processed - %s (%s batches).</info>',
-                    number_format($totalEvents),
-                    $totalBatches
-                )
-            );
-            while ($this->identifyPrevVisits()) {
-                $this->logBatch(++$this->processedBatches, $totalBatches);
+            $message = '<info>Total previous visit identifiers to be processed - %s (%s batches).</info>';
+            while ($this->processTrackingVisits($this->calculateBatches($totalVisits, $message))) {
                 if ($this->checkMaxExecutionTime()) {
                     return;
                 }
             }
         }
+    }
 
-        $this->logger->info('Recheck previous visit events...');
-        $totalEvents = $this->getIdentifyPrevVisitEventsCount();
-        if ($totalEvents > 0) {
-            $totalBatches           = number_format(ceil($totalEvents / $this->getBatchSize()));
+    private function recheckPreviousVisitEvents(): void
+    {
+        $this->logger?->info('Recheck previous visit events...');
+        $totalVisitEvents = $this->getTrackingVisitEventEventsCount();
+        if ($totalVisitEvents) {
             $this->processedBatches = 0;
-            $this->logger->info(
-                sprintf(
-                    '<info>Total previous visit events to be processed - %s (%s batches).</info>',
-                    number_format($totalEvents),
-                    $totalBatches
-                )
-            );
             $this->skipList = [];
-            while ($this->identifyPrevVisitEvents()) {
-                $this->logBatch(++$this->processedBatches, $totalBatches);
+            $message = '<info>Total previous visit events to be processed - %s (%s batches).</info>';
+            while ($this->processTrackingVisitEvents($this->calculateBatches($totalVisitEvents, $message))) {
                 if ($this->checkMaxExecutionTime()) {
                     return;
                 }
             }
         }
-
-        $this->logger->info('<info>Done</info>');
     }
 
     /**
-     * @param integer $processed
-     * @param string  $total
+     * @param TrackingVisit[] $trackingVisits
      */
-    protected function logBatch($processed, $total)
+    protected function updateVisits(array $trackingVisits): void
     {
-        $this->logger->info(
-            sprintf(
-                'Batch #%s of %s processed at <info>%s</info>.',
-                number_format($processed),
-                $total,
-                date('Y-m-d H:i:s')
-            )
-        );
-    }
-
-    /**
-     * Checks of process max execution time
-     *
-     * @return bool
-     */
-    protected function checkMaxExecutionTime()
-    {
-        if ($this->maxExecTimeout !== false) {
-            $date = $this->getCurrentUtcDateTime();
-            if ($date->sub($this->maxExecTimeout) >= $this->startTime) {
-                $this->logger->info('<comment>Exit because allocated time frame elapsed.</comment>');
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns count of web events to be processed.
-     *
-     * @return integer
-     */
-    protected function getEventsCount()
-    {
-        $queryBuilder = $this->createNotParsedEntityQueryBuilder()
-            ->select('COUNT (entity.id)');
-
-        return $queryBuilder->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Returns count of not identified web visits to be processed.
-     *
-     * @return integer
-     */
-    protected function getIdentifyPrevVisitsCount()
-    {
-        $em           = $this->getEntityManager();
-        $queryBuilder = $em
-            ->getRepository(self::TRACKING_VISIT_ENTITY)
-            ->createQueryBuilder('entity');
-        $queryBuilder
-            ->select('COUNT (entity.id)')
-            ->where('entity.identifierDetected = false')
-            ->andWhere('entity.parsedUID > 0')
-            ->andWhere('entity.parsingCount < :maxRetries')
-            ->setParameter('maxRetries', $this->getMaxRetriesCount());
-
-        $this->applySkipList($queryBuilder);
-
-        return $queryBuilder->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Returns count of tracking visit events to be processed.
-     *
-     * @return integer
-     */
-    protected function getIdentifyPrevVisitEventsCount()
-    {
-        $em           = $this->getEntityManager();
-        $queryBuilder = $em
-            ->getRepository(self::TRACKING_VISIT_EVENT_ENTITY)
-            ->createQueryBuilder('entity');
-        $queryBuilder
-            ->select('COUNT (entity.id)')
-            ->andWhere('entity.parsingCount < :maxRetries')
-            ->setParameter('maxRetries', $this->getMaxRetriesCount());
-
-        $this->applySkipList($queryBuilder);
-
-        return $queryBuilder->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Process previous visit events
-     *
-     * @return bool
-     */
-    protected function identifyPrevVisitEvents()
-    {
-        $em           = $this->getEntityManager();
-        $queryBuilder = $em
-            ->getRepository(self::TRACKING_VISIT_EVENT_ENTITY)
-            ->createQueryBuilder('entity');
-        $queryBuilder
-            ->select('entity')
-            ->andWhere('entity.parsingCount < :maxRetries')
-            ->setParameter('maxRetries', $this->getMaxRetriesCount())
-            ->setMaxResults($this->getBatchSize());
-
-        $this->applySkipList($queryBuilder);
-
-        /** @var TrackingVisitEvent[] $entities */
-        $entities = $queryBuilder->getQuery()->getResult();
-        if ($entities) {
-            foreach ($entities as $visitEvent) {
-                $visitEvent->setParsingCount($visitEvent->getParsingCount() + 1);
-                $this->skipList[] = $visitEvent->getId();
-                $targets          = $this->trackingIdentification->processEvent($visitEvent);
-                if (!empty($targets)) {
-                    foreach ($targets as $target) {
-                        $visitEvent->addAssociationTarget($target);
-                    }
-                }
-
-                $em->persist($visitEvent);
-            }
-
-            $em->flush();
-            $em->clear();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     *  Identify previous visits in case than we haven't data to identify visit previously
-     */
-    protected function identifyPrevVisits()
-    {
-        $em           = $this->getEntityManager();
-        $queryBuilder = $em
-            ->getRepository(self::TRACKING_VISIT_ENTITY)
-            ->createQueryBuilder('entity');
-        $queryBuilder
-            ->select('entity')
-            ->where('entity.identifierDetected = false')
-            ->andWhere('entity.parsedUID > 0')
-            ->andWhere('entity.parsingCount < :maxRetries')
-            ->orderBy('entity.firstActionTime', 'ASC')
-            ->setParameter('maxRetries', $this->getMaxRetriesCount())
-            ->setMaxResults($this->getBatchSize());
-
-        $this->applySkipList($queryBuilder);
-
-        $entities = $queryBuilder->getQuery()->getResult();
-        if ($entities) {
-            /** @var TrackingVisit $visit */
-            foreach ($entities as $visit) {
-                $idObj = $this->trackingIdentification->identify($visit);
-                if ($idObj && $idObj['targetObject']) {
-                    $visit->setIdentifierTarget($idObj['targetObject']);
-                    $visit->setIdentifierDetected(true);
-
-                    $this->logger->info('-- <comment>parsed UID "' . $idObj['parsedUID'] . '"</comment>');
-                } else {
-                    $visit->setParsingCount($visit->getParsingCount() + 1);
-                    $this->skipList[] = $visit->getId();
-                }
-
-                $em->persist($visit);
-                $this->collectedVisits[] = $visit;
-            }
-
-            $em->flush();
-
-            $this->updateVisits($this->collectedVisits);
-
-            $this->collectedVisits = [];
-            $em->clear();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Identify previous visits
-     *
-     * @param array $entities
-     */
-    protected function updateVisits($entities)
-    {
-        /** @var TrackingVisit $visit */
-        foreach ($entities as $visit) {
-            $this->logger->info(
-                sprintf(
-                    'Process visit id: %s, visitorUid: %s',
-                    $visit->getId(),
-                    $visit->getVisitorUid()
-                )
-            );
-
-            $identifier = $visit->getIdentifierTarget();
+        foreach ($trackingVisits as $trackingVisit) {
+            $message = 'Process visit id: %s, visitorUid: %s';
+            $this->logger->info(sprintf($message, $trackingVisit->getId(), $trackingVisit->getVisitorUid()));
+            $identifier = $trackingVisit->getIdentifierTarget();
             if ($identifier) {
-                // update tracking event identifiers
-                $associationName = ExtendHelper::buildAssociationName(
-                    ClassUtils::getClass($identifier),
-                    VisitEventAssociationExtension::ASSOCIATION_KIND
+                /** @var TrackingVisitRepository $trackingVisitRepository */
+                $trackingVisitRepository = $this->getEntityManager()->getRepository(TrackingVisit::class);
+                $trackingVisits = $trackingVisitRepository->getByTrackingWebsite(
+                    $trackingVisit->getVisitorUid(),
+                    $trackingVisit->getFirstActionTime(),
+                    $trackingVisit->getTrackingWebsite()
                 );
 
-                $qb = $this->getEntityManager()
-                    ->createQueryBuilder();
-
-                $subSelect = $qb->select('entity.id')
-                    ->from(self::TRACKING_VISIT_ENTITY, 'entity')
-                    ->where('entity.visitorUid = :visitorUid')
-                    ->andWhere('entity.firstActionTime < :maxDate')
-                    ->andWhere('entity.identifierDetected = false')
-                    ->andWhere('entity.parsedUID = 0')
-                    ->andWhere('entity.trackingWebsite  = :website')
-                    ->setParameter('visitorUid', $visit->getVisitorUid())
-                    ->setParameter('maxDate', $visit->getFirstActionTime(), Types::DATETIME_MUTABLE)
-                    ->setParameter('website', $visit->getTrackingWebsite())
-                    ->getQuery()
-                    ->getArrayResult();
-                if (!empty($subSelect)) {
-                    array_walk(
-                        $subSelect,
-                        function (&$value) {
-                            $value = $value['id'];
-                        }
-                    );
-
-                    $this->getEntityManager()->createQueryBuilder()
-                        ->update(self::TRACKING_VISIT_EVENT_ENTITY, 'event')
-                        ->set('event.' . $associationName, ':identifier')
-                        ->where('event.visit in (:visitIds)')
-                        ->setParameter('visitIds', $subSelect)
-                        ->setParameter('identifier', $identifier)
-                        ->getQuery()
-                        ->execute();
+                if (!empty($trackingVisits)) {
+                    array_walk($trackingVisits, fn ($value) => $value['id']);
+                    /** @var TrackingVisitEventRepository $trackingVisitEventRepository */
+                    $trackingVisitEventRepository = $this->getEntityManager()->getRepository(TrackingVisitEvent::class);
+                    $trackingVisitEventRepository->updateIdentifier($identifier, $trackingVisits);
                 }
 
-                $associationName = ExtendHelper::buildAssociationName(
-                    ClassUtils::getClass($identifier),
-                    IdentifierEventExtension::ASSOCIATION_KIND
+                $trackingVisitRepository->updateIdentifier(
+                    $identifier,
+                    $trackingVisit->getVisitorUid(),
+                    $trackingVisit->getFirstActionTime(),
+                    $trackingVisit->getTrackingWebsite()
                 );
-
-                $this->getEntityManager()
-                    ->createQueryBuilder()
-                    ->update(self::TRACKING_VISIT_ENTITY, 'entity')
-                    ->set('entity.' . $associationName, ':identifier')
-                    ->set('entity.identifierDetected', ':detected')
-                    ->where('entity.visitorUid = :visitorUid')
-                    ->andWhere('entity.firstActionTime < :maxDate')
-                    ->andWhere('entity.identifierDetected = false')
-                    ->andWhere('entity.parsedUID = 0')
-                    ->andWhere('entity.trackingWebsite  = :website')
-                    ->setParameter('visitorUid', $visit->getVisitorUid())
-                    ->setParameter('maxDate', $visit->getFirstActionTime(), Types::DATETIME_MUTABLE)
-                    ->setParameter('website', $visit->getTrackingWebsite())
-                    ->setParameter('identifier', $identifier)
-                    ->setParameter('detected', true)
-                    ->getQuery()
-                    ->execute();
             }
         }
 
         $this->deviceDetector->clearInstances();
     }
 
-    /**
-     * Collect new tracking visits with tracking visit events
-     */
-    protected function processVisits()
+    private function getTrackingEventsCount(): int
     {
-        $queryBuilder = $this->createNotParsedEntityQueryBuilder()
-            ->orderBy('entity.id', 'ASC')
+        /** @var TrackingEventRepository $trackingEventRepository */
+        $trackingEventRepository = $this->getEntityManager()->getRepository(TrackingEvent::class);
+
+        return $trackingEventRepository->getNotParsedTrackingEventsCount();
+    }
+
+    private function getTrackingVisitsCount(): int
+    {
+        /** @var TrackingVisitRepository $trackingVisitRepository */
+        $trackingVisitRepository = $this->getEntityManager()->getRepository(TrackingVisit::class);
+        $queryBuilder = $trackingVisitRepository->createNotDetectedTrackingVisitCountQueryBuilder(
+            $this->getMaxRetriesCount()
+        );
+
+        return $this->applySkipList($queryBuilder)->getQuery()->getSingleScalarResult();
+    }
+
+    private function getTrackingVisitEventEventsCount(): int
+    {
+        /** @var TrackingVisitEventRepository $trackingVisitEventRepository */
+        $trackingVisitEventRepository =  $this->getEntityManager()->getRepository(TrackingVisitEvent::class);
+        $queryBuilder = $trackingVisitEventRepository->createTrackingVisitEventEntityCountQueryBuilder(
+            $this->getMaxRetriesCount()
+        );
+
+        return $this->applySkipList($queryBuilder)->getQuery()->getSingleScalarResult();
+    }
+
+    public function hasTrackingEventsToProcess(): bool
+    {
+        return $this->getTrackingEventsCount() > 0;
+    }
+
+    private function processTracking(float $totalBatches): bool
+    {
+        /** @var TrackingEventRepository $trackingEventRepository */
+        $trackingEventRepository = $this->getEntityManager()->getRepository(TrackingEvent::class);
+        $trackingEvents = $trackingEventRepository->getNotParsedTrackingEvents(true, $this->getBatchSize());
+        if ($trackingEvents) {
+            try {
+                $this->processTrackingEvents($trackingEvents);
+            } catch (\Exception $e) {
+                $this->skipTrackingEvents($trackingEvents);
+                $this->logInvalidBatch(++$this->processedBatches, $totalBatches, $e->getMessage());
+
+                return true;
+            }
+
+            $this->logBatch(++$this->processedBatches, $totalBatches);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function processTrackingVisits(float $totalBatches): bool
+    {
+        /** @var TrackingVisitRepository $trackingVisitRepository */
+        $trackingVisitRepository = $this->getEntityManager()->getRepository(TrackingVisit::class);
+        $queryBuilder = $trackingVisitRepository
+            ->createNotDetectedTrackingVisitQueryBuilder($this->getMaxRetriesCount(), true, $this->getBatchSize());
+
+        $trackingVisits = $this->applySkipList($queryBuilder)->getQuery()->getResult();
+        if ($trackingVisits) {
+            try {
+                $this->processTrackingVisitsIdentifier($trackingVisits);
+            } catch (\Exception $e) {
+                $this->skipTrackingVisits($trackingVisits);
+                $this->logInvalidBatch(++$this->processedBatches, $totalBatches, $e->getMessage());
+
+                return true;
+            }
+
+            $this->logBatch(++$this->processedBatches, $totalBatches);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function processTrackingVisitEvents(float $totalBatches): bool
+    {
+        /** @var TrackingVisitEventRepository $trackingVisitEventRepository */
+        $trackingVisitEventRepository =  $this->getEntityManager()->getRepository(TrackingVisitEvent::class);
+        $queryBuilder = $trackingVisitEventRepository
+            ->createTrackingVisitEventEntityQueryBuilder($this->getMaxRetriesCount())
             ->setMaxResults($this->getBatchSize());
 
-        $entities = $queryBuilder->getQuery()->getResult();
+        $trackingVisitEvents = $this->applySkipList($queryBuilder)->getQuery()->getResult();
+        if ($trackingVisitEvents) {
+            try {
+                $this->processTrackingVisitEventsAssociation($trackingVisitEvents);
+            } catch (\Exception $e) {
+                $this->skipTrackingVisitEvents($trackingVisitEvents);
+                $this->logInvalidBatch(++$this->processedBatches, $totalBatches, $e->getMessage());
 
-        if ($entities) {
-            $this->processTrackingVisits($entities);
+                return true;
+            }
+
+            $this->logBatch(++$this->processedBatches, $totalBatches);
 
             return true;
         }
@@ -469,41 +248,16 @@ class TrackingProcessor implements LoggerAwareInterface
     }
 
     /**
-     * @return QueryBuilder
+     * @param TrackingVisitEvent[] $trackingVisitEvents
+     *
+     * @return void
      */
-    protected function createNotParsedEntityQueryBuilder()
+    private function processTrackingVisitEventsAssociation(array $trackingVisitEvents): void
     {
-        return $this->getEntityManager()
-            ->getRepository(self::TRACKING_EVENT_ENTITY)
-            ->createQueryBuilder('entity')
-            ->andWhere('entity.parsed = false')
-            ->innerJoin('entity.eventData', 'eventData')
-        ;
-    }
-
-    /**
-     * @param array|TrackingEvent[] $entities
-     */
-    protected function processTrackingVisits($entities)
-    {
-        $em = $this->getEntityManager();
-
-        /** @var  TrackingEvent $event */
-        foreach ($entities as $event) {
-            $this->logger->info('Processing event - ' . $event->getId());
-
-            $trackingVisitEvent = new TrackingVisitEvent();
-            $trackingVisitEvent->setParsingCount(0);
-            $trackingVisitEvent->setEvent($this->getEventType($event));
-
-            $eventData   = $event->getEventData();
-            $decodedData = json_decode($eventData->getData(), true);
-
-            $trackingVisit = $this->getTrackingVisit($event, $decodedData);
-            $trackingVisitEvent->setVisit($trackingVisit);
-            $trackingVisitEvent->setWebEvent($event);
-            $trackingVisitEvent->setWebsite($event->getWebsite());
-
+        $entityManager = $this->getEntityManager();
+        foreach ($trackingVisitEvents as $trackingVisitEvent) {
+            $trackingVisitEvent->setParsingCount($trackingVisitEvent->getParsingCount() + 1);
+            $this->skipList[] = $trackingVisitEvent->getId();
             $targets = $this->trackingIdentification->processEvent($trackingVisitEvent);
             if (!empty($targets)) {
                 foreach ($targets as $target) {
@@ -511,236 +265,292 @@ class TrackingProcessor implements LoggerAwareInterface
                 }
             }
 
-            $event->setParsed(true);
-
-            $em->persist($event);
-            $em->persist($trackingVisitEvent);
-            $em->persist($trackingVisit);
+            $entityManager->persist($trackingVisitEvent);
         }
 
-        $em->flush();
-
-        $this->updateVisits($this->collectedVisits);
-
-        $this->collectedVisits = [];
-        $this->eventDictionary = [];
-        $em->clear();
-
-        $this->logger->info(
-            sprintf(
-                '<comment>Memory usage (currently) %dMB/ (max) %dMB</comment>',
-                round(memory_get_usage(true) / 1024 / 1024),
-                memory_get_peak_usage(true) / 1024 / 1024
-            )
-        );
+        $entityManager->flush();
+        $entityManager->clear();
     }
 
     /**
-     * @param TrackingEvent $trackingEvent
-     * @param array         $decodedData
+     * @param TrackingVisit[] $trackingVisits
      *
-     * @return TrackingVisit
+     * @return void
      */
-    protected function getTrackingVisit(TrackingEvent $trackingEvent, $decodedData)
+    private function processTrackingVisitsIdentifier(array $trackingVisits): void
     {
-        $visitorUid     = $decodedData['_id'];
-        $userIdentifier = $trackingEvent->getUserIdentifier();
+        $entityManager = $this->getEntityManager();
 
+        foreach ($trackingVisits as $trackingVisit) {
+            $idObj = $this->trackingIdentification->identify($trackingVisit);
+            if ($idObj && $idObj['targetObject']) {
+                $trackingVisit->setIdentifierTarget($idObj['targetObject']);
+                $trackingVisit->setIdentifierDetected(true);
+                $this->logger?->info(sprintf('-- <comment>parsed UID "%s"</comment>', $idObj['parsedUID']));
+            } else {
+                $trackingVisit->setParsingCount($trackingVisit->getParsingCount() + 1);
+                $this->skipList[] = $trackingVisit->getId();
+            }
+
+            $entityManager->persist($trackingVisit);
+        }
+
+        $entityManager->flush();
+        $this->updateVisits($trackingVisits);
+        $entityManager->clear();
+    }
+
+    /**
+     * @param TrackingEvent[] $trackingEvents
+     *
+     * @return void
+     */
+    private function processTrackingEvents(array $trackingEvents): void
+    {
+        $entityManager = $this->getEntityManager();
+        foreach ($trackingEvents as $trackingEvent) {
+            $this->logger?->info(sprintf('Processing event - %s', $trackingEvent->getId()));
+            $decodedData = json_decode($trackingEvent->getEventData()->getData(), true);
+
+            $trackingEvent->setParsed(true);
+            $trackingVisit = $this->generateTrackingVisit($trackingEvent, $decodedData);
+            $trackingVisitEvent = $this->generateTrackingVisitEvent($trackingVisit, $trackingEvent);
+
+            $entityManager->persist($trackingEvent);
+            $entityManager->persist($trackingVisitEvent);
+            $entityManager->persist($trackingVisit);
+        }
+
+        $entityManager->flush();
+
+        $this->updateVisits($this->collectedVisits);
+        $this->collectedVisits = [];
+        $this->eventDictionary = [];
+
+
+        $this->logMemoryUsage();
+    }
+
+    /**
+     * @param TrackingEvent[] $trackingEvents
+     *
+     * @return void
+     */
+    private function skipTrackingEvents(array $trackingEvents): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach ($trackingEvents as $trackingEvent) {
+            $trackingEvent = $this->refreshDetachedEvent($entityManager, $trackingEvent);
+            $trackingEvent->setCode(TrackingEvent::INVALID_CODE);
+            $trackingEvent->setParsed(false);
+            $entityManager->persist($trackingEvent);
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
+     * @param TrackingVisit[] $trackingEvents
+     *
+     * @return void
+     */
+    private function skipTrackingVisits(array $trackingVisits): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach ($trackingVisits as $trackingVisit) {
+            $trackingVisit = $this->refreshDetachedEvent($entityManager, $trackingVisit);
+            $trackingVisit->setCode(TrackingVisit::INVALID_CODE);
+            $entityManager->persist($trackingVisit);
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
+     * @param TrackingVisitEvent[] $trackingVisitEvents
+     *
+     * @return void
+     */
+    private function skipTrackingVisitEvents(array $trackingVisitEvents): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach ($trackingVisitEvents as $trackingVisitEvent) {
+            $trackingVisitEvent = $this->refreshDetachedEvent($entityManager, $trackingVisitEvent);
+            $trackingVisitEvent->setCode(TrackingVisitEvent::INVALID_CODE);
+            $entityManager->persist($trackingVisitEvent);
+        }
+
+        $entityManager->flush();
+    }
+
+    private function applySkipList(QueryBuilder $queryBuilder): QueryBuilder
+    {
+        if (count($this->skipList)) {
+            $queryBuilder->andWhere('entity.id not in (:skipList)');
+            $queryBuilder->setParameter('skipList', $this->skipList);
+        }
+
+        return $queryBuilder;
+    }
+
+    private function generateTrackingVisit(TrackingEvent $trackingEvent, array $decodedData): TrackingVisit
+    {
+        $visitorUid = $decodedData['_id'];
+        $userIdentifier = $trackingEvent->getUserIdentifier();
         $hash = md5($visitorUid . $userIdentifier);
 
         // try to find existing visit
         if (!empty($this->collectedVisits) && array_key_exists($hash, $this->collectedVisits)) {
-            $visit = $this->collectedVisits[$hash];
+            $trackingVisit = $this->collectedVisits[$hash];
         } else {
-            $visit = $this->doctrine->getRepository(self::TRACKING_VISIT_ENTITY)->findOneBy(
-                [
-                    'visitorUid'      => $visitorUid,
-                    'userIdentifier'  => $trackingEvent->getUserIdentifier(),
-                    'trackingWebsite' => $trackingEvent->getWebsite()
-                ]
-            );
-        }
-
-        if (!$visit) {
-            $visit = new TrackingVisit();
-            $visit->setParsedUID(0);
-            $visit->setParsingCount(0);
-            $visit->setUserIdentifier($trackingEvent->getUserIdentifier());
-            $visit->setVisitorUid($visitorUid);
-            $visit->setFirstActionTime($trackingEvent->getCreatedAt());
-            $visit->setLastActionTime($trackingEvent->getCreatedAt());
-            $visit->setTrackingWebsite($trackingEvent->getWebsite());
-            $visit->setIdentifierDetected(false);
-
-            if (!empty($decodedData['cip'])) {
-                $visit->setIp($decodedData['cip']);
-            }
-
-            if (!empty($decodedData['ua'])) {
-                $this->processUserAgentString($visit, $decodedData['ua']);
-            }
-
-            $this->identifyTrackingVisit($visit);
-
-            $this->collectedVisits[$hash] = $visit;
-        } else {
-            if ($visit->getFirstActionTime() > $trackingEvent->getCreatedAt()) {
-                $visit->setFirstActionTime($trackingEvent->getCreatedAt());
-            }
-            if ($visit->getLastActionTime() < $trackingEvent->getCreatedAt()) {
-                $visit->setLastActionTime($trackingEvent->getCreatedAt());
-            }
-        }
-
-        return $visit;
-    }
-
-    /**
-     * @param TrackingVisit $visit
-     * @param string        $ua
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * because of ternary operators which in current case is clear enough to replace it with 'if' statement.
-     */
-    protected function processUserAgentString(TrackingVisit $visit, $ua)
-    {
-        $device = $this->deviceDetector->getInstance($ua);
-        $os     = $device->getOs();
-        if (is_array($os)) {
-            $visit->setOs(isset($os['name']) ? $os['name'] : null);
-            $visit->setOsVersion(isset($os['version']) ? $os['version'] : null);
-        }
-
-        $client = $device->getClient();
-        if (is_array($client)) {
-            $visit->setClient(isset($client['name']) ? $client['name'] : null);
-            $visit->setClientType(isset($client['type']) ? $client['type'] : null);
-            $visit->setClientVersion(isset($client['version']) ? $client['version'] : null);
-        }
-
-        $visit->setDesktop($device->isDesktop());
-        $visit->setMobile($device->isMobile());
-        $visit->setBot($device->isBot());
-    }
-
-    /**
-     * Get Event dictionary for given tracking event
-     *
-     * @param TrackingEvent $event
-     * @return TrackingEventDictionary
-     */
-    protected function getEventType(TrackingEvent $event)
-    {
-        $eventWebsite = $event->getWebsite();
-        if ($eventWebsite
-            && isset(
-                $this->eventDictionary[$eventWebsite->getId()],
-                $this->eventDictionary[$eventWebsite->getId()][$event->getName()]
-            )
-        ) {
-            $eventType = $this->eventDictionary[$eventWebsite->getId()][$event->getName()];
-        } else {
-            $eventType = $this->getEntityManager()
-                ->getRepository('OroTrackingBundle:TrackingEventDictionary')
+            $trackingVisit = $this
+                ->getEntityManager()
+                ->getRepository(TrackingVisit::class)
                 ->findOneBy(
                     [
-                        'name'    => $event->getName(),
-                        'website' => $eventWebsite
+                        'visitorUid' => $visitorUid,
+                        'userIdentifier' => $trackingEvent->getUserIdentifier(),
+                        'trackingWebsite' => $trackingEvent->getWebsite()
                     ]
                 );
         }
 
-        if (!$eventType) {
-            $eventType = new TrackingEventDictionary();
-            $eventType->setName($event->getName());
-            $eventType->setWebsite($eventWebsite);
-
-            $this->getEntityManager()->persist($eventType);
-
-            $this->eventDictionary[$eventWebsite ? $eventWebsite->getId() : null][$event->getName()] = $eventType;
+        if (!$trackingVisit) {
+            $trackingVisit = $this->createTrackingVisit($trackingEvent, $visitorUid, $decodedData);
+            $this->collectedVisits[$hash] = $trackingVisit;
+        } else {
+            if ($trackingVisit->getFirstActionTime() > $trackingEvent->getCreatedAt()) {
+                $trackingVisit->setFirstActionTime($trackingEvent->getCreatedAt());
+            }
+            if ($trackingVisit->getLastActionTime() < $trackingEvent->getCreatedAt()) {
+                $trackingVisit->setLastActionTime($trackingEvent->getCreatedAt());
+            }
         }
 
-        return $eventType;
+        return $trackingVisit;
     }
 
-    protected function identifyTrackingVisit(TrackingVisit $visit)
+    private function generateTrackingVisitEvent(
+        TrackingVisit $trackingVisit,
+        TrackingEvent $trackingEvent
+    ): TrackingVisitEvent {
+        $trackingVisitEvent = new TrackingVisitEvent();
+        $trackingVisitEvent->setParsingCount(0);
+        $trackingVisitEvent->setEvent($this->getTrackingEventDictionary($trackingEvent));
+        $trackingVisitEvent->setVisit($trackingVisit);
+        $trackingVisitEvent->setWebEvent($trackingEvent);
+        $trackingVisitEvent->setWebsite($trackingEvent->getWebsite());
+
+        /** @var Campaign[] $targets */
+        $targets = $this->trackingIdentification->processEvent($trackingVisitEvent);
+        foreach ($targets as $target) {
+            $trackingVisitEvent->addAssociationTarget($target);
+        }
+
+        return $trackingVisitEvent;
+    }
+
+    private function createTrackingVisit(
+        TrackingEvent $trackingEvent,
+        string $visitorUid,
+        array $decodedData
+    ): TrackingVisit {
+        $trackingVisit = new TrackingVisit();
+        $trackingVisit->setParsedUID(0);
+        $trackingVisit->setParsingCount(0);
+        $trackingVisit->setUserIdentifier($trackingEvent->getUserIdentifier());
+        $trackingVisit->setVisitorUid($visitorUid);
+        $trackingVisit->setFirstActionTime($trackingEvent->getCreatedAt());
+        $trackingVisit->setLastActionTime($trackingEvent->getCreatedAt());
+        $trackingVisit->setTrackingWebsite($trackingEvent->getWebsite());
+        $trackingVisit->setIdentifierDetected(false);
+
+        if (!empty($decodedData['cip'])) {
+            $trackingVisit->setIp($decodedData['cip']);
+        }
+
+        if (!empty($decodedData['ua'])) {
+            $this->setTrackingVisitUserAgent($trackingVisit, $decodedData['ua']);
+        }
+
+        $this->setTrackingVisitIdentifier($trackingVisit);
+
+        $violations = $this->validator->validate($trackingVisit);
+        if ($violations->count()) {
+            throw new ValidatorException($violations);
+        }
+
+        return $trackingVisit;
+    }
+
+    private function setTrackingVisitIdentifier(TrackingVisit $trackingVisit)
     {
         /**
          * try to identify visit
          */
-        $idObj = $this->trackingIdentification->identify($visit);
+        $idObj = $this->trackingIdentification->identify($trackingVisit);
         if ($idObj) {
             /**
              * if identification was successful we should:
              *  - assign visit to target
              *  - assign all previous visits to same identified object(s).
              */
-            $this->logger->info('-- <comment>parsed UID "' . $idObj['parsedUID'] . '"</comment>');
+            $this->logger?->info('-- <comment>parsed UID "' . $idObj['parsedUID'] . '"</comment>');
             if ($idObj['parsedUID'] !== null) {
-                $visit->setParsedUID($idObj['parsedUID']);
+                $trackingVisit->setParsedUID($idObj['parsedUID']);
                 if ($idObj['targetObject']) {
-                    $visit->setIdentifierTarget($idObj['targetObject']);
-                    $visit->setIdentifierDetected(true);
+                    $trackingVisit->setIdentifierTarget($idObj['targetObject']);
+                    $trackingVisit->setIdentifierDetected(true);
                 }
             }
         }
     }
 
-    /**
-     * Returns default entity manager
-     *
-     * @return EntityManager
-     */
-    protected function getEntityManager()
+    private function setTrackingVisitUserAgent(TrackingVisit $trackingVisit, string $ua): void
     {
-        /** @var EntityManager $em */
-        $em = $this->doctrine->getManager();
-        if (!$em->isOpen()) {
-            $this->doctrine->resetManager();
-            $em = $this->doctrine->getManager();
+        $device = $this->deviceDetector->getInstance($ua);
+        $os = $device->getOs();
+        if (is_array($os)) {
+            $trackingVisit->setOs($os['name'] ?? null);
+            $trackingVisit->setOsVersion($os['version'] ?? null);
         }
 
-        return $em;
-    }
-
-    /**
-     * Get max retries to identify tracking visit
-     *
-     * @return int
-     */
-    protected function getMaxRetriesCount()
-    {
-        return self::MAX_RETRIES;
-    }
-
-    /**
-     * Get batch size for tracking events
-     *
-     * @return int
-     */
-    protected function getBatchSize()
-    {
-        return self::BATCH_SIZE;
-    }
-
-    /**
-     * Gets a DateTime object that is set to the current date and time in UTC.
-     *
-     * @return \DateTime
-     */
-    protected function getCurrentUtcDateTime()
-    {
-        return new \DateTime('now', new \DateTimeZone('UTC'));
-    }
-
-    /**
-     * Applies skipped items to query as filter
-     */
-    protected function applySkipList(QueryBuilder $queryBuilder)
-    {
-        if (count($this->skipList)) {
-            $queryBuilder->andWhere('entity.id not in (:skipList)');
-            $queryBuilder->setParameter('skipList', $this->skipList);
+        $client = $device->getClient();
+        if (is_array($client)) {
+            $trackingVisit->setClient($client['name'] ?? null);
+            $trackingVisit->setClientType($client['type'] ?? null);
+            $trackingVisit->setClientVersion($client['version'] ?? null);
         }
+
+        $trackingVisit->setDesktop($device->isDesktop());
+        $trackingVisit->setMobile($device->isMobile());
+        $trackingVisit->setBot($device->isBot());
+    }
+
+    private function getTrackingEventDictionary(TrackingEvent $event): TrackingEventDictionary
+    {
+        $eventWebsite = $event->getWebsite();
+        if ($eventWebsite && isset($this->eventDictionary[$eventWebsite->getId()][$event->getName()])) {
+            $eventType = $this->eventDictionary[$eventWebsite->getId()][$event->getName()];
+        } else {
+            $eventType = $this
+                ->getEntityManager()
+                ->getRepository('OroTrackingBundle:TrackingEventDictionary')
+                ->findOneBy(['name' => $event->getName(), 'website' => $eventWebsite]);
+        }
+
+        if (!$eventType) {
+            $entityManager = $this->getEntityManager();
+            $eventType = new TrackingEventDictionary();
+            $eventType->setName($event->getName());
+            $eventType->setWebsite($eventWebsite);
+            $this->eventDictionary[$eventWebsite?->getId() ?? null][$event->getName()] = $eventType;
+            $entityManager->persist($eventType);
+        }
+
+        return $eventType;
     }
 }

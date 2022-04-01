@@ -8,7 +8,7 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisitEvent;
 
 /**
  * @ORM\Table(name="oro_tracking_visit_event")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitEventRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *  defaultValues={
@@ -20,6 +20,8 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisitEvent;
  */
 class TrackingVisitEvent extends ExtendTrackingVisitEvent
 {
+    public const INVALID_CODE = 'invalid';
+
     /**
      * @var integer
      *
@@ -67,6 +69,13 @@ class TrackingVisitEvent extends ExtendTrackingVisitEvent
      * @ORM\Column(name="parsing_count", type="integer", nullable=false, options={"default"=0})
      */
     protected $parsingCount = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     */
+    protected $code;
 
     /**
      * @return int
@@ -168,6 +177,18 @@ class TrackingVisitEvent extends ExtendTrackingVisitEvent
     public function setWebsite($website)
     {
         $this->website = $website;
+
+        return $this;
+    }
+
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }
