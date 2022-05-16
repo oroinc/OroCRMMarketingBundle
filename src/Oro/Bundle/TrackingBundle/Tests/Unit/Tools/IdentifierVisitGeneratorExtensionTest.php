@@ -93,7 +93,7 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 ['class' => TrackingVisit::class],
-                false
+                true
             ],
             [
                 ['class' => 'Test\Entity', 'relation' => 'test'],
@@ -102,65 +102,80 @@ class IdentifierVisitGeneratorExtensionTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testGenerate()
+    /**
+     * @dataProvider getGenerateDataProvider
+     */
+    public function testGenerate(array $schema, string $expectedResultFileName): void
     {
-        $schema = [
-            'relationData' => [
-                [
-                    'field_id' => new FieldConfigId(
-                        'extend',
-                        'Test\Entity',
-                        ExtendHelper::buildAssociationName(
-                            'Test\TargetEntity1',
-                            IdentifierEventExtension::ASSOCIATION_KIND
-                        ),
-                        'manyToOne'
-                    ),
-                    'target_entity' => 'Test\TargetEntity1',
-                    'state' => 'Active'
-                ],
-                [
-                    'field_id' => new FieldConfigId(
-                        'extend',
-                        'Test\Entity',
-                        ExtendHelper::buildAssociationName(
-                            'Test\TargetEntity2',
-                            IdentifierEventExtension::ASSOCIATION_KIND
-                        ),
-                        'manyToOne'
-                    ),
-                    'target_entity' => 'Test\TargetEntity2',
-                    'state' => 'Active'
-                ],
-                [   // should be ignored because field type is not manyToOne
-                    'field_id' => new FieldConfigId(
-                        'extend',
-                        'Test\Entity',
-                        ExtendHelper::buildAssociationName(
-                            'Test\TargetEntity3',
-                            IdentifierEventExtension::ASSOCIATION_KIND
-                        ),
-                        'manyToMany'
-                    ),
-                    'target_entity' => 'Test\TargetEntity3'
-                ],
-                [   // should be ignored because field name is not match association naming conventions
-                    'field_id' => new FieldConfigId(
-                        'extend',
-                        'Test\Entity',
-                        'testField',
-                        'manyToOne'
-                    ),
-                    'target_entity' => 'Test\TargetEntity4',
-                    'state' => 'Active'
-                ]
-            ]
-        ];
-
         $class = new ClassGenerator('Test\Entity');
 
         $this->extension->generate($schema, $class);
-        $expectedCode = \file_get_contents(__DIR__ . '/Fixtures/generationIdentifierResult.txt');
+        $expectedCode = \file_get_contents(__DIR__ . $expectedResultFileName);
         self::assertEquals(\trim($expectedCode), \trim($class->print()));
+    }
+
+    public function getGenerateDataProvider(): array
+    {
+        return [
+            'associations' => [
+                'schema' => [
+                    'relationData' => [
+                        [
+                            'field_id' => new FieldConfigId(
+                                'extend',
+                                'Test\Entity',
+                                ExtendHelper::buildAssociationName(
+                                    'Test\TargetEntity1',
+                                    IdentifierEventExtension::ASSOCIATION_KIND
+                                ),
+                                'manyToOne'
+                            ),
+                            'target_entity' => 'Test\TargetEntity1',
+                            'state' => 'Active'
+                        ],
+                        [
+                            'field_id' => new FieldConfigId(
+                                'extend',
+                                'Test\Entity',
+                                ExtendHelper::buildAssociationName(
+                                    'Test\TargetEntity2',
+                                    IdentifierEventExtension::ASSOCIATION_KIND
+                                ),
+                                'manyToOne'
+                            ),
+                            'target_entity' => 'Test\TargetEntity2',
+                            'state' => 'Active'
+                        ],
+                        [   // should be ignored because field type is not manyToOne
+                            'field_id' => new FieldConfigId(
+                                'extend',
+                                'Test\Entity',
+                                ExtendHelper::buildAssociationName(
+                                    'Test\TargetEntity3',
+                                    IdentifierEventExtension::ASSOCIATION_KIND
+                                ),
+                                'manyToMany'
+                            ),
+                            'target_entity' => 'Test\TargetEntity3'
+                        ],
+                        [   // should be ignored because field name is not match association naming conventions
+                            'field_id' => new FieldConfigId(
+                                'extend',
+                                'Test\Entity',
+                                'testField',
+                                'manyToOne'
+                            ),
+                            'target_entity' => 'Test\TargetEntity4',
+                            'state' => 'Active'
+                        ]
+                    ]
+                ],
+                'expectedResultFileName' => '/Fixtures/generationIdentifierResult.txt',
+            ],
+            'only default association methods' => [
+                'schema' => [],
+                'expectedResultFileName' => '/Fixtures/generationIdentifierDefaultAssociationMethodsResult.txt',
+            ],
+        ];
     }
 }
