@@ -2,28 +2,22 @@
 
 namespace Oro\Bundle\MarketingListBundle\Model;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 
+/**
+ * A service for contacting Marketing List item.
+ */
 class MarketingListItemConnector
 {
-    const MARKETING_LIST_ITEM_ENTITY = 'OroMarketingListBundle:MarketingListItem';
+    private ManagerRegistry $doctrine;
+    private DoctrineHelper $doctrineHelper;
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    public function __construct(ManagerRegistry $registry, DoctrineHelper $doctrineHelper)
+    public function __construct(ManagerRegistry $doctrine, DoctrineHelper $doctrineHelper)
     {
-        $this->registry = $registry;
+        $this->doctrine = $doctrine;
         $this->doctrineHelper = $doctrineHelper;
     }
 
@@ -34,7 +28,7 @@ class MarketingListItemConnector
      */
     public function getMarketingListItem(MarketingList $marketingList, $entityId)
     {
-        $marketingListItemRepository = $this->registry->getRepository(self::MARKETING_LIST_ITEM_ENTITY);
+        $marketingListItemRepository = $this->doctrine->getRepository(MarketingListItem::class);
         $marketingListItem = $marketingListItemRepository->findOneBy(
             ['marketingList' => $marketingList, 'entityId' => $entityId]
         );
@@ -44,7 +38,7 @@ class MarketingListItemConnector
             $marketingListItem->setMarketingList($marketingList)
                 ->setEntityId($entityId);
 
-            $manager = $this->registry->getManagerForClass(self::MARKETING_LIST_ITEM_ENTITY);
+            $manager = $this->doctrine->getManagerForClass(MarketingListItem::class);
             $manager->persist($marketingListItem);
         }
 
