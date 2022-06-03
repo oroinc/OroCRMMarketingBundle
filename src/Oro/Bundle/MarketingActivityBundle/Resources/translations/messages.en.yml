@@ -51,6 +51,10 @@ oro:
         sections:
             marketingactivities:       Marketing Activity
 
+        feature:
+            label: Marketing Activities
+            description: Allows to view marketing campaign activities
+
     query_designer:
         aggregates:
             marketing_activity_type:

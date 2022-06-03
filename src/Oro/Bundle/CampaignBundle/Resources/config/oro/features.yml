@@ -4,7 +4,6 @@ features:
         description: oro.campaign.feature.description
         toggle: oro_campaign.feature_enabled
         routes:
-            # campaign routes
             - 'oro_campaign_index'
             - 'oro_campaign_create'
             - 'oro_campaign_update'

@@ -19,6 +19,11 @@ oro:
         owner.label:         Owner
         
         report_refresh_date.label: Report Refresh Date
+
+        feature:
+            label: Marketing Campaigns
+            description: Enables marketing campaigns
+
         form:
             choose_campaign: Choose campaign
         report_period:

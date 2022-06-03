@@ -4,7 +4,6 @@ features:
         description: oro.tracking.feature.description
         toggle: oro_tracking.feature_enabled
         routes:
-            # tracking routes
             - 'oro_tracking_data_create'
             - 'oro_tracking_website_index'
             - 'oro_tracking_website_create'

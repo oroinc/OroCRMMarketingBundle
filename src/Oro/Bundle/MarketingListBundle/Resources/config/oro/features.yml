@@ -1,7 +1,7 @@
 features:
     marketing_list:
-        label: oro.marketing_list.feature.label
-        description: oro.marketing_list.feature.description
+        label: oro.marketinglist.feature.label
+        description: oro.marketinglist.feature.description
         toggle: oro_marketing_list.feature_enabled
         routes:
             - 'oro_marketing_list_index'

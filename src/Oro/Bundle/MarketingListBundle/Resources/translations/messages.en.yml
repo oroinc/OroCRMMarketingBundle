@@ -45,6 +45,10 @@ oro:
             static:  On demand
             manual:  Manual
 
+        feature:
+            label: Marketing Lists
+            description: Enables a customer segmentation in marketing campaigns
+
         form:
             choose_marketing_list_type:    Choose marketing list type
             choose_marketing_list:         Choose marketing list
