@@ -4,8 +4,10 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\Da
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -28,16 +30,15 @@ class LoadMarketingListData extends AbstractFixture implements ContainerAwareInt
 
     public function load(ObjectManager $manager)
     {
-        $type = $manager
-            ->getRepository('OroMarketingListBundle:MarketingListType')
+        $type = $manager->getRepository(MarketingListType::class)
             ->find(MarketingListType::TYPE_DYNAMIC);
 
         $entity = new MarketingList();
         $entity
             ->setType($type)
             ->setName(self::MARKETING_LIST_NAME)
-            ->setEntity('Oro\Bundle\ContactBundle\Entity\Contact')
-            ->setOrganization($manager->getRepository('OroOrganizationBundle:Organization')->getFirst());
+            ->setEntity(Contact::class)
+            ->setOrganization($manager->getRepository(Organization::class)->getFirst());
 
         $manager->persist($entity);
         $manager->flush($entity);

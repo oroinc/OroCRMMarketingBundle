@@ -5,6 +5,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Functional\Controller\Api\Rest\DataFix
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -25,14 +26,7 @@ class LoadTrackingWebsiteData extends AbstractFixture implements ContainerAwareI
 
     public function load(ObjectManager $manager)
     {
-        $owner = $manager
-            ->getRepository('OroUserBundle:User')
-            ->findOneBy(
-                [
-                    'username' => 'admin'
-                ]
-            );
-
+        $owner = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
         if (!$owner) {
             return;
         }
