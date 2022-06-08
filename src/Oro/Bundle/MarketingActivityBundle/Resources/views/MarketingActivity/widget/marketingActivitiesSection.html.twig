@@ -25,12 +25,13 @@
             <div class="filter-box">
                 <div class="filter-container"></div>
             </div>
-            <div class="pagination" role="navigation">
+            <div class="pagination">
                 <button class="btn pagination-previous"
                         data-section="top"
                         data-action-name="goto_previous"
                         title="{{ 'oro.activitylist.pagination.newer'|trans }}"
-                        {% if pager.current == 1 %} disabled {% endif %}
+                        {% if pager.current == 1 %}disabled{% endif %}
+                        type="button"
                 >
                     <span class="fa-chevron-left" aria-hidden="true"></span>
                     {{ 'oro.activitylist.pagination.newer'|trans }}
@@ -39,6 +40,7 @@
                         data-section="top"
                         data-action-name="goto_next"
                         title="{{ 'oro.activitylist.pagination.older'|trans }}"
+                        type="button"
                 >
                     {{ 'oro.activitylist.pagination.older'|trans }}
                     <span class="fa-chevron-right" aria-hidden="true"></span>
