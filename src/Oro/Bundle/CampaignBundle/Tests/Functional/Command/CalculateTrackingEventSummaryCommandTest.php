@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Functional\Command;
 
-use Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand;
 use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
 use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadCampaignData;
 use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadTrackingEventData;
+use Oro\Bundle\FeatureToggleBundle\Tests\Functional\Stub\FeatureCheckerStub;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class CalculateTrackingEventSummaryCommandTest extends WebTestCase
@@ -16,9 +16,20 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
         $this->loadFixtures([LoadCampaignData::class, LoadTrackingEventData::class]);
     }
 
+    private function getSummaryData(): array
+    {
+        return $this->getContainer()->get('doctrine')
+            ->getRepository(TrackingEventSummary::class)
+            ->createQueryBuilder('q')
+            ->select(['q.code', 'q.name', 'q.visitCount', 'DATE(q.loggedAt) as loggedAtDate'])
+            ->addOrderBy('q.code, q.name, q.loggedAt')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     public function testReportUpdate()
     {
-        $result = $this->runCommand(CalculateTrackingEventSummaryCommand::getDefaultName());
+        $result = $this->runCommand('oro:cron:calculate-tracking-event-summary');
 
         $expectedMessages = [
             'Campaigns to calculate: 3',
@@ -71,14 +82,19 @@ class CalculateTrackingEventSummaryCommandTest extends WebTestCase
         $this->assertEquals($expectedData, $summaryData);
     }
 
-    private function getSummaryData(): array
+    public function testReportUpdateWhenBothTrackingAndCampaignFeaturesAreDisabled()
     {
-        return $this->getContainer()->get('doctrine')
-            ->getRepository(TrackingEventSummary::class)
-            ->createQueryBuilder('q')
-            ->select(['q.code', 'q.name', 'q.visitCount', 'DATE(q.loggedAt) as loggedAtDate'])
-            ->addOrderBy('q.code, q.name, q.loggedAt')
-            ->getQuery()
-            ->getArrayResult();
+        /** @var FeatureCheckerStub $featureChecker */
+        $featureChecker = self::getContainer()->get('oro_featuretoggle.checker.feature_checker');
+        $featureChecker->setFeatureEnabled('tracking', false);
+        $featureChecker->setFeatureEnabled('campaign', false);
+        try {
+            $result = $this->runCommand('oro:cron:calculate-tracking-event-summary');
+        } finally {
+            $featureChecker->setFeatureEnabled('tracking', null);
+            $featureChecker->setFeatureEnabled('campaign', null);
+        }
+
+        $this->assertEquals('The feature that enables this CRON command is turned off.', $result);
     }
 }

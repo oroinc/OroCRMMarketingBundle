@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\CampaignBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository;
 use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,16 +23,12 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
     /** @var string */
     protected static $defaultName = 'oro:cron:calculate-tracking-event-summary';
 
-    private FeatureChecker $featureChecker;
-    private DoctrineHelper $doctrineHelper;
-    private ?TrackingEventSummaryRepository $trackingEventRepository = null;
+    private ManagerRegistry $doctrine;
 
-    public function __construct(FeatureChecker $featureChecker, DoctrineHelper $doctrineHelper)
+    public function __construct(ManagerRegistry $doctrine)
     {
         parent::__construct();
-
-        $this->featureChecker = $featureChecker;
-        $this->doctrineHelper = $doctrineHelper;
+        $this->doctrine = $doctrine;
     }
 
     public function getDefaultDefinition()
@@ -69,43 +65,25 @@ HELP
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->featureChecker->isFeatureEnabled('tracking') ||
-            !$this->featureChecker->isFeatureEnabled('campaign')
-        ) {
-            $output->writeln('This feature is disabled. The command will not run.');
-
-            return 0;
-        }
-
         $campaigns = $this->getCampaignRepository()->findAll();
-
         if (!$campaigns) {
             $output->writeln('<info>No campaigns found</info>');
 
             return 0;
         }
 
-        $output->writeln(
-            sprintf('<comment>Campaigns to calculate:</comment> %d', count($campaigns))
-        );
+        $output->writeln(sprintf('<comment>Campaigns to calculate:</comment> %d', count($campaigns)));
 
         $this->calculate($output, $campaigns);
-        $output->writeln(sprintf('<info>Finished campaigns statistic calculation</info>'));
+        $output->writeln('<info>Finished campaigns statistic calculation</info>');
 
         return 0;
     }
 
-    /**
-     * Calculate tracking event statistic for campaigns
-     *
-     * @param OutputInterface $output
-     * @param Campaign[] $campaigns
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    protected function calculate(OutputInterface $output, array $campaigns): void
+    private function calculate(OutputInterface $output, array $campaigns): void
     {
-        $em = $this->doctrineHelper->getEntityManagerForClass(Campaign::class);
+        $em = $this->getEntityManager(Campaign::class);
+        /** @var Campaign $campaign */
         foreach ($campaigns as $campaign) {
             $output->writeln(sprintf('<info>Calculating statistic for campaign</info>: %s', $campaign->getName()));
 
@@ -119,22 +97,14 @@ HELP
         $em->flush();
     }
 
-    protected function calculateForCampaign(Campaign $campaign)
+    private function calculateForCampaign(Campaign $campaign): void
     {
-        $trackingEventRepository = $this->getTrackingEventSummaryRepository();
-        $events = $trackingEventRepository->getSummarizedStatistic($campaign);
-
-        $em = $this->doctrineHelper->getEntityManagerForClass(TrackingEventSummary::class);
+        $em = $this->getEntityManager(TrackingEventSummary::class);
+        $events = $this->getTrackingEventSummaryRepository()->getSummarizedStatistic($campaign);
         foreach ($events as $event) {
-            /** @var TrackingWebsite $website */
-            $website = $this->doctrineHelper->getEntityReference(
-                TrackingWebsite::class,
-                $event['websiteId']
-            );
-
             $summary = new TrackingEventSummary();
             $summary->setCode($event['code']);
-            $summary->setWebsite($website);
+            $summary->setWebsite($em->getReference(TrackingWebsite::class, $event['websiteId']));
             $summary->setName($event['name']);
             $summary->setVisitCount($event['visitCount']);
             $summary->setLoggedAt(new \DateTime($event['loggedAtDate'], new \DateTimeZone('UTC')));
@@ -145,19 +115,19 @@ HELP
         $em->flush();
     }
 
-    protected function getCampaignRepository(): CampaignRepository
+    private function getEntityManager(string $class): EntityManagerInterface
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->doctrineHelper->getEntityRepository(Campaign::class);
+        return $this->doctrine->getManagerForClass($class);
     }
 
-    protected function getTrackingEventSummaryRepository(): TrackingEventSummaryRepository
+    private function getCampaignRepository(): CampaignRepository
     {
-        if (!$this->trackingEventRepository) {
-            /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
-            $this->trackingEventRepository = $this->doctrineHelper->getEntityRepository(TrackingEventSummary::class);
-        }
+        return $this->doctrine->getRepository(Campaign::class);
+    }
 
-        return $this->trackingEventRepository;
+    private function getTrackingEventSummaryRepository(): TrackingEventSummaryRepository
+    {
+        return $this->doctrine->getRepository(TrackingEventSummary::class);
     }
 }

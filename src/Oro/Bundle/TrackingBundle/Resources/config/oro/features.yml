@@ -14,3 +14,9 @@ features:
             - 'oro_magento_widget_tracking_events'
         api_resources:
             - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
+        commands:
+            - 'oro:cron:import-tracking'
+            - 'oro:cron:tracking:parse'
+        cron_jobs:
+            - 'oro:cron:import-tracking'
+            - 'oro:cron:tracking:parse'
