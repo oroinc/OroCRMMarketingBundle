@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Oro\Bundle\TrackingBundle\Command;
 
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\TrackingBundle\Processor\TrackingProcessor;
 use Oro\Component\Log\OutputLogger;
 use Symfony\Component\Console\Command\Command;
@@ -22,14 +21,11 @@ class TrackCommand extends Command implements CronCommandInterface
     /** @var string */
     protected static $defaultName = 'oro:cron:tracking:parse';
 
-    private FeatureChecker $featureChecker;
     private TrackingProcessor $trackingProcessor;
 
-    public function __construct(FeatureChecker $featureChecker, TrackingProcessor $trackingProcessor)
+    public function __construct(TrackingProcessor $trackingProcessor)
     {
         parent::__construct();
-
-        $this->featureChecker = $featureChecker;
         $this->trackingProcessor = $trackingProcessor;
     }
 
@@ -40,10 +36,6 @@ class TrackCommand extends Command implements CronCommandInterface
 
     public function isActive()
     {
-        if (!$this->featureChecker->isFeatureEnabled('tracking')) {
-            return false;
-        }
-
         return $this->trackingProcessor->hasTrackingEventsToProcess();
     }
 
@@ -82,12 +74,6 @@ HELP
     /** @noinspection PhpMissingParentCallCommonInspection */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->featureChecker->isFeatureEnabled('tracking')) {
-            $output->writeln('The tracking feature is disabled. The command will not run.');
-
-            return 0;
-        }
-
         $logger = new OutputLogger($output);
 
         $maxExecutionTime = $input->getOption('max-execution-time');

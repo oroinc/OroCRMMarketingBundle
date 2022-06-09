@@ -10,7 +10,6 @@ use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TrackingBundle\Entity\TrackingData;
@@ -31,7 +30,6 @@ class ImportLogsCommand extends Command implements CronCommandInterface
     protected static $defaultName = 'oro:cron:import-tracking';
 
     private DoctrineJobRepository $doctrineJobRepository;
-    private FeatureChecker $featureChecker;
     private JobExecutor $jobExecutor;
     private ConfigManager $configManager;
 
@@ -39,13 +37,11 @@ class ImportLogsCommand extends Command implements CronCommandInterface
 
     public function __construct(
         DoctrineJobRepository $doctrineJobRepository,
-        FeatureChecker $featureChecker,
         JobExecutor $jobExecutor,
         ConfigManager $configManager,
         string $kernelLogsDir
     ) {
         $this->doctrineJobRepository = $doctrineJobRepository;
-        $this->featureChecker = $featureChecker;
         $this->jobExecutor = $jobExecutor;
         $this->configManager = $configManager;
         $this->kernelLogsDir = $kernelLogsDir;
@@ -106,12 +102,6 @@ HELP
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->featureChecker->isFeatureEnabled('tracking')) {
-            $output->writeln('The tracking feature is disabled. The command will not run.');
-
-            return 0;
-        }
-
         $fs     = new Filesystem();
         $finder = new Finder();
 

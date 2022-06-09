@@ -4,15 +4,13 @@ services:
 
     Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommand:
         arguments:
-            - '@oro_featuretoggle.checker.feature_checker'
-            - '@oro_entity.doctrine_helper'
+            - '@doctrine'
         tags:
             - { name: console.command }
 
     Oro\Bundle\CampaignBundle\Command\SendEmailCampaignsCommand:
         arguments:
             - '@doctrine'
-            - '@oro_featuretoggle.checker.feature_checker'
             - '@oro_campaign.email_campaign.sender.builder'
         tags:
             - { name: console.command }

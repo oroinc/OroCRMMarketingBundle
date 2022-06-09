@@ -5,7 +5,6 @@ services:
     Oro\Bundle\TrackingBundle\Command\ImportLogsCommand:
         arguments:
             - '@oro_batch.job.repository'
-            - '@oro_featuretoggle.checker.feature_checker'
             - '@oro_importexport.job_executor'
             - '@oro_config.user'
             - '%kernel.logs_dir%'
@@ -14,7 +13,6 @@ services:
 
     Oro\Bundle\TrackingBundle\Command\TrackCommand:
         arguments:
-            - '@oro_featuretoggle.checker.feature_checker'
             - '@oro_tracking.processor.tracking_processor'
         tags:
             - { name: console.command }
