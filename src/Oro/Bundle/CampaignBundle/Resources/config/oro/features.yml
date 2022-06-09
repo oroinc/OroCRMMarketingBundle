@@ -28,8 +28,9 @@ features:
             - 'campaigns_leads'
             - 'campaigns_opportunity'
             - 'campaigns_by_close_revenue'
-        field_configs:
-            - 'campaign'
+        entities:
+            - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
+            - 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign'
         navigation_items:
             - 'application_menu > reports_tab > oro.campaign.entity_plural_label_report_tab'
         commands:
