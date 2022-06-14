@@ -15,3 +15,6 @@ entity_config:
                             block: other
                             label: oro.marketinglist.entity_config.contact_information.label
                             required: false
+                    import_export:
+                        import_template:
+                            use_in_template: true
