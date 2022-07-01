@@ -1,0 +1,5 @@
+oro_entity:
+    entity_name_representation:
+        Oro\Bundle\MarketingListBundle\Entity\MarketingList:
+            full: [ name ]
+            short: [ name ]

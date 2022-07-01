@@ -1,0 +1,8 @@
+oro_entity:
+    entity_name_representation:
+        Oro\Bundle\CampaignBundle\Entity\Campaign:
+            full: [ name ]
+            short: [ name ]
+        Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
+            full: [ name ]
+            short: [ name ]

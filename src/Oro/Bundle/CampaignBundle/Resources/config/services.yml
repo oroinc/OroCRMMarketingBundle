@@ -196,16 +196,6 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    oro_campaign.provider.campaign_entity_name:
-        class: Oro\Bundle\CampaignBundle\Provider\CampaignEntityNameProvider
-        tags:
-            - { name: oro_entity.name_provider, priority: 100 }
-
-    oro_campaign.provider.email_campaign_entity_name:
-        class: Oro\Bundle\CampaignBundle\Provider\EmailCampaignEntityNameProvider
-        tags:
-            - { name: oro_entity.name_provider, priority: 100 }
-
     oro_campaign.cron.calculate_tracking_event_summary_command_feature_checker:
         class: Oro\Bundle\CampaignBundle\Command\CalculateTrackingEventSummaryCommandFeatureChecker
         decorates: oro_cron.command_feature_checker
