@@ -10,22 +10,6 @@ oro_campaign_dashboard:
 
 
 #
-# DEPRECATED OLD REST API ROUTES
-#
-
-oro_api_options_emailcampaign_email_templates:
-    path: '/api/rest/{version}/emailcampaign/email/templates.{_format}'
-    methods: [OPTIONS]
-    defaults:
-        _controller: 'Oro\Bundle\CampaignBundle\Controller\Api\Rest\EmailTemplateController::optionsAction'
-        _format: json
-        version: latest
-    requirements:
-        _format: json|html
-        version: latest|v1
-
-
-#
 # OLD REST API ROUTES
 #
 
