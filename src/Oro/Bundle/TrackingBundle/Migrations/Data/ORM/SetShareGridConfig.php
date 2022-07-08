@@ -8,6 +8,9 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Shared config data migration for entity security config.
+ */
 class SetShareGridConfig extends AbstractFixture implements ContainerAwareInterface
 {
     const PACKAGE_ENTERPRISE = 'enterprise';
@@ -34,8 +37,8 @@ class SetShareGridConfig extends AbstractFixture implements ContainerAwareInterf
     {
         $packageProvider = $this->container->get('oro_platform.provider.package');
         $entitySecurityConfigs = [];
-        foreach ($packageProvider->getOroPackages() as $package) {
-            if (strpos($package->getName(), self::PACKAGE_ENTERPRISE) !== false) {
+        foreach (array_keys($packageProvider->getOroPackages()) as $packageName) {
+            if (strpos($packageName, self::PACKAGE_ENTERPRISE) !== false) {
                 $entitySecurityConfigs = self::$entityEnterpriseSecurityConfigs;
                 break;
             }
