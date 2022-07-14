@@ -13,6 +13,7 @@ use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TrackingBundle\Entity\TrackingData;
+use Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,19 +33,18 @@ class ImportLogsCommand extends Command implements CronCommandInterface
     private DoctrineJobRepository $doctrineJobRepository;
     private JobExecutor $jobExecutor;
     private ConfigManager $configManager;
-
-    private string $kernelLogsDir;
+    private TrackingDataFolderSelector $trackingDataFolderSelector;
 
     public function __construct(
         DoctrineJobRepository $doctrineJobRepository,
         JobExecutor $jobExecutor,
         ConfigManager $configManager,
-        string $kernelLogsDir
+        TrackingDataFolderSelector $trackingDataFolderSelector
     ) {
         $this->doctrineJobRepository = $doctrineJobRepository;
         $this->jobExecutor = $jobExecutor;
         $this->configManager = $configManager;
-        $this->kernelLogsDir = $kernelLogsDir;
+        $this->trackingDataFolderSelector = $trackingDataFolderSelector;
         parent::__construct();
     }
 
@@ -57,7 +57,7 @@ class ImportLogsCommand extends Command implements CronCommandInterface
     {
         $fs     = new Filesystem();
         $finder = new Finder();
-        $directory = $this->kernelLogsDir . DIRECTORY_SEPARATOR . 'tracking';
+        $directory = $this->getDirectory();
 
         if (!$fs->exists($directory)) {
             return false;
@@ -106,7 +106,7 @@ HELP
         $finder = new Finder();
 
         if (!$directory = $input->getOption('directory')) {
-            $directory = $this->kernelLogsDir . DIRECTORY_SEPARATOR . 'tracking';
+            $directory = $this->getDirectory();
         }
 
         if (!$fs->exists($directory)) {
@@ -172,6 +172,11 @@ HELP
         }
 
         return 0;
+    }
+
+    protected function getDirectory(): string
+    {
+        return $this->trackingDataFolderSelector->retrieve();
     }
 
     protected function isFileProcessed(array $options): bool

@@ -7,7 +7,7 @@ services:
             - '@oro_batch.job.repository'
             - '@oro_importexport.job_executor'
             - '@oro_config.user'
-            - '%kernel.logs_dir%'
+            - '@oro_tracking.tools.data_folder_selector'
         tags:
             - { name: console.command }
 
