@@ -14,6 +14,7 @@ use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TrackingBundle\Entity\TrackingData;
+use Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,6 +37,7 @@ class ImportLogsCommand extends Command implements CronCommandInterface
     private ConfigManager $configManager;
 
     private string $kernelLogsDir;
+    private ?TrackingDataFolderSelector $trackingDataFolderSelector = null;
 
     public function __construct(
         DoctrineJobRepository $doctrineJobRepository,
@@ -57,11 +59,16 @@ class ImportLogsCommand extends Command implements CronCommandInterface
         return '1 * * * *';
     }
 
+    public function setTrackingDataFolderSelector(?TrackingDataFolderSelector $trackingDataFolderSelector = null): void
+    {
+        $this->trackingDataFolderSelector = $trackingDataFolderSelector;
+    }
+
     public function isActive()
     {
         $fs     = new Filesystem();
         $finder = new Finder();
-        $directory = $this->kernelLogsDir . DIRECTORY_SEPARATOR . 'tracking';
+        $directory = $this->getDirectory();
 
         if (!$fs->exists($directory)) {
             return false;
@@ -116,7 +123,7 @@ HELP
         $finder = new Finder();
 
         if (!$directory = $input->getOption('directory')) {
-            $directory = $this->kernelLogsDir . DIRECTORY_SEPARATOR . 'tracking';
+            $directory = $this->getDirectory();
         }
 
         if (!$fs->exists($directory)) {
@@ -182,6 +189,13 @@ HELP
         }
 
         return 0;
+    }
+
+    protected function getDirectory(): string
+    {
+        return $this->trackingDataFolderSelector ?
+            $this->trackingDataFolderSelector->retrieve() :
+            TrackingDataFolderSelector::retrieveForLogsDir($this->kernelLogsDir);
     }
 
     protected function isFileProcessed(array $options): bool

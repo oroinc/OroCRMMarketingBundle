@@ -4,6 +4,7 @@ namespace Oro\Bundle\TrackingBundle\EventListener;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
+use Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -24,6 +25,7 @@ class ConfigListener
     private ConfigManager $configManager;
     private RouterInterface $router;
     private string $logsDir;
+    private ?TrackingDataFolderSelector $trackingDataFolderSelector = null;
 
     public function __construct(
         ConfigManager $configManager,
@@ -33,6 +35,11 @@ class ConfigListener
         $this->configManager = $configManager;
         $this->router = $router;
         $this->logsDir = $logsDir;
+    }
+
+    public function setTrackingDataFolderSelector(?TrackingDataFolderSelector $trackingDataFolderSelector = null): void
+    {
+        $this->trackingDataFolderSelector = $trackingDataFolderSelector;
     }
 
     public function onUpdateAfter(ConfigUpdateEvent $event): void
@@ -70,9 +77,12 @@ class ConfigListener
             $configuration['dynamic_tracking_base_url'] = null;
         }
 
-        $trackingDir = $this->logsDir . DIRECTORY_SEPARATOR . 'tracking';
+        $trackingDir = $this->trackingDataFolderSelector ?
+            $this->trackingDataFolderSelector->retrieve() :
+            TrackingDataFolderSelector::retrieveForLogsDir($this->logsDir);
+
         if (!is_dir($trackingDir)) {
-            mkdir($trackingDir);
+            mkdir($trackingDir, 0777, true);
         }
 
         $settingsFile = $trackingDir . DIRECTORY_SEPARATOR . 'settings.ser';

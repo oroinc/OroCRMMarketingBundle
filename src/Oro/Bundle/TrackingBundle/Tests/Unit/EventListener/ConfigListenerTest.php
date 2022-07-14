@@ -5,6 +5,7 @@ namespace Oro\Bundle\TrackingBundle\Tests\Unit\EventListener;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
 use Oro\Bundle\TrackingBundle\EventListener\ConfigListener;
+use Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector;
 use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
@@ -28,9 +29,10 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $logsDir = $this->getTempDir('tracking_log');
-        $trackingDir = $logsDir . DIRECTORY_SEPARATOR . 'tracking';
+        $trackingDirSelector = new TrackingDataFolderSelector($logsDir);
+        $trackingDir = $trackingDirSelector->retrieve();
 
-        $this->settingsFile = $trackingDir . DIRECTORY_SEPARATOR . 'settings.ser';
+        $this->settingsFile = $trackingDir.DIRECTORY_SEPARATOR.'settings.ser';
 
         $this->configManager = $this->createMock(ConfigManager::class);
         $this->router = $this->createMock(RouterInterface::class);
@@ -40,6 +42,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
             $this->router,
             $logsDir
         );
+        $this->listener->setTrackingDataFolderSelector($trackingDirSelector);
     }
 
     public function testOnUpdateAfterNoChanges()
