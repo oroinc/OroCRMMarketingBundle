@@ -9,6 +9,8 @@ services:
             - '@oro_importexport.job_executor'
             - '@oro_config.user'
             - '%kernel.logs_dir%'
+        calls:
+            - ['setTrackingDataFolderSelector', ['@oro_tracking.tools.data_folder_selector']]
         tags:
             - { name: console.command }
 

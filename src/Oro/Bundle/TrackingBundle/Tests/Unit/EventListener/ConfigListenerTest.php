@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\TrackingBundle\EventListener\ConfigListener;
+use Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector;
 use Oro\Component\Testing\TempDirExtension;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\RequestContext;
@@ -44,7 +45,8 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->logsDir = $this->getTempDir('tracking_log');
-        $this->trackingDir = $this->logsDir . DIRECTORY_SEPARATOR . 'tracking';
+        $trackingDirSelector = new TrackingDataFolderSelector($this->logsDir);
+        $this->trackingDir = $trackingDirSelector->retrieve();
         $fs = new Filesystem();
         $fs->mkdir($this->logsDir);
 
@@ -62,6 +64,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
             $this->router,
             $this->logsDir
         );
+        $this->listener->setTrackingDataFolderSelector($trackingDirSelector);
     }
 
     public function testOnUpdateAfterNoChanges()

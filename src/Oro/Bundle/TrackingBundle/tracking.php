@@ -1,9 +1,5 @@
 <?php
 /**
- * IMPORTANT:
- *  Do not change this file manually, because it will be overwritten on application install/update procedure.
- *  The original file is located in `Oro/Bundles/TrackingBundle/Resources/public/lib/tracking.php`.
- *
  * This is tracking endpoint, which must be as fast as possible.
  * KISS.
  *
@@ -11,7 +7,13 @@
  * @codingStandardsIgnoreFile
  */
 
-$trackingFolder = PUBLIC_DIR . '/../var/logs/tracking';
+if (!$folder = getenv('ORO_TRACKING_DATA_FOLDER')) {
+    require_once __DIR__.'/Tools/TrackingDataFolderSelector.php';
+    $folder = \Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector::DEFAULT_FOLDER;
+}
+
+$trackingFolder = PUBLIC_DIR . '/../' . $folder;
+
 $settingsFile   = $trackingFolder . DIRECTORY_SEPARATOR . 'settings.ser';
 $settings       = [
     'dynamic_tracking_enabled'  => false,
