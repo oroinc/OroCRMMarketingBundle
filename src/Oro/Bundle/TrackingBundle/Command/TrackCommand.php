@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\TrackingBundle\Command;
 
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\TrackingBundle\Processor\TrackingProcessor;
 use Oro\Component\Log\OutputLogger;
 use Symfony\Component\Console\Command\Command;
@@ -14,7 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Parses tracking logs.
  */
-class TrackCommand extends Command implements CronCommandInterface
+class TrackCommand extends Command implements
+    CronCommandScheduleDefinitionInterface,
+    CronCommandActivationInterface
 {
     public const STATUS_SUCCESS = 0;
 
@@ -29,12 +32,18 @@ class TrackCommand extends Command implements CronCommandInterface
         $this->trackingProcessor = $trackingProcessor;
     }
 
-    public function getDefaultDefinition()
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultDefinition(): string
     {
         return '*/5 * * * *';
     }
 
-    public function isActive()
+    /**
+     * {@inheritDoc}
+     */
+    public function isActive(): bool
     {
         return $this->trackingProcessor->hasTrackingEventsToProcess();
     }

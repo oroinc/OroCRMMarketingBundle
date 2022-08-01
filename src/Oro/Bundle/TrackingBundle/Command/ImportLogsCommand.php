@@ -9,7 +9,8 @@ use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TrackingBundle\Entity\TrackingData;
@@ -25,7 +26,9 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * Imports event tracking logs.
  */
-class ImportLogsCommand extends Command implements CronCommandInterface
+class ImportLogsCommand extends Command implements
+    CronCommandScheduleDefinitionInterface,
+    CronCommandActivationInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:import-tracking';
@@ -48,14 +51,20 @@ class ImportLogsCommand extends Command implements CronCommandInterface
         parent::__construct();
     }
 
-    public function getDefaultDefinition()
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultDefinition(): string
     {
         return '1 * * * *';
     }
 
-    public function isActive()
+    /**
+     * {@inheritDoc}
+     */
+    public function isActive(): bool
     {
-        $fs     = new Filesystem();
+        $fs = new Filesystem();
         $finder = new Finder();
         $directory = $this->getDirectory();
 

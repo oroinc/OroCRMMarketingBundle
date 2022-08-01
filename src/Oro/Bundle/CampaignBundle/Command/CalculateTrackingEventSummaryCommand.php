@@ -9,7 +9,8 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository;
 use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Calculates tracking event summary (campaign statistics).
  */
-class CalculateTrackingEventSummaryCommand extends Command implements CronCommandInterface
+class CalculateTrackingEventSummaryCommand extends Command implements
+    CronCommandScheduleDefinitionInterface,
+    CronCommandActivationInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:calculate-tracking-event-summary';
@@ -31,13 +34,19 @@ class CalculateTrackingEventSummaryCommand extends Command implements CronComman
         $this->doctrine = $doctrine;
     }
 
-    public function getDefaultDefinition()
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultDefinition(): string
     {
         // 00:01 every day
         return '1 0 * * *';
     }
 
-    public function isActive()
+    /**
+     * {@inheritDoc}
+     */
+    public function isActive(): bool
     {
         $count = $this->getCampaignRepository()->getCount();
 
