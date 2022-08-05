@@ -56,10 +56,12 @@ class MarketingListController extends RestController implements ClassResourceInt
         $field = $request->get('field');
         /** @var ContactInformationFieldHelper $helper */
         $helper = $this->get('oro_marketing_list.contact_information_field_helper');
+        $fieldType = $helper->getContactInformationFieldType($entity, $field);
+
         return $this->handleView(
             $this->view(
-                $helper->getContactInformationFieldType($entity, $field),
-                Response::HTTP_OK
+                $fieldType,
+                $fieldType ? Response::HTTP_OK : Response::HTTP_NO_CONTENT
             )
         );
     }
