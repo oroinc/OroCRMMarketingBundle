@@ -67,7 +67,7 @@ system_configuration:
 
         oro_tracking.wesite_configuration:
             ui_only: true
-            type: Oro\Bundle\FormBundle\Form\Type\LinkType # @todo BAP-4696 use template
+            type: Oro\Bundle\FormBundle\Form\Type\LinkType
             priority: 0
             options:
                 label: false
