@@ -165,3 +165,7 @@ oro:
                 This token_auth must remain secure. Please <strong>do not share it!</strong>
             identifier: |
                 When Piwik synchronization is enabled, the identifier is the same as the Piwik website id.
+
+        feature:
+            label: Website Tracking
+            description: Enables website tracking to register user activity on the website and collect statistics on monitored events.

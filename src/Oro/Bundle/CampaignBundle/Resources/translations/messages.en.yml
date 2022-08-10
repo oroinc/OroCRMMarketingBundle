@@ -21,8 +21,8 @@ oro:
         report_refresh_date.label: Report Refresh Date
 
         feature:
-            label: Marketing Campaigns
-            description: Enables marketing campaigns
+            label: Marketing and Email Campaigns
+            description: Enables creating and managing marketing and email campaigns.
 
         form:
             choose_campaign: Choose campaign

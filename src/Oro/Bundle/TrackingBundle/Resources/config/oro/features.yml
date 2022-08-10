@@ -4,19 +4,17 @@ features:
         description: oro.tracking.feature.description
         toggle: oro_tracking.feature_enabled
         routes:
-            - 'oro_tracking_data_create'
-            - 'oro_tracking_website_index'
-            - 'oro_tracking_website_create'
-            - 'oro_tracking_website_update'
-            - 'oro_tracking_website_view'
-            - 'oro_api_delete_tracking_website'
-            - 'oro_api_options_tracking_websites'
-            - 'oro_magento_widget_tracking_events'
+            - oro_tracking_data_create
+            - oro_tracking_website_index
+            - oro_tracking_website_create
+            - oro_tracking_website_update
+            - oro_tracking_website_view
+            - oro_api_delete_tracking_website
         api_resources:
-            - 'Oro\Bundle\TrackingBundle\Entity\TrackingWebsite'
+            - Oro\Bundle\TrackingBundle\Entity\TrackingWebsite
         commands:
-            - 'oro:cron:import-tracking'
-            - 'oro:cron:tracking:parse'
+            - oro:cron:import-tracking
+            - oro:cron:tracking:parse
         cron_jobs:
-            - 'oro:cron:import-tracking'
-            - 'oro:cron:tracking:parse'
+            - oro:cron:import-tracking
+            - oro:cron:tracking:parse

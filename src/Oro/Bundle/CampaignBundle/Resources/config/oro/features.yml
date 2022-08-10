@@ -18,7 +18,6 @@ features:
             - 'oro_campaign_dashboard_campaigns_opportunity_chart'
             - 'oro_campaign_dashboard_campaigns_by_close_revenue_chart'
             - 'oro_api_get_emailcampaign_email_templates'
-            - 'oro_api_options_emailcampaign_email_templates'
         api_resources:
             - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
             - 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign'

@@ -53,7 +53,7 @@ oro:
 
         feature:
             label: Marketing Activities
-            description: Allows to view marketing campaign activities
+            description: Enables access to view marketing campaign activity statistics in context (e.g., for orders, customer users, etc.).
 
     query_designer:
         aggregates:

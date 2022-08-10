@@ -47,7 +47,7 @@ oro:
 
         feature:
             label: Marketing Lists
-            description: Enables a customer segmentation in marketing campaigns
+            description: Enables creating contact lists segmented following the marketing campaign requirements.
 
         form:
             choose_marketing_list_type:    Choose marketing list type
