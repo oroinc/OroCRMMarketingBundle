@@ -150,14 +150,13 @@ oro:
                 piwik_token_auth.label: 'Piwik Token Auth'
         form.tooltip:
             dynamic_tracking_enabled: |
-                Enable realtime tracking information processing.
-                Note that this may have performance impact.
+                If enabled, tracking data is processed in the real-time mode, and the event is registered as soon as it occurs.
+                Note that this may affect performance.
             precalculated_statistic_enabled: |
-                Enable aggregation for visit statistics. 
-                This will improve statistics calculation time, but may have impact on save time.
+                If enabled, website visits information is aggregated for the statistics report.
+                This improves statistics calculation time, but may affect performance.
             log_rotate_interval: |
-                Determines how often log files are rotated.
-                This option is required only for non-dynamic tracking.
+                Defines how often log files must be processed if Dynamic Tracking is disabled.
             piwik_host: |
                 Piwik analytics URL.
                 When this option is set, all tracking information is passed to a Piwik instance.
