@@ -47,7 +47,7 @@ class EmailTransport implements TransportInterface, LoggerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function send(EmailCampaign $campaign, $entity, array $from, array $to)
+    public function send(EmailCampaign $campaign, object $entity, array $from, array $to)
     {
         $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
         $marketingList = $campaign->getMarketingList();

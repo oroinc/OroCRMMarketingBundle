@@ -16,15 +16,20 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class EmailTransportTest extends \PHPUnit\Framework\TestCase
 {
-    private EmailModelSender|\PHPUnit\Framework\MockObject\MockObject $emailModelSender;
+    /** @var EmailModelSender|\PHPUnit\Framework\MockObject\MockObject */
+    private $emailModelSender;
 
-    private EmailRenderer|\PHPUnit\Framework\MockObject\MockObject $emailRenderer;
+    /** @var EmailRenderer|\PHPUnit\Framework\MockObject\MockObject */
+    private $emailRenderer;
 
-    private DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper;
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $doctrineHelper;
 
-    private EmailAddressHelper|\PHPUnit\Framework\MockObject\MockObject $emailAddressHelper;
+    /** @var EmailAddressHelper|\PHPUnit\Framework\MockObject\MockObject */
+    private $emailAddressHelper;
 
-    private EmailTransport $transport;
+    /** @var EmailTransport */
+    private $transport;
 
     protected function setUp(): void
     {
@@ -46,12 +51,13 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
      */
     public function testSend(
         string|int|null $id,
-        ?string $entity,
         array $from,
         array $to,
         ?string $subject,
         ?string $body
     ): void {
+        $entity = new \stdClass();
+
         $organization = new Organization();
         $organization->setId(12);
         $emails = array_keys($from);
@@ -65,7 +71,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->willReturn(sprintf('%s <%s>', reset($emails), reset($from)));
 
         $marketingList = new MarketingList();
-        $marketingList->setEntity($entity);
+        $marketingList->setEntity(get_class($entity));
 
         $template = new EmailTemplate();
         $template->setType('html');
@@ -86,7 +92,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         $emailModel
             ->setFrom(sprintf('%s <%s>', reset($emails), reset($from)))
             ->setType($template->getType())
-            ->setEntityClass($entity)
+            ->setEntityClass(get_class($entity))
             ->setEntityId($id)
             ->setTo($to)
             ->setSubject($subject)
@@ -106,51 +112,15 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
     public function sendDataProvider(): array
     {
         return [
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
-            [null, \stdClass::class, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
-            ['string', \stdClass::class, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
-            [
-                1,
-                \stdClass::class,
-                ['sender@example.com' => 'Sender Name'],
-                ['test@example.com'],
-                'subject',
-                'body',
-            ],
-            [
-                1,
-                \stdClass::class,
-                ['sender@example.com' => 'Sender Name'],
-                ['test@example.com'],
-                null,
-                'body',
-            ],
-            [
-                1,
-                \stdClass::class,
-                ['sender@example.com' => 'Sender Name'],
-                ['test@example.com'],
-                'subject',
-                null,
-            ],
-            [
-                1,
-                \stdClass::class,
-                ['sender@example.com' => 'Sender Name'],
-                ['test@example.com'],
-                null,
-                null,
-            ],
-            [1, null, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, null],
-            [
-                1,
-                \stdClass::class,
-                ['sender@example.com' => 'Sender Name'],
-                ['test@example.com'],
-                null,
-                null,
-            ],
-            [1, \stdClass::class, ['sender@example.com' => 'Sender Name'], [null], null, null],
+            [1, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
+            [null, ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
+            ['string', ['sender@example.com' => 'Sender Name'], [], 'subject', 'body'],
+            [1, ['sender@example.com' => 'Sender Name'], ['test@example.com'], 'subject', 'body'],
+            [1, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, 'body'],
+            [1, ['sender@example.com' => 'Sender Name'], ['test@example.com'], 'subject', null],
+            [1, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, null],
+            [1, ['sender@example.com' => 'Sender Name'], ['test@example.com'], null, null],
+            [1, ['sender@example.com' => 'Sender Name'], [null], null, null],
         ];
     }
 

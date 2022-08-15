@@ -4,16 +4,19 @@ namespace Oro\Bundle\CampaignBundle\Transport;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 
+/**
+ * Represents a transport to send campaigns emails.
+ */
 interface TransportInterface
 {
     /**
      * @param EmailCampaign $campaign
-     * @param string $entity
+     * @param object $entity
      * @param string[] $from Associative array, key is sender email, value is sender name
      * @param string[] $to
      * @return mixed
      */
-    public function send(EmailCampaign $campaign, $entity, array $from, array $to);
+    public function send(EmailCampaign $campaign, object $entity, array $from, array $to);
 
     /**
      * Get transport name.

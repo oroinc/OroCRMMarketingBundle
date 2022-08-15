@@ -11,7 +11,7 @@ class TransportStub implements TransportInterface, VisibilityTransportInterface
     /**
      * {@inheritdoc}
      */
-    public function send(EmailCampaign $campaign, $entity, array $from, array $to)
+    public function send(EmailCampaign $campaign, object $entity, array $from, array $to)
     {
     }
 
