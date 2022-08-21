@@ -115,9 +115,9 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - 'Oro\Bundle\MarketingListBundle\Entity\MarketingList'
-            - ["name"]
+            - ['name']
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: "marketing_lists", acl_resource: "oro_marketing_list_view" }
+            - { name: oro_form.autocomplete.search_handler, alias: marketing_lists, acl_resource: oro_marketing_list_view }
 
     oro_marketing_list.twig.extension.contact_information_fields:
         class: Oro\Bundle\MarketingListBundle\Twig\ContactInformationFieldsExtension

@@ -49,7 +49,7 @@ services:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
-            - ["name"]
+            - ['name']
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: campaigns, acl_resource: oro_campaign_view }
 
