@@ -14,6 +14,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +31,7 @@ class MarketingListController extends AbstractController
      * @AclAncestor("oro_marketing_list_view")
      * @Template
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         return [
             'entity_class' => MarketingList::class
@@ -46,12 +47,8 @@ class MarketingListController extends AbstractController
      *      class="OroMarketingListBundle:MarketingList"
      * )
      * @Template
-     *
-     * @param MarketingList $entity
-     *
-     * @return array
      */
-    public function viewAction(MarketingList $entity)
+    public function viewAction(MarketingList $entity): array
     {
         $this->checkMarketingList($entity);
 
@@ -74,7 +71,7 @@ class MarketingListController extends AbstractController
      *      class="OroMarketingListBundle:MarketingList"
      * )
      */
-    public function createAction()
+    public function createAction(): array|RedirectResponse
     {
         return $this->update(new MarketingList());
     }
@@ -89,24 +86,15 @@ class MarketingListController extends AbstractController
      *      permission="EDIT",
      *      class="OroMarketingListBundle:MarketingList"
      * )
-     *
-     * @param MarketingList $entity
-     *
-     * @return array
      */
-    public function updateAction(MarketingList $entity)
+    public function updateAction(MarketingList $entity): array|RedirectResponse
     {
         $this->checkMarketingList($entity);
 
         return $this->update($entity);
     }
 
-    /**
-     * @param MarketingList $entity
-     *
-     * @return array
-     */
-    protected function update(MarketingList $entity)
+    protected function update(MarketingList $entity): array|RedirectResponse
     {
         $form = $this->get('form.factory')
             ->createNamed('oro_marketing_list_form', MarketingListType::class);
@@ -119,7 +107,7 @@ class MarketingListController extends AbstractController
             $this->get(MarketingListHandler::class)
         );
 
-        if (is_array($response)) {
+        if (\is_array($response)) {
             return array_merge(
                 $response,
                 [
@@ -132,7 +120,7 @@ class MarketingListController extends AbstractController
         return $response;
     }
 
-    protected function checkMarketingList(MarketingList $marketingList)
+    protected function checkMarketingList(MarketingList $marketingList): void
     {
         if ($marketingList->getEntity() &&
             !$this->getFeatureChecker()->isResourceEnabled($marketingList->getEntity(), 'entities')
@@ -141,24 +129,18 @@ class MarketingListController extends AbstractController
         }
     }
 
-    /**
-     * @return FeatureChecker
-     */
-    protected function getFeatureChecker()
+    protected function getFeatureChecker(): FeatureChecker
     {
         return $this->get(FeatureChecker::class);
     }
 
-    /**
-     * @return EntityProvider
-     */
-    private function getEntityProvider()
+    private function getEntityProvider(): EntityProvider
     {
         return $this->get('oro_marketing_list.entity_provider');
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getSubscribedServices()
     {
@@ -171,7 +153,7 @@ class MarketingListController extends AbstractController
                 UpdateHandlerFacade::class,
                 ValidatorInterface::class,
                 Manager::class,
-                MarketingListHandler::class,
+                MarketingListHandler::class
             ]
         );
     }

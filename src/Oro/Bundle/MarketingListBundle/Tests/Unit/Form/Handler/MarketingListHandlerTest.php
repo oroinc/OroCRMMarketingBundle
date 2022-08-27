@@ -49,25 +49,22 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->form = $this->createMock(Form::class);
         $this->request = new Request();
+
         $this->manager = $this->createMock(EntityManager::class);
         $this->validator = $this->createMock(ValidatorInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->testEntity = new MarketingList();
-
         $doctrine = $this->createMock(ManagerRegistry::class);
+
         $doctrine->expects($this->any())
             ->method('getManagerForClass')
             ->willReturn($this->manager);
+        $this->testEntity = new MarketingList();
 
         $this->form->expects($this->once())
             ->method('setData')
             ->with($this->testEntity);
 
-        $this->handler = new MarketingListHandler(
-            $doctrine,
-            $this->validator,
-            $this->translator
-        );
+        $this->handler = new MarketingListHandler($doctrine, $this->validator, $this->translator);
     }
 
     public function testProcess()

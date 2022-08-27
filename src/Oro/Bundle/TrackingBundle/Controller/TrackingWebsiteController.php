@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Controller;
 
-use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
@@ -35,7 +35,7 @@ class TrackingWebsiteController extends AbstractController
      * )
      * @Template
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         return [
             'entity_class' => TrackingWebsite::class
@@ -52,7 +52,7 @@ class TrackingWebsiteController extends AbstractController
      * )
      * @Template("@OroTracking/TrackingWebsite/update.html.twig")
      */
-    public function createAction()
+    public function createAction(): array|RedirectResponse
     {
         return $this->update(new TrackingWebsite());
     }
@@ -66,10 +66,8 @@ class TrackingWebsiteController extends AbstractController
      *      permission="EDIT"
      * )
      * @Template()
-     * @param TrackingWebsite $trackingWebsite
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAction(TrackingWebsite $trackingWebsite)
+    public function updateAction(TrackingWebsite $trackingWebsite): array|RedirectResponse
     {
         return $this->update($trackingWebsite);
     }
@@ -78,39 +76,30 @@ class TrackingWebsiteController extends AbstractController
      * @Route("/view/{id}", name="oro_tracking_website_view", requirements={"id"="\d+"})
      * @AclAncestor("oro_tracking_website_view")
      * @Template()
-     * @param TrackingWebsite $trackingWebsite
-     * @return array
      */
-    public function viewAction(TrackingWebsite $trackingWebsite)
+    public function viewAction(TrackingWebsite $trackingWebsite): array
     {
         return [
             'entity' => $trackingWebsite
         ];
     }
 
-    /**
-     * @param TrackingWebsite $trackingWebsite
-     * @return array|RedirectResponse
-     */
-    protected function update(TrackingWebsite $trackingWebsite)
+    protected function update(TrackingWebsite $trackingWebsite): array|RedirectResponse
     {
-        return $this->get(UpdateHandler::class)->update(
+        return $this->get(UpdateHandlerFacade::class)->update(
             $trackingWebsite,
             $this->createForm(TrackingWebsiteType::class),
             $this->getTranslator()->trans('oro.tracking.trackingwebsite.saved_message')
         );
     }
 
-    /**
-     * @return TranslatorInterface
-     */
-    protected function getTranslator()
+    protected function getTranslator(): TranslatorInterface
     {
         return $this->get(TranslatorInterface::class);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getSubscribedServices()
     {
@@ -118,7 +107,7 @@ class TrackingWebsiteController extends AbstractController
             parent::getSubscribedServices(),
             [
                 TranslatorInterface::class,
-                UpdateHandler::class,
+                UpdateHandlerFacade::class
             ]
         );
     }

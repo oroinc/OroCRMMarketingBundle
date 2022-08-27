@@ -3,12 +3,13 @@
 namespace Oro\Bundle\CampaignBundle\Controller;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\FormBundle\Model\UpdateHandler;
+use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,7 +25,7 @@ class CampaignController extends AbstractController
      * @AclAncestor("oro_campaign_view")
      * @Template
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         return [
             'entity_class' => Campaign::class
@@ -43,7 +44,7 @@ class CampaignController extends AbstractController
      *      class="OroCampaignBundle:Campaign"
      * )
      */
-    public function createAction()
+    public function createAction(): array|RedirectResponse
     {
         return $this->update(new Campaign());
     }
@@ -60,7 +61,7 @@ class CampaignController extends AbstractController
      *      class="OroCampaignBundle:Campaign"
      * )
      */
-    public function updateAction(Campaign $entity)
+    public function updateAction(Campaign $entity): array|RedirectResponse
     {
         return $this->update($entity);
     }
@@ -77,7 +78,7 @@ class CampaignController extends AbstractController
      * )
      * @Template
      */
-    public function viewAction(Campaign $entity)
+    public function viewAction(Campaign $entity): array
     {
         $codesHistory = $this->getDoctrine()
             ->getRepository("OroCampaignBundle:Campaign")
@@ -91,13 +92,10 @@ class CampaignController extends AbstractController
 
     /**
      * Process save campaign entity
-     *
-     * @param Campaign $entity
-     * @return array
      */
-    protected function update(Campaign $entity)
+    protected function update(Campaign $entity): array|RedirectResponse
     {
-        return $this->get(UpdateHandler::class)->update(
+        return $this->get(UpdateHandlerFacade::class)->update(
             $entity,
             $this->get('oro_campaign.campaign.form'),
             $this->get(TranslatorInterface::class)->trans('oro.campaign.controller.campaign.saved.message')
@@ -105,7 +103,7 @@ class CampaignController extends AbstractController
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getSubscribedServices()
     {
@@ -113,8 +111,8 @@ class CampaignController extends AbstractController
             parent::getSubscribedServices(),
             [
                 TranslatorInterface::class,
-                UpdateHandler::class,
                 'oro_campaign.campaign.form' => Form::class,
+                UpdateHandlerFacade::class
             ]
         );
     }

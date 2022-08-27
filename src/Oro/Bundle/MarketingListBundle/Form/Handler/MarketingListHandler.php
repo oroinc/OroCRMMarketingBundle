@@ -24,50 +24,35 @@ class MarketingListHandler implements FormHandlerInterface
 {
     use RequestHandlerTrait;
 
-    /**
-     * @var array
-     */
-    protected $marketingListTypeToSegmentTypeMap = [
+    private array $marketingListTypeToSegmentTypeMap = [
         MarketingListType::TYPE_DYNAMIC => SegmentType::TYPE_DYNAMIC,
         MarketingListType::TYPE_STATIC => SegmentType::TYPE_STATIC
     ];
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    private ManagerRegistry $doctrine;
+    private ValidatorInterface $validator;
+    private TranslatorInterface $translator;
 
     public function __construct(
-        ManagerRegistry $registry,
+        ManagerRegistry $doctrine,
         ValidatorInterface $validator,
         TranslatorInterface $translator
     ) {
-        $this->registry = $registry;
+        $this->doctrine = $doctrine;
         $this->validator = $validator;
         $this->translator = $translator;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function process($data, FormInterface $form, Request $request)
+    public function process($entity, FormInterface $form, Request $request)
     {
-        $form->setData($data);
-
-        if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
+        $form->setData($entity);
+        if (\in_array($request->getMethod(), ['POST', 'PUT'], true)) {
             $this->submitPostPutRequest($form, $request);
-            if ($this->isValid($data, $form, $request)) {
-                $this->onSuccess($data);
+            if ($this->isValid($entity, $form, $request)) {
+                $this->onSuccess($entity);
                 return true;
             }
         }
@@ -78,14 +63,14 @@ class MarketingListHandler implements FormHandlerInterface
     /**
      * "Success" form handler
      */
-    protected function onSuccess(MarketingList $entity)
+    protected function onSuccess(MarketingList $entity): void
     {
-        $manager = $this->registry->getManagerForClass(MarketingList::class);
+        $manager = $this->doctrine->getManagerForClass(MarketingList::class);
         $manager->persist($entity);
         $manager->flush();
     }
 
-    protected function processSegment(MarketingList $marketingList, FormInterface $form, Request $request)
+    protected function processSegment(MarketingList $marketingList, FormInterface $form, Request $request): void
     {
         $requestData = $request->get($form->getName());
         $segment = $marketingList->getSegment();
@@ -111,28 +96,18 @@ class MarketingListHandler implements FormHandlerInterface
         $marketingList->setSegment($segment);
     }
 
-    /**
-     * @param MarketingListType $marketingListType
-     * @return SegmentType
-     */
-    protected function getSegmentTypeByMarketingListType(MarketingListType $marketingListType)
+    protected function getSegmentTypeByMarketingListType(MarketingListType $marketingListType): SegmentType
     {
         $segmentTypeName = $this->marketingListTypeToSegmentTypeMap[$marketingListType->getName()];
 
-        $manager = $this->registry->getManagerForClass(SegmentType::class);
-
-        return $manager->find('OroSegmentBundle:SegmentType', $segmentTypeName);
+        return $this->doctrine->getManagerForClass(SegmentType::class)
+            ->find('OroSegmentBundle:SegmentType', $segmentTypeName);
     }
 
     /**
      * Validate Marketing List.
-     *
-     * @param MarketingList $marketingList
-     * @param FormInterface $form
-     * @param Request $request
-     * @return bool
      */
-    protected function isValid(MarketingList $marketingList, FormInterface $form, Request $request)
+    protected function isValid(MarketingList $marketingList, FormInterface $form, Request $request): bool
     {
         $isValid = $form->isValid();
         if ($isValid && !$marketingList->isManual()) {
