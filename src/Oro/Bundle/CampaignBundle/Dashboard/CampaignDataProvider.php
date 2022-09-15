@@ -14,9 +14,9 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
  */
 class CampaignDataProvider
 {
-    const CAMPAIGN_LEAD_COUNT          = 5;
-    const CAMPAIGN_OPPORTUNITY_COUNT   = 5;
-    const CAMPAIGN_CLOSE_REVENUE_COUNT = 5;
+    public const CAMPAIGN_LEAD_COUNT          = 5;
+    public const CAMPAIGN_OPPORTUNITY_COUNT   = 5;
+    public const CAMPAIGN_CLOSE_REVENUE_COUNT = 5;
 
     /** @var ManagerRegistry */
     protected $registry;
@@ -42,58 +42,50 @@ class CampaignDataProvider
         $this->qbTransformer       = $qbTransformer;
     }
 
-    /**
-     * @param array $dateRange
-     *
-     * @return array
-     */
-    public function getCampaignLeadsData(array $dateRange)
-    {
+    public function getCampaignLeadsData(
+        array $dateRange,
+        bool $hideCampaign = true,
+        int $maxResults = self::CAMPAIGN_LEAD_COUNT
+    ): array {
         $dateRange['in_group'] = true;
         $qb = $this->getCampaignRepository()->getCampaignsLeadsQB('lead');
-        $qb->setMaxResults(self::CAMPAIGN_LEAD_COUNT);
+        if ($hideCampaign) {
+            $qb->where($qb->expr()->isNotNull('lead'));
+        }
+        $qb->setMaxResults($maxResults);
         $this->dateFilterProcessor->applyDateRangeFilterToQuery($qb, $dateRange, 'lead.createdAt');
 
         return $this->aclHelper->apply($qb)->getArrayResult();
     }
 
-    /**
-     * @param array $dateRange
-     *
-     * @return array
-     */
-    public function getCampaignOpportunitiesData(array $dateRange)
-    {
+    public function getCampaignOpportunitiesData(
+        array $dateRange,
+        int $maxResults = self::CAMPAIGN_OPPORTUNITY_COUNT
+    ): array {
         $dateRange['in_group'] = true;
         $qb = $this->getCampaignRepository()->getCampaignsOpportunitiesQB('opportunities');
-        $qb->setMaxResults(self::CAMPAIGN_OPPORTUNITY_COUNT);
+        $qb->setMaxResults($maxResults);
         $this->dateFilterProcessor->process($qb, $dateRange, 'opportunities.createdAt');
 
         return $this->aclHelper->apply($qb)->getArrayResult();
     }
 
-    /**
-     * @param array $dateRange
-     *
-     * @return array
-     */
-    public function getCampaignsByCloseRevenueData(array $dateRange)
-    {
+    public function getCampaignsByCloseRevenueData(
+        array $dateRange,
+        int $maxResults = self::CAMPAIGN_CLOSE_REVENUE_COUNT
+    ): array {
         $dateRange['in_group'] = true;
         $qb = $this->getCampaignRepository()->getCampaignsByCloseRevenueQB(
             'opportunities',
             $this->qbTransformer
         );
-        $qb->setMaxResults(self::CAMPAIGN_CLOSE_REVENUE_COUNT);
+        $qb->setMaxResults($maxResults);
         $this->dateFilterProcessor->applyDateRangeFilterToQuery($qb, $dateRange, 'opportunities.createdAt');
 
         return $this->aclHelper->apply($qb)->getArrayResult();
     }
 
-    /**
-     * @return CampaignRepository
-     */
-    protected function getCampaignRepository()
+    protected function getCampaignRepository(): CampaignRepository
     {
         return $this->registry->getRepository(Campaign::class);
     }

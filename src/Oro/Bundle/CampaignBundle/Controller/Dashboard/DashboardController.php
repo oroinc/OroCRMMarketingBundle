@@ -4,6 +4,7 @@ namespace Oro\Bundle\CampaignBundle\Controller\Dashboard;
 
 use Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider;
 use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
+use Oro\Bundle\DashboardBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,14 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DashboardController extends AbstractController
 {
-    const CAMPAIGN_LEAD_COUNT          = 5;
-    const CAMPAIGN_OPPORTUNITY_COUNT   = 5;
-    const CAMPAIGN_CLOSE_REVENUE_COUNT = 5;
-
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
             CampaignDataProvider::class,
@@ -39,18 +36,21 @@ class DashboardController extends AbstractController
      * )
      * @Template("@OroCampaign/Dashboard/campaignLeads.html.twig")
      * @param Request $request
-     * @param mixed $widget
+     * @param string $widget
      * @return array
+     * @throws InvalidConfigurationException
      */
-    public function campaignLeadsAction(Request $request, $widget)
+    public function campaignLeadsAction(Request $request, string $widget): array
     {
         $widgetConfigs = $this->get(WidgetConfigs::class);
-        $items = $this->get(CampaignDataProvider::class)
-            ->getCampaignLeadsData(
-                $widgetConfigs
-                    ->getWidgetOptions($request->query->get('_widgetId', null))
-                    ->get('dateRange')
-            );
+        $widgetOptions = $widgetConfigs->getWidgetOptions($request->query->get('_widgetId', null));
+        $dateRange = $widgetOptions->get('dateRange');
+        $maxResults = $widgetOptions->get('maxResults') ?? CampaignDataProvider::CAMPAIGN_LEAD_COUNT;
+        $hideCampaign = $widgetOptions->get('hideCampaign') ?? true;
+
+        $items = $this->get(CampaignDataProvider::class)->getCampaignLeadsData($dateRange, $hideCampaign, $maxResults);
+
+        /** @var array $widgetAttr */
         $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
             ->setArrayData($items)
@@ -66,6 +66,11 @@ class DashboardController extends AbstractController
             )
             ->getView();
 
+        if (!isset($widgetAttr['widgetConfiguration']['hideCampaign']['value'])) {
+            // set default value to show on widget.
+            $widgetAttr['widgetConfiguration']['hideCampaign']['value'] = $hideCampaign;
+        }
+
         return $widgetAttr;
     }
 
@@ -77,18 +82,18 @@ class DashboardController extends AbstractController
      * )
      * @Template("@OroCampaign/Dashboard/campaignOpportunity.html.twig")
      * @param Request $request
-     * @param mixed $widget
+     * @param string $widget
      * @return array
+     * @throws InvalidConfigurationException
      */
-    public function campaignOpportunityAction(Request $request, $widget)
+    public function campaignOpportunityAction(Request $request, string $widget): array
     {
         $widgetConfigs = $this->get(WidgetConfigs::class);
-        $items = $this->get(CampaignDataProvider::class)
-            ->getCampaignOpportunitiesData(
-                $widgetConfigs
-                    ->getWidgetOptions($request->query->get('_widgetId', null))
-                    ->get('dateRange')
-            );
+        $widgetOptions = $widgetConfigs->getWidgetOptions($request->query->get('_widgetId', null));
+        $dateRange = $widgetOptions->get('dateRange');
+        $maxResults = $widgetOptions->get('maxResults') ?? CampaignDataProvider::CAMPAIGN_OPPORTUNITY_COUNT;
+
+        $items = $this->get(CampaignDataProvider::class)->getCampaignOpportunitiesData($dateRange, $maxResults);
 
         $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
@@ -116,18 +121,18 @@ class DashboardController extends AbstractController
      * )
      * @Template("@OroCampaign/Dashboard/campaignByCloseRevenue.html.twig")
      * @param Request $request
-     * @param mixed $widget
+     * @param string $widget
      * @return array
+     * @throws InvalidConfigurationException
      */
-    public function campaignByCloseRevenueAction(Request $request, $widget)
+    public function campaignByCloseRevenueAction(Request $request, string $widget): array
     {
         $widgetConfigs = $this->get(WidgetConfigs::class);
-        $items = $this->get(CampaignDataProvider::class)
-            ->getCampaignsByCloseRevenueData(
-                $widgetConfigs
-                    ->getWidgetOptions($request->query->get('_widgetId', null))
-                    ->get('dateRange')
-            );
+        $widgetOptions = $widgetConfigs->getWidgetOptions($request->query->get('_widgetId', null));
+        $dateRange = $widgetOptions->get('dateRange');
+        $maxResults = $widgetOptions->get('maxResults') ?? CampaignDataProvider::CAMPAIGN_CLOSE_REVENUE_COUNT;
+
+        $items = $this->get(CampaignDataProvider::class)->getCampaignsByCloseRevenueData($dateRange, $maxResults);
 
         $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
