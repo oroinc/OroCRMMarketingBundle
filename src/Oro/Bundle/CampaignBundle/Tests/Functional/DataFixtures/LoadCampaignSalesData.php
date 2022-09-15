@@ -30,19 +30,22 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
     {
         /** @var Campaign $campaign1 */
         $campaign1 = $this->getReference('Campaign.Campaign1');
-        $this->loadOpportunitiesWithLeads($campaign1, $manager);
+        $this->loadOpportunitiesWithLeads($campaign1, $manager, 'Campaign.Campaign1');
+        /** @var Campaign $campaign2 */
+        $campaign2 = $this->getReference('Campaign.Campaign2');
+        $this->loadOpportunitiesWithLeads($campaign2, $manager, 'Campaign.Campaign2');
     }
 
-    private function loadOpportunitiesWithLeads(Campaign $campaign, ObjectManager $manager): void
+    private function loadOpportunitiesWithLeads(Campaign $campaign, ObjectManager $manager, string $prefix): void
     {
         $createdToday = new \DateTime('now', new \DateTimeZone('UTC'));
         $createdPastYear = new \DateTime('-1 year', new \DateTimeZone('UTC'));
 
-        $lead = $this->createLead($campaign, $manager, 'lead.now', $createdToday);
-        $this->createOpportunity($manager, 'opportunity.now', $lead);
+        $lead = $this->createLead($campaign, $manager, $prefix.'.lead.now', $createdToday);
+        $this->createOpportunity($manager, $prefix.'.opportunity.now', $lead);
 
-        $lead = $this->createLead($campaign, $manager, 'lead.past_year', $createdPastYear);
-        $this->createOpportunity($manager, 'opportunity.past_year', $lead);
+        $lead = $this->createLead($campaign, $manager, $prefix.'.lead.past_year', $createdPastYear);
+        $this->createOpportunity($manager, $prefix.'.opportunity.past_year', $lead);
 
         $manager->flush();
     }

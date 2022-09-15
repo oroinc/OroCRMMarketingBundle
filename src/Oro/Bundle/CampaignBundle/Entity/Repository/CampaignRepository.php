@@ -88,12 +88,7 @@ class CampaignRepository extends EntityRepository
         return $aclHelper->apply($qb)->getArrayResult();
     }
 
-    /**
-     * @param string $leadAlias
-     *
-     * @return QueryBuilder
-     */
-    public function getCampaignsLeadsQB($leadAlias)
+    public function getCampaignsLeadsQB($leadAlias): QueryBuilder
     {
         QueryBuilderUtil::checkIdentifier($leadAlias);
         $qb = $this->getEntityManager()->createQueryBuilder();

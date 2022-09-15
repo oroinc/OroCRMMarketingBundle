@@ -9,10 +9,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class CampaignDataProviderTest extends WebTestCase
 {
-    /**
-     * @var CampaignDataProvider
-     */
-    private $provider;
+    private CampaignDataProvider $provider;
 
     protected function setUp(): void
     {
@@ -29,34 +26,173 @@ class CampaignDataProviderTest extends WebTestCase
         $this->provider = $this->getContainer()->get('oro_campaign.test.dashboard.campaign_data_provider');
     }
 
-    public function testGetCampaignLeadsData()
+    /**
+     * @dataProvider campaignLeadDataProvider
+     */
+    public function testGetCampaignLeadsDataResults(array $request, array $response): void
     {
-        $actual = $this->provider->getCampaignLeadsData($this->getDateRange());
-        $this->assertCount(1, $actual);
-        $rowOne = reset($actual);
+        $actual = $this->provider->getCampaignLeadsDataResults(
+            $request['dateRange'],
+            $request['hideCampaign'],
+            $request['maxResults']
+        );
 
-        $this->assertEquals(1, $rowOne['number']);
-        $this->assertEquals('Campaign1', $rowOne['label']);
+        $this->assertCount(min($request['maxResults'], count($response)), $actual);
+        foreach ($actual as $item) {
+            $this->assertEquals($response[$item['label']], $item['number']);
+        }
     }
 
-    public function testGetCampaignOpportunitiesData()
+    public function campaignLeadDataProvider(): array
     {
-        $actual = $this->provider->getCampaignOpportunitiesData($this->getDateRange());
-        $this->assertCount(1, $actual);
-        $rowOne = reset($actual);
-
-        $this->assertEquals(1, $rowOne['number']);
-        $this->assertEquals('Campaign1', $rowOne['label']);
+        return [
+            'With a date range' => [
+                'request' => [
+                    'dateRange' => $this->getDateRange(),
+                    'hideCampaign' => true,
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 1,
+                    'Campaign2' => 1
+                ]
+            ],
+            'With date range all time' => [
+                'request' => [
+                    'dateRange' => $this->getDateRangeAllTime(),
+                    'hideCampaign' => true,
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 2,
+                    'Campaign2' => 2
+                ]
+            ],
+            'With date range all time and not to hide campaign without lead' => [
+                'request' => [
+                    'dateRange' => $this->getDateRangeAllTime(),
+                    'hideCampaign' => false,
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 2,
+                    'Campaign2' => 2,
+                    'Campaign3' => 0
+                ]
+            ],
+            'With date range all time but only 1 result' => [
+                'request' => [
+                    'dateRange' => $this->getDateRangeAllTime(),
+                    'hideCampaign' => false,
+                    'maxResults' => 1
+                ],
+                'response' => [
+                    'Campaign1' => 2,
+                    'Campaign2' => 2,
+                    'Campaign3' => 0
+                ]
+            ],
+        ];
     }
 
-    public function testGetCampaignsByCloseRevenueData()
+    /**
+     * @dataProvider campaignOpportunitiesDataProvider
+     */
+    public function testGetCampaignOpportunitiesDataResults(array $request, array $response): void
     {
-        $actual = $this->provider->getCampaignsByCloseRevenueData($this->getDateRange());
-        $this->assertCount(1, $actual);
-        $rowOne = reset($actual);
+        $actual = $this->provider->getCampaignOpportunitiesDataResults($request['dateRange'], $request['maxResults']);
 
-        $this->assertEquals(100, $rowOne['closeRevenue']);
-        $this->assertEquals('Campaign1', $rowOne['label']);
+        $this->assertCount(min($request['maxResults'], count($response)), $actual);
+        foreach ($actual as $item) {
+            $this->assertEquals($response[$item['label']], $item['number']);
+        }
+    }
+
+    public function campaignOpportunitiesDataProvider(): array
+    {
+        return [
+            'With a date range' => [
+                'request' => [
+                    'dateRange' => $this->getDateRange(),
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 1,
+                    'Campaign2' => 1
+                ]
+            ],
+            'With date range all time' => [
+                'request' => [
+                    'dateRange' => $this->getDateRangeAllTime(),
+                    'hideCampaign' => true,
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 2,
+                    'Campaign2' => 2
+                ]
+            ],
+            'With date range all time but only 1 result' => [
+                'request' => [
+                    'dateRange' => $this->getDateRangeAllTime(),
+                    'maxResults' => 1
+                ],
+                'response' => [
+                    'Campaign1' => 2,
+                    'Campaign2' => 2
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider campaignsByCloseRevenueDataProvider
+     */
+    public function testGetCampaignsByCloseRevenueDataResults(array $request, array $response): void
+    {
+        $actual = $this->provider->getCampaignsByCloseRevenueDataResults($request['dateRange'], $request['maxResults']);
+
+        $this->assertCount(min($request['maxResults'], count($response)), $actual);
+        foreach ($actual as $item) {
+            $this->assertEquals($response[$item['label']], $item['closeRevenue']);
+        }
+    }
+
+    public function campaignsByCloseRevenueDataProvider(): array
+    {
+        return [
+            'With a date range' => [
+                'request' => [
+                    'dateRange' => $this->getDateRange(),
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 100,
+                    'Campaign2' => 100
+                ]
+            ],
+            'With date range all time' => [
+                'request' => [
+                    'dateRange' => $this->getDateRangeAllTime(),
+                    'hideCampaign' => true,
+                    'maxResults' => 5
+                ],
+                'response' => [
+                    'Campaign1' => 200,
+                    'Campaign2' => 200
+                ]
+            ],
+            'With a date range but only 1 result' => [
+                'request' => [
+                    'dateRange' => $this->getDateRange(),
+                    'maxResults' => 1
+                ],
+                'response' => [
+                    'Campaign1' => 100,
+                    'Campaign2' => 100
+                ]
+            ]
+        ];
     }
 
     private function getDateRange(): array
@@ -65,6 +201,18 @@ class CampaignDataProviderTest extends WebTestCase
             'type' => AbstractDateFilterType::TYPE_BETWEEN,
             'start' => new \DateTime('-1 day', new \DateTimeZone('UTC')),
             'end' => new \DateTime('+1 day', new \DateTimeZone('UTC')),
+        ];
+    }
+
+    private function getDateRangeAllTime(): array
+    {
+        return [
+            'type' => AbstractDateFilterType::TYPE_ALL_TIME,
+            'start' => null,
+            'end' => null,
+            'part' => 'all_time"',
+            'prev_start' => null,
+            'prev_end' => null
         ];
     }
 }
