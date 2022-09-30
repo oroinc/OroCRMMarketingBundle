@@ -7,8 +7,7 @@
                aria-controls="<%- regionId %>"
                class="accordion-icon accordion-toggle<% if (collapsed) { %> collapsed<% } %>"
                title="<%- _.__(collapsed ? 'Expand' : 'Collapse')%>"
-               data-collapsed-title="{{ 'Expand'|trans }}"
-               data-expanded-title="{{ 'Collapse'|trans }}"></a>
+            ></a>
             <div class="icon">
                 <span class="fa-volume-up" aria-hidden="true"></span>
             </div>
@@ -45,7 +44,8 @@
                 </div>
             </div>
         </div>
-        <div id="<%- regionId %>" role="region" aria-labelledby="<%- labelId %>" class="accordion-body collapse<% if (!collapsed) { %> show<% } %>">
+        <div id="<%- regionId %>" role="region" aria-labelledby="<%- labelId %>" class="accordion-body collapse<% if (!collapsed) { %> show<% } %>"
+             data-collapsed-title="{{ 'Expand'|trans }}" data-expanded-title="{{ 'Collapse'|trans }}">
             <div class="message">
                 {% block activityContent %}
                     <div class="activity-item-content">
