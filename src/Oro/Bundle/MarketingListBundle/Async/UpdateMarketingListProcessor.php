@@ -3,65 +3,49 @@
 namespace Oro\Bundle\MarketingListBundle\Async;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Event\UpdateMarketingListEvent;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\MessageQueue\Util\JSON;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSubscriberInterface
+/**
+ * Notifies listeners to update marketing lists by the specified class.
+ */
+class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSubscriberInterface, LoggerAwareInterface
 {
-    const UPDATE_MARKETING_LIST_MESSAGE = 'oro_marketing_list.message_queue.job.update_marketing_list';
+    use LoggerAwareTrait;
+
     const UPDATE_MARKETING_LIST_EVENT = 'oro_marketing_list.event.update_marketing_list';
 
-    /**
-     * @var DoctrineHelper
-     */
-    private $doctrineHelper;
+    private DoctrineHelper $doctrineHelper;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(
-        DoctrineHelper $doctrineHelper,
-        EventDispatcherInterface $dispatcher,
-        LoggerInterface $logger
-    ) {
+    public function __construct(DoctrineHelper $doctrineHelper, EventDispatcherInterface $dispatcher)
+    {
         $this->doctrineHelper = $doctrineHelper;
         $this->dispatcher = $dispatcher;
-        $this->logger = $logger;
+
+        $this->logger = new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(MessageInterface $message, SessionInterface $session)
+    public function process(MessageInterface $message, SessionInterface $session): string
     {
-        $body = JSON::decode($message->getBody());
-
-        if (!array_key_exists('class', $body)) {
-            return self::REJECT;
-        }
-
-        $class = $body['class'];
-        $marketingLists = $this->findMarketingLists($class);
+        $messageBody = $message->getBody();
+        $marketingLists = $this->findMarketingLists($messageBody[MarketingListUpdateTopic::CLASS_NAME]);
 
         if (count($marketingLists)) {
             $this->logger->info(
                 'Marketing lists found for class. Notifying listeners.',
                 [
-                    'class' => $class,
+                    'class' => $messageBody[MarketingListUpdateTopic::CLASS_NAME],
                     'marketingLists' => $marketingLists,
                 ]
             );
@@ -72,18 +56,15 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
         return self::ACK;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedTopics()
+    public static function getSubscribedTopics(): array
     {
-        return [self::UPDATE_MARKETING_LIST_MESSAGE];
+        return [MarketingListUpdateTopic::getName()];
     }
 
     /**
      * @param MarketingList[] $marketingLists
      */
-    private function dispatch(array $marketingLists)
+    private function dispatch(array $marketingLists): void
     {
         $event = new UpdateMarketingListEvent();
         $event->setMarketingLists($marketingLists);
@@ -95,7 +76,7 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
      * @param string $class
      * @return MarketingList[]
      */
-    private function findMarketingLists($class)
+    private function findMarketingLists(string $class): array
     {
         return $this->doctrineHelper
             ->getEntityManager(MarketingList::class)

@@ -1,0 +1,17 @@
+services:
+    _instanceof:
+        Psr\Log\LoggerAwareInterface:
+            calls:
+                - [setLogger, ['@logger']]
+            tags:
+                - { name: monolog.logger, channel: oro_tracking }
+
+        Oro\Component\MessageQueue\Client\TopicSubscriberInterface:
+            tags:
+                - { name: oro_message_queue.client.message_processor }
+
+    oro_tracking.async.aggregate_tracking_visits_processor:
+        class: Oro\Bundle\TrackingBundle\Async\AggregateTrackingVisitsProcessor
+        arguments:
+            - '@oro_tracking.tools.unique_tracking_visit_dumper'
+            - '@oro_config.global'

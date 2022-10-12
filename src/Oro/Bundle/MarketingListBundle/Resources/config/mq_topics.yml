@@ -1,0 +1,7 @@
+services:
+    _instanceof:
+        Oro\Component\MessageQueue\Topic\TopicInterface:
+            tags:
+                - { name: oro_message_queue.topic }
+
+    Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic: ~
