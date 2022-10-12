@@ -165,15 +165,6 @@ services:
             - '@logger'
             - '@oro_tracking.migration.fill_unique_tracking_visits_query'
 
-    oro_tracking.async.aggregate_tracking_visits_processor:
-        class: Oro\Bundle\TrackingBundle\Async\AggregateTrackingVisitsProcessor
-        arguments:
-            - '@oro_tracking.tools.unique_tracking_visit_dumper'
-            - '@oro_config.global'
-            - '@logger'
-        tags:
-            - { name: 'oro_message_queue.client.message_processor' }
-
     oro_tracking.tools.data_folder_selector:
         class: Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector
         arguments:

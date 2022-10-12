@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
+use Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
@@ -20,23 +20,17 @@ use Psr\Log\LoggerInterface;
 
 class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $messageProducer;
+    private MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject $messageProducer;
 
-    /** @var MarketingListAllowedClassesProvider|\PHPUnit\Framework\MockObject\MockObject */
-    private $entityProvider;
+    private MarketingListAllowedClassesProvider|\PHPUnit\Framework\MockObject\MockObject $entityProvider;
 
-    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $logger;
+    private LoggerInterface|\PHPUnit\Framework\MockObject\MockObject $logger;
 
-    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $entityManager;
+    private EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager;
 
-    /** @var UnitOfWork|\PHPUnit\Framework\MockObject\MockObject */
-    private $unitOfWork;
+    private UnitOfWork|\PHPUnit\Framework\MockObject\MockObject $unitOfWork;
 
-    /** @var UpdateMarketingListOnEntityChange */
-    private $listener;
+    private UpdateMarketingListOnEntityChange $listener;
 
     protected function setUp(): void
     {
@@ -46,7 +40,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         $this->unitOfWork = $this->createMock(UnitOfWork::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
-        $this->entityManager->expects($this->any())
+        $this->entityManager->expects(self::any())
             ->method('getUnitOfWork')
             ->willReturn($this->unitOfWork);
 
@@ -57,39 +51,39 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testOnFlushWithDisabledListener()
+    public function testOnFlushWithDisabledListener(): void
     {
         $args = $this->createMock(OnFlushEventArgs::class);
-        $args->expects($this->never())
+        $args->expects(self::never())
             ->method('getEntityManager');
 
-        $this->messageProducer->expects($this->never())
+        $this->messageProducer->expects(self::never())
             ->method('send');
 
-        $this->assertInstanceOf(OptionalListenerInterface::class, $this->listener);
+        self::assertInstanceOf(OptionalListenerInterface::class, $this->listener);
         $this->listener->setEnabled(false);
 
         $this->listener->onFlush($args);
     }
 
-    public function testFlow()
+    public function testFlow(): void
     {
         $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
         $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
 
-        $this->entityProvider->expects($this->once())
+        $this->entityProvider->expects(self::once())
             ->method('getList')
             ->willReturn($this->getAllowedEntities());
 
-        $this->unitOfWork->expects($this->once())
+        $this->unitOfWork->expects(self::once())
             ->method('getScheduledEntityInsertions')
             ->willReturn($this->getScheduledEntityInsertions());
 
-        $this->unitOfWork->expects($this->once())
+        $this->unitOfWork->expects(self::once())
             ->method('getScheduledEntityUpdates')
             ->willReturn($this->getScheduledEntityUpdates());
 
-        $this->messageProducer->expects($this->exactly(2))
+        $this->messageProducer->expects(self::exactly(2))
             ->method('send')
             ->willReturnCallback([$this, 'assertTopicAndMessageAreValid']);
 
@@ -97,27 +91,27 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         $this->listener->postFlush($postFlushEventArgs);
     }
 
-    public function testMessageProducerThrowException()
+    public function testMessageProducerThrowException(): void
     {
         $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
         $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
 
-        $this->entityProvider->expects($this->once())
+        $this->entityProvider->expects(self::once())
             ->method('getList')
             ->willReturn($this->getAllowedEntities());
 
-        $this->unitOfWork->expects($this->once())
+        $this->unitOfWork->expects(self::once())
             ->method('getScheduledEntityInsertions')
             ->willReturn($this->getScheduledEntityInsertions());
 
-        $this->unitOfWork->expects($this->once())
+        $this->unitOfWork->expects(self::once())
             ->method('getScheduledEntityUpdates')
             ->willReturn($this->getScheduledEntityUpdates());
 
-        $this->logger->expects($this->exactly(2))
+        $this->logger->expects(self::exactly(2))
             ->method('error');
 
-        $this->messageProducer->expects($this->exactly(2))
+        $this->messageProducer->expects(self::exactly(2))
             ->method('send')
             ->willThrowException(new MessageQueueTransportException());
 
@@ -132,31 +126,29 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
      */
     public function assertTopicAndMessageAreValid(string $topic, array $message): void
     {
-        if ($topic !== UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_MESSAGE) {
-            $this->fail(
+        if ($topic !== MarketingListUpdateTopic::getName()) {
+            self::fail(
                 sprintf(
                     'Tried to put into queue message with wrong topic. Should be %s, got %s',
-                    UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_MESSAGE,
+                    MarketingListUpdateTopic::getName(),
                     $topic
                 )
             );
         }
 
         if (!is_array($message)) {
-            $this->fail('Queue message was not array');
+            self::fail('Queue message was not array');
         }
 
         if (!array_key_exists('class', $message)) {
-            $this->fail('No key "class" founded in a queue message');
+            self::fail('No key "class" founded in a queue message');
         }
 
-        foreach ($this->getAllowedEntities() as $allowedEntity) {
-            if ($allowedEntity === $message['class']) {
-                return;
-            }
+        if (in_array($message['class'], $this->getAllowedEntities(), true)) {
+            return;
         }
 
-        $this->fail(
+        self::fail(
             sprintf(
                 'Class %s should not be put into a queue.',
                 $message['class']

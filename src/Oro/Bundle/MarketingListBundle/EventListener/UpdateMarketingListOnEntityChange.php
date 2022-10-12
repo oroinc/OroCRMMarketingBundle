@@ -4,7 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
+use Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerInterface;
 use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerTrait;
@@ -12,6 +12,9 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Initiates marketing lists updates by sending {@see MarketingListUpdateTopic} MQ messages.
+ */
 class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
 {
     use OptionalListenerTrait;
@@ -68,16 +71,14 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
         foreach ($this->classesToUpdate as $class) {
             try {
                 $this->messageProducer->send(
-                    UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_MESSAGE,
-                    [
-                        'class' => $class
-                    ]
+                    MarketingListUpdateTopic::getName(),
+                    [MarketingListUpdateTopic::CLASS_NAME => $class]
                 );
             } catch (MessageQueueTransportException $e) {
                 $this->logger->error(
                     'There was an exception while trying create message.',
                     [
-                        'messageTopic' => UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_MESSAGE,
+                        'messageTopic' => MarketingListUpdateTopic::getName(),
                         'currentlyProcessedClass' => $class,
                         'classesScheduledToUpdate' => $this->classesToUpdate,
                         'exception' => $e,

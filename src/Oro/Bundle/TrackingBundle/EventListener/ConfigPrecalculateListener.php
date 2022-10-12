@@ -3,23 +3,22 @@
 namespace Oro\Bundle\TrackingBundle\EventListener;
 
 use Oro\Bundle\ConfigBundle\Event\ConfigUpdateEvent;
-use Oro\Bundle\TrackingBundle\Async\Topics;
+use Oro\Bundle\TrackingBundle\Async\Topic\TrackingAggregateVisitsTopic;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-use Oro\Component\MessageQueue\Util\JSON;
 
+/**
+ * Initiates the visits tracking aggregation by sending the {@see TrackingAggregateVisitsTopic} MQ message.
+ */
 class ConfigPrecalculateListener
 {
-    /**
-     * @var MessageProducerInterface
-     */
-    private $producer;
+    private MessageProducerInterface $producer;
 
     public function __construct(MessageProducerInterface $producer)
     {
         $this->producer = $producer;
     }
 
-    public function onUpdateAfter(ConfigUpdateEvent $event)
+    public function onUpdateAfter(ConfigUpdateEvent $event): void
     {
         if (!$event->getScope() === 'global') {
             return;
@@ -29,7 +28,7 @@ class ConfigPrecalculateListener
         if (($event->isChanged($statisticToggleKey) && $event->getNewValue($statisticToggleKey))
             || $event->isChanged('oro_locale.timezone')
         ) {
-            $this->producer->send(Topics::AGGREGATE_VISITS, JSON::encode(''));
+            $this->producer->send(TrackingAggregateVisitsTopic::getName(), []);
         }
     }
 }

@@ -5,77 +5,74 @@ namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Async;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic;
 use Oro\Bundle\MarketingListBundle\Async\UpdateMarketingListProcessor;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Event\UpdateMarketingListEvent;
 use Oro\Bundle\OrderBundle\Entity\Order;
+use Oro\Bundle\TestFrameworkBundle\Test\Logger\LoggerAwareTraitTestTrait;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Component\Testing\ReflectionUtil;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $eventDispatcher;
+    use LoggerAwareTraitTestTrait;
 
-    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $logger;
+    private EventDispatcherInterface|\PHPUnit\Framework\MockObject\MockObject $eventDispatcher;
 
-    /** @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $repository;
+    private EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $repository;
 
-    /** @var UpdateMarketingListProcessor */
-    private $processor;
+    private UpdateMarketingListProcessor $processor;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(EntityRepository::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
 
         $entityManager = $this->createMock(EntityManagerInterface::class);
-        $entityManager->expects($this->any())
+        $entityManager->expects(self::any())
             ->method('getRepository')
             ->willReturn($this->repository);
 
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
-        $doctrineHelper->expects($this->any())
+        $doctrineHelper->expects(self::any())
             ->method('getEntityManager')
             ->willReturn($entityManager);
 
         $this->processor = new UpdateMarketingListProcessor(
             $doctrineHelper,
             $this->eventDispatcher,
-            $this->logger
+            $this->createMock(LoggerInterface::class)
         );
+        $this->setUpLoggerMock($this->processor);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $message = $this->createMock(MessageInterface::class);
-        $message->expects($this->any())
+        $message->expects(self::any())
             ->method('getBody')
-            ->willReturn(JSON::encode(['class' => Order::class]));
+            ->willReturn([MarketingListUpdateTopic::CLASS_NAME => Order::class]);
 
         $marketingList = new MarketingList();
         ReflectionUtil::setId($marketingList, 1);
         $marketingList->setName('test');
 
-        $this->repository->expects($this->once())
+        $this->repository->expects(self::once())
             ->method('findBy')
             ->willReturn([$marketingList]);
 
-        $this->eventDispatcher->expects($this->once())
+        $this->eventDispatcher->expects(self::once())
             ->method('dispatch')
             ->with(
-                $this->isInstanceOf(UpdateMarketingListEvent::class),
+                self::isInstanceOf(UpdateMarketingListEvent::class),
                 UpdateMarketingListProcessor::UPDATE_MARKETING_LIST_EVENT
             );
 
-        $this->logger->expects($this->once())
+        $this->loggerMock->expects(self::once())
             ->method('info');
 
         $this->processor->process($message, $this->createMock(SessionInterface::class));

@@ -3,29 +3,29 @@
 namespace Oro\Bundle\TrackingBundle\Async;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\TrackingBundle\Async\Topic\TrackingAggregateVisitsTopic;
 use Oro\Bundle\TrackingBundle\Tools\UniqueTrackingVisitDumper;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
-class AggregateTrackingVisitsProcessor implements MessageProcessorInterface, TopicSubscriberInterface
+/**
+ * Aggregates visits tracking records if it is enabled in system configuration.
+ */
+class AggregateTrackingVisitsProcessor implements
+    MessageProcessorInterface,
+    TopicSubscriberInterface,
+    LoggerAwareInterface
 {
-    /**
-     * @var UniqueTrackingVisitDumper
-     */
-    private $trackingVisitDumper;
+    use LoggerAwareTrait;
 
-    /**
-     * @var ConfigManager
-     */
-    private $configManager;
+    private UniqueTrackingVisitDumper $trackingVisitDumper;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private ConfigManager $configManager;
 
     public function __construct(
         UniqueTrackingVisitDumper $trackingVisitDumper,
@@ -37,35 +37,20 @@ class AggregateTrackingVisitsProcessor implements MessageProcessorInterface, Top
         $this->logger = $logger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(MessageInterface $message, SessionInterface $session)
+    public function process(MessageInterface $message, SessionInterface $session): string
     {
         if (!$this->configManager->get('oro_tracking.precalculated_statistic_enabled')) {
             $this->logger->info('Tracking Visit aggregation disabled');
             return self::ACK;
         }
 
-        try {
-            $this->trackingVisitDumper->refreshAggregatedData();
-        } catch (\Exception $e) {
-            $this->logger->error(
-                'Unexpected exception occurred during Tracking Visit aggregation',
-                ['exception' => $e]
-            );
-
-            return self::REJECT;
-        }
+        $this->trackingVisitDumper->refreshAggregatedData();
 
         return self::ACK;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedTopics()
+    public static function getSubscribedTopics(): array
     {
-        return [Topics::AGGREGATE_VISITS];
+        return [TrackingAggregateVisitsTopic::getName()];
     }
 }
