@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller;
 
-use Oro\Bundle\CampaignBundle\Async\Topics;
+use Oro\Bundle\CampaignBundle\Async\Topic\SendEmailCampaignTopic;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
@@ -163,7 +163,7 @@ class EmailCampaignController extends AbstractController
         if ($this->isManualSendAllowed($emailCampaign)) {
             // Schedule email campaign sending
             $messageProducer = $this->get(MessageProducerInterface::class);
-            $messageProducer->send(Topics::SEND_EMAIL_CAMPAIGN, ['email_campaign' => $emailCampaign->getId()]);
+            $messageProducer->send(SendEmailCampaignTopic::getName(), ['email_campaign' => $emailCampaign->getId()]);
 
             // Update sent status to hide send button
             $manager = $this->getDoctrine()->getManagerForClass(EmailCampaign::class);

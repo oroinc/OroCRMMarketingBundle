@@ -179,16 +179,6 @@ services:
     Oro\Bundle\CampaignBundle\Dashboard\CampaignDataProvider:
         alias: oro_campaign.dashboard.campaign_data_provider
 
-    oro_campaign.async.email_campaign_send_processor:
-        class: Oro\Bundle\CampaignBundle\Async\EmailCampaignSendProcessor
-        arguments:
-            - '@logger'
-            - '@doctrine'
-            - '@oro_campaign.email_campaign.sender.builder'
-            - '@oro_message_queue.job.runner'
-        tags:
-            - { name: oro_message_queue.client.message_processor }
-
     oro_campaign.validator.campaign_code:
         class: Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCodeValidator
         arguments:
