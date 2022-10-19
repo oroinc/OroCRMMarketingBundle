@@ -5,7 +5,7 @@ namespace Oro\Bundle\CampaignBundle\Tests\Unit\Async;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Async\EmailCampaignSendProcessor;
-use Oro\Bundle\CampaignBundle\Async\Topics;
+use Oro\Bundle\CampaignBundle\Async\Topic\SendEmailCampaignTopic;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSender;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
@@ -14,26 +14,20 @@ use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\MessageQueue\Util\JSON;
 use Oro\Component\Testing\ReflectionUtil;
 use Psr\Log\LoggerInterface;
 
 class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $logger;
+    private LoggerInterface|\PHPUnit\Framework\MockObject\MockObject $logger;
 
-    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
-    private $registry;
+    private ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject $registry;
 
-    /** @var EmailCampaignSenderBuilder|\PHPUnit\Framework\MockObject\MockObject */
-    private $senderBuilder;
+    private EmailCampaignSenderBuilder|\PHPUnit\Framework\MockObject\MockObject $senderBuilder;
 
-    /** @var JobRunner|\PHPUnit\Framework\MockObject\MockObject */
-    private $jobRunner;
+    private JobRunner|\PHPUnit\Framework\MockObject\MockObject $jobRunner;
 
-    /** @var EmailCampaignSendProcessor */
-    private $processor;
+    private EmailCampaignSendProcessor $processor;
 
     protected function setUp(): void
     {
@@ -50,12 +44,12 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testFetSubscribedTopics()
+    public function testFetSubscribedTopics(): void
     {
-        $this->assertEquals([Topics::SEND_EMAIL_CAMPAIGN], EmailCampaignSendProcessor::getSubscribedTopics());
+        self::assertEquals([SendEmailCampaignTopic::getName()], EmailCampaignSendProcessor::getSubscribedTopics());
     }
 
-    public function testProcessNoEmailCampaign()
+    public function testProcessNoEmailCampaign(): void
     {
         $emailCampaignId = 1;
         $emailCampaign = null;
@@ -63,18 +57,18 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
 
         $session = $this->createMock(SessionInterface::class);
         $message = $this->createMock(MessageInterface::class);
-        $message->expects($this->any())
+        $message->expects(self::any())
             ->method('getBody')
-            ->willReturn(JSON::encode(['email_campaign' => $emailCampaignId]));
+            ->willReturn(['email_campaign' => $emailCampaignId]);
 
-        $this->logger->expects($this->once())
+        $this->logger->expects(self::once())
             ->method('notice')
             ->with('Email campaign with id 1 was not found');
 
-        $this->assertEquals(MessageProcessorInterface::REJECT, $this->processor->process($message, $session));
+        self::assertEquals(MessageProcessorInterface::REJECT, $this->processor->process($message, $session));
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $emailCampaignId = 1;
         $emailCampaign = new EmailCampaign();
@@ -83,47 +77,47 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
 
         $session = $this->createMock(SessionInterface::class);
         $message = $this->createMock(MessageInterface::class);
-        $message->expects($this->any())
+        $message->expects(self::any())
             ->method('getBody')
-            ->willReturn(JSON::encode(['email_campaign' => $emailCampaignId]));
-        $message->expects($this->any())
+            ->willReturn(['email_campaign' => $emailCampaignId]);
+        $message->expects(self::any())
             ->method('getMessageId')
             ->willReturn('MID');
 
-        $this->logger->expects($this->never())
+        $this->logger->expects(self::never())
             ->method($this->anything());
 
         $sender = $this->createMock(EmailCampaignSender::class);
-        $sender->expects($this->once())
+        $sender->expects(self::once())
             ->method('send');
 
-        $this->senderBuilder->expects($this->once())
+        $this->senderBuilder->expects(self::once())
             ->method('getSender')
             ->with($emailCampaign)
             ->willReturn($sender);
 
         $job = $this->createMock(Job::class);
-        $this->jobRunner->expects($this->once())
+        $this->jobRunner->expects(self::once())
             ->method('runUnique')
             ->willReturnCallback(function ($ownerId, $name, $closure) use ($job, $emailCampaignId) {
-                $this->assertEquals('MID', $ownerId);
-                $this->assertEquals(Topics::SEND_EMAIL_CAMPAIGN . ':' . $emailCampaignId, $name);
+                self::assertEquals('MID', $ownerId);
+                self::assertEquals(SendEmailCampaignTopic::getName() . ':' . $emailCampaignId, $name);
 
                 return $closure($this->jobRunner, $job);
             });
 
-        $this->assertEquals(MessageProcessorInterface::ACK, $this->processor->process($message, $session));
+        self::assertEquals(MessageProcessorInterface::ACK, $this->processor->process($message, $session));
     }
 
     private function assertEmailCampaignFind(EmailCampaign $emailCampaign = null): void
     {
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects($this->once())
+        $em->expects(self::once())
             ->method('find')
             ->with(EmailCampaign::class, 1)
             ->willReturn($emailCampaign);
 
-        $this->registry->expects($this->once())
+        $this->registry->expects(self::once())
             ->method('getManagerForClass')
             ->with(EmailCampaign::class)
             ->willReturn($em);

@@ -1,0 +1,13 @@
+services:
+    _instanceof:
+        Oro\Component\MessageQueue\Client\TopicSubscriberInterface:
+            tags:
+                - { name: oro_message_queue.client.message_processor }
+
+    oro_campaign.async.email_campaign_send_processor:
+        class: Oro\Bundle\CampaignBundle\Async\EmailCampaignSendProcessor
+        arguments:
+            - '@logger'
+            - '@doctrine'
+            - '@oro_campaign.email_campaign.sender.builder'
+            - '@oro_message_queue.job.runner'
