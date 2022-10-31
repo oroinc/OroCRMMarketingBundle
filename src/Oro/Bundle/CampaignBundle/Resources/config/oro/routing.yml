@@ -14,13 +14,17 @@ oro_campaign_dashboard:
 #
 
 oro_api_get_emailcampaign_email_templates:
-    path: '/api/rest/{version}/emailcampaigns/{id}/email/templates.{_format}'
+    path: '/api/rest/{version}/emailcampaigns/{id}/email/templates/{includeNonEntity}/{includeSystemTemplates}.{_format}'
     methods: [GET]
     defaults:
         _controller: 'Oro\Bundle\CampaignBundle\Controller\Api\Rest\EmailTemplateController::cgetAction'
         _format: json
+        includeNonEntity: false
+        includeSystemTemplates: true
         version: latest
     requirements:
         id: '\d*'
         _format: json|html
+        includeNonEntity: \d+
+        includeSystemTemplates: \d+
         version: latest|v1

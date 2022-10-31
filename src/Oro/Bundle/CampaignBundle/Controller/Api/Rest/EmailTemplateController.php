@@ -15,18 +15,17 @@ class EmailTemplateController extends RestController
     /**
      * REST GET email campaign templates by entity name
      *
-     * @param int|null $id
-     *
      * @ApiDoc(
      *     description="Get email campaign templates by entity name",
      *     resource=true
      * )
      * @AclAncestor("oro_email_emailtemplate_index")
-     *
-     * @return Response
      */
-    public function cgetAction(int $id = null)
-    {
+    public function cgetAction(
+        int $id = null,
+        bool $includeNonEntity = true,
+        bool $includeSystemTemplates = false
+    ): Response {
         if (!$id) {
             return $this->handleView(
                 $this->view(null, Response::HTTP_NOT_FOUND)
@@ -38,20 +37,25 @@ class EmailTemplateController extends RestController
             ->getRepository('OroMarketingListBundle:MarketingList')
             ->find((int)$id);
 
-        if (!$marketingList) {
+        $organization = $this->get('oro_security.token_accessor')->getOrganization();
+
+        if (!$marketingList || !$organization) {
             return $this->handleView(
                 $this->view(null, Response::HTTP_NOT_FOUND)
             );
         }
 
-        $organization = $this->get('oro_security.token_accessor')->getOrganization();
-
-        $templatesQueryBuilder = $this
+        $templatesQb = $this
             ->getDoctrine()
             ->getRepository('OroEmailBundle:EmailTemplate')
-            ->getEntityTemplatesQueryBuilder($marketingList->getEntity(), $organization);
+            ->getEntityTemplatesQueryBuilder(
+                $marketingList->getEntity(),
+                $organization,
+                $includeNonEntity,
+                $includeSystemTemplates
+            );
 
-        $templates = $templatesQueryBuilder->getQuery()->getArrayResult();
+        $templates = $templatesQb->getQuery()->getArrayResult();
         return $this->handleView(
             $this->view($templates, Response::HTTP_OK)
         );
