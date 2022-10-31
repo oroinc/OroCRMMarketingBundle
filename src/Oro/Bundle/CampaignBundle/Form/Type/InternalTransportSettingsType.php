@@ -6,6 +6,9 @@ use Oro\Bundle\EmailBundle\Form\Type\EmailTemplateSelectType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Form type for transport settings
+ */
 class InternalTransportSettingsType extends AbstractTransportSettingsType
 {
     const NAME = 'oro_campaign_internal_transport_settings';
@@ -21,7 +24,9 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
                     'required' => true,
                     'depends_on_parent_field' => 'marketingList',
                     'data_route' => 'oro_api_get_emailcampaign_email_templates',
-                    'data_route_parameter' => 'id'
+                    'data_route_parameter' => 'id',
+                    'includeNonEntity' => true,
+                    'includeSystemTemplates' => false
                 ]
             );
 

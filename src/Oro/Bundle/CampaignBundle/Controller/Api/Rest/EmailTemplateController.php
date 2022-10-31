@@ -38,20 +38,29 @@ class EmailTemplateController extends RestController
             ->getRepository('OroMarketingListBundle:MarketingList')
             ->find((int)$id);
 
-        if (!$marketingList) {
+        $organization = $this->get('oro_security.token_accessor')->getOrganization();
+
+        if (!$marketingList || !$organization) {
             return $this->handleView(
                 $this->view(null, Response::HTTP_NOT_FOUND)
             );
         }
 
-        $organization = $this->get('oro_security.token_accessor')->getOrganization();
+        $request = $this->get('request_stack')->getMainRequest();
+        $includeNonEntity = (bool)$request?->get('includeNonEntity', false);
+        $includeSystemTpl = (bool)$request?->get('includeSystemTemplates', true);
 
-        $templatesQueryBuilder = $this
+        $templatesQb = $this
             ->getDoctrine()
             ->getRepository('OroEmailBundle:EmailTemplate')
-            ->getEntityTemplatesQueryBuilder($marketingList->getEntity(), $organization);
+            ->getEntityTemplatesQueryBuilder(
+                $marketingList->getEntity(),
+                $organization,
+                $includeNonEntity,
+                $includeSystemTpl
+            );
 
-        $templates = $templatesQueryBuilder->getQuery()->getArrayResult();
+        $templates = $templatesQb->getQuery()->getArrayResult();
         return $this->handleView(
             $this->view($templates, Response::HTTP_OK)
         );

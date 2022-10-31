@@ -34,7 +34,7 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -86,19 +86,29 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 
     /**
      * @param FormInterface $form
-     * @param string        $entityName
+     * @param $entityName
+     * @return void
      */
     protected function fillEmailTemplateChoices(FormInterface $form, $entityName)
     {
+        $includeNonEntity = $form->get('template')?->getConfig()->getOption('includeNonEntity') ?? false;
+        $includeSystemTpl = $form->get('template')?->getConfig()->getOption('includeSystemTemplates') ?? true;
+
         FormUtils::replaceField(
             $form,
             'template',
             [
                 'selectedEntity' => $entityName,
-                'query_builder'  => function (EmailTemplateRepository $templateRepository) use ($entityName) {
+                'query_builder'  => function (EmailTemplateRepository $templateRepository) use (
+                    $entityName,
+                    $includeNonEntity,
+                    $includeSystemTpl
+                ) {
                     return $templateRepository->getEntityTemplatesQueryBuilder(
                         $entityName,
-                        $this->tokenAccessor->getOrganization()
+                        $this->tokenAccessor->getOrganization(),
+                        $includeNonEntity,
+                        $includeSystemTpl
                     );
                 }
             ],
