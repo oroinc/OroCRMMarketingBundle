@@ -32,10 +32,7 @@ class TrackingDataControllerTest extends WebTestCase
         $this->runCommand('oro:cron:batch:cleanup', ['-i' => '1 day']);
     }
 
-    /**
-     * @return array
-     */
-    public function optionsProvider()
+    public function optionsProvider(): array
     {
         return [
             'simple' => [
@@ -82,10 +79,7 @@ class TrackingDataControllerTest extends WebTestCase
         $this->runCommand('oro:cron:batch:cleanup', ['-i' => '1 day']);
     }
 
-    /**
-     * @return array
-     */
-    public function validationProvider()
+    public function validationProvider(): array
     {
         return [
             'empty'          => [
