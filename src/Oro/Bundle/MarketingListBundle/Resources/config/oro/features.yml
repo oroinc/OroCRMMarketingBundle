@@ -1,3 +1,4 @@
+
 features:
     marketing_list:
         label: oro.marketing_list.feature.label
@@ -27,3 +28,5 @@ features:
             - 'oro_api_post_marketinglist_removeditem_deprecated'
             - 'oro_api_post_marketinglist_segment_run_deprecated'
             - 'oro_api_post_marketinglist_unsubscribeditem_deprecated'
+        mq_topics:
+            - 'oro_marketing_list.message_queue.job.update_marketing_list'
