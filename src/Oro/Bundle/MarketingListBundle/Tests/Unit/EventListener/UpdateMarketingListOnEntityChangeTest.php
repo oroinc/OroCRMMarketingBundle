@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\EventListener\UpdateMarketingListOnEntityChange;
@@ -16,21 +18,30 @@ use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\Exception\Exception as MessageQueueTransportException;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class UpdateMarketingListOnEntityChangeTest extends TestCase
 {
-    private MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject $messageProducer;
+    private const FEATURE = 'marketing_list';
 
-    private MarketingListAllowedClassesProvider|\PHPUnit\Framework\MockObject\MockObject $entityProvider;
+    private MessageProducerInterface|MockObject $messageProducer;
 
-    private LoggerInterface|\PHPUnit\Framework\MockObject\MockObject $logger;
+    private MarketingListAllowedClassesProvider|MockObject $entityProvider;
 
-    private EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager;
+    private LoggerInterface|MockObject $logger;
 
-    private UnitOfWork|\PHPUnit\Framework\MockObject\MockObject $unitOfWork;
+    private EntityManagerInterface|MockObject $entityManager;
+
+    private UnitOfWork|MockObject $unitOfWork;
 
     private UpdateMarketingListOnEntityChange $listener;
+
+    private FeatureChecker|MockObject $featureChecker;
 
     protected function setUp(): void
     {
@@ -39,6 +50,7 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->unitOfWork = $this->createMock(UnitOfWork::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->featureChecker = $this->createMock(FeatureChecker::class);
 
         $this->entityManager->expects(self::any())
             ->method('getUnitOfWork')
@@ -71,6 +83,8 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
         $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
 
+        $this->assertFeatureChecker();
+
         $this->entityProvider->expects(self::once())
             ->method('getList')
             ->willReturn($this->getAllowedEntities());
@@ -91,10 +105,35 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
         $this->listener->postFlush($postFlushEventArgs);
     }
 
+    public function testFlowFeatureDisabled(): void
+    {
+        $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
+        $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
+
+        $this->assertFeatureChecker(false);
+
+        $this->entityProvider->expects(self::never())
+            ->method('getList');
+
+        $this->unitOfWork->expects(self::never())
+            ->method('getScheduledEntityInsertions');
+
+        $this->unitOfWork->expects(self::never())
+            ->method('getScheduledEntityUpdates');
+
+        $this->messageProducer->expects(self::never())
+            ->method('send');
+
+        $this->listener->onFlush($onFlushEventArgs);
+        $this->listener->postFlush($postFlushEventArgs);
+    }
+
     public function testMessageProducerThrowException(): void
     {
         $onFlushEventArgs = new OnFlushEventArgs($this->entityManager);
         $postFlushEventArgs = new PostFlushEventArgs($this->entityManager);
+
+        $this->assertFeatureChecker();
 
         $this->entityProvider->expects(self::once())
             ->method('getList')
@@ -187,5 +226,18 @@ class UpdateMarketingListOnEntityChangeTest extends \PHPUnit\Framework\TestCase
             User::class,
             Organization::class,
         ];
+    }
+
+    protected function assertFeatureChecker(bool $toggle = true): void
+    {
+        $this->assertInstanceOf(FeatureToggleableInterface::class, $this->listener);
+
+        $this->listener->setFeatureChecker($this->featureChecker);
+        $this->listener->addFeature(self::FEATURE);
+
+        $this->featureChecker->expects(self::once())
+            ->method('isFeatureEnabled')
+            ->with(self::FEATURE)
+            ->willReturn($toggle);
     }
 }

@@ -24,3 +24,5 @@ features:
             - Oro\Bundle\MarketingListBundle\Entity\MarketingList
             - Oro\Bundle\MarketingListBundle\Entity\MarketingListItem
             - Oro\Bundle\MarketingListBundle\Entity\MarketingListType
+        mq_topics:
+            - 'oro_marketing_list.message_queue.job.update_marketing_list'

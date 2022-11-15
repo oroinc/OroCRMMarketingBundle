@@ -4,6 +4,8 @@ namespace Oro\Bundle\MarketingListBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Oro\Bundle\MarketingListBundle\Async\Topic\MarketingListUpdateTopic;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListAllowedClassesProvider;
 use Oro\Bundle\PlatformBundle\EventListener\OptionalListenerInterface;
@@ -15,9 +17,9 @@ use Psr\Log\LoggerInterface;
 /**
  * Initiates marketing lists updates by sending {@see MarketingListUpdateTopic} MQ messages.
  */
-class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
+class UpdateMarketingListOnEntityChange implements OptionalListenerInterface, FeatureToggleableInterface
 {
-    use OptionalListenerTrait;
+    use OptionalListenerTrait, FeatureCheckerHolderTrait;
 
     /**
      * @var object[]
@@ -49,9 +51,13 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
         $this->provider = $provider;
     }
 
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         if (!$this->enabled) {
+            return;
+        }
+
+        if (!$this->isFeaturesEnabled()) {
             return;
         }
 
@@ -64,7 +70,7 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
         $this->scheduleClasses($uow->getScheduledEntityUpdates(), $allowedEntities);
     }
 
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args): void
     {
         foreach ($this->classesToUpdate as $class) {
             try {
@@ -92,7 +98,7 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
      * @param object[] $entities
      * @param string[] $allowedClasses
      */
-    private function scheduleClasses(array $entities, array $allowedClasses)
+    private function scheduleClasses(array $entities, array $allowedClasses): void
     {
         foreach ($entities as $entity) {
             $entityClass = $this->getOriginalClassIfAllowed($entity, $allowedClasses);
@@ -120,7 +126,7 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface
      * @param string[] $allowedClasses
      * @return bool|string
      */
-    private function getOriginalClassIfAllowed($entity, array $allowedClasses)
+    private function getOriginalClassIfAllowed($entity, array $allowedClasses): bool|string
     {
         foreach ($allowedClasses as $allowedClass) {
             if (is_a($entity, $allowedClass)) {
