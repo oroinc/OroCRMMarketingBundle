@@ -22,12 +22,8 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
     use ConfigManagerAwareTestTrait;
 
     private ConfigProvider $entityConfigProvider;
-
     private Cache|CacheInterface $cacheProvider;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->initClient();
@@ -83,7 +79,7 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
 
     private function toggleMarketingListFeature($enable = true): void
     {
-        $configManager = self::getConfigManager('global');
+        $configManager = self::getConfigManager();
         $configManager->set('oro_marketing_list.feature_enabled', $enable);
         self::getContainer()->get('oro_featuretoggle.checker.feature_checker')->resetCache();
     }
@@ -110,7 +106,7 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
         $this->cacheProvider->delete('oro_marketing_list.allowed_entities');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $config = $this->entityConfigProvider->getConfig(User::class, 'email');
         $config->remove('contact_information');
