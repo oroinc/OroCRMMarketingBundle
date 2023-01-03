@@ -106,9 +106,6 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
         $this->transport->send($campaign, $entity, $from, $to);
     }
 
-    /**
-     * @return array
-     */
     public function sendDataProvider(): array
     {
         return [
