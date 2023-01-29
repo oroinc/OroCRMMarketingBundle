@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MarketingListBundle\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Symfony\Contracts\Cache\CacheInterface;
 
