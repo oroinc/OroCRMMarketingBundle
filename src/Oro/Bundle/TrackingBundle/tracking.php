@@ -7,6 +7,8 @@
  * @codingStandardsIgnoreFile
  */
 
+use Symfony\Component\Dotenv\Dotenv;
+
 if (!$folder = getenv('ORO_TRACKING_DATA_FOLDER')) {
     require_once __DIR__.'/Tools/TrackingDataFolderSelector.php';
     $folder = \Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector::DEFAULT_FOLDER;
@@ -102,6 +104,10 @@ function passDataToApplication($url)
 
     require_once PUBLIC_DIR . '/../vendor/autoload.php';
     require_once PUBLIC_DIR . '/../src/AppKernel.php';
+    (new Dotenv('ORO_ENV', 'ORO_DEBUG'))
+        ->setProdEnvs(['prod', 'behat_test'])
+        ->bootEnv(PUBLIC_DIR.'/../.env-app', 'prod', ['test']);
+
     $kernel = new AppKernel('prod', false);
 
     $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
@@ -172,7 +178,7 @@ if ($settings['piwik_host']) {
 
     passDataToUrl($piwikTrackingUrl);
 }
-
+return;
 //Disable XSS Auditor
 header('X-XSS-Protection: 0');
 //Send 1x1 blank gif
