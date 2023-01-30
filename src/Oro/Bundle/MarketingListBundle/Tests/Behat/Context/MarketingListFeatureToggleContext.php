@@ -10,7 +10,6 @@ use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
  */
 class MarketingListFeatureToggleContext extends OroFeatureContext
 {
-
     /**
      * @When /^(?:|I )enable Marketing List feature$/
      */

@@ -13,7 +13,6 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCase
 {
-
     /** @var \PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
