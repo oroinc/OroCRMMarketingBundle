@@ -45,6 +45,8 @@ oro:
             events: Events
             detailed_report: Detailed Events Report
 
+        trackingeventsummary:
+            entity_plural_label: detailed events reports
         trackingevent:
             report:
                 visits_count.label: Number of Hits
