@@ -82,7 +82,7 @@ datagrids:
         mass_actions:
             merge:
                 type: merge
-                entity_name: 'Oro\Bundle\CampaignBundle\Entity\Campaign'
+                entity_name: Oro\Bundle\CampaignBundle\Entity\Campaign
                 data_identifier: c.id
         options:
             entity_pagination: true
@@ -331,8 +331,8 @@ datagrids:
                     options:
                         field_options:
                             choices:
-                                Manual: manual
-                                Deferred: deferred
+                                oro.campaign.emailcampaign.schedule.manual: manual
+                                oro.campaign.emailcampaign.schedule.deferred: deferred
                 scheduledFor:
                     type:        datetime
                     data_name:   ec.scheduledFor
