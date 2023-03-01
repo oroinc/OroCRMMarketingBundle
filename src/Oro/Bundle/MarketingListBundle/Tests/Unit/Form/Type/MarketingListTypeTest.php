@@ -82,7 +82,7 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
             ->with(
                 [
                     'column_column_field_choice_options' => [
-                        'exclude_fields' => ['relationType'],
+                        'exclude_fields' => [],
                     ],
                     'column_column_choice_type'   => HiddenType::class,
                     'filter_column_choice_type'   => EntityFieldSelectType::class,
