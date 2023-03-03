@@ -81,7 +81,7 @@ class MarketingListType extends AbstractQueryDesignerType
     {
         return [
             'column_column_field_choice_options' => [
-                'exclude_fields' => [],
+                'exclude_fields' => ['relationType'],
             ],
             'column_column_choice_type' => HiddenType::class,
             'filter_column_choice_type' => EntityFieldSelectType::class
