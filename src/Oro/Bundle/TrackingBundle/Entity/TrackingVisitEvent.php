@@ -4,7 +4,8 @@ namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisitEvent;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * @ORM\Table(name="oro_tracking_visit_event")
@@ -17,9 +18,16 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisitEvent;
  *      }
  *  }
  * )
+ * @method TrackingVisitEvent supportAssociationTarget($targetClass)
+ * @method TrackingVisitEvent getAssociationTargets()
+ * @method TrackingVisitEvent hasAssociationTarget($target)
+ * @method TrackingVisitEvent addAssociationTarget($target)
+ * @method TrackingVisitEvent removeAssociationTarget($target)
  */
-class TrackingVisitEvent extends ExtendTrackingVisitEvent
+class TrackingVisitEvent implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     public const INVALID_CODE = 'invalid';
 
     /**

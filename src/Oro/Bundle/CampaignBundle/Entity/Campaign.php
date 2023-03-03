@@ -3,10 +3,11 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\CampaignBundle\Model\ExtendCampaign;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -54,9 +55,10 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      }
  * )
  */
-class Campaign extends ExtendCampaign
+class Campaign implements ExtendEntityInterface
 {
     use DatesAwareTrait;
+    use ExtendEntityTrait;
 
     const PERIOD_HOURLY  = 'hour';
     const PERIOD_DAILY   = 'day';
@@ -200,8 +202,6 @@ class Campaign extends ExtendCampaign
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->reportPeriod = self::PERIOD_DAILY;
     }
 

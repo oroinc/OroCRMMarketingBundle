@@ -55,8 +55,12 @@ class ContactInformationExclusionProvider extends AbstractExclusionProvider
             return true;
         }
 
+        $managerForClass = $this->managerRegistry->getManagerForClass($className);
+        if (null === $managerForClass) {
+            return true;
+        }
         /** @var ClassMetadata $metadata */
-        $metadata = $this->managerRegistry->getManagerForClass($className)->getClassMetadata($className);
+        $metadata = $managerForClass->getClassMetadata($className);
         foreach ($metadata->getFieldNames() as $fieldName) {
             if (!$this->entityConfigProvider->hasConfig($className, $fieldName)) {
                 continue;

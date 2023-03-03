@@ -5,10 +5,14 @@ namespace Oro\Bundle\MarketingActivityBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\MarketingActivityBundle\Model\ExtendMarketingActivity;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Store marketing activity in database.
+ *
  * @ORM\Entity(repositoryClass="Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository")
  * @ORM\Table(
  *     name="orocrm_marketing_activity",
@@ -38,9 +42,12 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      }
  *  }
  * )
+ * @method AbstractEnumValue getType()
  */
-class MarketingActivity extends ExtendMarketingActivity
+class MarketingActivity implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     const TYPE_ENUM_CODE = 'ma_type';
 
     /** constant for enum ma_type */

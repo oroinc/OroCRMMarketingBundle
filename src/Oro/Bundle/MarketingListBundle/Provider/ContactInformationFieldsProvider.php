@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\MarketingListBundle\Provider;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**

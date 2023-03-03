@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem;
 use Oro\Component\Testing\ReflectionUtil;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListRemovedItemTest extends \PHPUnit\Framework\TestCase
 {

@@ -5,7 +5,8 @@ namespace Oro\Bundle\TrackingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\TrackingBundle\Model\ExtendTrackingEvent;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * Represent a tracking event.
@@ -30,8 +31,10 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingEvent;
  *  }
  * )
  */
-class TrackingEvent extends ExtendTrackingEvent
+class TrackingEvent implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     public const INVALID_CODE = 'invalid';
 
     /**

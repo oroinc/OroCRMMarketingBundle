@@ -4,7 +4,8 @@ namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisit;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 
 /**
  * Represent a website visit.
@@ -24,9 +25,14 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisit;
  *  }
  * )
  * @SuppressWarnings(PHPMD.TooManyFields)
+ * @method TrackingVisit supportIdentifierTarget($targetClass)
+ * @method TrackingVisit setIdentifierTarget($target)
+ * @method TrackingVisit getIdentifierTarget()
  */
-class TrackingVisit extends ExtendTrackingVisit
+class TrackingVisit implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     public const INVALID_CODE = 'invalid';
 
     /**

@@ -3,9 +3,10 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\CampaignBundle\Model\ExtendEmailCampaign;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -47,8 +48,10 @@ use Oro\Bundle\UserBundle\Entity\User;
  * )
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
-class EmailCampaign extends ExtendEmailCampaign
+class EmailCampaign implements ExtendEntityInterface
 {
+    use ExtendEntityTrait;
+
     const SCHEDULE_MANUAL = 'manual';
     const SCHEDULE_DEFERRED = 'deferred';
 

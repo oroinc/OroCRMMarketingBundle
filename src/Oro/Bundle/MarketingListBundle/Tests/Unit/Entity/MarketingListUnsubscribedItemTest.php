@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
 use Oro\Component\Testing\ReflectionUtil;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListUnsubscribedItemTest extends \PHPUnit\Framework\TestCase
 {

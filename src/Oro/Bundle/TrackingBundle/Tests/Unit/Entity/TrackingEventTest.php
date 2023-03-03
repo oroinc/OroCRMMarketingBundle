@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\TrackingBundle\Entity\TrackingData;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class TrackingEventTest extends \PHPUnit\Framework\TestCase
 {

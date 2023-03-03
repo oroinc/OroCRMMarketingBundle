@@ -116,15 +116,15 @@ services:
         tags:
             - { name: oro_entity_extend.entity_config_dumper_extension }
 
-    oro_tracking.entity_generator.visit_identifie.extension:
-        class: Oro\Bundle\TrackingBundle\Tools\IdentifierVisitGeneratorExtension
+    oro_tracking.entity_field.identifier_visit_extension:
+        class: Oro\Bundle\TrackingBundle\EntityExtend\IdentifierVisitEntityFieldExtension
         tags:
-            - { name: oro_entity_extend.entity_generator_extension }
+            - { name: 'oro_entity_extend.entity_field_extension', priority: 10 }
 
-    oro_tracking.entity_generator.visit_event_association.extension:
-        class: Oro\Bundle\TrackingBundle\Tools\VisitEventAssociationGeneratorExtension
+    oro_tracking.entity_field.visit_event_extension:
+        class: Oro\Bundle\TrackingBundle\EntityExtend\VisitEventEntityFieldExtension
         tags:
-            - { name: oro_entity_extend.entity_generator_extension }
+            - { name: 'oro_entity_extend.entity_field_extension', priority: 70 }
 
     oro_tracking.processor.tracking_processor:
         class: Oro\Bundle\TrackingBundle\Processor\TrackingProcessor

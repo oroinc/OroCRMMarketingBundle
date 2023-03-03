@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
 {
