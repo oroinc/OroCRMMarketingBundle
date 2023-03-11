@@ -2,20 +2,35 @@
 
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\DependencyInjection;
 
-use Oro\Bundle\CampaignBundle\Controller\Api\Rest\EmailTemplateController;
 use Oro\Bundle\CampaignBundle\DependencyInjection\OroCampaignExtension;
-use Oro\Bundle\TestFrameworkBundle\Test\DependencyInjection\ExtensionTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class OroCampaignExtensionTest extends ExtensionTestCase
+class OroCampaignExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testLoad(): void
     {
-        $this->loadExtension(new OroCampaignExtension());
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.environment', 'prod');
 
-        $expectedDefinitions = [
-            EmailTemplateController::class,
-        ];
+        $extension = new OroCampaignExtension();
+        $extension->load([], $container);
 
-        $this->assertDefinitionsLoaded($expectedDefinitions);
+        self::assertNotEmpty($container->getDefinitions());
+        self::assertSame(
+            [
+                [
+                    'settings' => [
+                        'resolved' => true,
+                        'campaign_sender_email' => [
+                            'value' => sprintf('no-reply@%s.example', gethostname()),
+                            'scope' => 'app'
+                        ],
+                        'campaign_sender_name' => ['value' => 'Oro', 'scope' => 'app'],
+                        'feature_enabled' => ['value' => true, 'scope' => 'app'],
+                    ]
+                ]
+            ],
+            $container->getExtensionConfig('oro_campaign')
+        );
     }
 }

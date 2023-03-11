@@ -2,22 +2,21 @@
 
 namespace Oro\Bundle\CampaignBundle\DependencyInjection;
 
+use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * This is the class that loads and manages CampaignBundle service configuration
- */
 class OroCampaignExtension extends Extension
 {
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration(new Configuration(), $configs);
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+        $container->prependExtensionConfig($this->getAlias(), SettingsBuilder::getSettings($config));
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
@@ -27,10 +26,8 @@ class OroCampaignExtension extends Extension
         $loader->load('mq_topics.yml');
         $loader->load('mq_processors.yml');
 
-        if ($container->getParameter('kernel.environment') === 'test') {
+        if ('test' === $container->getParameter('kernel.environment')) {
             $loader->load('services_test.yml');
         }
-
-        $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }
 }

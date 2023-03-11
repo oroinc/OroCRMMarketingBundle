@@ -2,23 +2,29 @@
 
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\DependencyInjection;
 
-use Oro\Bundle\MarketingListBundle\Controller\Api\Rest as Api;
 use Oro\Bundle\MarketingListBundle\DependencyInjection\OroMarketingListExtension;
-use Oro\Bundle\TestFrameworkBundle\Test\DependencyInjection\ExtensionTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class OroMarketingListExtensionTest extends ExtensionTestCase
+class OroMarketingListExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testLoad(): void
     {
-        $this->loadExtension(new OroMarketingListExtension());
+        $container = new ContainerBuilder();
 
-        $expectedDefinitions = [
-            Api\MarketingListController::class,
-            Api\MarketingListRemovedItemController::class,
-            Api\MarketingListUnsubscribedItemController::class,
-            Api\SegmentController::class,
-        ];
+        $extension = new OroMarketingListExtension();
+        $extension->load([], $container);
 
-        $this->assertDefinitionsLoaded($expectedDefinitions);
+        self::assertNotEmpty($container->getDefinitions());
+        self::assertSame(
+            [
+                [
+                    'settings' => [
+                        'resolved' => true,
+                        'feature_enabled' => ['value' => true, 'scope' => 'app']
+                    ]
+                ]
+            ],
+            $container->getExtensionConfig('oro_marketing_list')
+        );
     }
 }
