@@ -50,9 +50,8 @@ class EmailCampaignSendProcessor implements MessageProcessorInterface, TopicSubs
             return self::REJECT;
         }
 
-        $result = $this->jobRunner->runUnique(
-            $message->getMessageId(),
-            SendEmailCampaignTopic::getName() . ':' . $emailCampaign->getId(),
+        $result = $this->jobRunner->runUniqueByMessage(
+            $message,
             function () use ($emailCampaign) {
                 $sender = $this->senderBuilder->getSender($emailCampaign);
                 $sender->send();

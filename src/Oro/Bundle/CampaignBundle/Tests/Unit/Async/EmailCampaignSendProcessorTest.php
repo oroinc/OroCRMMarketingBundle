@@ -12,6 +12,7 @@ use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\MessageQueueBundle\Entity\Job;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
+use Oro\Component\MessageQueue\Topic\JobAwareTopicInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\Testing\ReflectionUtil;
@@ -74,6 +75,7 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
         $emailCampaign = new EmailCampaign();
         ReflectionUtil::setId($emailCampaign, $emailCampaignId);
         $this->assertEmailCampaignFind($emailCampaign);
+        $jobName = SendEmailCampaignTopic::getName() . ':' . $emailCampaignId;
 
         $session = $this->createMock(SessionInterface::class);
         $message = $this->createMock(MessageInterface::class);
@@ -83,6 +85,9 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
         $message->expects(self::any())
             ->method('getMessageId')
             ->willReturn('MID');
+        $message->method('getProperty')
+            ->with(JobAwareTopicInterface::UNIQUE_JOB_NAME)
+            ->willReturn($jobName);
 
         $this->logger->expects(self::never())
             ->method($this->anything());
@@ -98,10 +103,11 @@ class EmailCampaignSendProcessorTest extends \PHPUnit\Framework\TestCase
 
         $job = $this->createMock(Job::class);
         $this->jobRunner->expects(self::once())
-            ->method('runUnique')
-            ->willReturnCallback(function ($ownerId, $name, $closure) use ($job, $emailCampaignId) {
-                self::assertEquals('MID', $ownerId);
-                self::assertEquals(SendEmailCampaignTopic::getName() . ':' . $emailCampaignId, $name);
+            ->method('runUniqueByMessage')
+            ->with($message)
+            ->willReturnCallback(function ($message, $closure) use ($job, $jobName) {
+                self::assertEquals('MID', $message->getMessageId());
+                self::assertEquals($jobName, $message->getProperty(JobAwareTopicInterface::UNIQUE_JOB_NAME));
 
                 return $closure($this->jobRunner, $job);
             });
