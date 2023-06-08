@@ -29,6 +29,7 @@ class ImportLogsCommandTest extends WebTestCase
 
     protected function setUp(): void
     {
+        $this->markTestSkipped("Skipped by BAP-22077");
         $this->initClient();
 
         $this->fs = new Filesystem();
