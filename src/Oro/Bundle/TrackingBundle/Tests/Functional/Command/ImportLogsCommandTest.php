@@ -29,12 +29,11 @@ class ImportLogsCommandTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestSkipped("Skipped by BAP-22077");
         $this->initClient();
 
         $this->fs = new Filesystem();
 
-        $this->directory = $this->getTempDir('tracking', false);
+        $this->directory = $this->getTempDir('tracking_import_logs', false);
     }
 
     public function testDirectoryEmpty()
