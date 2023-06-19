@@ -19,7 +19,8 @@ use Psr\Log\LoggerInterface;
  */
 class UpdateMarketingListOnEntityChange implements OptionalListenerInterface, FeatureToggleableInterface
 {
-    use OptionalListenerTrait, FeatureCheckerHolderTrait;
+    use OptionalListenerTrait;
+    use FeatureCheckerHolderTrait;
 
     /**
      * @var object[]

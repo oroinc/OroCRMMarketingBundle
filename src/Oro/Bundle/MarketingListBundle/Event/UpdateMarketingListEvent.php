@@ -5,6 +5,9 @@ namespace Oro\Bundle\MarketingListBundle\Event;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * This event is dispatched when marketing list is updated
+ */
 class UpdateMarketingListEvent extends Event
 {
     /**
@@ -16,14 +19,14 @@ class UpdateMarketingListEvent extends Event
      * @param MarketingList[] $marketingLists
      * @return UpdateMarketingListEvent
      */
-    public function setMarketingLists(array $marketingLists) : UpdateMarketingListEvent
+    public function setMarketingLists(array $marketingLists): UpdateMarketingListEvent
     {
         $this->marketingLists = $marketingLists;
 
         return $this;
     }
 
-    public function addMarketingList(MarketingList $marketingList) : UpdateMarketingListEvent
+    public function addMarketingList(MarketingList $marketingList): UpdateMarketingListEvent
     {
         $this->marketingLists[] = $marketingList;
 
