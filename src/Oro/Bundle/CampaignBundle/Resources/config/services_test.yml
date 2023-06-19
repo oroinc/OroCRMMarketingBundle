@@ -2,3 +2,9 @@ services:
     oro_campaign.test.dashboard.campaign_data_provider:
         alias: oro_campaign.dashboard.campaign_data_provider
         public: true
+
+    oro_campaign.tests.entity_name_resolver.data_loader:
+        class: Oro\Bundle\CampaignBundle\Tests\Functional\Environment\TestEntityNameResolverDataLoader
+        decorates: oro_entity.tests.entity_name_resolver.data_loader
+        arguments:
+            - '@.inner'

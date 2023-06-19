@@ -7,6 +7,7 @@ api:
     entities:
         Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity:
             documentation_resource: '@OroMarketingActivityBundle/Resources/doc/api/marketing_activity.md'
+            disable_meta_properties: [ title ]
             fields:
                 actionDate:
                     form_options:

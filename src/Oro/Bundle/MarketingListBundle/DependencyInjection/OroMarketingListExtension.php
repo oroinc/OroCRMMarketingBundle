@@ -25,5 +25,9 @@ class OroMarketingListExtension extends Extension
         $loader->load('controllers_api.yml');
         $loader->load('mq_processors.yml');
         $loader->load('mq_topics.yml');
+
+        if ('test' === $container->getParameter('kernel.environment')) {
+            $loader->load('services_test.yml');
+        }
     }
 }
