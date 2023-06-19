@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\MarketingListBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
