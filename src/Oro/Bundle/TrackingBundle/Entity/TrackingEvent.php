@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingEvent;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
@@ -30,6 +31,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  *     }
  *  }
  * )
+ * @mixin OroTrackingBundle_Entity_TrackingEvent
  */
 class TrackingEvent implements ExtendEntityInterface
 {

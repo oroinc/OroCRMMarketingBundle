@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingVisit;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
@@ -28,6 +29,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  * @method TrackingVisit supportIdentifierTarget($targetClass)
  * @method TrackingVisit setIdentifierTarget($target)
  * @method TrackingVisit getIdentifierTarget()
+ * @mixin OroTrackingBundle_Entity_TrackingVisit
  */
 class TrackingVisit implements ExtendEntityInterface
 {

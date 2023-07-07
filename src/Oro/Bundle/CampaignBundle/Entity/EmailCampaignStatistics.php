@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroCampaignBundle_Entity_EmailCampaignStatistics;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
@@ -37,6 +38,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      }
  * )
  * @ORM\HasLifecycleCallbacks
+ * @mixin OroCampaignBundle_Entity_EmailCampaignStatistics
  */
 class EmailCampaignStatistics implements ExtendEntityInterface
 {

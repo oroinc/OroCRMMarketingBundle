@@ -5,6 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroMarketingListBundle_Entity_MarketingList;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
@@ -53,6 +54,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @mixin OroMarketingListBundle_Entity_MarketingList
  */
 class MarketingList implements ExtendEntityInterface
 {

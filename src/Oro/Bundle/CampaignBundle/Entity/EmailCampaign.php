@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroCampaignBundle_Entity_EmailCampaign;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
@@ -47,6 +48,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      }
  * )
  * @SuppressWarnings(PHPMD.TooManyFields)
+ * @mixin OroCampaignBundle_Entity_EmailCampaign
  */
 class EmailCampaign implements ExtendEntityInterface
 {

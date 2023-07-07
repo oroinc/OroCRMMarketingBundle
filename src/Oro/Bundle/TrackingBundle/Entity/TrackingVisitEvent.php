@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingVisitEvent;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
@@ -23,6 +24,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  * @method TrackingVisitEvent hasAssociationTarget($target)
  * @method TrackingVisitEvent addAssociationTarget($target)
  * @method TrackingVisitEvent removeAssociationTarget($target)
+ * @mixin OroTrackingBundle_Entity_TrackingVisitEvent
  */
 class TrackingVisitEvent implements ExtendEntityInterface
 {

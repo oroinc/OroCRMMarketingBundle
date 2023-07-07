@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TrackingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingWebsite;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
@@ -37,6 +38,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *     }
  *  }
  * )
+ * @mixin OroTrackingBundle_Entity_TrackingWebsite
  */
 class TrackingWebsite implements ExtendEntityInterface
 {

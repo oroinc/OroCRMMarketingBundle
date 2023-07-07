@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MarketingActivityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Extend\Entity\Autocomplete\OroMarketingActivityBundle_Entity_MarketingActivity;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
@@ -43,6 +44,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *  }
  * )
  * @method AbstractEnumValue getType()
+ * @mixin OroMarketingActivityBundle_Entity_MarketingActivity
  */
 class MarketingActivity implements ExtendEntityInterface
 {
