@@ -302,7 +302,7 @@ class MarketingList implements ExtendEntityInterface
     }
 
     /**
-     * @param Segment $segment
+     * @param Segment|null $segment
      * @return MarketingList
      */
     public function setSegment(Segment $segment = null)
@@ -654,7 +654,7 @@ class MarketingList implements ExtendEntityInterface
     /**
      * Set organization
      *
-     * @param Organization $organization
+     * @param Organization|null $organization
      * @return MarketingList
      */
     public function setOrganization(Organization $organization = null)

@@ -20,9 +20,6 @@ class LoadMarketingListData extends AbstractFixture implements ContainerAwareInt
      */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;

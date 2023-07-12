@@ -391,7 +391,7 @@ class Campaign implements ExtendEntityInterface
     /**
      * Set organization
      *
-     * @param Organization $organization
+     * @param Organization|null $organization
      * @return Campaign
      */
     public function setOrganization(Organization $organization = null)

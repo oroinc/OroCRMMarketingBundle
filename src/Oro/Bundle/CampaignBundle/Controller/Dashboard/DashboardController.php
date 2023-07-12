@@ -35,9 +35,6 @@ class DashboardController extends AbstractController
      *      requirements={"widget"="[\w\-]+"}
      * )
      * @Template("@OroCampaign/Dashboard/campaignLeads.html.twig")
-     * @param Request $request
-     * @param string $widget
-     * @return array
      * @throws InvalidConfigurationException
      */
     public function campaignLeadsAction(Request $request, string $widget): array
@@ -81,9 +78,6 @@ class DashboardController extends AbstractController
      *      requirements={"widget"="[\w\-]+"}
      * )
      * @Template("@OroCampaign/Dashboard/campaignOpportunity.html.twig")
-     * @param Request $request
-     * @param string $widget
-     * @return array
      * @throws InvalidConfigurationException
      */
     public function campaignOpportunityAction(Request $request, string $widget): array
@@ -120,9 +114,6 @@ class DashboardController extends AbstractController
      *      requirements={"widget"="[\w\-]+"}
      * )
      * @Template("@OroCampaign/Dashboard/campaignByCloseRevenue.html.twig")
-     * @param Request $request
-     * @param string $widget
-     * @return array
      * @throws InvalidConfigurationException
      */
     public function campaignByCloseRevenueAction(Request $request, string $widget): array

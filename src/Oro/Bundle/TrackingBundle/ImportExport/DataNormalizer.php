@@ -17,9 +17,6 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /** @var array fields to correct url encoded data */
     protected $urlEncodeFields = ['name', 'title', 'userIdentifier', 'url', 'code'];
 
-    /**
-     * @param string $entityName
-     */
     public function setEntityName(string $entityName): void
     {
         $this->entityName = $entityName;

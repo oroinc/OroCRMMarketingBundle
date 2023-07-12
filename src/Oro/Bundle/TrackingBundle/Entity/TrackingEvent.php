@@ -339,7 +339,7 @@ class TrackingEvent implements ExtendEntityInterface
     /**
      * Set website
      *
-     * @param TrackingWebsite $website
+     * @param TrackingWebsite|null $website
      * @return TrackingEvent
      */
     public function setWebsite(TrackingWebsite $website = null)

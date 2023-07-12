@@ -22,7 +22,7 @@ class InternalTransportSettings extends TransportSettings
     /**
      * Set template
      *
-     * @param EmailTemplate $emailTemplate
+     * @param EmailTemplate|null $emailTemplate
      *
      * @return InternalTransportSettings
      */
