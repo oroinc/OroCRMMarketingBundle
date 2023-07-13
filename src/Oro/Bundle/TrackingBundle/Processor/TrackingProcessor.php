@@ -327,7 +327,6 @@ class TrackingProcessor extends AbstractTrackingProcessor
         $this->collectedVisits = [];
         $this->eventDictionary = [];
 
-
         $this->logMemoryUsage();
     }
 

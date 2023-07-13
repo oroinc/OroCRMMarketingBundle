@@ -348,7 +348,7 @@ class EmailCampaignStatistics implements ExtendEntityInterface
     /**
      * Set owner
      *
-     * @param User $owner
+     * @param User|null $owner
      *
      * @return EmailCampaignStatistics
      */
@@ -372,7 +372,7 @@ class EmailCampaignStatistics implements ExtendEntityInterface
     /**
      * Set organization
      *
-     * @param Organization $organization
+     * @param Organization|null $organization
      * @return EmailCampaignStatistics
      */
     public function setOrganization(Organization $organization = null)

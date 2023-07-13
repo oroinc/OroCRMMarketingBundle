@@ -132,7 +132,7 @@ class TrackingData
     /**
      * Set event
      *
-     * @param TrackingEvent $event
+     * @param TrackingEvent|null $event
      * @return TrackingData
      */
     public function setEvent(TrackingEvent $event = null)

@@ -148,7 +148,7 @@ class MarketingActivity implements ExtendEntityInterface
     /**
      * Set owner organization
      *
-     * @param Organization $owner
+     * @param Organization|null $owner
      * @return MarketingActivity
      */
     public function setOwner(Organization $owner = null)
@@ -171,7 +171,7 @@ class MarketingActivity implements ExtendEntityInterface
     /**
      * Set campaign
      *
-     * @param Campaign $campaign
+     * @param Campaign|null $campaign
      * @return MarketingActivity
      */
     public function setCampaign(Campaign $campaign = null)

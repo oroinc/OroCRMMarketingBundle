@@ -16,9 +16,6 @@ class LoadTrackingWebsiteData extends AbstractFixture implements ContainerAwareI
      */
     protected $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;

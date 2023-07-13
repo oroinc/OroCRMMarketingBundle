@@ -267,7 +267,7 @@ class TrackingWebsite implements ExtendEntityInterface
     /**
      * Set owner
      *
-     * @param User $owner
+     * @param User|null $owner
      * @return TrackingWebsite
      */
     public function setOwner(User $owner = null)
@@ -290,7 +290,7 @@ class TrackingWebsite implements ExtendEntityInterface
     /**
      * Set organization
      *
-     * @param Organization $organization
+     * @param Organization|null $organization
      * @return TrackingWebsite
      */
     public function setOrganization(Organization $organization = null)

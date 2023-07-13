@@ -143,7 +143,7 @@ class TrackingEventSummary
     /**
      * Set website
      *
-     * @param TrackingWebsite $website
+     * @param TrackingWebsite|null $website
      * @return TrackingEventSummary
      */
     public function setWebsite(TrackingWebsite $website = null)
