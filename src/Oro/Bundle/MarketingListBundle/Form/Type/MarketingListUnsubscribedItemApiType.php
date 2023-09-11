@@ -9,7 +9,7 @@ class MarketingListUnsubscribedItemApiType extends AbstractPatchableApiType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return MarketingListTypeUnsubscribedItemType::class;
     }
@@ -17,7 +17,7 @@ class MarketingListUnsubscribedItemApiType extends AbstractPatchableApiType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'oro_marketing_list_unsubscribed_item_api';
     }

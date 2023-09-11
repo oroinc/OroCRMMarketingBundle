@@ -51,7 +51,7 @@ class MarketingListTypeUnsubscribedItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'oro_marketing_list_unsubscribed_item';
     }

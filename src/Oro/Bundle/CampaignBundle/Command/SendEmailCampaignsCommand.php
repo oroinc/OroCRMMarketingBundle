@@ -74,13 +74,13 @@ HELP
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @noinspection PhpMissingParentCallCommonInspection
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $emailCampaigns = $this->getEmailCampaignRepository()->findEmailCampaignsToSend();
         if (!$emailCampaigns) {
             $output->writeln('<info>No email campaigns to send</info>');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->writeln(sprintf('<comment>Email campaigns to send:</comment> %d', count($emailCampaigns)));
@@ -88,7 +88,7 @@ HELP
         $this->send($output, $emailCampaigns);
         $output->writeln('<info>Finished email campaigns sending</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function send(OutputInterface $output, array $emailCampaigns): void

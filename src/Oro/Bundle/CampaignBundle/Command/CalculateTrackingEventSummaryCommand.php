@@ -73,13 +73,13 @@ HELP
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @noinspection PhpMissingParentCallCommonInspection
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $campaigns = $this->getCampaignRepository()->findAll();
         if (!$campaigns) {
             $output->writeln('<info>No campaigns found</info>');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->writeln(sprintf('<comment>Campaigns to calculate:</comment> %d', count($campaigns)));
@@ -87,7 +87,7 @@ HELP
         $this->calculate($output, $campaigns);
         $output->writeln('<info>Finished campaigns statistic calculation</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function calculate(OutputInterface $output, array $campaigns): void

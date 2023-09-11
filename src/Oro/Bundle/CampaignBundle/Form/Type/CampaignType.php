@@ -100,7 +100,7 @@ class CampaignType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'oro_campaign_form';
     }

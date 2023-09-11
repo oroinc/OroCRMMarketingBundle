@@ -110,7 +110,7 @@ HELP
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs     = new Filesystem();
         $finder = new Finder();
@@ -124,7 +124,7 @@ HELP
 
             $output->writeln('<info>Logs not found</info>');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $finder
@@ -136,7 +136,7 @@ HELP
         if (!$finder->count()) {
             $output->writeln('<info>Logs not found</info>');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         /** @var SplFileInfo $file */
@@ -181,7 +181,7 @@ HELP
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function getDirectory(): string
