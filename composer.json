@@ -21,7 +21,7 @@
     },
     "require": {
         "ext-curl": "*",
-        "oro/platform": "5.1.*"
+        "oro/platform": "6.0.*"
     },
     "repositories": {
         "oro": {
@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "5.1-dev"
+            "dev-master": "6.0-dev"
         }
     }
 }
