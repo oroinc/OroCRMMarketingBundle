@@ -60,7 +60,7 @@ class ContactInformationFieldsExtension extends AbstractExtension implements Ser
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         return [
             'oro_marketing_list.contact_information_field_helper' => ContactInformationFieldHelper::class,
