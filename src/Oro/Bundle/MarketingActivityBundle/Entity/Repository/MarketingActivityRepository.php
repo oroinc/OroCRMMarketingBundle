@@ -63,15 +63,21 @@ class MarketingActivityRepository extends EntityRepository
      */
     public function getMarketingActivitySummaryCountByCampaign($campaignId)
     {
-        return (bool) $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('COUNT(ma.id)')
-            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
-            ->where('ma.campaign = :campaignId')
-            ->setParameter(':campaignId', $campaignId)
-            ->getQuery()
-            ->getSingleScalarResult();
+        try {
+            return (bool)$this->getEntityManager()
+                ->createQueryBuilder()
+                ->select('ma.id')
+                ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+                ->where('ma.campaign = :campaignId')
+                ->setParameter(':campaignId', $campaignId)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
+
 
     /**
      * @param string $entityClass
