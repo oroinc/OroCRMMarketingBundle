@@ -9,9 +9,11 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
 class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 {
-    private MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject $producer;
+    /** @var MessageProducerInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $producer;
 
-    private ConfigPrecalculateListener $listener;
+    /** @var ConfigPrecalculateListener */
+    private $listener;
 
     protected function setUp(): void
     {
@@ -22,10 +24,7 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterNonGlobalScope(): void
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
-        $event->expects(self::once())
-            ->method('getScope')
-            ->willReturn('user');
+        $event = new ConfigUpdateEvent([], 'user', 1);
 
         $this->producer->expects(self::never())
             ->method(self::anything());
@@ -35,14 +34,7 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterNothingChanged(): void
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
-        $event->expects(self::once())
-            ->method('getScope')
-            ->willReturn('global');
-        $event->expects(self::exactly(2))
-            ->method('isChanged')
-            ->withConsecutive(['oro_tracking.precalculated_statistic_enabled'], ['oro_locale.timezone'])
-            ->willReturn(false);
+        $event = new ConfigUpdateEvent([], 'global', 0);
 
         $this->producer->expects(self::never())
             ->method(self::anything());
@@ -52,18 +44,11 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterRecalculationDisabled(): void
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
-        $event->expects(self::once())
-            ->method('getScope')
-            ->willReturn('global');
-        $event->expects(self::exactly(2))
-            ->method('isChanged')
-            ->withConsecutive(['oro_tracking.precalculated_statistic_enabled'], ['oro_locale.timezone'])
-            ->willReturn(true, false);
-        $event->expects(self::once())
-            ->method('getNewValue')
-            ->with('oro_tracking.precalculated_statistic_enabled')
-            ->willReturn(false);
+        $event = new ConfigUpdateEvent(
+            ['oro_tracking.precalculated_statistic_enabled' => ['old' => true, 'new' => false]],
+            'global',
+            0
+        );
 
         $this->producer->expects(self::never())
             ->method(self::anything());
@@ -73,14 +58,11 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterTimezoneChanged(): void
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
-        $event->expects(self::once())
-            ->method('getScope')
-            ->willReturn('global');
-        $event->expects(self::exactly(2))
-            ->method('isChanged')
-            ->withConsecutive(['oro_tracking.precalculated_statistic_enabled'], ['oro_locale.timezone'])
-            ->willReturnOnConsecutiveCalls(false, true);
+        $event = new ConfigUpdateEvent(
+            ['oro_locale.timezone' => ['old' => 'old', 'new' => 'new']],
+            'global',
+            0
+        );
 
         $this->producer->expects(self::once())
             ->method('send')
@@ -91,18 +73,11 @@ class ConfigPrecalculateListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterCalculationEnabled(): void
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
-        $event->expects(self::once())
-            ->method('getScope')
-            ->willReturn('global');
-        $event->expects(self::once())
-            ->method('isChanged')
-            ->with('oro_tracking.precalculated_statistic_enabled')
-            ->willReturn(true);
-        $event->expects(self::once())
-            ->method('getNewValue')
-            ->with('oro_tracking.precalculated_statistic_enabled')
-            ->willReturn(true);
+        $event = new ConfigUpdateEvent(
+            ['oro_tracking.precalculated_statistic_enabled' => ['old' => false, 'new' => true]],
+            'global',
+            0
+        );
 
         $this->producer->expects(self::once())
             ->method('send')

@@ -46,7 +46,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterNoChanges()
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
+        $event = new ConfigUpdateEvent([], 'global', 0);
 
         $this->listener->onUpdateAfter($event);
         $this->assertFileDoesNotExist($this->settingsFile);
@@ -54,23 +54,14 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnUpdateAfterNoDynamic()
     {
-        $event = $this->createMock(ConfigUpdateEvent::class);
-
-        $event->expects($this->exactly(5))
-            ->method('isChanged')
-            ->willReturnMap([
-                ['oro_tracking.dynamic_tracking_enabled', false],
-                ['oro_tracking.log_rotate_interval', true],
-                ['oro_tracking.piwik_host', true],
-                ['oro_tracking.piwik_token_auth', false],
-            ]);
-
-        $event->expects($this->exactly(2))
-            ->method('getNewValue')
-            ->willReturnMap([
-                ['oro_tracking.log_rotate_interval', 5],
-                ['oro_tracking.piwik_host', 'http://test.com']
-            ]);
+        $event = new ConfigUpdateEvent(
+            [
+                'oro_tracking.log_rotate_interval' => ['old' => 1, 'new' => 5],
+                'oro_tracking.piwik_host' => ['old' => 'http://old.com', 'new' => 'http://test.com']
+            ],
+            'global',
+            0
+        );
 
         $this->configManager->expects($this->exactly(3))
             ->method('get')
@@ -114,22 +105,13 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
              ->method('getContext')
              ->willReturn($requestContext);
 
-        $event = $this->createMock(ConfigUpdateEvent::class);
-
-        $event->expects($this->exactly(5))
-            ->method('isChanged')
-            ->willReturnMap([
-                ['oro_tracking.dynamic_tracking_enabled', true],
-                ['oro_tracking.log_rotate_interval', false],
-                ['oro_tracking.piwik_host', false],
-                ['oro_tracking.piwik_token_auth', false],
-            ]);
-
-        $event->expects($this->once())
-            ->method('getNewValue')
-            ->willReturnMap([
-                ['oro_tracking.dynamic_tracking_enabled', true]
-            ]);
+        $event = new ConfigUpdateEvent(
+            [
+                'oro_tracking.dynamic_tracking_enabled' => ['old' => false, 'new' => true]
+            ],
+            'global',
+            0
+        );
 
         $this->configManager->expects($this->exactly(4))
             ->method('get')
