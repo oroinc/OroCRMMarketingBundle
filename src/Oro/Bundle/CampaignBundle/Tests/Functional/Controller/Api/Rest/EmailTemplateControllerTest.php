@@ -23,7 +23,7 @@ class EmailTemplateControllerTest extends WebTestCase
             $this->getUrl('oro_api_get_emailcampaign_email_templates', ['id' => 0])
         );
 
-        $this->getJsonResponseContent($this->client->getResponse(), 404);
+        self::assertResponseStatusCodeEquals($this->client->getResponse(), 404);
     }
 
     public function testGet(): void
@@ -31,9 +31,7 @@ class EmailTemplateControllerTest extends WebTestCase
         $marketingListId = $this->getReference(LoadMarketingListData::MARKETING_LIST_NAME)->getId();
         $this->client->jsonRequest(
             'GET',
-            $this->getUrl('oro_api_get_emailcampaign_email_templates', [
-                'id' => $marketingListId
-            ])
+            $this->getUrl('oro_api_get_emailcampaign_email_templates', ['id' => $marketingListId])
         );
 
         $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
