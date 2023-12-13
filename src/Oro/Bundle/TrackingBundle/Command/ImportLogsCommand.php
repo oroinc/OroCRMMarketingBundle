@@ -10,7 +10,6 @@ use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
 use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
@@ -27,9 +26,7 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * Imports event tracking logs.
  */
-class ImportLogsCommand extends Command implements
-    CronCommandScheduleDefinitionInterface,
-    CronCommandActivationInterface
+class ImportLogsCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
     /** @var string */
     protected static $defaultName = 'oro:cron:import-tracking';
@@ -60,32 +57,6 @@ class ImportLogsCommand extends Command implements
         return '1 * * * *';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isActive(): bool
-    {
-        $fs = new Filesystem();
-        $finder = new Finder();
-        $directory = $this->getDirectory();
-
-        if (!$fs->exists($directory)) {
-            return false;
-        }
-
-        $finder
-            ->files()
-            ->notName($this->getIgnoredFilename())
-            ->notName('settings.ser')
-            ->in($directory);
-
-        if (!$finder->count()) {
-            return false;
-        }
-
-        return true;
-    }
-
     /** @noinspection PhpMissingParentCallCommonInspection */
     protected function configure()
     {
@@ -112,13 +83,12 @@ HELP
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $fs     = new Filesystem();
-        $finder = new Finder();
+        $fs = new Filesystem();
 
-        if (!$directory = $input->getOption('directory')) {
+        $directory = $input->getOption('directory');
+        if (!$directory) {
             $directory = $this->getDirectory();
         }
-
         if (!$fs->exists($directory)) {
             $fs->mkdir($directory);
 
@@ -127,12 +97,12 @@ HELP
             return Command::SUCCESS;
         }
 
+        $finder = new Finder();
         $finder
             ->files()
             ->notName($this->getIgnoredFilename())
             ->notName('settings.ser')
             ->in($directory);
-
         if (!$finder->count()) {
             $output->writeln('<info>Logs not found</info>');
 
@@ -165,18 +135,11 @@ HELP
             );
 
             if ($jobResult->isSuccessful()) {
-                $output->writeln(
-                    sprintf('<info>Successful</info>: "%s"', $fileName)
-                );
+                $output->writeln(sprintf('<info>Successful</info>: "%s"', $fileName));
                 $fs->remove($pathName);
             } else {
                 foreach ($jobResult->getFailureExceptions() as $exception) {
-                    $output->writeln(
-                        sprintf(
-                            '<error>Error</error>: "%s".',
-                            $exception
-                        )
-                    );
+                    $output->writeln(sprintf('<error>Error</error>: "%s".', $exception));
                 }
             }
         }
@@ -219,11 +182,11 @@ HELP
         $logRotateInterval = $this->configManager->get('oro_tracking.log_rotate_interval');
 
         $rotateInterval = 60;
-        $currentPart    = 1;
+        $currentPart = 1;
         if ($logRotateInterval > 0 && $logRotateInterval < 60) {
             $rotateInterval = (int)$logRotateInterval;
-            $passingMinute  = (int)(date('i')) + 1;
-            $currentPart    = ceil($passingMinute / $rotateInterval);
+            $passingMinute = (int)(date('i')) + 1;
+            $currentPart = ceil($passingMinute / $rotateInterval);
         }
 
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
