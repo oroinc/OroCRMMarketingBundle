@@ -65,24 +65,6 @@ class ImportLogsCommand extends Command implements
      */
     public function isActive(): bool
     {
-        $fs = new Filesystem();
-        $finder = new Finder();
-        $directory = $this->getDirectory();
-
-        if (!$fs->exists($directory)) {
-            return false;
-        }
-
-        $finder
-            ->files()
-            ->notName($this->getIgnoredFilename())
-            ->notName('settings.ser')
-            ->in($directory);
-
-        if (!$finder->count()) {
-            return false;
-        }
-
         return true;
     }
 
@@ -112,13 +94,12 @@ HELP
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $fs     = new Filesystem();
-        $finder = new Finder();
+        $fs = new Filesystem();
 
-        if (!$directory = $input->getOption('directory')) {
+        $directory = $input->getOption('directory');
+        if (!$directory) {
             $directory = $this->getDirectory();
         }
-
         if (!$fs->exists($directory)) {
             $fs->mkdir($directory);
 
@@ -127,12 +108,12 @@ HELP
             return 0;
         }
 
+        $finder = new Finder();
         $finder
             ->files()
             ->notName($this->getIgnoredFilename())
             ->notName('settings.ser')
             ->in($directory);
-
         if (!$finder->count()) {
             $output->writeln('<info>Logs not found</info>');
 
@@ -165,18 +146,11 @@ HELP
             );
 
             if ($jobResult->isSuccessful()) {
-                $output->writeln(
-                    sprintf('<info>Successful</info>: "%s"', $fileName)
-                );
+                $output->writeln(sprintf('<info>Successful</info>: "%s"', $fileName));
                 $fs->remove($pathName);
             } else {
                 foreach ($jobResult->getFailureExceptions() as $exception) {
-                    $output->writeln(
-                        sprintf(
-                            '<error>Error</error>: "%s".',
-                            $exception
-                        )
-                    );
+                    $output->writeln(sprintf('<error>Error</error>: "%s".', $exception));
                 }
             }
         }
@@ -219,11 +193,11 @@ HELP
         $logRotateInterval = $this->configManager->get('oro_tracking.log_rotate_interval');
 
         $rotateInterval = 60;
-        $currentPart    = 1;
+        $currentPart = 1;
         if ($logRotateInterval > 0 && $logRotateInterval < 60) {
             $rotateInterval = (int)$logRotateInterval;
-            $passingMinute  = (int)(date('i')) + 1;
-            $currentPart    = ceil($passingMinute / $rotateInterval);
+            $passingMinute = (int)(date('i')) + 1;
+            $currentPart = ceil($passingMinute / $rotateInterval);
         }
 
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
