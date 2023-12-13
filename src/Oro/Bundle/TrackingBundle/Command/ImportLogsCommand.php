@@ -66,24 +66,6 @@ class ImportLogsCommand extends Command implements CronCommandInterface
 
     public function isActive()
     {
-        $fs     = new Filesystem();
-        $finder = new Finder();
-        $directory = $this->getDirectory();
-
-        if (!$fs->exists($directory)) {
-            return false;
-        }
-
-        $finder
-            ->files()
-            ->notName($this->getIgnoredFilename())
-            ->notName('settings.ser')
-            ->in($directory);
-
-        if (!$finder->count()) {
-            return false;
-        }
-
         return true;
     }
 

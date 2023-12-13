@@ -12,14 +12,8 @@ class ImportLogsCommandTest extends WebTestCase
 {
     use TempDirExtension;
 
-    /** @var Filesystem */
-    private $fs;
-
-    /** @var string */
-    private $directory;
-
-    /** @var string */
-    private $logsDir;
+    private Filesystem $fs;
+    private string $directory;
 
     protected function setUp(): void
     {
@@ -28,19 +22,19 @@ class ImportLogsCommandTest extends WebTestCase
         $this->directory = $this->getTempDir('tracking', false);
     }
 
-    public function testDirectoryEmpty()
+    public function testDirectoryEmpty(): void
     {
         $this->assertFalse($this->fs->exists($this->directory));
 
-        $result = $this->runCommand(
+        $result = self::runCommand(
             'oro:cron:import-tracking',
             ['--directory' => $this->directory]
         );
-        $this->assertTrue($this->fs->exists($this->directory));
+        self::assertTrue($this->fs->exists($this->directory));
         self::assertStringContainsString('Logs not found', $result);
     }
 
-    public function testFileProcessed()
+    public function testFileProcessed(): void
     {
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $file = $date->modify('-1 day')->format('Ymd-H') . '-60-1.log';
@@ -50,7 +44,7 @@ class ImportLogsCommandTest extends WebTestCase
             json_encode(['prop' => 'value'], JSON_THROW_ON_ERROR)
         );
 
-        $result = $this->runCommand(
+        $result = self::runCommand(
             'oro:cron:import-tracking',
             ['--directory' => $this->directory]
         );
@@ -58,7 +52,7 @@ class ImportLogsCommandTest extends WebTestCase
         self::assertStringContainsString(sprintf('Successful: "%s"', $file), $result);
     }
 
-    public function testCurrentFileNotProcessed()
+    public function testCurrentFileNotProcessed(): void
     {
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $file = $date->format('Ymd-H') . '-60-1.log';
@@ -68,15 +62,15 @@ class ImportLogsCommandTest extends WebTestCase
             json_encode(['prop' => 'value'], JSON_THROW_ON_ERROR)
         );
 
-        $result = $this->runCommand(
+        $result = self::runCommand(
             'oro:cron:import-tracking',
             ['--directory' => $this->directory]
         );
-        $this->assertFileExists($this->directory . DIRECTORY_SEPARATOR . $file);
+        self::assertFileExists($this->directory . DIRECTORY_SEPARATOR . $file);
         self::assertStringNotContainsString(sprintf('Successful: "%s"', $file), $result);
     }
 
-    public function testIsFileProcessed()
+    public function testIsFileProcessed(): void
     {
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $fileName = $date->modify('-1 day')->format('Ymd-H') . '-60-1.log';
@@ -84,7 +78,7 @@ class ImportLogsCommandTest extends WebTestCase
 
         $this->fs->dumpFile($file, json_encode(['prop' => 'value'], JSON_THROW_ON_ERROR));
 
-        $jobResult = $this->getContainer()->get('oro_importexport.job_executor')->executeJob(
+        $jobResult = self::getContainer()->get('oro_importexport.job_executor')->executeJob(
             ProcessorRegistry::TYPE_IMPORT,
             'import_log_to_database',
             [
@@ -95,9 +89,9 @@ class ImportLogsCommandTest extends WebTestCase
                 ],
             ]
         );
-        $this->assertTrue($jobResult->isSuccessful());
+        self::assertTrue($jobResult->isSuccessful());
 
-        $result = $this->runCommand(
+        $result = self::runCommand(
             'oro:cron:import-tracking',
             ['--directory' => $this->directory]
         );
