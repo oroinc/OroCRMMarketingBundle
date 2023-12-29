@@ -5,8 +5,8 @@ namespace Oro\Bundle\CampaignBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtensionAwareInterface;
+use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtensionAwareTrait;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -14,20 +14,14 @@ use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension
  */
 class OroCampaignBundleInstaller implements Installation, VisitEventAssociationExtensionAwareInterface
 {
+    use VisitEventAssociationExtensionAwareTrait;
+
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
         return 'v1_11';
-    }
-
-    /** @var VisitEventAssociationExtension */
-    protected $extension;
-
-    public function setVisitEventAssociationExtension(VisitEventAssociationExtension $extension)
-    {
-        $this->extension = $extension;
     }
 
     /**
@@ -52,7 +46,7 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
         $this->addOrocrmCmpgnTransportStngsForeignKeysForInternalTransport($schema);
         $this->addOrocrmCampaignCodeHistoryForeignKeys($schema);
 
-        $this->extension->addVisitEventAssociation(
+        $this->visitEventAssociationExtension->addVisitEventAssociation(
             $schema,
             'orocrm_campaign',
             null,

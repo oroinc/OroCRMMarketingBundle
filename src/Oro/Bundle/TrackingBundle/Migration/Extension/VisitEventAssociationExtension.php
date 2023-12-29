@@ -4,25 +4,19 @@ namespace Oro\Bundle\TrackingBundle\Migration\Extension;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareTrait;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
+/**
+ * Provides an ability to create tracking visit event related associations.
+ */
 class VisitEventAssociationExtension implements ExtendExtensionAwareInterface
 {
+    use ExtendExtensionAwareTrait;
+
     const ASSOCIATION_KIND = 'association';
     const VISIT_EVENT_TABLE_NAME = 'oro_tracking_visit_event';
-
-    /** @var ExtendExtension */
-    protected $extendExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setExtendExtension(ExtendExtension $extendExtension)
-    {
-        $this->extendExtension = $extendExtension;
-    }
 
     /**
      * Adds the association between the target table and the visit event table

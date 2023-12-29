@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TrackingBundle\Migration\Extension;
 
+/**
+ * This interface should be implemented by migrations that depend on {@see IdentifierEventExtension}.
+ */
 interface IdentifierEventExtensionAwareInterface
 {
-    /**
-     * Sets the identifier tracking visit association
-     */
     public function setIdentifierEventExtension(IdentifierEventExtension $extension);
 }
