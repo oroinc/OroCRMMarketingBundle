@@ -10,12 +10,12 @@ use Oro\Bundle\SecurityBundle\Migrations\Schema\UpdateOwnershipTypeQuery;
 class OroCampaignBundle implements Migration
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function up(Schema $schema, QueryBag $queries)
+    public function up(Schema $schema, QueryBag $queries): void
     {
-        self::addOrganization($schema, 'orocrm_campaign');
-        self::addOrganization($schema, 'orocrm_campaign_email');
+        $this->addOrganization($schema, 'orocrm_campaign');
+        $this->addOrganization($schema, 'orocrm_campaign_email');
 
         //Add organization fields to ownership entity config
         $queries->addQuery(
@@ -38,13 +38,7 @@ class OroCampaignBundle implements Migration
         );
     }
 
-    /**
-     * Adds organization_id field
-     *
-     * @param Schema $schema
-     * @param string $tableName
-     */
-    public static function addOrganization(Schema $schema, $tableName)
+    private function addOrganization(Schema $schema, string $tableName): void
     {
         $table = $schema->getTable($tableName);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);

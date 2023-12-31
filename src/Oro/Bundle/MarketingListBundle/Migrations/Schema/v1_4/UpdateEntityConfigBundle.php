@@ -12,12 +12,7 @@ class UpdateEntityConfigBundle implements Migration
     /**
      * {@inheritDoc}
      */
-    public function up(Schema $schema, QueryBag $queries)
-    {
-        self::updateEntityConfigs($queries);
-    }
-
-    public static function updateEntityConfigs(QueryBag $queries)
+    public function up(Schema $schema, QueryBag $queries): void
     {
         $queries->addQuery(
             new UpdateEntityConfigEntityValueQuery(
