@@ -3,43 +3,37 @@
 namespace Oro\Bundle\MarketingListBundle\Tests\Functional\Controller\Api\Rest\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 
-class LoadMarketingListData extends AbstractFixture implements ContainerAwareInterface
+class LoadMarketingListData extends AbstractFixture implements DependentFixtureInterface
 {
-    const MARKETING_LIST_NAME = 'list_name';
+    public const MARKETING_LIST_NAME = 'list_name';
 
     /**
-     * @var ContainerInterface
+     * {@inheritDoc}
      */
-    private $container;
-
-    public function setContainer(ContainerInterface $container = null)
+    public function getDependencies(): array
     {
-        $this->container = $container;
+        return [LoadOrganization::class];
     }
 
-    public function load(ObjectManager $manager)
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager): void
     {
-        $type = $manager->getRepository(MarketingListType::class)
-            ->find(MarketingListType::TYPE_DYNAMIC);
-
         $entity = new MarketingList();
-        $entity
-            ->setType($type)
-            ->setName(self::MARKETING_LIST_NAME)
-            ->setEntity(Contact::class)
-            ->setOrganization($manager->getRepository(Organization::class)->getFirst());
-
+        $entity->setType($manager->getRepository(MarketingListType::class)->find(MarketingListType::TYPE_DYNAMIC));
+        $entity->setName(self::MARKETING_LIST_NAME);
+        $entity->setEntity(Contact::class);
+        $entity->setOrganization($this->getReference(LoadOrganization::ORGANIZATION));
         $manager->persist($entity);
         $manager->flush($entity);
-
         $this->addReference(self::MARKETING_LIST_NAME, $entity);
     }
 }

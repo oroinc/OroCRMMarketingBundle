@@ -3,41 +3,33 @@
 namespace Oro\Bundle\TrackingBundle\Tests\Functional\Controller\Api\Rest\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
-use Oro\Bundle\UserBundle\Entity\User;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadTrackingWebsiteData extends AbstractFixture implements ContainerAwareInterface
+class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * @var ContainerInterface
+     * {@inheritDoc}
      */
-    protected $container;
-
-    public function setContainer(ContainerInterface $container = null)
+    public function getDependencies(): array
     {
-        $this->container = $container;
+        return [LoadUser::class];
     }
 
-    public function load(ObjectManager $manager)
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager): void
     {
-        $owner = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
-        if (!$owner) {
-            return;
-        }
-
         $website = new TrackingWebsite();
-        $website
-            ->setName('delete')
-            ->setIdentifier('delete')
-            ->setUrl('http://domain.com')
-            ->setOwner($owner);
-
+        $website->setName('delete');
+        $website->setIdentifier('delete');
+        $website->setUrl('http://domain.com');
+        $website->setOwner($this->getReference(LoadUser::USER));
+        $this->setReference('website', $website);
         $manager->persist($website);
         $manager->flush();
-
-        $this->setReference('website', $website);
     }
 }
