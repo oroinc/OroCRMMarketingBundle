@@ -3,23 +3,21 @@
 namespace Oro\Bundle\MarketingListBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 /**
- * Updates marketing list segment organization.
+ * Updates organization for marketing list segments.
  */
 class UpdateMarketingListSegmentOrganization extends AbstractFixture
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $marketingLists = $manager->getRepository(MarketingList::class)->findAll();
         $entitiesToFlush = [];
-
+        $marketingLists = $manager->getRepository(MarketingList::class)->findAll();
         foreach ($marketingLists as $marketingList) {
             $segment = $marketingList->getSegment();
             if (!$segment->getOrganization()) {
@@ -27,8 +25,6 @@ class UpdateMarketingListSegmentOrganization extends AbstractFixture
                 $entitiesToFlush[] = $segment;
             }
         }
-
-        /** @var EntityManager $manager */
         $manager->flush($entitiesToFlush);
     }
 }

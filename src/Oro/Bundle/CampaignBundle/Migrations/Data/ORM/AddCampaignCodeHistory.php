@@ -13,9 +13,9 @@ use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 class AddCampaignCodeHistory extends AbstractFixture
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Campaign[] $campaigns */
         $campaigns = $manager->getRepository(Campaign::class)->findAll();
