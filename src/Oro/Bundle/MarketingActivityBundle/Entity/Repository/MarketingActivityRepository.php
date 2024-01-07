@@ -5,7 +5,11 @@ namespace Oro\Bundle\MarketingActivityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
+/**
+ * Doctrine repository for MarketingActivity entity
+ */
 class MarketingActivityRepository extends EntityRepository
 {
     /**
@@ -19,7 +23,7 @@ class MarketingActivityRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('COUNT(ma.id) as value, IDENTITY(ma.type) as typeId')
-            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->from(MarketingActivity::class, 'ma')
             ->where('ma.campaign = :campaignId')
             ->groupBy('typeId')
             ->setParameter(':campaignId', $campaignId);
@@ -66,7 +70,7 @@ class MarketingActivityRepository extends EntityRepository
         return (bool) $this->getEntityManager()
             ->createQueryBuilder()
             ->select('COUNT(ma.id)')
-            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->from(MarketingActivity::class, 'ma')
             ->where('ma.campaign = :campaignId')
             ->setParameter(':campaignId', $campaignId)
             ->getQuery()
@@ -78,14 +82,14 @@ class MarketingActivityRepository extends EntityRepository
      * @param int    $entityId
      * @param array  $pageFilter
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter = null)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('IDENTITY(ma.campaign) as id, campaign.name as campaignName')
             ->addSelect('MAX(ma.actionDate) as eventDate, campaign.updatedAt, campaign.createdAt')
-            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->from(MarketingActivity::class, 'ma')
             ->join('ma.campaign', 'campaign')
             ->where('ma.entityClass = :entityClass')
             ->andWhere('ma.entityId = :entityId')
@@ -112,7 +116,7 @@ class MarketingActivityRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('ma.actionDate, IDENTITY(ma.campaign) as campaignId, type.name')
-            ->from('OroMarketingActivityBundle:MarketingActivity', 'ma')
+            ->from(MarketingActivity::class, 'ma')
             ->join('ma.type', 'type')
             ->where('ma.entityClass = :entityClass')
             ->andWhere('ma.entityId = :entityId')

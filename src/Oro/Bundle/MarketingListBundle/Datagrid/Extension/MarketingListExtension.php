@@ -11,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
@@ -172,7 +173,7 @@ class MarketingListExtension extends AbstractExtension
         $itemsQb = $entityManager->createQueryBuilder();
         $itemsQb
             ->select('item.entityId')
-            ->from('OroMarketingListBundle:MarketingListItem', 'item')
+            ->from(MarketingListItem::class, 'item')
             ->where($itemsQb->expr()->eq('item.marketingList', $this->marketingListId));
 
         return $itemsQb->getQuery()->getSQL();

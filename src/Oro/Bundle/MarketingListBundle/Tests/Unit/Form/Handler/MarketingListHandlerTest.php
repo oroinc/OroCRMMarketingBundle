@@ -11,6 +11,8 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
 use Oro\Bundle\UserBundle\Entity\User;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,24 +21,24 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
+class MarketingListHandlerTest extends TestCase
 {
     private const FORM_DATA = ['definition' => 'test'];
     private const FORM_NAME = 'test_form';
 
-    /** @var Form|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var Form|MockObject */
     private $form;
 
     /** @var Request */
     private $request;
 
-    /** @var EntityManager|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var EntityManager|MockObject */
     private $manager;
 
-    /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ValidatorInterface|MockObject */
     private $validator;
 
-    /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var TranslatorInterface|MockObject */
     private $translator;
 
     /** @var MarketingList */
@@ -98,7 +100,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($this->isInstanceOf(Segment::class), null, ['Default', 'marketing_list'])
-            ->willReturn([]);
+            ->willReturn(new ConstraintViolationList());
 
         $this->assertTrue($this->handler->process($this->testEntity, $this->form, $this->request));
 
@@ -216,7 +218,7 @@ class MarketingListHandlerTest extends \PHPUnit\Framework\TestCase
         $segmentType = new SegmentType(SegmentType::TYPE_DYNAMIC);
         $this->manager->expects($this->once())
             ->method('find')
-            ->with('OroSegmentBundle:SegmentType', MarketingListType::TYPE_DYNAMIC)
+            ->with(SegmentType::class, MarketingListType::TYPE_DYNAMIC)
             ->willReturn($segmentType);
     }
 

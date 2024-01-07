@@ -70,7 +70,7 @@ class CampaignEventController extends AbstractController
             ]
         ];
 
-        $datagrid = $this
+        $datagrid = $this->container
             ->get(Manager::class)
             ->getDatagridByRequestParams(
                 $gridName,
@@ -78,7 +78,7 @@ class CampaignEventController extends AbstractController
             );
 
         $chartName = 'campaign_line_chart';
-        $chartView = $this
+        $chartView = $this->container
             ->get(ChartViewBuilder::class)
             ->setDataGrid($datagrid)
             ->setOptions(
@@ -89,7 +89,7 @@ class CampaignEventController extends AbstractController
                             'period' => $period
                         ]
                     ],
-                    $this
+                    $this->container
                         ->get(ConfigProvider::class)
                         ->getChartConfig($chartName)
                 )

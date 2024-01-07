@@ -2,9 +2,11 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
+use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper;
 use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer;
@@ -39,8 +41,8 @@ class MarketingActivityController extends AbstractController
      */
     public function summaryAction($campaignId, $entityClass = null, $entityId = null)
     {
-        $summaryData = $this->getDoctrine()
-            ->getRepository('OroMarketingActivityBundle:MarketingActivity')
+        $summaryData = $this->container->get('doctrine')
+            ->getRepository(MarketingActivity::class)
             ->getMarketingActivitySummaryByCampaign($campaignId, $entityClass, $entityId);
 
         return [
@@ -63,20 +65,20 @@ class MarketingActivityController extends AbstractController
      */
     public function widgetAction($entityClass, $entityId)
     {
-        $routingHelper = $this->get(EntityRoutingHelper::class);
+        $routingHelper = $this->container->get(EntityRoutingHelper::class);
         $entity = $routingHelper->getEntity($entityClass, $entityId);
 
         $campaignEntityClass = Campaign::class;
         $configurationEntityKey = $routingHelper->getUrlSafeClassName($campaignEntityClass);
 
         $entityClass = $routingHelper->resolveEntityClass($entityClass);
-        $marketingActivitySectionItems = $this->getDoctrine()
-            ->getRepository('OroMarketingActivityBundle:MarketingActivity')
+        $marketingActivitySectionItems = $this->container->get('doctrine')
+            ->getRepository(MarketingActivity::class)
             ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId)
             ->getQuery()
             ->getArrayResult();
 
-        $campaignFilterValues = $this->get(MarketingActivitySectionDataNormalizer::class)
+        $campaignFilterValues = $this->container->get(MarketingActivitySectionDataNormalizer::class)
             ->getCampaignFilterValues($marketingActivitySectionItems);
 
         return [
@@ -126,25 +128,27 @@ class MarketingActivityController extends AbstractController
      */
     public function listAction($entityClass, $entityId, Request $request)
     {
-        $entityClass = $this->get(EntityRoutingHelper::class)->resolveEntityClass($entityClass);
+        $entityClass = $this->container->get(EntityRoutingHelper::class)->resolveEntityClass($entityClass);
         $filter      = $request->get('filter');
         $pageFilter  = $request->get('pageFilter');
         /** @var MarketingActivityRepository $repository */
-        $repository = $this->getDoctrine()->getRepository('OroMarketingActivityBundle:MarketingActivity');
+        $repository = $this->container->get('doctrine')->getRepository(MarketingActivity::class);
 
         $queryBuilder = $repository
             ->getMarketingActivitySectionItemsQueryBuilder($entityClass, $entityId, $pageFilter);
 
-        $this->get(MarketingActivitiesSectionFilterHelper::class)
+        $this->container->get(MarketingActivitiesSectionFilterHelper::class)
             ->addFiltersToQuery($queryBuilder, $filter);
 
-        $items = $queryBuilder->setMaxResults($this->get(ConfigManager::class)->get('oro_activity_list.per_page'))
+        $items = $queryBuilder->setMaxResults(
+            $this->container->get(ConfigManager::class)->get('oro_activity_list.per_page')
+        )
             ->getQuery()
             ->getArrayResult();
 
         $repository->addEventTypeData($items, $entityClass, $entityId);
 
-        $results = $this->get(MarketingActivitySectionDataNormalizer::class)
+        $results = $this->container->get(MarketingActivitySectionDataNormalizer::class)
             ->getNormalizedData($items, $entityClass, $entityId);
 
         return new JsonResponse($results);
@@ -162,6 +166,7 @@ class MarketingActivityController extends AbstractController
                 MarketingActivitySectionDataNormalizer::class,
                 MarketingActivitiesSectionFilterHelper::class,
                 ConfigManager::class,
+                'doctrine' => ManagerRegistry::class,
             ]
         );
     }

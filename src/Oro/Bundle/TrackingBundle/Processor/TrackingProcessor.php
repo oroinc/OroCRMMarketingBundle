@@ -537,7 +537,7 @@ class TrackingProcessor extends AbstractTrackingProcessor
         } else {
             $eventType = $this
                 ->getEntityManager()
-                ->getRepository('OroTrackingBundle:TrackingEventDictionary')
+                ->getRepository(TrackingEventDictionary::class)
                 ->findOneBy(['name' => $event->getName(), 'website' => $eventWebsite]);
         }
 

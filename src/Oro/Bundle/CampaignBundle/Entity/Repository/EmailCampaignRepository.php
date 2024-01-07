@@ -40,7 +40,7 @@ class EmailCampaignRepository extends EntityRepository
     protected function prepareEmailCampaignsToSendQuery()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb ->from('OroCampaignBundle:EmailCampaign', 'email_campaign')
+        $qb ->from(EmailCampaign::class, 'email_campaign')
             ->where($qb->expr()->eq('email_campaign.sent', ':sent'))
             ->andWhere($qb->expr()->eq('email_campaign.schedule', ':scheduleType'))
             ->andWhere($qb->expr()->isNotNull('email_campaign.scheduledFor'))

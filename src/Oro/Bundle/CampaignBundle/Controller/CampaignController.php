@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -41,7 +42,7 @@ class CampaignController extends AbstractController
      *      id="oro_campaign_create",
      *      type="entity",
      *      permission="CREATE",
-     *      class="OroCampaignBundle:Campaign"
+     *      class="Oro\Bundle\CampaignBundle\Entity\Campaign"
      * )
      */
     public function createAction(): array|RedirectResponse
@@ -58,7 +59,7 @@ class CampaignController extends AbstractController
      *      id="oro_campaign_update",
      *      type="entity",
      *      permission="EDIT",
-     *      class="OroCampaignBundle:Campaign"
+     *      class="Oro\Bundle\CampaignBundle\Entity\Campaign"
      * )
      */
     public function updateAction(Campaign $entity): array|RedirectResponse
@@ -74,14 +75,14 @@ class CampaignController extends AbstractController
      *      id="oro_campaign_view",
      *      type="entity",
      *      permission="VIEW",
-     *      class="OroCampaignBundle:Campaign"
+     *      class="Oro\Bundle\CampaignBundle\Entity\Campaign"
      * )
      * @Template
      */
     public function viewAction(Campaign $entity): array
     {
-        $codesHistory = $this->getDoctrine()
-            ->getRepository("OroCampaignBundle:Campaign")
+        $codesHistory = $this->container->get('doctrine')
+            ->getRepository(Campaign::class)
             ->getCodesHistory($entity);
 
         return [
@@ -95,10 +96,10 @@ class CampaignController extends AbstractController
      */
     protected function update(Campaign $entity): array|RedirectResponse
     {
-        return $this->get(UpdateHandlerFacade::class)->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $entity,
-            $this->get('oro_campaign.campaign.form'),
-            $this->get(TranslatorInterface::class)->trans('oro.campaign.controller.campaign.saved.message')
+            $this->container->get('oro_campaign.campaign.form'),
+            $this->container->get(TranslatorInterface::class)->trans('oro.campaign.controller.campaign.saved.message')
         );
     }
 
@@ -112,7 +113,8 @@ class CampaignController extends AbstractController
             [
                 TranslatorInterface::class,
                 'oro_campaign.campaign.form' => Form::class,
-                UpdateHandlerFacade::class
+                UpdateHandlerFacade::class,
+                'doctrine' => ManagerRegistry::class
             ]
         );
     }

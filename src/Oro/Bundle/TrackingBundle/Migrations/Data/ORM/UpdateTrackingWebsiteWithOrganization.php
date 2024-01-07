@@ -5,7 +5,11 @@ namespace Oro\Bundle\TrackingBundle\Migrations\Data\ORM;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\UpdateWithOrganization;
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 
+/**
+ * Updates TrackingWebsite with organization.
+ */
 class UpdateTrackingWebsiteWithOrganization extends UpdateWithOrganization implements DependentFixtureInterface
 {
     /**
@@ -21,6 +25,6 @@ class UpdateTrackingWebsiteWithOrganization extends UpdateWithOrganization imple
      */
     public function load(ObjectManager $manager)
     {
-        $this->update($manager, 'OroTrackingBundle:TrackingWebsite');
+        $this->update($manager, TrackingWebsite::class);
     }
 }

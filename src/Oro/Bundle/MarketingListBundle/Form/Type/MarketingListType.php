@@ -59,7 +59,7 @@ class MarketingListType extends AbstractQueryDesignerType
                     'type',
                     EntityType::class,
                     [
-                        'class' => 'OroMarketingListBundle:MarketingListType',
+                        'class' => MarketingListTypeEntity::class,
                         'choice_label' => 'label',
                         'required' => true,
                         'placeholder' => 'oro.marketinglist.form.choose_marketing_list_type',

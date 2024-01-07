@@ -62,7 +62,7 @@ class UpdateMarketingListOnEntityChange implements OptionalListenerInterface, Fe
             return;
         }
 
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         $allowedEntities = $this->getAllowedEntities();

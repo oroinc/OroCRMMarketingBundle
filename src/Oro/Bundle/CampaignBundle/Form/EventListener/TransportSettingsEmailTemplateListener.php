@@ -80,7 +80,7 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
     protected function getMarketingListById($id)
     {
         return $this->registry
-            ->getRepository('OroMarketingListBundle:MarketingList')
+            ->getRepository(MarketingList::class)
             ->find($id);
     }
 

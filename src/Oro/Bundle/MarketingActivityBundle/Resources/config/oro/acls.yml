@@ -1,6 +1,6 @@
 acls:
     oro_marketing_activity_view:
         type: entity
-        class: OroMarketingActivityBundle:MarketingActivity
+        class: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity
         permission: VIEW
         group_name: ""

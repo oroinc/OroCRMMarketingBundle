@@ -5,9 +5,12 @@ namespace Oro\Bundle\MarketingListBundle\Datagrid;
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
+/**
+ * Provides marketing list types choices.
+ */
 class GridMarketingListTypeProvider
 {
-    const MARKETING_LIST_TYPE = 'OroMarketingListBundle:MarketingListType';
+    const MARKETING_LIST_TYPE = MarketingListType::class;
 
     /**
      * @var ManagerRegistry

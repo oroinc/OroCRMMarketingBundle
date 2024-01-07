@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller\Api\Rest;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,12 +35,11 @@ class EmailTemplateController extends RestController
             );
         }
 
-        $marketingList = $this
-            ->getDoctrine()
-            ->getRepository('OroMarketingListBundle:MarketingList')
+        $marketingList = $this->container->get('doctrine')
+            ->getRepository(MarketingList::class)
             ->find((int)$id);
 
-        $organization = $this->get('oro_security.token_accessor')->getOrganization();
+        $organization = $this->container->get('oro_security.token_accessor')->getOrganization();
 
         if (!$marketingList || !$organization) {
             return $this->handleView(
@@ -45,9 +47,8 @@ class EmailTemplateController extends RestController
             );
         }
 
-        $templatesQb = $this
-            ->getDoctrine()
-            ->getRepository('OroEmailBundle:EmailTemplate')
+        $templatesQb = $this->container->get('doctrine')
+            ->getRepository(EmailTemplate::class)
             ->getEntityTemplatesQueryBuilder(
                 $marketingList->getEntity(),
                 $organization,
@@ -83,5 +84,13 @@ class EmailTemplateController extends RestController
     public function getFormHandler()
     {
         throw new \BadMethodCallException('Not implemented');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            ['doctrine' => ManagerRegistry::class]
+        );
     }
 }

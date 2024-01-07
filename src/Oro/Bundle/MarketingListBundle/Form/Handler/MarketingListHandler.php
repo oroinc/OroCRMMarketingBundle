@@ -101,7 +101,7 @@ class MarketingListHandler implements FormHandlerInterface
         $segmentTypeName = $this->marketingListTypeToSegmentTypeMap[$marketingListType->getName()];
 
         return $this->doctrine->getManagerForClass(SegmentType::class)
-            ->find('OroSegmentBundle:SegmentType', $segmentTypeName);
+            ->find(SegmentType::class, $segmentTypeName);
     }
 
     /**

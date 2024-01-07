@@ -2,8 +2,10 @@
 
 namespace Oro\Bundle\CampaignBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Async\Topic\SendEmailCampaignTopic;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
@@ -50,7 +52,7 @@ class EmailCampaignController extends AbstractController
      *      id="oro_email_campaign_create",
      *      type="entity",
      *      permission="CREATE",
-     *      class="OroCampaignBundle:EmailCampaign"
+     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign"
      * )
      */
     public function createAction(Request $request)
@@ -67,7 +69,7 @@ class EmailCampaignController extends AbstractController
      *      id="oro_email_campaign_update",
      *      type="entity",
      *      permission="EDIT",
-     *      class="OroCampaignBundle:EmailCampaign"
+     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign"
      * )
      * @param EmailCampaign $entity
      * @return array
@@ -85,7 +87,7 @@ class EmailCampaignController extends AbstractController
      *      id="oro_email_campaign_view",
      *      type="entity",
      *      permission="VIEW",
-     *      class="OroCampaignBundle:EmailCampaign"
+     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign"
      * )
      * @Template
      * @param EmailCampaign $entity
@@ -93,8 +95,8 @@ class EmailCampaignController extends AbstractController
      */
     public function viewAction(EmailCampaign $entity)
     {
-        $stats = $this->getDoctrine()
-            ->getRepository("OroCampaignBundle:EmailCampaignStatistics")
+        $stats = $this->container->get('doctrine')
+            ->getRepository(EmailCampaignStatistics::class)
             ->getEmailCampaignStats($entity);
 
         return [
@@ -114,19 +116,20 @@ class EmailCampaignController extends AbstractController
      */
     protected function update(EmailCampaign $entity, Request $request)
     {
-        $factory = $this->get(FormFactoryInterface::class);
+        $factory = $this->container->get(FormFactoryInterface::class);
         $form = $factory->createNamed('oro_email_campaign', EmailCampaignType::class);
 
-        $requestStack = $this->get(RequestStack::class);
-        $handler = new EmailCampaignHandler($requestStack, $form, $this->getDoctrine());
+        $requestStack = $this->container->get(RequestStack::class);
+        $handler = new EmailCampaignHandler($requestStack, $form, $this->container->get('doctrine'));
 
         if ($handler->process($entity)) {
             $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.saved.message')
+                $this->container->get(TranslatorInterface::class)
+                    ->trans('oro.campaign.emailcampaign.controller.saved.message')
             );
 
-            return $this->get(Router::class)->redirect($entity);
+            return $this->container->get(Router::class)->redirect($entity);
         }
 
         $isUpdateOnly = $requestStack->getCurrentRequest()->get(EmailCampaignHandler::UPDATE_MARKER, false);
@@ -162,23 +165,24 @@ class EmailCampaignController extends AbstractController
     {
         if ($this->isManualSendAllowed($emailCampaign)) {
             // Schedule email campaign sending
-            $messageProducer = $this->get(MessageProducerInterface::class);
+            $messageProducer = $this->container->get(MessageProducerInterface::class);
             $messageProducer->send(SendEmailCampaignTopic::getName(), ['email_campaign' => $emailCampaign->getId()]);
 
             // Update sent status to hide send button
-            $manager = $this->getDoctrine()->getManagerForClass(EmailCampaign::class);
+            $manager = $this->container->get('doctrine')->getManagerForClass(EmailCampaign::class);
             $emailCampaign->setSent(true);
             $manager->persist($emailCampaign);
             $manager->flush($emailCampaign);
 
             $request->getSession()->getFlashBag()->add(
                 'success',
-                $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.sent')
+                $this->container->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.sent')
             );
         } else {
             $request->getSession()->getFlashBag()->add(
                 'error',
-                $this->get(TranslatorInterface::class)->trans('oro.campaign.emailcampaign.controller.send_disallowed')
+                $this->container->get(TranslatorInterface::class)
+                    ->trans('oro.campaign.emailcampaign.controller.send_disallowed')
             );
         }
 
@@ -203,7 +207,7 @@ class EmailCampaignController extends AbstractController
         if ($sendAllowed) {
             $transportSettings = $entity->getTransportSettings();
             if ($transportSettings) {
-                $validator = $this->get(ValidatorInterface::class);
+                $validator = $this->container->get(ValidatorInterface::class);
                 $errors = $validator->validate($transportSettings);
                 $sendAllowed = count($errors) === 0;
             }
@@ -226,7 +230,8 @@ class EmailCampaignController extends AbstractController
                 Router::class,
                 TranslatorInterface::class,
                 ValidatorInterface::class,
-                MessageProducerInterface::class
+                MessageProducerInterface::class,
+                'doctrine' => ManagerRegistry::class
             ]
         );
     }

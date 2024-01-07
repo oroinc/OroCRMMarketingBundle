@@ -30,7 +30,7 @@ class TrackingWebsiteController extends AbstractController
      * @Acl(
      *      id="oro_tracking_website_view",
      *      type="entity",
-     *      class="OroTrackingBundle:TrackingWebsite",
+     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
      *      permission="VIEW"
      * )
      * @Template
@@ -47,7 +47,7 @@ class TrackingWebsiteController extends AbstractController
      * @Acl(
      *      id="oro_tracking_website_create",
      *      type="entity",
-     *      class="OroTrackingBundle:TrackingWebsite",
+     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
      *      permission="CREATE"
      * )
      * @Template("@OroTracking/TrackingWebsite/update.html.twig")
@@ -62,7 +62,7 @@ class TrackingWebsiteController extends AbstractController
      * @Acl(
      *      id="oro_tracking_website_update",
      *      type="entity",
-     *      class="OroTrackingBundle:TrackingWebsite",
+     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
      *      permission="EDIT"
      * )
      * @Template()
@@ -86,7 +86,7 @@ class TrackingWebsiteController extends AbstractController
 
     protected function update(TrackingWebsite $trackingWebsite): array|RedirectResponse
     {
-        return $this->get(UpdateHandlerFacade::class)->update(
+        return $this->container->get(UpdateHandlerFacade::class)->update(
             $trackingWebsite,
             $this->createForm(TrackingWebsiteType::class),
             $this->getTranslator()->trans('oro.tracking.trackingwebsite.saved_message')
@@ -95,7 +95,7 @@ class TrackingWebsiteController extends AbstractController
 
     protected function getTranslator(): TranslatorInterface
     {
-        return $this->get(TranslatorInterface::class);
+        return $this->container->get(TranslatorInterface::class);
     }
 
     /**

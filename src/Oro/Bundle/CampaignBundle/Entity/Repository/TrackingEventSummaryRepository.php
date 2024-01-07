@@ -5,6 +5,8 @@ namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 
 /**
  * Doctrine repository for TrackingEventSummary entity.
@@ -20,9 +22,9 @@ class TrackingEventSummaryRepository extends EntityRepository
         $today = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $qb = $this->_em->createQueryBuilder()
-            ->from('OroTrackingBundle:TrackingEvent', 'trackingEvent')
+            ->from(TrackingEvent::class, 'trackingEvent')
             ->join(
-                'OroCampaignBundle:CampaignCodeHistory',
+                CampaignCodeHistory::class,
                 'campaignCodeHistory',
                 'WITH',
                 'campaignCodeHistory.code = trackingEvent.code'

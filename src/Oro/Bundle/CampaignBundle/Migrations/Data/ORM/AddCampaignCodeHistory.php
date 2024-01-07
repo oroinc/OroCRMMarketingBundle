@@ -7,6 +7,9 @@ use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 
+/**
+ * Loads campaign code history for existing campaigns.
+ */
 class AddCampaignCodeHistory extends AbstractFixture
 {
     /**
@@ -15,7 +18,7 @@ class AddCampaignCodeHistory extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         /** @var Campaign[] $campaigns */
-        $campaigns = $manager->getRepository('OroCampaignBundle:Campaign')->findAll();
+        $campaigns = $manager->getRepository(Campaign::class)->findAll();
         foreach ($campaigns as $campaign) {
             $codeHistory = new CampaignCodeHistory();
             $codeHistory->setCampaign($campaign);

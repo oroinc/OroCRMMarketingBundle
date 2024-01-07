@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CampaignBundle\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
@@ -42,7 +43,7 @@ class CampaignStatisticDatagridListener
         }
 
         $emailCampaignId = $parameters->get('emailCampaign');
-        $emailCampaign = $this->registry->getRepository('OroCampaignBundle:EmailCampaign')
+        $emailCampaign = $this->registry->getRepository(EmailCampaign::class)
             ->find($emailCampaignId);
 
         if ($emailCampaign->isSent()) {

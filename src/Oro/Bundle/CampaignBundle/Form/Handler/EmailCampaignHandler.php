@@ -51,7 +51,7 @@ class EmailCampaignHandler
         if (in_array($request->getMethod(), ['POST', 'PUT'], true)) {
             $this->submitPostPutRequest($this->form, $request);
             if (!$request->get(self::UPDATE_MARKER, false) && $this->form->isValid()) {
-                $em = $this->registry->getManagerForClass('OroCampaignBundle:EmailCampaign');
+                $em = $this->registry->getManagerForClass(EmailCampaign::class);
                 $em->persist($entity);
                 $em->flush();
 

@@ -45,7 +45,7 @@ class MarketingListController extends RestController
         $entity = $request->get('entity');
         $field = $request->get('field');
         /** @var ContactInformationFieldHelper $helper */
-        $helper = $this->get('oro_marketing_list.contact_information_field_helper');
+        $helper = $this->container->get('oro_marketing_list.contact_information_field_helper');
         $fieldType = $helper->getContactInformationFieldType($entity, $field);
 
         return $this->handleView(
@@ -68,7 +68,7 @@ class MarketingListController extends RestController
     {
         $entity = $request->get('entity');
         /** @var ContactInformationFieldHelper $helper */
-        $helper = $this->get('oro_marketing_list.contact_information_field_helper');
+        $helper = $this->container->get('oro_marketing_list.contact_information_field_helper');
 
         return $this->handleView(
             $this->view($helper->getEntityContactInformationFieldsInfo($entity), Response::HTTP_OK)
@@ -80,7 +80,7 @@ class MarketingListController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_marketing_list.marketing_list.manager.api');
+        return $this->container->get('oro_marketing_list.marketing_list.manager.api');
     }
 
     /**

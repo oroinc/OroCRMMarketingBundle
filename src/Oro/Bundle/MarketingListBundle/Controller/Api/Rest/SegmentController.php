@@ -32,7 +32,7 @@ class SegmentController extends RestController
         }
 
         try {
-            $this->get('oro_segment.static_segment_manager')->run($segment);
+            $this->container->get('oro_segment.static_segment_manager')->run($segment);
             return $this->handleView($this->view(null, Response::HTTP_NO_CONTENT));
         } catch (\LogicException $e) {
             return $this->handleView($this->view(null, Response::HTTP_BAD_REQUEST));
@@ -44,7 +44,7 @@ class SegmentController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_segment.segment_manager.api');
+        return $this->container->get('oro_segment.segment_manager.api');
     }
 
     /**

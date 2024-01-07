@@ -69,7 +69,7 @@ class MarketingListUnsubscribedItemController extends RestController
             ->setMarketingList($marketingList)
             ->setEntityId($id);
 
-        $violations = $this->get('validator')->validate($item);
+        $violations = $this->container->get('validator')->validate($item);
         if ($violations->count()) {
             return $this->handleView($this->view($violations, Response::HTTP_BAD_REQUEST));
         }
@@ -78,7 +78,7 @@ class MarketingListUnsubscribedItemController extends RestController
         $em->persist($item);
         $em->flush($item);
 
-        $entityName = (string) $this
+        $entityName = (string) $this->container
             ->get('oro_entity_config.provider.entity')
             ->getConfig($marketingList->getEntity())
             ->get('label');
@@ -87,9 +87,9 @@ class MarketingListUnsubscribedItemController extends RestController
             $this->view(
                 array(
                     'successful' => true,
-                    'message'    => $this->get('translator')->trans(
+                    'message'    => $this->container->get('translator')->trans(
                         'oro.marketinglist.controller.unsubscribed',
-                        ['%entityName%' => $this->get('translator')->trans($entityName)]
+                        ['%entityName%' => $this->container->get('translator')->trans($entityName)]
                     )
                 ),
                 Response::HTTP_OK
@@ -130,7 +130,7 @@ class MarketingListUnsubscribedItemController extends RestController
             }
         }
 
-        $entityName = (string) $this
+        $entityName = (string) $this->container
             ->get('oro_entity_config.provider.entity')
             ->getConfig($marketingList->getEntity())
             ->get('label');
@@ -139,9 +139,9 @@ class MarketingListUnsubscribedItemController extends RestController
             $this->view(
                 array(
                     'successful' => true,
-                    'message'    => $this->get('translator')->trans(
+                    'message'    => $this->container->get('translator')->trans(
                         'oro.marketinglist.controller.subscribed',
-                        ['%entityName%' => $this->get('translator')->trans($entityName)]
+                        ['%entityName%' => $this->container->get('translator')->trans($entityName)]
                     )
                 ),
                 Response::HTTP_OK
@@ -154,7 +154,7 @@ class MarketingListUnsubscribedItemController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_marketing_list.marketing_list_unsubscribed_item.manager.api');
+        return $this->container->get('oro_marketing_list.marketing_list_unsubscribed_item.manager.api');
     }
 
     /**
@@ -162,7 +162,7 @@ class MarketingListUnsubscribedItemController extends RestController
      */
     public function getForm()
     {
-        return $this->get('oro_marketing_list.form.marketing_list_unsubscribed_item');
+        return $this->container->get('oro_marketing_list.form.marketing_list_unsubscribed_item');
     }
 
     /**
@@ -170,6 +170,6 @@ class MarketingListUnsubscribedItemController extends RestController
      */
     public function getFormHandler()
     {
-        return $this->get('oro_marketing_list.form.handler.marketing_list_unsubscribed_item');
+        return $this->container->get('oro_marketing_list.form.handler.marketing_list_unsubscribed_item');
     }
 }

@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\VirtualRelationProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Symfony\Contracts\Cache\CacheInterface;
 
 /**
@@ -98,14 +99,14 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
                 'join' => [
                     'left' => [
                         [
-                            'join' => 'OroMarketingListBundle:MarketingListItem',
+                            'join' => MarketingListItem::class,
                             'alias' => self::MARKETING_LIST_ITEM_RELATION_NAME,
                             'conditionType' => Join::WITH,
                             'condition' => 'entity.' . $idField
                                     . ' = ' . self::MARKETING_LIST_ITEM_RELATION_NAME . '.entityId'
                         ],
                         [
-                            'join' => 'OroMarketingListBundle:MarketingList',
+                            'join' => MarketingList::class,
                             'alias' => self::RELATION_NAME,
                             'conditionType' => Join::WITH,
                             'condition' => self::RELATION_NAME . ".entity = '{$className}'"

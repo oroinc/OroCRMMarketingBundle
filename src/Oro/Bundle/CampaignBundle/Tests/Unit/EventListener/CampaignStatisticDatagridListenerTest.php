@@ -12,13 +12,15 @@ use Oro\Bundle\DataGridBundle\Event\PreBuild;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
+class CampaignStatisticDatagridListenerTest extends TestCase
 {
-    /** @var MarketingListHelper|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var MarketingListHelper|MockObject */
     private $marketingListHelper;
 
-    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ManagerRegistry|MockObject */
     private $registry;
 
     /** @var CampaignStatisticDatagridListener */
@@ -119,7 +121,7 @@ class CampaignStatisticDatagridListenerTest extends \PHPUnit\Framework\TestCase
 
         $this->registry->expects($this->once())
             ->method('getRepository')
-            ->with('OroCampaignBundle:EmailCampaign')
+            ->with(EmailCampaign::class)
             ->willReturn($repository);
     }
 

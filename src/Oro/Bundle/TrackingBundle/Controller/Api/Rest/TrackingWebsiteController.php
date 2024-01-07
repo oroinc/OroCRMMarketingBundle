@@ -24,7 +24,7 @@ class TrackingWebsiteController extends RestController
      * @Acl(
      *      id="oro_tracking_website_delete",
      *      type="entity",
-     *      class="OroTrackingBundle:TrackingWebsite",
+     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
      *      permission="DELETE"
      * )
      * @return Response
@@ -39,7 +39,7 @@ class TrackingWebsiteController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_tracking.tracking_website.manager.api');
+        return $this->container->get('oro_tracking.tracking_website.manager.api');
     }
 
     /**
@@ -47,7 +47,7 @@ class TrackingWebsiteController extends RestController
      */
     public function getForm()
     {
-        return $this->get('oro_tracking.form.tracking_website');
+        return $this->container->get('oro_tracking.form.tracking_website');
     }
 
     /**
@@ -55,6 +55,6 @@ class TrackingWebsiteController extends RestController
      */
     public function getFormHandler()
     {
-        return $this->get('oro_tracking.form.handler.tracking_website');
+        return $this->container->get('oro_tracking.form.handler.tracking_website');
     }
 }

@@ -39,17 +39,18 @@ class DashboardController extends AbstractController
      */
     public function campaignLeadsAction(Request $request, string $widget): array
     {
-        $widgetConfigs = $this->get(WidgetConfigs::class);
+        $widgetConfigs = $this->container->get(WidgetConfigs::class);
         $widgetOptions = $widgetConfigs->getWidgetOptions($request->query->get('_widgetId', null));
         $dateRange = $widgetOptions->get('dateRange');
         $maxResults = $widgetOptions->get('maxResults') ?? CampaignDataProvider::CAMPAIGN_LEAD_COUNT;
         $hideCampaign = $widgetOptions->get('hideCampaign') ?? true;
 
-        $items = $this->get(CampaignDataProvider::class)->getCampaignLeadsData($dateRange, $hideCampaign, $maxResults);
+        $items = $this->container->get(CampaignDataProvider::class)
+            ->getCampaignLeadsData($dateRange, $hideCampaign, $maxResults);
 
         /** @var array $widgetAttr */
         $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
+        $widgetAttr['chartView'] = $this->container->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [
@@ -82,15 +83,16 @@ class DashboardController extends AbstractController
      */
     public function campaignOpportunityAction(Request $request, string $widget): array
     {
-        $widgetConfigs = $this->get(WidgetConfigs::class);
+        $widgetConfigs = $this->container->get(WidgetConfigs::class);
         $widgetOptions = $widgetConfigs->getWidgetOptions($request->query->get('_widgetId', null));
         $dateRange = $widgetOptions->get('dateRange');
         $maxResults = $widgetOptions->get('maxResults') ?? CampaignDataProvider::CAMPAIGN_OPPORTUNITY_COUNT;
 
-        $items = $this->get(CampaignDataProvider::class)->getCampaignOpportunitiesData($dateRange, $maxResults);
+        $items = $this->container->get(CampaignDataProvider::class)
+            ->getCampaignOpportunitiesData($dateRange, $maxResults);
 
         $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
+        $widgetAttr['chartView'] = $this->container->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [
@@ -118,15 +120,16 @@ class DashboardController extends AbstractController
      */
     public function campaignByCloseRevenueAction(Request $request, string $widget): array
     {
-        $widgetConfigs = $this->get(WidgetConfigs::class);
+        $widgetConfigs = $this->container->get(WidgetConfigs::class);
         $widgetOptions = $widgetConfigs->getWidgetOptions($request->query->get('_widgetId', null));
         $dateRange = $widgetOptions->get('dateRange');
         $maxResults = $widgetOptions->get('maxResults') ?? CampaignDataProvider::CAMPAIGN_CLOSE_REVENUE_COUNT;
 
-        $items = $this->get(CampaignDataProvider::class)->getCampaignsByCloseRevenueData($dateRange, $maxResults);
+        $items = $this->container->get(CampaignDataProvider::class)
+            ->getCampaignsByCloseRevenueData($dateRange, $maxResults);
 
         $widgetAttr              = $widgetConfigs->getWidgetAttributesForTwig($widget);
-        $widgetAttr['chartView'] = $this->get(ChartViewBuilder::class)
+        $widgetAttr['chartView'] = $this->container->get(ChartViewBuilder::class)
             ->setArrayData($items)
             ->setOptions(
                 [

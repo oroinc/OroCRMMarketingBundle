@@ -5,6 +5,8 @@ namespace Oro\Bundle\TrackingBundle\Tests\Behat\Context;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\TestFrameworkBundle\Behat\Context\OroFeatureContext;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Symfony\Component\Filesystem\Filesystem;
+use Twig\Environment;
 
 class TrackingMainContext extends OroFeatureContext
 {
@@ -47,7 +49,7 @@ class TrackingMainContext extends OroFeatureContext
         $website = $this->getRepository(TrackingWebsite::class)->findOneBy(['identifier' => $identifier]);
         self::assertNotNull($website, sprintf('Could not found tracking website "%s",', $identifier));
 
-        $twig = $this->getAppContainer()->get('twig');
+        $twig = $this->getAppContainer()->get(Environment::class);
         $trackingCode = $twig->render('@OroTracking/TrackingWebsite/script.js.twig', ['entity' => $website]);
         $url = $this->getMinkParameter('base_url');
         $scheme = parse_url($url, PHP_URL_SCHEME);
@@ -59,7 +61,7 @@ class TrackingMainContext extends OroFeatureContext
             $trackingCode
         );
 
-        $filesystem = $this->getAppContainer()->get('filesystem');
+        $filesystem = new Filesystem();
 
         $filesystem->dumpFile(
             $filePath,

@@ -7,6 +7,9 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 
+/**
+ * Creates new campaign code history on campaign code change
+ */
 class CampaignCodeHistoryListener
 {
     /**
@@ -14,7 +17,7 @@ class CampaignCodeHistoryListener
      */
     public function onFlush(OnFlushEventArgs $eventArgs)
     {
-        $em = $eventArgs->getEntityManager();
+        $em = $eventArgs->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
@@ -35,7 +38,7 @@ class CampaignCodeHistoryListener
      */
     protected function createCampaignCodeHistory(Campaign $campaign, EntityManager $em)
     {
-        $codeHistory = $em->getRepository('OroCampaignBundle:CampaignCodeHistory')
+        $codeHistory = $em->getRepository(CampaignCodeHistory::class)
             ->findOneBy(['code' => $campaign->getCode()]);
         if (!$codeHistory) {
             $codeHistory = new CampaignCodeHistory();

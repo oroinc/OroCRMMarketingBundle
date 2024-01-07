@@ -288,7 +288,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
         $constraint = $this->createMock(ConstraintViolationList::class);
         $constraint->expects($this->once())
             ->method('count')
-            ->willReturnArgument(0);
+            ->willReturn(0);
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($transportSettings)

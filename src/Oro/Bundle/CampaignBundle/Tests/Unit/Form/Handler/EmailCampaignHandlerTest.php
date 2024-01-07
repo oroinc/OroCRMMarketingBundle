@@ -6,21 +6,23 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
+class EmailCampaignHandlerTest extends TestCase
 {
     private const FORM_DATA = ['field' => 'value'];
 
     /** @var Request */
     private $request;
 
-    /** @var Form|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var Form|MockObject */
     private $form;
 
-    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ManagerRegistry|MockObject */
     private $registry;
 
     /** @var EmailCampaignHandler */
@@ -128,7 +130,7 @@ class EmailCampaignHandlerTest extends \PHPUnit\Framework\TestCase
             ->method('flush');
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with('OroCampaignBundle:EmailCampaign')
+            ->with(EmailCampaign::class)
             ->willReturn($manager);
 
         $this->form->expects($this->once())

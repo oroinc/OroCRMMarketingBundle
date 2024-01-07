@@ -6,7 +6,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
+use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
+use Oro\Bundle\SalesBundle\Entity\Lead;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
@@ -24,9 +26,9 @@ class CampaignRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaign')
-            ->from('OroCampaignBundle:Campaign', 'campaign')
+            ->from(Campaign::class, 'campaign')
             ->join(
-                'OroCampaignBundle:CampaignCodeHistory',
+                CampaignCodeHistory::class,
                 'campaignCodeHistory',
                 'WITH',
                 'campaignCodeHistory.campaign = campaign'
@@ -46,7 +48,7 @@ class CampaignRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaignCodeHistory.code')
-            ->from('OroCampaignBundle:CampaignCodeHistory', 'campaignCodeHistory')
+            ->from(CampaignCodeHistory::class, 'campaignCodeHistory')
             ->where('campaignCodeHistory.campaign = :campaign')
             ->setParameter('campaign', $campaign);
         if ($excludeCurrent) {
@@ -73,8 +75,8 @@ class CampaignRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaign.name as label', 'COUNT(lead.id) as number', 'MAX(campaign.createdAt) as maxCreated')
-            ->from('OroCampaignBundle:Campaign', 'campaign')
-            ->leftJoin('OroSalesBundle:Lead', 'lead', 'WITH', 'lead.campaign = campaign')
+            ->from(Campaign::class, 'campaign')
+            ->leftJoin(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->orderBy('maxCreated', 'DESC')
             ->groupBy('campaign.name')
             ->setMaxResults($recordsCount);
@@ -97,8 +99,8 @@ class CampaignRepository extends EntityRepository
             sprintf('COUNT(%s.id) as number', $leadAlias),
             'MAX(campaign.createdAt) as maxCreated'
         )
-            ->from('OroCampaignBundle:Campaign', 'campaign')
-            ->leftJoin('OroSalesBundle:Lead', $leadAlias, 'WITH', sprintf('%s.campaign = campaign', $leadAlias))
+            ->from(Campaign::class, 'campaign')
+            ->leftJoin(Lead::class, $leadAlias, 'WITH', sprintf('%s.campaign = campaign', $leadAlias))
             ->orderBy('maxCreated', 'DESC')
             ->groupBy('campaign.name');
 
@@ -116,8 +118,8 @@ class CampaignRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaign.name as label', 'COUNT(opportunities.id) as number')
-            ->from('OroCampaignBundle:Campaign', 'campaign')
-            ->join('OroSalesBundle:Lead', 'lead', 'WITH', 'lead.campaign = campaign')
+            ->from(Campaign::class, 'campaign')
+            ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', 'opportunities')
             ->orderBy('number', 'DESC')
             ->groupBy('campaign.name')
@@ -142,8 +144,8 @@ class CampaignRepository extends EntityRepository
         QueryBuilderUtil::checkIdentifier($opportunitiesAlias);
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaign.name as label', sprintf('COUNT(%s.id) as number', $opportunitiesAlias))
-            ->from('OroCampaignBundle:Campaign', 'campaign')
-            ->join('OroSalesBundle:Lead', 'lead', 'WITH', 'lead.campaign = campaign')
+            ->from(Campaign::class, 'campaign')
+            ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', $opportunitiesAlias)
             ->orderBy('number', 'DESC')
             ->groupBy('campaign.name');
@@ -172,8 +174,8 @@ class CampaignRepository extends EntityRepository
                     $crSelect
                 )
             )
-            ->from('OroCampaignBundle:Campaign', 'campaign')
-            ->join('OroSalesBundle:Lead', 'lead', 'WITH', 'lead.campaign = campaign')
+            ->from(Campaign::class, 'campaign')
+            ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', $opportunitiesAlias)
             ->where(sprintf('%s.status=\'won\'', $opportunitiesAlias))
             ->andWhere(sprintf('%s.closeRevenueValue>0', $opportunitiesAlias))

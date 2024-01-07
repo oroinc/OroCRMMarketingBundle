@@ -1,3 +1,4 @@
+@behat-test-env
 Feature: Track website data
   In order to have ability to collect website tracking data
   As an Administrator
