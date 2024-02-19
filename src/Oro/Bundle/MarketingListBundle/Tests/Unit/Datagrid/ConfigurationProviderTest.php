@@ -10,20 +10,19 @@ use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Bundle\SegmentBundle\Tests\Unit\Stub\Entity\SegmentStub;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
+class ConfigurationProviderTest extends TestCase
 {
-    /** @var ConfigurationProviderInterface|\PHPUnit\Framework\MockObject\MockObject */
-    private $chainConfigurationProvider;
+    private ConfigurationProviderInterface|MockObject $chainConfigurationProvider;
 
-    /** @var ConfigProvider|\PHPUnit\Framework\MockObject\MockObject */
-    private $configProvider;
+    private ConfigProvider|MockObject $configProvider;
 
-    /** @var MarketingListHelper|\PHPUnit\Framework\MockObject\MockObject */
-    private $helper;
+    private MarketingListHelper|MockObject $helper;
 
-    /** @var ConfigurationProvider */
-    private $provider;
+    private ConfigurationProvider $provider;
 
     protected function setUp(): void
     {
@@ -38,14 +37,52 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
             ->willReturn(1);
-        $this->assertTrue($this->provider->isApplicable($gridName));
+        self::assertTrue($this->provider->isApplicable($gridName));
+    }
+
+    public function testIsValidConfiguration(): void
+    {
+        $id = 1;
+        $gridName = ConfigurationProvider::GRID_PREFIX . $id . '_postfix';
+        $marketingList = $this->assertMarketingList($id);
+
+        $this->helper->expects(self::once())
+            ->method('getMarketingListIdByGridName')
+            ->with($gridName)
+            ->willReturn($id);
+
+        $this->helper->expects(self::once())
+            ->method('getMarketingList')
+            ->with($id)
+            ->willReturn($marketingList);
+
+        self::assertTrue($this->provider->isValidConfiguration($gridName));
+    }
+
+    public function testIsNotValidConfiguration(): void
+    {
+        $id = 1;
+        $gridName = ConfigurationProvider::GRID_PREFIX . $id . '_postfix';
+        $marketingList = $this->assertMarketingList($id);
+
+        $this->helper->expects(self::once())
+            ->method('getMarketingListIdByGridName')
+            ->with($gridName)
+            ->willReturn(null);
+
+        $this->helper->expects(self::never())
+            ->method('getMarketingList')
+            ->with($id)
+            ->willReturn($marketingList);
+
+        self::assertFalse($this->provider->isValidConfiguration($gridName));
     }
 
     public function testGetConfigurationException()
@@ -54,11 +91,11 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('Marketing List with id "1" not found.');
 
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
             ->willReturn(1);
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingList')
             ->with(1)
             ->willReturn(null);
@@ -75,23 +112,23 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $entityName = \stdClass::class;
 
         $marketingList = $this->createMock(MarketingList::class);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('isManual')
             ->willReturn(true);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('getEntity')
             ->willReturn($entityName);
 
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
             ->willReturn(1);
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingList')
             ->with(1)
             ->willReturn($marketingList);
 
-        $this->configProvider->expects($this->once())
+        $this->configProvider->expects(self::once())
             ->method('hasConfig')
             ->willReturn(false);
         $this->configProvider->expects($this->never())
@@ -109,31 +146,31 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $entityName = \stdClass::class;
 
         $marketingList = $this->createMock(MarketingList::class);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('isManual')
             ->willReturn(true);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('getEntity')
             ->willReturn($entityName);
 
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
             ->willReturn(1);
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingList')
             ->with(1)
             ->willReturn($marketingList);
 
         $config = $this->createMock(ConfigInterface::class);
-        $config->expects($this->once())
+        $config->expects(self::once())
             ->method('get')
             ->with('grid_name')
             ->willReturn(null);
-        $this->configProvider->expects($this->once())
+        $this->configProvider->expects(self::once())
             ->method('hasConfig')
             ->willReturn(true);
-        $this->configProvider->expects($this->once())
+        $this->configProvider->expects(self::once())
             ->method('getConfig')
             ->with($entityName)
             ->willReturn($config);
@@ -148,82 +185,82 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         $entityName = \stdClass::class;
 
         $marketingList = $this->createMock(MarketingList::class);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('isManual')
             ->willReturn(true);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('getEntity')
             ->willReturn($entityName);
 
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
             ->willReturn(1);
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingList')
             ->with(1)
             ->willReturn($marketingList);
 
         $config = $this->createMock(ConfigInterface::class);
-        $config->expects($this->once())
+        $config->expects(self::once())
             ->method('get')
             ->with('grid_name')
             ->willReturn($actualGridName);
-        $this->configProvider->expects($this->once())
+        $this->configProvider->expects(self::once())
             ->method('hasConfig')
             ->willReturn(true);
-        $this->configProvider->expects($this->once())
+        $this->configProvider->expects(self::once())
             ->method('getConfig')
             ->with($entityName)
             ->willReturn($config);
 
-        $configuration = $this->assertConfigurationGet($gridName, $actualGridName);
+        $configuration = self::assertConfigurationGet($gridName, $actualGridName);
 
-        $this->assertEquals($configuration, $this->provider->getConfiguration($gridName));
+        self::assertEquals($configuration, $this->provider->getConfiguration($gridName));
     }
 
-    public function testGetConfigurationSegment()
+    public function testGetConfigurationSegment(): void
     {
         $gridName = ConfigurationProvider::GRID_PREFIX . '1_postfix';
         $actualGridName = Segment::GRID_PREFIX . '2_postfix';
 
         $segment = $this->createMock(Segment::class);
-        $segment->expects($this->once())
+        $segment->expects(self::once())
             ->method('getId')
             ->willReturn(2);
 
         $marketingList = $this->createMock(MarketingList::class);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('isManual')
             ->willReturn(false);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('getId')
             ->willReturn(1);
-        $marketingList->expects($this->once())
+        $marketingList->expects(self::once())
             ->method('getSegment')
             ->willReturn($segment);
 
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingListIdByGridName')
             ->with($gridName)
             ->willReturn(1);
-        $this->helper->expects($this->once())
+        $this->helper->expects(self::once())
             ->method('getMarketingList')
             ->with(1)
             ->willReturn($marketingList);
 
-        $configuration = $this->assertConfigurationGet($gridName, $actualGridName);
+        $configuration = self::assertConfigurationGet($gridName, $actualGridName);
 
-        $this->assertEquals($configuration, $this->provider->getConfiguration($gridName));
+        self::assertEquals($configuration, $this->provider->getConfiguration($gridName));
     }
 
-    private function assertConfigurationGet($gridName, $actualGridName)
+    private function assertConfigurationGet($gridName, $actualGridName): DatagridConfiguration|MockObject
     {
         $configuration = $this->createMock(DatagridConfiguration::class);
-        $configuration->expects($this->once())
+        $configuration->expects(self::once())
             ->method('setName')
             ->with($gridName);
-        $this->chainConfigurationProvider->expects($this->once())
+        $this->chainConfigurationProvider->expects(self::once())
             ->method('getConfiguration')
             ->with($actualGridName)
             ->willReturn($configuration);
@@ -231,7 +268,15 @@ class ConfigurationProviderTest extends \PHPUnit\Framework\TestCase
         return $configuration;
     }
 
-    public function testDoNotProcessInvalidSegmentGridName()
+    private function assertMarketingList(int $segmentId): MarketingList
+    {
+        $marketingList = new MarketingList();
+        $segment = new SegmentStub($segmentId);
+        $marketingList->setSegment($segment);
+        return $marketingList;
+    }
+
+    public function testDoNotProcessInvalidSegmentGridName(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Marketing List id not found in "oro_segment_grid_" gridName.');
