@@ -9,6 +9,9 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider;
 
+/**
+ * Extension for getting list of configs for entities which can be the target of the association
+ */
 class VisitEventAssociationDumperExtension extends AbstractEntityConfigDumperExtension
 {
     /** @var  TrackingEventIdentificationProvider */
@@ -76,7 +79,6 @@ class VisitEventAssociationDumperExtension extends AbstractEntityConfigDumperExt
     {
         if (null === $this->targetEntities) {
             $targetEntityClasses       = $this->identifyProvider->getEventTargetEntities();
-            $this->targetEntityConfigs = [];
 
             $configs = $this->configManager->getProvider('extend')->getConfigs();
             foreach ($configs as $config) {

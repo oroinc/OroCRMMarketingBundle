@@ -89,7 +89,7 @@ SQL;
 
         $this->logQuery($logger, $query, $params, $types);
 
-        $timezone = $this->connection->executeQuery($query, $params, $types)->fetchColumn();
+        $timezone = $this->connection->executeQuery($query, $params, $types)->fetchOne();
         if (!$timezone) {
             $timezone = date_default_timezone_get();
         }

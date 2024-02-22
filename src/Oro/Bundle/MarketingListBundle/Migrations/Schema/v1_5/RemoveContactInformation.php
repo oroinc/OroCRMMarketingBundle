@@ -29,7 +29,7 @@ class RemoveContactInformation extends ParametrizedMigrationQuery
         $params = ['string', 'text'];
 
         $this->logQuery($logger, $query, $params);
-        $fields = $this->connection->fetchAll($query, $params);
+        $fields = $this->connection->fetchAllAssociative($query, $params);
 
         try {
             $this->connection->beginTransaction();

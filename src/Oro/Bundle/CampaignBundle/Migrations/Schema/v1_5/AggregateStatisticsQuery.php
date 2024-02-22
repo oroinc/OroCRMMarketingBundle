@@ -57,7 +57,7 @@ class AggregateStatisticsQuery implements MigrationQuery, ConnectionAwareInterfa
 
                 return null;
             },
-            $this->connection->fetchAll($duplicateEntitiesQuery)
+            $this->connection->fetchAllAssociative($duplicateEntitiesQuery)
         );
 
         if ($idsToRemove) {

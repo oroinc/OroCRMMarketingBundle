@@ -70,7 +70,7 @@ SQL;
 
         $this->logQuery($logger, $query, $params);
 
-        return !$this->connection->executeQuery($query, $params)->fetchColumn();
+        return !$this->connection->executeQuery($query, $params)->fetchOne();
     }
 
     /**
