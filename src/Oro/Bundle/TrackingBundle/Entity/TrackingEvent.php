@@ -2,140 +2,79 @@
 
 namespace Oro\Bundle\TrackingBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingEvent;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
+use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingEventRepository;
 
 /**
  * Represent a tracking event.
  *
- * @ORM\Table(name="oro_tracking_event", indexes={
- *     @ORM\Index(name="event_name_idx", columns={"name"}),
- *     @ORM\Index(name="event_loggedAt_idx", columns={"logged_at"}),
- *     @ORM\Index(name="event_createdAt_idx", columns={"created_at"}),
- *     @ORM\Index(name="event_parsed_idx", columns={"parsed"}),
- *     @ORM\Index(name="code_idx", columns={"code"})
- * })
- * @ORM\Entity(repositoryClass="Oro\Bundle\TrackingBundle\Entity\Repository\TrackingEventRepository")
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-external-link"
- *      },
- *      "grid"={
- *          "default"="tracking-events-grid"
- *     }
- *  }
- * )
  * @mixin OroTrackingBundle_Entity_TrackingEvent
  */
+#[ORM\Entity(repositoryClass: TrackingEventRepository::class)]
+#[ORM\Table(name: 'oro_tracking_event')]
+#[ORM\Index(columns: ['name'], name: 'event_name_idx')]
+#[ORM\Index(columns: ['logged_at'], name: 'event_loggedAt_idx')]
+#[ORM\Index(columns: ['created_at'], name: 'event_createdAt_idx')]
+#[ORM\Index(columns: ['parsed'], name: 'event_parsed_idx')]
+#[ORM\Index(columns: ['code'], name: 'code_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link'], 'grid' => ['default' => 'tracking-events-grid']])]
 class TrackingEvent implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
     public const INVALID_CODE = 'invalid';
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
+
+    #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
+    #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?TrackingWebsite $website = null;
+
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
     /**
-     * @var TrackingWebsite
-     *
-     * @ORM\ManyToOne(targetEntity="TrackingWebsite")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @var string|null
      */
-    protected $website;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    protected $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="float", nullable=true)
-     */
+    #[ORM\Column(name: 'value', type: Types::FLOAT, nullable: true)]
     protected $value;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="user_identifier", type="string", length=255)
-     */
-    protected $userIdentifier;
+    #[ORM\Column(name: 'user_identifier', type: Types::STRING, length: 255)]
+    protected ?string $userIdentifier = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="text")
-     */
-    protected $url;
+    #[ORM\Column(name: 'url', type: Types::TEXT)]
+    protected ?string $url = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="text", nullable=true)
-     */
-    protected $title;
+    #[ORM\Column(name: 'title', type: Types::TEXT, nullable: true)]
+    protected ?string $title = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, nullable=true)
-     */
-    protected $code;
+    #[ORM\Column(name: 'code', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $code = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="parsed", type="boolean", nullable=false, options={"default"=false})
-     */
-    protected $parsed = false;
+    #[ORM\Column(name: 'parsed', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    protected ?bool $parsed = false;
 
-    /**
-     * @var TrackingData
-     *
-     * @ORM\OneToOne(targetEntity="TrackingData", mappedBy="event")
-     **/
-    protected $eventData;
+    #[ORM\OneToOne(mappedBy: 'event', targetEntity: TrackingData::class)]
+    protected ?TrackingData $eventData = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="logged_at", type="datetime")
-     */
-    protected $loggedAt;
+    #[ORM\Column(name: 'logged_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $loggedAt = null;
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));

@@ -7,15 +7,15 @@ use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
 use Oro\Bundle\ChartBundle\Model\ConfigProvider;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Adds chart widget with campaign tracking detailed report grid
- * @Route("/campaign/event")
  */
+#[Route(path: '/campaign/event')]
 class CampaignEventController extends AbstractController
 {
     const PRECALCULATED_SUFFIX = '-precalculated';
@@ -36,11 +36,10 @@ class CampaignEventController extends AbstractController
      * @param string $period
      * @param Campaign $campaign
      * @return array
-     *
-     * @Route("/plot/{period}/{campaign}", name="oro_campaign_event_plot")
-     * @AclAncestor("oro_campaign_view")
-     * @Template
      */
+    #[Route(path: '/plot/{period}/{campaign}', name: 'oro_campaign_event_plot')]
+    #[Template]
+    #[AclAncestor('oro_campaign_view')]
     public function plotAction($period, Campaign $campaign)
     {
         $supportedPeriods = [

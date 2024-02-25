@@ -2,37 +2,28 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="orocrm_campaign_code_history")
- */
+* Entity that represents Campaign Code History
+*
+*/
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_campaign_code_history')]
 class CampaignCodeHistory
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var Campaign
-     *
-     * @ORM\ManyToOne(targetEntity="Campaign")
-     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $campaign;
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
+    #[ORM\JoinColumn(name: 'campaign_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?Campaign $campaign = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, unique=true)
-     */
-    protected $code;
+    #[ORM\Column(name: 'code', type: Types::STRING, length: 255, unique: true)]
+    protected ?string $code = null;
 
     /**
      * @return int

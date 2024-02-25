@@ -3,8 +3,9 @@
 namespace Oro\Bundle\TrackingBundle\Controller\Api\Rest;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,14 +22,9 @@ class TrackingWebsiteController extends RestController
      *      description="Delete website",
      *      resource=true
      * )
-     * @Acl(
-     *      id="oro_tracking_website_delete",
-     *      type="entity",
-     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
-     *      permission="DELETE"
-     * )
      * @return Response
      */
+    #[Acl(id: 'oro_tracking_website_delete', type: 'entity', class: TrackingWebsite::class, permission: 'DELETE')]
     public function deleteAction(int $id)
     {
         return $this->handleDeleteRequest($id);

@@ -2,130 +2,82 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroCampaignBundle_Entity_EmailCampaignStatistics;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignStatisticsRepository;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Represents statistics of an email campaign.
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignStatisticsRepository")
- * @ORM\Table(name="orocrm_campaign_email_stats", uniqueConstraints={
- *      @ORM\UniqueConstraint(columns={"email_campaign_id", "marketing_list_item_id"}, name="orocrm_ec_litem_unq")
- * })
- * @Config(
- *      defaultValues={
- *          "entity"={
- *              "icon"="fa-bar-chart-o"
- *          },
- *          "ownership"={
- *              "owner_type"="USER",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="owner_id",
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
- *          },
- *          "security"={
- *              "type"="ACL",
- *              "group_name"="",
- *              "category"="marketing"
- *          }
- *      }
- * )
- * @ORM\HasLifecycleCallbacks
  * @mixin OroCampaignBundle_Entity_EmailCampaignStatistics
  */
+#[ORM\Entity(repositoryClass: EmailCampaignStatisticsRepository::class)]
+#[ORM\Table(name: 'orocrm_campaign_email_stats')]
+#[ORM\UniqueConstraint(name: 'orocrm_ec_litem_unq', columns: ['email_campaign_id', 'marketing_list_item_id'])]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    defaultValues: [
+        'entity' => ['icon' => 'fa-bar-chart-o'],
+        'ownership' => [
+            'owner_type' => 'USER',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id',
+            'organization_field_name' => 'organization',
+            'organization_column_name' => 'organization_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing']
+    ]
+)]
 class EmailCampaignStatistics implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var MarketingListItem
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingListItem")
-     * @ORM\JoinColumn(name="marketing_list_item_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $marketingListItem;
+    #[ORM\ManyToOne(targetEntity: MarketingListItem::class)]
+    #[ORM\JoinColumn(name: 'marketing_list_item_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?MarketingListItem $marketingListItem = null;
 
-    /**
-     * @var EmailCampaign
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\CampaignBundle\Entity\EmailCampaign")
-     * @ORM\JoinColumn(name="email_campaign_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $emailCampaign;
+    #[ORM\ManyToOne(targetEntity: EmailCampaign::class)]
+    #[ORM\JoinColumn(name: 'email_campaign_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?EmailCampaign $emailCampaign = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="open_count", type="integer", nullable=true)
-     */
-    protected $openCount;
+    #[ORM\Column(name: 'open_count', type: Types::INTEGER, nullable: true)]
+    protected ?int $openCount = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="click_count", type="integer", nullable=true)
-     */
-    protected $clickCount;
+    #[ORM\Column(name: 'click_count', type: Types::INTEGER, nullable: true)]
+    protected ?int $clickCount = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="bounce_count", type="integer", nullable=true)
-     */
-    protected $bounceCount;
+    #[ORM\Column(name: 'bounce_count', type: Types::INTEGER, nullable: true)]
+    protected ?int $bounceCount = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="abuse_count", type="integer", nullable=true)
-     */
-    protected $abuseCount;
+    #[ORM\Column(name: 'abuse_count', type: Types::INTEGER, nullable: true)]
+    protected ?int $abuseCount = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="unsubscribe_count", type="integer", nullable=true)
-     */
-    protected $unsubscribeCount;
+    #[ORM\Column(name: 'unsubscribe_count', type: Types::INTEGER, nullable: true)]
+    protected ?int $unsubscribeCount = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?User $owner = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?OrganizationInterface $organization = null;
 
     /**
      * @return int
@@ -339,9 +291,8 @@ class EmailCampaignStatistics implements ExtendEntityInterface
 
     /**
      * Pre persist event handler
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));

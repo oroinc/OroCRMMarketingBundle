@@ -3,8 +3,8 @@
 namespace Oro\Bundle\TrackingBundle\Controller;
 
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\Acl;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,26 +15,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * CRUD for tracking websites.
- *
- * @Route("/tracking/website")
  */
+#[Route(path: '/tracking/website')]
 class TrackingWebsiteController extends AbstractController
 {
-    /**
-     * @Route(
-     *      ".{_format}",
-     *      name="oro_tracking_website_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
-     * @Acl(
-     *      id="oro_tracking_website_view",
-     *      type="entity",
-     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
-     *      permission="VIEW"
-     * )
-     * @Template
-     */
+    #[Route(
+        path: '.{_format}',
+        name: 'oro_tracking_website_index',
+        requirements: ['_format' => 'html|json'],
+        defaults: ['_format' => 'html']
+    )]
+    #[Template]
+    #[Acl(id: 'oro_tracking_website_view', type: 'entity', class: TrackingWebsite::class, permission: 'VIEW')]
     public function indexAction(): array
     {
         return [
@@ -42,41 +34,25 @@ class TrackingWebsiteController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/create", name="oro_tracking_website_create")
-     * @Acl(
-     *      id="oro_tracking_website_create",
-     *      type="entity",
-     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
-     *      permission="CREATE"
-     * )
-     * @Template("@OroTracking/TrackingWebsite/update.html.twig")
-     */
+    #[Route(path: '/create', name: 'oro_tracking_website_create')]
+    #[Template('@OroTracking/TrackingWebsite/update.html.twig')]
+    #[Acl(id: 'oro_tracking_website_create', type: 'entity', class: TrackingWebsite::class, permission: 'CREATE')]
     public function createAction(): array|RedirectResponse
     {
         return $this->update(new TrackingWebsite());
     }
 
-    /**
-     * @Route("/update/{id}", name="oro_tracking_website_update", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="oro_tracking_website_update",
-     *      type="entity",
-     *      class="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite",
-     *      permission="EDIT"
-     * )
-     * @Template()
-     */
+    #[Route(path: '/update/{id}', name: 'oro_tracking_website_update', requirements: ['id' => '\d+'])]
+    #[Template]
+    #[Acl(id: 'oro_tracking_website_update', type: 'entity', class: TrackingWebsite::class, permission: 'EDIT')]
     public function updateAction(TrackingWebsite $trackingWebsite): array|RedirectResponse
     {
         return $this->update($trackingWebsite);
     }
 
-    /**
-     * @Route("/view/{id}", name="oro_tracking_website_view", requirements={"id"="\d+"})
-     * @AclAncestor("oro_tracking_website_view")
-     * @Template()
-     */
+    #[Route(path: '/view/{id}', name: 'oro_tracking_website_view', requirements: ['id' => '\d+'])]
+    #[Template]
+    #[AclAncestor('oro_tracking_website_view')]
     public function viewAction(TrackingWebsite $trackingWebsite): array
     {
         return [

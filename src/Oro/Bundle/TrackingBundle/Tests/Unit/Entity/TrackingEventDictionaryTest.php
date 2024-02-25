@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
@@ -45,7 +46,7 @@ class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
 
         return [
             ['name', 'visit', 'visit'],
-            ['visitEvents', [], []],
+            ['visitEvents', new ArrayCollection(), new ArrayCollection()],
             ['website', $website, $website]
         ];
     }

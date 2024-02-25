@@ -2,64 +2,43 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 
 /**
- * @ORM\Table(name="orocrm_campaign_te_summary", indexes={
- *     @ORM\Index(name="tes_event_name_idx", columns={"name"}),
- *     @ORM\Index(name="tes_event_loggedAt_idx", columns={"logged_at"}),
- *     @ORM\Index(name="tes_code_idx", columns={"code"}),
- *     @ORM\Index(name="tes_visits_idx", columns={"visit_count"})
- * })
- * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\TrackingEventSummaryRepository")
- */
+* Entity that represents Tracking Event Summary
+*
+*/
+#[ORM\Entity(repositoryClass: TrackingEventSummaryRepository::class)]
+#[ORM\Table(name: 'orocrm_campaign_te_summary')]
+#[ORM\Index(columns: ['name'], name: 'tes_event_name_idx')]
+#[ORM\Index(columns: ['logged_at'], name: 'tes_event_loggedAt_idx')]
+#[ORM\Index(columns: ['code'], name: 'tes_code_idx')]
+#[ORM\Index(columns: ['visit_count'], name: 'tes_visits_idx')]
 class TrackingEventSummary
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var TrackingWebsite
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\TrackingBundle\Entity\TrackingWebsite")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     */
-    protected $website;
+    #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
+    #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?TrackingWebsite $website = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, nullable=true)
-     */
-    protected $code;
+    #[ORM\Column(name: 'code', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $code = null;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="visit_count", type="integer")
-     */
-    protected $visitCount;
+    #[ORM\Column(name: 'visit_count', type: Types::INTEGER)]
+    protected ?int $visitCount = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="logged_at", type="date")
-     */
-    protected $loggedAt;
+    #[ORM\Column(name: 'logged_at', type: Types::DATE_MUTABLE)]
+    protected ?\DateTimeInterface $loggedAt = null;
 
     /**
      * Get id

@@ -10,7 +10,7 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper;
 use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,26 +19,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Provides various marketing activity widgets.
- *
- * @Route("/marketing-activity")
  */
+#[Route(path: '/marketing-activity')]
 class MarketingActivityController extends AbstractController
 {
     /**
-     * @Route(
-     *         "/widget/marketing-activities/summary/{campaignId}",
-     *          name="oro_marketing_activity_widget_summary",
-     *          requirements={"campaignId"="\d+"}
-     * )
-     * @AclAncestor("oro_marketing_activity_view")
-     * @Template
      *
      * @param integer $campaignId  The ID of Campaign entity
      * @param string  $entityClass Entity class name
      * @param integer $entityId    Entity id
-     *
      * @return array
      */
+    #[Route(
+        path: '/widget/marketing-activities/summary/{campaignId}',
+        name: 'oro_marketing_activity_widget_summary',
+        requirements: ['campaignId' => '\d+']
+    )]
+    #[Template]
+    #[AclAncestor('oro_marketing_activity_view')]
     public function summaryAction($campaignId, $entityClass = null, $entityId = null)
     {
         $summaryData = $this->container->get('doctrine')
@@ -51,18 +49,17 @@ class MarketingActivityController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/view/widget/marketing-activities/{entityClass}/{entityId}",
-     *     name="oro_marketing_activity_widget_marketing_activities"
-     * )
-     * @AclAncestor("oro_marketing_activity_view")
-     * @Template("@OroMarketingActivity/MarketingActivity/marketingActivitiesSection.html.twig")
      *
      * @param string  $entityClass The entity class which marketing activities should be rendered
      * @param integer $entityId    The entity object id which marketing activities should be rendered
-     *
      * @return array
      */
+    #[Route(
+        path: '/view/widget/marketing-activities/{entityClass}/{entityId}',
+        name: 'oro_marketing_activity_widget_marketing_activities'
+    )]
+    #[Template('@OroMarketingActivity/MarketingActivity/marketingActivitiesSection.html.twig')]
+    #[AclAncestor('oro_marketing_activity_view')]
     public function widgetAction($entityClass, $entityId)
     {
         $routingHelper = $this->container->get(EntityRoutingHelper::class);
@@ -89,19 +86,18 @@ class MarketingActivityController extends AbstractController
     }
 
     /**
-     * @Route(
-     *      "/widget/marketing-activities/info/{id}",
-     *      name="oro_marketing_activity_widget_marketing_activities_info",
-     *      requirements={"id"="\d+"},
-     * )
-     * @AclAncestor("oro_marketing_activity_view")
-     * @Template("@OroMarketingActivity/MarketingActivity/widget/marketingActivitySectionItemInfo.html.twig")
      *
      * @param integer $id The ID of Campaign entity
      * @param Request $request
-     *
      * @return array
      */
+    #[Route(
+        path: '/widget/marketing-activities/info/{id}',
+        name: 'oro_marketing_activity_widget_marketing_activities_info',
+        requirements: ['id' => '\d+']
+    )]
+    #[Template('@OroMarketingActivity/MarketingActivity/widget/marketingActivitySectionItemInfo.html.twig')]
+    #[AclAncestor('oro_marketing_activity_view')]
     public function infoAction($id, Request $request)
     {
         return [
@@ -114,18 +110,17 @@ class MarketingActivityController extends AbstractController
     /**
      * Get filtered marketing activities for given entity
      *
-     * @Route(
-     *     "/view/widget/marketing-activities/list/{entityClass}/{entityId}",
-     *     name="oro_marketing_activity_widget_marketing_activities_list"
-     * )
-     * @AclAncestor("oro_marketing_activity_view")
      *
      * @param string  $entityClass The entity class which marketing activities should be rendered
      * @param integer $entityId    The entity object id which marketing activities should be rendered
      * @param Request $request
-     *
      * @return JsonResponse
      */
+    #[Route(
+        path: '/view/widget/marketing-activities/list/{entityClass}/{entityId}',
+        name: 'oro_marketing_activity_widget_marketing_activities_list'
+    )]
+    #[AclAncestor('oro_marketing_activity_view')]
     public function listAction($entityClass, $entityId, Request $request)
     {
         $entityClass = $this->container->get(EntityRoutingHelper::class)->resolveEntityClass($entityClass);

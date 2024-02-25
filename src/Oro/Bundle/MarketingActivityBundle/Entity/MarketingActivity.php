@@ -2,50 +2,42 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroMarketingActivityBundle_Entity_MarketingActivity;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
+use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * Store marketing activity in database.
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository")
- * @ORM\Table(
- *     name="orocrm_marketing_activity",
- *     indexes={
- *          @ORM\Index(name="IDX_MARKETING_ACTIVITY_ENTITY", columns={"entity_id", "entity_class"}),
- *          @ORM\Index(
- *              name="IDX_MARKETING_ACTIVITY_RELATED_CAMPAIGN",
- *              columns={"related_campaign_id", "related_campaign_class"
- *          }),
- *          @ORM\Index(name="IDX_MARKETING_ACTIVITY_ACTION_DATE", columns={"action_date"})
- *     }
- * )
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-user"
- *      },
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      }
- *  }
- * )
  * @method AbstractEnumValue getType()
  * @mixin OroMarketingActivityBundle_Entity_MarketingActivity
  */
+#[ORM\Entity(repositoryClass: MarketingActivityRepository::class)]
+#[ORM\Table(name: 'orocrm_marketing_activity')]
+#[ORM\Index(columns: ['entity_id', 'entity_class'], name: 'IDX_MARKETING_ACTIVITY_ENTITY')]
+#[ORM\Index(
+    columns: ['related_campaign_id', 'related_campaign_class'],
+    name: 'IDX_MARKETING_ACTIVITY_RELATED_CAMPAIGN'
+)]
+#[ORM\Index(columns: ['action_date'], name: 'IDX_MARKETING_ACTIVITY_ACTION_DATE')]
+#[Config(
+    defaultValues: [
+        'entity' => ['icon' => 'fa-user'],
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing']
+    ]
+)]
 class MarketingActivity implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
@@ -60,72 +52,36 @@ class MarketingActivity implements ExtendEntityInterface
     const TYPE_HARD_BOUNCE = 'hard_bounce';
     const TYPE_UNSUBSCRIBE = 'unsubscribe';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
-    /**
-     * @var Campaign
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\CampaignBundle\Entity\Campaign")
-     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $campaign;
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
+    #[ORM\JoinColumn(name: 'campaign_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Campaign $campaign = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="entity_id", type="integer", nullable=false)
-     */
-    protected $entityId;
+    #[ORM\Column(name: 'entity_id', type: Types::INTEGER, nullable: false)]
+    protected ?int $entityId = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="entity_class", type="string", length=255, nullable=false)
-     */
-    protected $entityClass;
+    #[ORM\Column(name: 'entity_class', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $entityClass = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="related_campaign_id", type="integer", nullable=true)
-     */
-    protected $relatedCampaignId;
+    #[ORM\Column(name: 'related_campaign_id', type: Types::INTEGER, nullable: true)]
+    protected ?int $relatedCampaignId = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="related_campaign_class", type="string", length=255, nullable=true)
-     */
-    protected $relatedCampaignClass;
+    #[ORM\Column(name: 'related_campaign_class', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $relatedCampaignClass = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="details", type="text", nullable=true)
-     */
-    protected $details;
+    #[ORM\Column(name: 'details', type: Types::TEXT, nullable: true)]
+    protected ?string $details = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="action_date", type="datetime")
-     */
-    protected $actionDate;
+    #[ORM\Column(name: 'action_date', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $actionDate = null;
 
     /**
      * Get id

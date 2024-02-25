@@ -2,61 +2,48 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroCampaignBundle_Entity_Campaign;
+use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
+use Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType;
 use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Represents a marketing campaign help track marketing budgets and outcomes of marketing actions.
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository")
- * @ORM\Table(
- *      name="orocrm_campaign",
- *      indexes={@ORM\Index(name="cmpgn_owner_idx", columns={"owner_id"})}
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *      routeName="oro_campaign_index",
- *      routeView="oro_campaign_view",
- *      defaultValues={
- *          "entity"={
- *              "icon"="fa-volume-up"
- *          },
- *          "ownership"={
- *              "owner_type"="USER",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="owner_id",
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
- *          },
- *          "security"={
- *              "type"="ACL",
- *              "group_name"="",
- *              "category"="marketing"
- *          },
- *          "form"={
- *              "form_type"="Oro\Bundle\CampaignBundle\Form\Type\CampaignSelectType",
- *              "grid_name"="oro-campaign-grid",
- *          },
- *          "grid"={
- *              "default"="oro-campaign-grid"
- *          },
- *          "tag"={
- *              "enabled"=true
- *          },
- *          "merge"={
- *              "enable"=true
- *          }
- *      }
- * )
  * @mixin OroCampaignBundle_Entity_Campaign
  */
+#[ORM\Entity(repositoryClass: CampaignRepository::class)]
+#[ORM\Table(name: 'orocrm_campaign')]
+#[ORM\Index(columns: ['owner_id'], name: 'cmpgn_owner_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    routeName: 'oro_campaign_index',
+    routeView: 'oro_campaign_view',
+    defaultValues: [
+        'entity' => ['icon' => 'fa-volume-up'],
+        'ownership' => [
+            'owner_type' => 'USER',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id',
+            'organization_field_name' => 'organization',
+            'organization_column_name' => 'organization_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'form' => ['form_type' => CampaignSelectType::class, 'grid_name' => 'oro-campaign-grid'],
+        'grid' => ['default' => 'oro-campaign-grid'],
+        'tag' => ['enabled' => true],
+        'merge' => ['enable' => true]
+    ]
+)]
 class Campaign implements ExtendEntityInterface
 {
     use DatesAwareTrait;
@@ -67,137 +54,57 @@ class Campaign implements ExtendEntityInterface
     const PERIOD_MONTHLY = 'month';
     const PERIOD_YEARLY  = 'year';
 
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @ConfigField(
-     *      defaultValues={
-     *          "merge"={
-     *              "display"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, unique=true)
-     */
-    protected $code;
+    #[ORM\Column(name: 'code', type: Types::STRING, length: 255, unique: true)]
+    protected ?string $code = null;
 
     /**
      * This field needed as label in related entities drown select
-     *
-     * @var string
-     *
-     * @ORM\Column(name="combined_name", type="string", length=255, nullable=true)
      */
-    protected $combinedName;
+    #[ORM\Column(name: 'combined_name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $combinedName = null;
 
-    /**
-     * @var \DateTime $createdAt
-     *
-     * @ORM\Column(name="start_date", type="date", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "merge"={
-     *              "display"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $startDate;
+    #[ORM\Column(name: 'start_date', type: Types::DATE_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    protected ?\DateTimeInterface $startDate = null;
 
-    /**
-     * @var \DateTime $createdAt
-     *
-     * @ORM\Column(name="end_date", type="date", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "merge"={
-     *              "display"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $endDate;
+    #[ORM\Column(name: 'end_date', type: Types::DATE_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    protected ?\DateTimeInterface $endDate = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "merge"={
-     *              "display"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $description;
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    protected ?string $description = null;
 
     /**
      * @var double
-     *
-     * @ORM\Column(name="budget", type="money", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "merge"={
-     *              "display"=true
-     *          }
-     *      }
-     * )
      */
+    #[ORM\Column(name: 'budget', type: 'money', nullable: true)]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
     protected $budget;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @ConfigField(
-     *      defaultValues={
-     *          "merge"={
-     *              "display"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    protected ?User $owner = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="report_period", type="string", length=25)
-     */
-    protected $reportPeriod;
+    #[ORM\Column(name: 'report_period', type: Types::STRING, length: 25)]
+    protected ?string $reportPeriod = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="report_refresh_date", type="date", nullable=true)
-     */
-    protected $reportRefreshDate;
+    #[ORM\Column(name: 'report_refresh_date', type: Types::DATE_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $reportRefreshDate = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?OrganizationInterface $organization = null;
 
     /**
      * Constructor
@@ -314,9 +221,8 @@ class Campaign implements ExtendEntityInterface
 
     /**
      * Pre persist event handler
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         $this->setCombinedName($this->generateCombinedName($this->name, $this->code));
@@ -326,9 +232,8 @@ class Campaign implements ExtendEntityInterface
 
     /**
      * Pre update event handler
-     *
-     * @ORM\PreUpdate
      */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->setCombinedName($this->generateCombinedName($this->name, $this->code));

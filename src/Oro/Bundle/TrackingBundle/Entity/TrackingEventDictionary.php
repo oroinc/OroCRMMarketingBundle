@@ -2,53 +2,38 @@
 
 namespace Oro\Bundle\TrackingBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 
 /**
- * @ORM\Table(name="oro_tracking_event_dictionary")
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-external-link"
- *      }
- *  }
- * )
- */
+* Entity that represents Tracking Event Dictionary
+*
+*/
+#[ORM\Entity]
+#[ORM\Table(name: 'oro_tracking_event_dictionary')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link']])]
 class TrackingEventDictionary
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
+
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
+
+    #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
+    #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?TrackingWebsite $website = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    protected $name;
-
-    /**
-     * @var TrackingWebsite
-     *
-     * @ORM\ManyToOne(targetEntity="TrackingWebsite")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     */
-    protected $website;
-
-    /**
-     * @var TrackingVisitEvent[]
-     *
-     * @ORM\OneToMany(targetEntity="TrackingVisitEvent", mappedBy="event")
+     * @var Collection<int, TrackingVisitEvent>
      **/
-    protected $visitEvents;
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: TrackingVisitEvent::class)]
+    protected ?Collection $visitEvents = null;
 
     /**
      * @return int

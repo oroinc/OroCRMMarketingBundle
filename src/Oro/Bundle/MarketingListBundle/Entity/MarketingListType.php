@@ -2,34 +2,29 @@
 
 namespace Oro\Bundle\MarketingListBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="orocrm_marketing_list_type")
- * @Config()
- */
+* Entity that represents Marketing List Type
+*
+*/
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_marketing_list_type')]
+#[Config]
 class MarketingListType
 {
     const TYPE_DYNAMIC = 'dynamic';
     const TYPE_STATIC  = 'static';
     const TYPE_MANUAL  = 'manual';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=32)
-     * @ORM\Id
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 32)]
+    #[ORM\Id]
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="label", type="string", length=255, unique=true)
-     */
-    protected $label;
+    #[ORM\Column(name: 'label', type: Types::STRING, length: 255, unique: true)]
+    protected ?string $label = null;
 
     /**
      * @param string $name

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +20,9 @@ class SegmentController extends RestController
      *      description="Run Static Marketing List Segment",
      *      resource=true
      * )
-     * @AclAncestor("oro_marketing_list_update")
      * @return Response
      */
+    #[AclAncestor('oro_marketing_list_update')]
     public function postRunAction(int $id)
     {
         /** @var Segment $segment */

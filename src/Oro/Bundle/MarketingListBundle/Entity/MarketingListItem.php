@@ -2,65 +2,40 @@
 
 namespace Oro\Bundle\MarketingListBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 
 /**
  * Marketing list item.
- *
- * @ORM\Table(name="orocrm_marketing_list_item",  uniqueConstraints={
- *      @ORM\UniqueConstraint(columns={"entity_id", "marketing_list_id"}, name="orocrm_ml_list_ent_unq")
- * })
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
- * @Config()
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_marketing_list_item')]
+#[ORM\UniqueConstraint(name: 'orocrm_ml_list_ent_unq', columns: ['entity_id', 'marketing_list_id'])]
+#[ORM\HasLifecycleCallbacks]
+#[Config]
 class MarketingListItem
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="entity_id", type="integer", nullable=false)
-     */
-    protected $entityId;
+    #[ORM\Column(name: 'entity_id', type: Types::INTEGER, nullable: false)]
+    protected ?int $entityId = null;
 
-    /**
-     * @var int
-     * @ORM\Column(name="contacted_times", type="integer", nullable=true)
-     */
-    protected $contactedTimes;
+    #[ORM\Column(name: 'contacted_times', type: Types::INTEGER, nullable: true)]
+    protected ?int $contactedTimes = null;
 
-    /**
-     * @var MarketingList
-     *
-     * @ORM\ManyToOne(
-     *      targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingList", inversedBy="marketingListItems"
-     * )
-     * @ORM\JoinColumn(name="marketing_list_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $marketingList;
+    #[ORM\ManyToOne(targetEntity: MarketingList::class, inversedBy: 'marketingListItems')]
+    #[ORM\JoinColumn(name: 'marketing_list_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?MarketingList $marketingList = null;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="last_contacted_at", type="datetime", nullable=true)
-     */
-    protected $lastContactedAt;
+    #[ORM\Column(name: 'last_contacted_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastContactedAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
     /**
      * @return int
@@ -129,9 +104,8 @@ class MarketingListItem
 
     /**
      * Pre persist event listener
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function beforeSave()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));

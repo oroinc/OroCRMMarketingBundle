@@ -9,8 +9,8 @@ use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
 use Oro\Bundle\CampaignBundle\Form\Handler\EmailCampaignHandler;
 use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\Acl;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,16 +26,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Email Campaign related controller (Create/Update/View/Send)
- *
- * @Route("/campaign/email")
  */
+#[Route(path: '/campaign/email')]
 class EmailCampaignController extends AbstractController
 {
-    /**
-     * @Route("/", name="oro_email_campaign_index")
-     * @AclAncestor("oro_email_campaign_view")
-     * @Template
-     */
+    #[Route(path: '/', name: 'oro_email_campaign_index')]
+    #[Template]
+    #[AclAncestor('oro_email_campaign_view')]
     public function indexAction()
     {
         return [
@@ -45,16 +42,10 @@ class EmailCampaignController extends AbstractController
 
     /**
      * Create email campaign
-     *
-     * @Route("/create", name="oro_email_campaign_create")
-     * @Template("@OroCampaign/EmailCampaign/update.html.twig")
-     * @Acl(
-     *      id="oro_email_campaign_create",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign"
-     * )
      */
+    #[Route(path: '/create', name: 'oro_email_campaign_create')]
+    #[Template('@OroCampaign/EmailCampaign/update.html.twig')]
+    #[Acl(id: 'oro_email_campaign_create', type: 'entity', class: EmailCampaign::class, permission: 'CREATE')]
     public function createAction(Request $request)
     {
         return $this->update(new EmailCampaign(), $request);
@@ -63,17 +54,17 @@ class EmailCampaignController extends AbstractController
     /**
      * Edit email campaign
      *
-     * @Route("/update/{id}", name="oro_email_campaign_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
-     * @Acl(
-     *      id="oro_email_campaign_update",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign"
-     * )
      * @param EmailCampaign $entity
      * @return array
      */
+    #[Route(
+        path: '/update/{id}',
+        name: 'oro_email_campaign_update',
+        requirements: ['id' => '\d+'],
+        defaults: ['id' => 0]
+    )]
+    #[Template]
+    #[Acl(id: 'oro_email_campaign_update', type: 'entity', class: EmailCampaign::class, permission: 'EDIT')]
     public function updateAction(EmailCampaign $entity, Request $request)
     {
         return $this->update($entity, $request);
@@ -82,17 +73,12 @@ class EmailCampaignController extends AbstractController
     /**
      * View email campaign
      *
-     * @Route("/view/{id}", name="oro_email_campaign_view", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="oro_email_campaign_view",
-     *      type="entity",
-     *      permission="VIEW",
-     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign"
-     * )
-     * @Template
      * @param EmailCampaign $entity
      * @return array
      */
+    #[Route(path: '/view/{id}', name: 'oro_email_campaign_view', requirements: ['id' => '\d+'])]
+    #[Template]
+    #[Acl(id: 'oro_email_campaign_view', type: 'entity', class: EmailCampaign::class, permission: 'VIEW')]
     public function viewAction(EmailCampaign $entity)
     {
         $stats = $this->container->get('doctrine')
@@ -147,20 +133,20 @@ class EmailCampaignController extends AbstractController
     }
 
     /**
-     * @Route("/send/{id}", name="oro_email_campaign_send", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="oro_email_campaign_send",
-     *      type="action",
-     *      label="oro.campaign.acl.send_emails.label",
-     *      description="oro.campaign.acl.send_emails.description",
-     *      group_name="",
-     *      category="marketing"
-     * )
      *
      * @param EmailCampaign $emailCampaign
      * @param Request $request
      * @return RedirectResponse
      */
+    #[Route(path: '/send/{id}', name: 'oro_email_campaign_send', requirements: ['id' => '\d+'])]
+    #[Acl(
+        id: 'oro_email_campaign_send',
+        type: 'action',
+        groupName: '',
+        label: 'oro.campaign.acl.send_emails.label',
+        description: 'oro.campaign.acl.send_emails.description',
+        category: 'marketing'
+    )]
     public function sendAction(EmailCampaign $emailCampaign, Request $request)
     {
         if ($this->isManualSendAllowed($emailCampaign)) {

@@ -29,14 +29,14 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route(
-     *      "/campaign_lead/chart/{widget}",
-     *      name="oro_campaign_dashboard_campaigns_leads_chart",
-     *      requirements={"widget"="[\w\-]+"}
-     * )
-     * @Template("@OroCampaign/Dashboard/campaignLeads.html.twig")
      * @throws InvalidConfigurationException
      */
+    #[Route(
+        path: '/campaign_lead/chart/{widget}',
+        name: 'oro_campaign_dashboard_campaigns_leads_chart',
+        requirements: ['widget' => '[\w\-]+']
+    )]
+    #[Template('@OroCampaign/Dashboard/campaignLeads.html.twig')]
     public function campaignLeadsAction(Request $request, string $widget): array
     {
         $widgetConfigs = $this->container->get(WidgetConfigs::class);
@@ -73,14 +73,14 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route(
-     *      "/campaign_opportunity/chart/{widget}",
-     *      name="oro_campaign_dashboard_campaigns_opportunity_chart",
-     *      requirements={"widget"="[\w\-]+"}
-     * )
-     * @Template("@OroCampaign/Dashboard/campaignOpportunity.html.twig")
      * @throws InvalidConfigurationException
      */
+    #[Route(
+        path: '/campaign_opportunity/chart/{widget}',
+        name: 'oro_campaign_dashboard_campaigns_opportunity_chart',
+        requirements: ['widget' => '[\w\-]+']
+    )]
+    #[Template('@OroCampaign/Dashboard/campaignOpportunity.html.twig')]
     public function campaignOpportunityAction(Request $request, string $widget): array
     {
         $widgetConfigs = $this->container->get(WidgetConfigs::class);
@@ -110,14 +110,14 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route(
-     *      "/campaign_by_close_revenue/chart/{widget}",
-     *      name="oro_campaign_dashboard_campaigns_by_close_revenue_chart",
-     *      requirements={"widget"="[\w\-]+"}
-     * )
-     * @Template("@OroCampaign/Dashboard/campaignByCloseRevenue.html.twig")
      * @throws InvalidConfigurationException
      */
+    #[Route(
+        path: '/campaign_by_close_revenue/chart/{widget}',
+        name: 'oro_campaign_dashboard_campaigns_by_close_revenue_chart',
+        requirements: ['widget' => '[\w\-]+']
+    )]
+    #[Template('@OroCampaign/Dashboard/campaignByCloseRevenue.html.twig')]
     public function campaignByCloseRevenueAction(Request $request, string $widget): array
     {
         $widgetConfigs = $this->container->get(WidgetConfigs::class);

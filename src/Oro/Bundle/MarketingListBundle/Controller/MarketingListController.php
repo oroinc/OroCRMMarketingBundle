@@ -10,8 +10,8 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Form\Handler\MarketingListHandler;
 use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\Acl;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -22,16 +22,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * CRUD controller for MarketingList entity
- *
- * @Route("/marketing-list")
  */
+#[Route(path: '/marketing-list')]
 class MarketingListController extends AbstractController
 {
-    /**
-     * @Route("/", name="oro_marketing_list_index")
-     * @AclAncestor("oro_marketing_list_view")
-     * @Template
-     */
+    #[Route(path: '/', name: 'oro_marketing_list_index')]
+    #[Template]
+    #[AclAncestor('oro_marketing_list_view')]
     public function indexAction(): array
     {
         return [
@@ -39,16 +36,9 @@ class MarketingListController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/view/{id}", name="oro_marketing_list_view", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
-     *      id="oro_marketing_list_view",
-     *      type="entity",
-     *      permission="VIEW",
-     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList"
-     * )
-     * @Template
-     */
+    #[Route(path: '/view/{id}', name: 'oro_marketing_list_view', requirements: ['id' => '\d+'], defaults: ['id' => 0])]
+    #[Template]
+    #[Acl(id: 'oro_marketing_list_view', type: 'entity', class: MarketingList::class, permission: 'VIEW')]
     public function viewAction(MarketingList $entity): array
     {
         $this->checkMarketingList($entity);
@@ -62,32 +52,22 @@ class MarketingListController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/create", name="oro_marketing_list_create")
-     * @Template("@OroMarketingList/MarketingList/update.html.twig")
-     * @Acl(
-     *      id="oro_marketing_list_create",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList"
-     * )
-     */
+    #[Route(path: '/create', name: 'oro_marketing_list_create')]
+    #[Template('@OroMarketingList/MarketingList/update.html.twig')]
+    #[Acl(id: 'oro_marketing_list_create', type: 'entity', class: MarketingList::class, permission: 'CREATE')]
     public function createAction(): array|RedirectResponse
     {
         return $this->update(new MarketingList());
     }
 
-    /**
-     * @Route("/update/{id}", name="oro_marketing_list_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     *
-     * @Template
-     * @Acl(
-     *      id="oro_marketing_list_update",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList"
-     * )
-     */
+    #[Route(
+        path: '/update/{id}',
+        name: 'oro_marketing_list_update',
+        requirements: ['id' => '\d+'],
+        defaults: ['id' => 0]
+    )]
+    #[Template]
+    #[Acl(id: 'oro_marketing_list_update', type: 'entity', class: MarketingList::class, permission: 'EDIT')]
     public function updateAction(MarketingList $entity): array|RedirectResponse
     {
         $this->checkMarketingList($entity);

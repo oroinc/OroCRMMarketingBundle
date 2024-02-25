@@ -135,7 +135,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
             ->willReturn(1);
 
         $marketingList = new MarketingList();
-        $marketingList->setEntity($entity);
+        $marketingList->setEntity($entity::class);
 
         $template = new EmailTemplate();
         $template->setType('html');

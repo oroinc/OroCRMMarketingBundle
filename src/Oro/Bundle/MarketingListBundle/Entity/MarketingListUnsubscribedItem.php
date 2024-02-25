@@ -2,52 +2,32 @@
 
 namespace Oro\Bundle\MarketingListBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Marketing list unsubscribed item.
- *
- * @ORM\Table(name="orocrm_ml_item_uns",  uniqueConstraints={
- *      @ORM\UniqueConstraint(columns={"entity_id", "marketing_list_id"}, name="orocrm_ml_list_ent_uns_unq")
- * })
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_ml_item_uns')]
+#[ORM\UniqueConstraint(name: 'orocrm_ml_list_ent_uns_unq', columns: ['entity_id', 'marketing_list_id'])]
+#[ORM\HasLifecycleCallbacks]
 class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="entity_id", type="integer", nullable=false)
-     */
-    protected $entityId;
+    #[ORM\Column(name: 'entity_id', type: Types::INTEGER, nullable: false)]
+    protected ?int $entityId = null;
 
-    /**
-     * @var MarketingList
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingList",
-     *     inversedBy="marketingListUnsubscribedItems"
-     * )
-     * @ORM\JoinColumn(name="marketing_list_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $marketingList;
+    #[ORM\ManyToOne(targetEntity: MarketingList::class, inversedBy: 'marketingListUnsubscribedItems')]
+    #[ORM\JoinColumn(name: 'marketing_list_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?MarketingList $marketingList = null;
 
-    /**
-     * @var \Datetime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
     /**
      * @return int
@@ -118,9 +98,8 @@ class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
 
     /**
      * Pre persist event listener
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function beforeSave()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));

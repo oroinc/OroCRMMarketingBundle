@@ -6,7 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,8 +22,8 @@ class EmailTemplateController extends RestController
      *     description="Get email campaign templates by entity name",
      *     resource=true
      * )
-     * @AclAncestor("oro_email_emailtemplate_index")
      */
+    #[AclAncestor('oro_email_emailtemplate_index')]
     public function cgetAction(
         int $id = null,
         bool $includeNonEntity = true,

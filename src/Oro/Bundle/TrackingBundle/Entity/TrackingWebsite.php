@@ -2,140 +2,82 @@
 
 namespace Oro\Bundle\TrackingBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingWebsite;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Table(name="oro_tracking_website")
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  routeName="oro_tracking_website_index",
- *  routeView="oro_tracking_website_view",
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-external-link"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "category"="account_management"
- *      },
- *      "ownership"={
- *          "owner_type"="USER",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="user_owner_id",
- *          "organization_field_name"="organization",
- *          "organization_column_name"="organization_id"
- *      },
- *      "grid"={
- *          "default"="website-grid"
- *     }
- *  }
- * )
+ * Tracking Website Entity
  * @mixin OroTrackingBundle_Entity_TrackingWebsite
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'oro_tracking_website')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    routeName: 'oro_tracking_website_index',
+    routeView: 'oro_tracking_website_view',
+    defaultValues: [
+        'entity' => ['icon' => 'fa-external-link'],
+        'security' => ['type' => 'ACL', 'category' => 'account_management'],
+        'ownership' => [
+            'owner_type' => 'USER',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'user_owner_id',
+            'organization_field_name' => 'organization',
+            'organization_column_name' => 'organization_id'
+        ],
+        'grid' => ['default' => 'website-grid']
+    ]
+)]
 class TrackingWebsite implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="identifier", type="string", length=255, unique=true)
-     * @ConfigField(
-     *  defaultValues={
-     *      "importexport"={
-     *          "identity"=true
-     *      }
-     *  }
-     * )
-     */
-    protected $identifier;
+    #[ORM\Column(name: 'identifier', type: Types::STRING, length: 255, unique: true)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?string $identifier = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255)
-     */
-    protected $url;
+    #[ORM\Column(name: 'url', type: Types::STRING, length: 255)]
+    protected ?string $url = null;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?User $owner = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.updated_at']])]
+    protected ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?OrganizationInterface $organization = null;
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

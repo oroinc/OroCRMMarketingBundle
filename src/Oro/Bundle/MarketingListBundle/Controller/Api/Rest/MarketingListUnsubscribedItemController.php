@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -23,8 +23,8 @@ class MarketingListUnsubscribedItemController extends RestController
      *     description="Create new MarketingListUnsubscribedItem",
      *     resource=true
      * )
-     * @AclAncestor("oro_marketinglist_unsubscribed_item_create")
      */
+    #[AclAncestor('oro_marketinglist_unsubscribed_item_create')]
     public function postAction()
     {
         return $this->handleCreateRequest();
@@ -39,10 +39,10 @@ class MarketingListUnsubscribedItemController extends RestController
      *     description="Delete MarketingListRemovedItem",
      *     resource=true
      * )
-     * @AclAncestor("oro_marketinglist_unsubscribed_item_delete")
      *
      * @return Response
      */
+    #[AclAncestor('oro_marketinglist_unsubscribed_item_delete')]
     public function deleteAction(int $id)
     {
         return $this->handleDeleteRequest($id);
@@ -55,13 +55,12 @@ class MarketingListUnsubscribedItemController extends RestController
      * - HTTP_OK (200)
      *
      * @ApiDoc(description="Unsubscribe marketing list entity item", resource=true)
-     * @AclAncestor("oro_marketinglist_unsubscribed_item_create")
      *
      * @param MarketingList $marketingList
      * @param int           $id
-     *
      * @return Response
      */
+    #[AclAncestor('oro_marketinglist_unsubscribed_item_create')]
     public function unsubscribeAction(MarketingList $marketingList, int $id)
     {
         $item = new MarketingListUnsubscribedItem();
@@ -105,10 +104,10 @@ class MarketingListUnsubscribedItemController extends RestController
      *     description="Delete MarketingListUnsubscribedItem by marketing list entity",
      *     resource=true
      * )
-     * @AclAncestor("oro_marketinglist_unsubscribed_item_delete")
      *
      * @return Response
      */
+    #[AclAncestor('oro_marketinglist_unsubscribed_item_delete')]
     public function subscribeAction(MarketingList $marketingList, int $id)
     {
         /** @var MarketingListUnsubscribedItem[] $forRemove */

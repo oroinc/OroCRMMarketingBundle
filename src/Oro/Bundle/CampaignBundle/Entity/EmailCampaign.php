@@ -2,54 +2,45 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroCampaignBundle_Entity_EmailCampaign;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Represents an email campaign.
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository")
- * @ORM\Table(
- *      name="orocrm_campaign_email",
- *      indexes={@ORM\Index(name="cmpgn_email_owner_idx", columns={"owner_id"})}
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *      routeName="oro_email_campaign_index",
- *      defaultValues={
- *          "entity"={
- *              "icon"="fa-envelope"
- *          },
- *          "ownership"={
- *              "owner_type"="USER",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="owner_id",
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
- *          },
- *          "security"={
- *              "type"="ACL",
- *              "group_name"="",
- *              "category"="marketing"
- *          },
- *          "grid"={
- *              "default"="oro-email-campaign-grid"
- *          },
- *          "tag"={
- *              "enabled"=true
- *          }
- *      }
- * )
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @mixin OroCampaignBundle_Entity_EmailCampaign
  */
+#[ORM\Entity(repositoryClass: EmailCampaignRepository::class)]
+#[ORM\Table(name: 'orocrm_campaign_email')]
+#[ORM\Index(columns: ['owner_id'], name: 'cmpgn_email_owner_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    routeName: 'oro_email_campaign_index',
+    defaultValues: [
+        'entity' => ['icon' => 'fa-envelope'],
+        'ownership' => [
+            'owner_type' => 'USER',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id',
+            'organization_field_name' => 'organization',
+            'organization_column_name' => 'organization_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'grid' => ['default' => 'oro-email-campaign-grid'],
+        'tag' => ['enabled' => true]
+    ]
+)]
 class EmailCampaign implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
@@ -57,155 +48,70 @@ class EmailCampaign implements ExtendEntityInterface
     const SCHEDULE_MANUAL = 'manual';
     const SCHEDULE_DEFERRED = 'deferred';
 
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
-    protected $description;
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+    protected ?string $description = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_sent", type="boolean")
-     */
-    protected $sent = false;
+    #[ORM\Column(name: 'is_sent', type: Types::BOOLEAN)]
+    protected ?bool $sent = false;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="sent_at", type="datetime", nullable=true)
-     */
-    protected $sentAt;
+    #[ORM\Column(name: 'sent_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $sentAt = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="schedule", type="string", length=255)
-     */
-    protected $schedule;
+    #[ORM\Column(name: 'schedule', type: Types::STRING, length: 255)]
+    protected ?string $schedule = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="scheduled_for", type="datetime", nullable=true)
-     */
-    protected $scheduledFor;
+    #[ORM\Column(name: 'scheduled_for', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $scheduledFor = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sender_email", type="string", length=255, nullable=true)
-     */
-    protected $senderEmail;
+    #[ORM\Column(name: 'sender_email', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $senderEmail = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sender_name", type="string", length=255, nullable=true)
-     */
-    protected $senderName;
+    #[ORM\Column(name: 'sender_name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $senderName = null;
 
-    /**
-     * @var Campaign
-     *
-     * @ORM\ManyToOne(targetEntity="Campaign")
-     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     */
-    protected $campaign;
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
+    #[ORM\JoinColumn(name: 'campaign_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?Campaign $campaign = null;
 
-    /**
-     * @var MarketingList
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingList")
-     * @ORM\JoinColumn(name="marketing_list_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $marketingList;
+    #[ORM\ManyToOne(targetEntity: MarketingList::class)]
+    #[ORM\JoinColumn(name: 'marketing_list_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?MarketingList $marketingList = null;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?User $owner = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="transport", type="string", length=255, nullable=false)
-     */
-    protected $transport;
+    #[ORM\Column(name: 'transport', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $transport = null;
 
-    /**
-     * @var TransportSettings
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="Oro\Bundle\CampaignBundle\Entity\TransportSettings",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     * @ORM\JoinColumn(name="transport_settings_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     */
-    protected $transportSettings;
+    #[ORM\OneToOne(targetEntity: TransportSettings::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: 'transport_settings_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?TransportSettings $transportSettings = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?OrganizationInterface $organization = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.updated_at']])]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * Pre persist event handler
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -214,9 +120,8 @@ class EmailCampaign implements ExtendEntityInterface
 
     /**
      * Pre update event handler
-     *
-     * @ORM\PreUpdate
      */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

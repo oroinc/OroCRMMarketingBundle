@@ -2,176 +2,95 @@
 
 namespace Oro\Bundle\TrackingBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingVisit;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
+use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitRepository;
 
 /**
  * Represent a website visit.
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitRepository")
- * @ORM\Table(name="oro_tracking_visit", indexes={
- *     @ORM\Index(name="visit_visitorUid_idx", columns={"visitor_uid"}),
- *     @ORM\Index(name="visit_userIdentifier_idx", columns={"user_identifier"}),
- *     @ORM\Index(name="website_first_action_time_idx", columns={"website_id", "first_action_time"})
- * })
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-external-link"
- *      }
- *  }
- * )
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @method TrackingVisit supportIdentifierTarget($targetClass)
  * @method TrackingVisit setIdentifierTarget($target)
  * @method TrackingVisit getIdentifierTarget()
  * @mixin OroTrackingBundle_Entity_TrackingVisit
  */
+#[ORM\Entity(repositoryClass: TrackingVisitRepository::class)]
+#[ORM\Table(name: 'oro_tracking_visit')]
+#[ORM\Index(columns: ['visitor_uid'], name: 'visit_visitorUid_idx')]
+#[ORM\Index(columns: ['user_identifier'], name: 'visit_userIdentifier_idx')]
+#[ORM\Index(columns: ['website_id', 'first_action_time'], name: 'website_first_action_time_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link']])]
 class TrackingVisit implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
     public const INVALID_CODE = 'invalid';
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var TrackingWebsite
-     *
-     * @ORM\ManyToOne(targetEntity="TrackingWebsite")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     */
-    protected $trackingWebsite;
+    #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
+    #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?TrackingWebsite $trackingWebsite = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="visitor_uid", type="string", length=255)
-     */
-    protected $visitorUid;
+    #[ORM\Column(name: 'visitor_uid', type: Types::STRING, length: 255)]
+    protected ?string $visitorUid = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="user_identifier", type="string", length=255)
-     */
-    protected $userIdentifier;
+    #[ORM\Column(name: 'user_identifier', type: Types::STRING, length: 255)]
+    protected ?string $userIdentifier = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="first_action_time", type="datetime")
-     */
-    protected $firstActionTime;
+    #[ORM\Column(name: 'first_action_time', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $firstActionTime = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_action_time", type="datetime")
-     */
-    protected $lastActionTime;
+    #[ORM\Column(name: 'last_action_time', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $lastActionTime = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="parsed_uid", type="integer", length=255, nullable=false, options={"default"=0})
-     */
-    protected $parsedUID = 0;
+    #[ORM\Column(name: 'parsed_uid', type: Types::INTEGER, length: 255, nullable: false, options: ['default' => 0])]
+    protected ?int $parsedUID = 0;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="identifier_detected", type="boolean", nullable=false, options={"default"=false})
-     */
-    protected $identifierDetected = false;
+    #[ORM\Column(name: 'identifier_detected', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    protected ?bool $identifierDetected = false;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="parsing_count", type="integer", nullable=false, options={"default"=0})
-     */
-    protected $parsingCount = 0;
+    #[ORM\Column(name: 'parsing_count', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
+    protected ?int $parsingCount = 0;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ip", type="string", length=255, nullable=true)
-     */
-    protected $ip;
+    #[ORM\Column(name: 'ip', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $ip = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="client", type="string", length=255, nullable=true)
-     */
-    protected $client;
+    #[ORM\Column(name: 'client', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $client = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="client_version", type="string", length=255, nullable=true)
-     */
-    protected $clientVersion;
+    #[ORM\Column(name: 'client_version', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $clientVersion = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="client_type", type="string", length=255, nullable=true)
-     */
-    protected $clientType;
+    #[ORM\Column(name: 'client_type', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $clientType = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="os", type="string", length=255, nullable=true)
-     */
-    protected $os;
+    #[ORM\Column(name: 'os', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $os = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="os_version", type="string", length=255, nullable=true)
-     */
-    protected $osVersion;
+    #[ORM\Column(name: 'os_version', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $osVersion = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="desktop", type="boolean", nullable=true)
-     */
-    protected $desktop;
+    #[ORM\Column(name: 'desktop', type: Types::BOOLEAN, nullable: true)]
+    protected ?bool $desktop = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="mobile", type="boolean", nullable=true)
-     */
-    protected $mobile;
+    #[ORM\Column(name: 'mobile', type: Types::BOOLEAN, nullable: true)]
+    protected ?bool $mobile = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="bot", type="boolean", nullable=true)
-     */
-    protected $bot;
+    #[ORM\Column(name: 'bot', type: Types::BOOLEAN, nullable: true)]
+    protected ?bool $bot = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255, nullable=true)
-     */
-    protected $code;
+    #[ORM\Column(name: 'code', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $code = null;
 
     /**
      * @return int

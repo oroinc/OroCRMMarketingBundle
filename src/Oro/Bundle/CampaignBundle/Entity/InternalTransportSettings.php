@@ -7,17 +7,15 @@ use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * @ORM\Entity
- */
+* Entity that represents Internal Transport Settings
+*
+*/
+#[ORM\Entity]
 class InternalTransportSettings extends TransportSettings
 {
-    /**
-     * @var EmailTemplate
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\EmailTemplate")
-     * @ORM\JoinColumn(name="email_template_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     */
-    protected $template;
+    #[ORM\ManyToOne(targetEntity: EmailTemplate::class)]
+    #[ORM\JoinColumn(name: 'email_template_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?EmailTemplate $template = null;
 
     /**
      * Set template

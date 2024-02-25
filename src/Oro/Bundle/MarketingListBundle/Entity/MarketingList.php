@@ -4,192 +4,133 @@ namespace Oro\Bundle\MarketingListBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroMarketingListBundle_Entity_MarketingList;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
+use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Marketing list
  *
- * @ORM\Table(name="orocrm_marketing_list")
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks
- * @Config(
- *      routeName="oro_marketing_list_index",
- *      defaultValues={
- *          "entity"={
- *              "icon"="fa-list-alt"
- *          },
- *          "ownership"={
- *              "owner_type"="USER",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="owner_id",
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
- *
- *          },
- *          "security"={
- *              "type"="ACL",
- *              "group_name"="",
- *              "category"="marketing"
- *          },
- *          "form"={
- *              "form_type"="Oro\Bundle\MarketingListBundle\Form\Type\MarketingListSelectType",
- *              "grid_name"="oro-marketing-list-select-grid",
- *          },
- *          "grid"={
- *              "default"="oro-marketing-list-grid"
- *          },
- *          "tag"={
- *              "enabled"=true
- *          }
- *      }
- * )
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @mixin OroMarketingListBundle_Entity_MarketingList
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_marketing_list')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    routeName: 'oro_marketing_list_index',
+    defaultValues: [
+        'entity' => ['icon' => 'fa-list-alt'],
+        'ownership' => [
+            'owner_type' => 'USER',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id',
+            'organization_field_name' => 'organization',
+            'organization_column_name' => 'organization_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'form' => ['form_type' => MarketingListSelectType::class, 'grid_name' => 'oro-marketing-list-select-grid'],
+        'grid' => ['default' => 'oro-marketing-list-grid'],
+        'tag' => ['enabled' => true]
+    ]
+)]
 class MarketingList implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true, nullable: false)]
+    protected ?string $name = null;
+
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+    protected ?string $description = null;
+
+    #[ORM\Column(name: 'entity', type: Types::STRING, length: 255, unique: false, nullable: false)]
+    protected ?string $entity = null;
+
+    #[ORM\ManyToOne(targetEntity: MarketingListType::class)]
+    #[ORM\JoinColumn(name: 'type', referencedColumnName: 'name', nullable: false)]
+    protected ?MarketingListType $type = null;
+
+    #[ORM\ManyToOne(targetEntity: Segment::class, cascade: ['all'])]
+    #[ORM\JoinColumn(name: 'segment_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?Segment $segment = null;
+
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var Collection<int, MarketingListItem>
      */
-    protected $id;
+    #[ORM\OneToMany(
+        mappedBy: 'marketingList',
+        targetEntity: MarketingListItem::class,
+        cascade: ['all'],
+        orphanRemoval: true
+    )]
+    protected ?Collection $marketingListItems = null;
 
     /**
-     * @ORM\Column(type="string", unique=true, length=255, nullable=false)
+     * @var Collection<int, MarketingListUnsubscribedItem>
      */
-    protected $name;
+    #[ORM\OneToMany(
+        mappedBy: 'marketingList',
+        targetEntity: MarketingListUnsubscribedItem::class,
+        cascade: ['all'],
+        orphanRemoval: true
+    )]
+    protected ?Collection $marketingListUnsubscribedItems = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var Collection<int, MarketingListRemovedItem>
      */
-    protected $description;
+    #[ORM\OneToMany(
+        mappedBy: 'marketingList',
+        targetEntity: MarketingListRemovedItem::class,
+        cascade: ['all'],
+        orphanRemoval: true
+    )]
+    protected ?Collection $marketingListRemovedItems = null;
 
-    /**
-     * @ORM\Column(name="entity", type="string", unique=false, length=255, nullable=false)
-     */
-    protected $entity;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?User $owner = null;
 
-    /**
-     * @var MarketingListType
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingListType")
-     * @ORM\JoinColumn(name="type", referencedColumnName="name", nullable=false)
-     **/
-    protected $type;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?OrganizationInterface $organization = null;
 
-    /**
-     * @var Segment
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\SegmentBundle\Entity\Segment", cascade={"all"})
-     * @ORM\JoinColumn(name="segment_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     **/
-    protected $segment;
+    #[ORM\Column(name: 'last_run', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastRun = null;
 
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="MarketingListItem", mappedBy="marketingList",
-     *      cascade={"all"}, orphanRemoval=true
-     * )
-     */
-    protected $marketingListItems;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="MarketingListUnsubscribedItem", mappedBy="marketingList",
-     *      cascade={"all"}, orphanRemoval=true
-     * )
-     */
-    protected $marketingListUnsubscribedItems;
-
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="MarketingListRemovedItem", mappedBy="marketingList",
-     *      cascade={"all"}, orphanRemoval=true
-     * )
-     */
-    protected $marketingListRemovedItems;
-
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
-
-    /**
-     * @var \Datetime
-     *
-     * @ORM\Column(name="last_run", type="datetime", nullable=true)
-     */
-    protected $lastRun;
-
-    /**
-     * @var \Datetime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \Datetime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.updated_at']])]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * Value to disable union, used to retrieve actual ML entities without MLI/MLRI/MLUI
      * @see \Oro\Bundle\MarketingListBundle\Datagrid\Extension\MarketingListExtension::isApplicable
      *
      * @var bool
-     *
-     * @ORM\Column(name="union_contacted_items", type="boolean", nullable=false, options={"default"=true})
      */
-    protected $union = true;
+    #[ORM\Column(name: 'union_contacted_items', type: Types::BOOLEAN, nullable: false, options: ['default' => true])]
+    protected ?bool $union = true;
 
     public function __construct()
     {
@@ -429,9 +370,8 @@ class MarketingList implements ExtendEntityInterface
 
     /**
      * Pre persist event listener
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function beforeSave()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -440,8 +380,8 @@ class MarketingList implements ExtendEntityInterface
 
     /**
      * Pre update event handler
-     * @ORM\PreUpdate
      */
+    #[ORM\PreUpdate]
     public function doUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

@@ -2,54 +2,37 @@
 
 namespace Oro\Bundle\TrackingBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\TrackingBundle\Entity\Repository\UniqueTrackingVisitRepository;
 
 /**
- * @ORM\Entity(repositoryClass="Oro\Bundle\TrackingBundle\Entity\Repository\UniqueTrackingVisitRepository")
- * @ORM\Table(name="oro_tracking_unique_visit", indexes={
- *     @ORM\Index(name="uvisit_action_date_idx", columns={"website_id", "action_date"}),
- *     @ORM\Index(name="uvisit_user_by_date_idx", columns={"user_identifier", "action_date"})
- * })
- */
+* Entity that represents Unique Tracking Visit
+*
+*/
+#[ORM\Entity(repositoryClass: UniqueTrackingVisitRepository::class)]
+#[ORM\Table(name: 'oro_tracking_unique_visit')]
+#[ORM\Index(columns: ['website_id', 'action_date'], name: 'uvisit_action_date_idx')]
+#[ORM\Index(columns: ['user_identifier', 'action_date'], name: 'uvisit_user_by_date_idx')]
 class UniqueTrackingVisit
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var TrackingWebsite
-     *
-     * @ORM\ManyToOne(targetEntity="TrackingWebsite")
-     * @ORM\JoinColumn(name="website_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     */
-    protected $trackingWebsite;
+    #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
+    #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?TrackingWebsite $trackingWebsite = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="visit_count", type="integer", nullable=false)
-     */
-    protected $visitCount;
+    #[ORM\Column(name: 'visit_count', type: Types::INTEGER, nullable: false)]
+    protected ?int $visitCount = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="user_identifier", type="string", length=32)
-     */
-    protected $userIdentifier;
+    #[ORM\Column(name: 'user_identifier', type: Types::STRING, length: 32)]
+    protected ?string $userIdentifier = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="action_date", type="date")
-     */
-    protected $firstActionTime;
+    #[ORM\Column(name: 'action_date', type: Types::DATE_MUTABLE)]
+    protected ?\DateTimeInterface $firstActionTime = null;
 
     /**
      * @return int

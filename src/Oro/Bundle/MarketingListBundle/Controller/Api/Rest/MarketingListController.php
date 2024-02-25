@@ -4,7 +4,7 @@ namespace Oro\Bundle\MarketingListBundle\Controller\Api\Rest;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MarketingListBundle\Model\ContactInformationFieldHelper;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +23,10 @@ class MarketingListController extends RestController
      *      description="Delete Marketing List",
      *      resource=true
      * )
-     * @AclAncestor("oro_marketing_list_delete")
      *
      * @return Response
      */
+    #[AclAncestor('oro_marketing_list_delete')]
     public function deleteAction(int $id)
     {
         return $this->handleDeleteRequest($id);

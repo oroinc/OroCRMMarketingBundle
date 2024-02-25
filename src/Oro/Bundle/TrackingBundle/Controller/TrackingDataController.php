@@ -13,17 +13,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Provides create action for the TrackingData entity.
- *
- * @Route("/tracking/data")
  */
+#[Route(path: '/tracking/data')]
 class TrackingDataController extends AbstractController
 {
     /**
-     * @Route("/create", name="oro_tracking_data_create")
      * @param Request $request
-     *
      * @return Response
      */
+    #[Route(path: '/create', name: 'oro_tracking_data_create')]
     public function createAction(Request $request)
     {
         $jobResult = $this->getJobExecutor()->executeJob(
