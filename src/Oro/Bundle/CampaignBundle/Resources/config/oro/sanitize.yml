@@ -1,0 +1,7 @@
+oro_sanitize:
+    entity:
+        orocrm_campaign_email:
+            fields:
+                transport: md5
+                sender_email: md5
+                name: md5

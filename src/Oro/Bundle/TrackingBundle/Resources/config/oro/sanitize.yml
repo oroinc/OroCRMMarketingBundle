@@ -1,0 +1,7 @@
+oro_sanitize:
+    entity:
+        oro_tracking_data: truncate
+        oro_tracking_event: truncate_cascade
+        oro_tracking_event_dictionary: truncate_cascade
+        oro_tracking_unique_visit: truncate
+        oro_tracking_website: truncate_cascade
