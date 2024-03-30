@@ -1,0 +1,8 @@
+TrackingBundle
+--------------
+* The `IdentifierEventExtension::setExtendExtension`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/5.1.0/src/Oro/Bundle/TrackingBundle/Migration/Extension/IdentifierEventExtension.php#L22 "Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension::setExtendExtension")</sup> method was removed.
+* The `VisitEventAssociationExtension::setExtendExtension`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/5.1.0/src/Oro/Bundle/TrackingBundle/Migration/Extension/VisitEventAssociationExtension.php#L22 "Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension::setExtendExtension")</sup> method was removed.
+* The `ImportLogsCommand::isActive`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/5.1.0/src/Oro/Bundle/TrackingBundle/Command/ImportLogsCommand.php#L65 "Oro\Bundle\TrackingBundle\Command\ImportLogsCommand::isActive")</sup> method was removed.
+* The `IdentifierEventExtension::$extendExtension`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/5.1.0/src/Oro/Bundle/TrackingBundle/Migration/Extension/IdentifierEventExtension.php#L17 "Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension::$extendExtension")</sup> property was removed.
+* The `VisitEventAssociationExtension::$extendExtension`<sup>[[?]](https://github.com/oroinc/OroCRMMarketingBundle/tree/5.1.0/src/Oro/Bundle/TrackingBundle/Migration/Extension/VisitEventAssociationExtension.php#L17 "Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension::$extendExtension")</sup> property was removed.
+
