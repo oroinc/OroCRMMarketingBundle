@@ -7,6 +7,7 @@ namespace Oro\Bundle\TrackingBundle\EntityExtend;
 use Oro\Bundle\EntityExtendBundle\EntityExtend\AbstractAssociationEntityFieldExtension;
 use Oro\Bundle\EntityExtendBundle\EntityExtend\EntityFieldProcessTransport;
 use Oro\Bundle\EntityExtendBundle\Extend\RelationType;
+use Oro\Bundle\EntityExtendBundle\Tools\AssociationNameGenerator;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension;
 
@@ -15,17 +16,18 @@ use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension
  */
 class VisitEventEntityFieldExtension extends AbstractAssociationEntityFieldExtension
 {
-    protected function isApplicable(EntityFieldProcessTransport $transport): bool
+    public function isApplicable(EntityFieldProcessTransport $transport): bool
     {
-        return $transport->getClass() === TrackingVisitEvent::class;
+        return $transport->getClass() === TrackingVisitEvent::class
+            && AssociationNameGenerator::extractAssociationKind($transport->getName()) === $this->getRelationKind();
     }
 
-    protected function getRelationKind(): ?string
+    public function getRelationKind(): ?string
     {
         return VisitEventAssociationExtension::ASSOCIATION_KIND;
     }
 
-    protected function getRelationType(): string
+    public function getRelationType(): string
     {
         return RelationType::MULTIPLE_MANY_TO_ONE;
     }
