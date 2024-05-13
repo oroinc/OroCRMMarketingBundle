@@ -1,3 +1,4 @@
+@regression
 @ticket-BAP-21510
 Feature: Tracking website update
   In order to check updating website tracking data

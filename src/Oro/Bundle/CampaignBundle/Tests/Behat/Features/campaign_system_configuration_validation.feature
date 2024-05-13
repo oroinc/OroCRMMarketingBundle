@@ -1,3 +1,4 @@
+@regression
 @ticket-BAP-18094
 
 Feature: Campaign system configuration validation

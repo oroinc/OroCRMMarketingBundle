@@ -1,3 +1,4 @@
+@regression
 @ticket-BAP-21510
 Feature: Campaign update
   In order to manage Campaign feature
