@@ -193,7 +193,7 @@
                         setChartContainerSize();
                     });
 
-                    $(window).resize(function () {
+                    $(window).on('resize', function () {
                         if (setChartSize()) {
                             drawChart();
                             setChartContainerSize();
