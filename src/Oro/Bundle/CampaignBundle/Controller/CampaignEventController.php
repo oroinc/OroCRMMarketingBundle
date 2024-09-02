@@ -5,7 +5,7 @@ namespace Oro\Bundle\CampaignBundle\Controller;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\ChartBundle\Model\ChartViewBuilder;
 use Oro\Bundle\ChartBundle\Model\ConfigProvider;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,7 +26,7 @@ class CampaignEventController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
-            Manager::class,
+            ManagerInterface::class,
             ChartViewBuilder::class,
             ConfigProvider::class
         ]);
@@ -70,7 +70,7 @@ class CampaignEventController extends AbstractController
         ];
 
         $datagrid = $this->container
-            ->get(Manager::class)
+            ->get(ManagerInterface::class)
             ->getDatagridByRequestParams(
                 $gridName,
                 $gridParameters

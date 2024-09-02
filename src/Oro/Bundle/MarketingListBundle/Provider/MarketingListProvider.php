@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
@@ -35,7 +35,7 @@ class MarketingListProvider
     const MANUAL_RESULT_ENTITIES_MIXIN = 'oro-marketing-list-manual-entities-mixin';
 
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     protected $dataGridManager;
 
@@ -49,7 +49,7 @@ class MarketingListProvider
      */
     protected $columnInformation = [];
 
-    public function __construct(Manager $dataGridManager)
+    public function __construct(ManagerInterface $dataGridManager)
     {
         $this->dataGridManager = $dataGridManager;
     }

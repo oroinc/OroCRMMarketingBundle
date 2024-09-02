@@ -7,7 +7,7 @@ use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
@@ -18,7 +18,7 @@ use Oro\Bundle\TagBundle\Grid\TagsExtension;
 
 class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ManagerInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $dataGridManager;
 
     /** @var MarketingListProvider */
@@ -26,7 +26,7 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->dataGridManager = $this->createMock(Manager::class);
+        $this->dataGridManager = $this->createMock(ManagerInterface::class);
 
         $this->provider = new MarketingListProvider($this->dataGridManager);
     }
