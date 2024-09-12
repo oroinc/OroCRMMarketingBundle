@@ -9,6 +9,7 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SalesBundle\Entity\Lead;
+use Oro\Bundle\SalesBundle\Entity\Opportunity;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
@@ -17,16 +18,9 @@ use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
  */
 class CampaignRepository extends EntityRepository
 {
-    /**
-     * @param string $code
-     *
-     * @return Campaign|null
-     */
-    public function findOneByCode($code)
+    public function findOneByCode(string $code): ?Campaign
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('campaign')
-            ->from(Campaign::class, 'campaign')
+        $qb = $this->createQueryBuilder('campaign')
             ->join(
                 CampaignCodeHistory::class,
                 'campaignCodeHistory',
@@ -39,12 +33,7 @@ class CampaignRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @param Campaign $campaign
-     * @param bool $excludeCurrent
-     * @return array
-     */
-    public function getCodesHistory(Campaign $campaign, $excludeCurrent = true)
+    public function getCodesHistory(Campaign $campaign, bool $excludeCurrent = true): array
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('campaignCodeHistory.code')
@@ -64,23 +53,15 @@ class CampaignRepository extends EntityRepository
         return $result;
     }
 
-    /**
-     * @param AclHelper $aclHelper
-     * @param int       $recordsCount
-     * @param array     $dateRange
-     *
-     * @return array
-     */
-    public function getCampaignsLeads(AclHelper $aclHelper, $recordsCount, $dateRange = null)
+    public function getCampaignsLeads(AclHelper $aclHelper, int $recordsCount, ?array $dateRange = null): array
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('campaign.name as label', 'COUNT(lead.id) as number', 'MAX(campaign.createdAt) as maxCreated')
-            ->from(Campaign::class, 'campaign')
+        $qb = $this->createQueryBuilder('campaign');
+        $qb
+            ->select('campaign.name as label', 'COUNT(lead.id) as number', 'MAX(campaign.createdAt) as maxCreated')
             ->leftJoin(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->orderBy('maxCreated', 'DESC')
             ->groupBy('campaign.name')
             ->setMaxResults($recordsCount);
-
         if ($dateRange) {
             $qb->where($qb->expr()->between('lead.createdAt', ':dateFrom', ':dateTo'))
                 ->setParameter('dateFrom', $dateRange['start'], Types::DATETIME_MUTABLE)
@@ -93,32 +74,22 @@ class CampaignRepository extends EntityRepository
     public function getCampaignsLeadsQB($leadAlias): QueryBuilder
     {
         QueryBuilderUtil::checkIdentifier($leadAlias);
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select(
-            'campaign.name as label',
-            sprintf('COUNT(%s.id) as number', $leadAlias),
-            'MAX(campaign.createdAt) as maxCreated'
-        )
-            ->from(Campaign::class, 'campaign')
+
+        return $this->createQueryBuilder('campaign')
+            ->select(
+                'campaign.name as label',
+                sprintf('COUNT(%s.id) as number', $leadAlias),
+                'MAX(campaign.createdAt) as maxCreated'
+            )
             ->leftJoin(Lead::class, $leadAlias, 'WITH', sprintf('%s.campaign = campaign', $leadAlias))
             ->orderBy('maxCreated', 'DESC')
             ->groupBy('campaign.name');
-
-        return $qb;
     }
 
-    /**
-     * @param AclHelper $aclHelper
-     * @param int       $recordsCount
-     * @param array     $dateRange
-     *
-     * @return array
-     */
-    public function getCampaignsOpportunities(AclHelper $aclHelper, $recordsCount, $dateRange = null)
+    public function getCampaignsOpportunities(AclHelper $aclHelper, int $recordsCount, ?array $dateRange = null): array
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('campaign.name as label', 'COUNT(opportunities.id) as number')
-            ->from(Campaign::class, 'campaign')
+        $qb = $this->createQueryBuilder('campaign')
+            ->select('campaign.name as label', 'COUNT(opportunities.id) as number')
             ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', 'opportunities')
             ->orderBy('number', 'DESC')
@@ -134,64 +105,50 @@ class CampaignRepository extends EntityRepository
         return $aclHelper->apply($qb)->getArrayResult();
     }
 
-    /**
-     * @param string $opportunitiesAlias
-     *
-     * @return QueryBuilder
-     */
-    public function getCampaignsOpportunitiesQB($opportunitiesAlias)
+    public function getCampaignsOpportunitiesQB(string $opportunitiesAlias): QueryBuilder
     {
         QueryBuilderUtil::checkIdentifier($opportunitiesAlias);
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('campaign.name as label', sprintf('COUNT(%s.id) as number', $opportunitiesAlias))
-            ->from(Campaign::class, 'campaign')
+
+        return $this->createQueryBuilder('campaign')
+            ->select('campaign.name as label', sprintf('COUNT(%s.id) as number', $opportunitiesAlias))
             ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', $opportunitiesAlias)
             ->orderBy('number', 'DESC')
             ->groupBy('campaign.name');
-
-        return $qb;
     }
 
-    /**
-     * @param string $opportunitiesAlias
-     * @param CurrencyQueryBuilderTransformerInterface $qbTransformer
-     *
-     * @return QueryBuilder
-     */
     public function getCampaignsByCloseRevenueQB(
-        $opportunitiesAlias,
+        string $opportunitiesAlias,
         CurrencyQueryBuilderTransformerInterface $qbTransformer
-    ) {
+    ): QueryBuilder {
         QueryBuilderUtil::checkIdentifier($opportunitiesAlias);
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $crSelect = $qbTransformer->getTransformSelectQuery('closeRevenue', $qb, $opportunitiesAlias);
+        $qb = $this->createQueryBuilder('campaign');
         $qb
             ->select(
                 'campaign.name as label',
                 sprintf(
                     'SUM(%s) as closeRevenue',
-                    $crSelect
+                    $qbTransformer->getTransformSelectQuery('closeRevenue', $qb, $opportunitiesAlias)
                 )
             )
-            ->from(Campaign::class, 'campaign')
             ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', $opportunitiesAlias)
-            ->where(sprintf('%s.status=\'won\'', $opportunitiesAlias))
-            ->andWhere(sprintf('%s.closeRevenueValue>0', $opportunitiesAlias))
+            ->where(sprintf(
+                '%1$s.status = :status AND %1$s.closeRevenueValue > :closeRevenueStartValue',
+                $opportunitiesAlias
+            ))
+            ->setParameter('status', Opportunity::STATUS_WON)
+            ->setParameter('closeRevenueStartValue', 0)
             ->orderBy('closeRevenue', 'DESC')
             ->groupBy('campaign.name');
 
         return $qb;
     }
 
-    /**
-     * @return int
-     */
-    public function getCount()
+    public function getCount(): int
     {
-        $qb = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id)');
+        $qb = $this->createQueryBuilder('campaign')
+            ->select('COUNT(campaign.id)');
 
         return (int)$qb->getQuery()->getSingleScalarResult();
     }

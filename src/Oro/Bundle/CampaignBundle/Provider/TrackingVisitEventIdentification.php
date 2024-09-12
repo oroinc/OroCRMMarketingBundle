@@ -9,20 +9,19 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentifierInterface;
 
 /**
- * Checks if given tracking event is supported by identifier
+ * Checks if given tracking event is supported by identifier.
  */
 class TrackingVisitEventIdentification implements TrackingEventIdentifierInterface
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    protected ManagerRegistry $doctrine;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $doctrine)
     {
-        $this->registry = $registry;
+        $this->doctrine = $doctrine;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isApplicable(TrackingVisit $trackingVisit)
     {
@@ -30,14 +29,14 @@ class TrackingVisitEventIdentification implements TrackingEventIdentifierInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function identify(TrackingVisit $trackingVisit)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getIdentityTarget()
     {
@@ -45,38 +44,29 @@ class TrackingVisitEventIdentification implements TrackingEventIdentifierInterfa
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getEventTargets()
     {
-        return [
-            'Oro\Bundle\CampaignBundle\Entity\Campaign'
-        ];
+        return [Campaign::class];
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isApplicableVisitEvent(TrackingVisitEvent $trackingVisitEvent)
     {
-        $code = $trackingVisitEvent->getWebEvent()->getCode();
-        return !is_null($code);
+        return null !== $trackingVisitEvent->getWebEvent()->getCode();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function processEvent(TrackingVisitEvent $trackingVisitEvent)
     {
-        $code = $trackingVisitEvent->getWebEvent()->getCode();
-        $campaign = $this->registry->getManagerForClass(Campaign::class)
-            ->getRepository(Campaign::class)
-            ->findOneByCode($code);
+        $campaign = $this->doctrine->getRepository(Campaign::class)
+            ->findOneByCode($trackingVisitEvent->getWebEvent()->getCode());
 
-        if ($campaign) {
-            return [$campaign];
-        }
-
-        return [];
+        return null !== $campaign ? [$campaign] : [];
     }
 }

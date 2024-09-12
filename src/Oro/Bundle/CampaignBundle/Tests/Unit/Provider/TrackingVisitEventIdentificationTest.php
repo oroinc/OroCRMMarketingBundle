@@ -3,7 +3,6 @@
 namespace Oro\Bundle\CampaignBundle\Tests\Unit\Provider;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Provider\TrackingVisitEventIdentification;
@@ -13,84 +12,85 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 
 class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject */
-    private $em;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $doctrine;
 
     /** @var TrackingVisitEventIdentification */
     private $provider;
 
     protected function setUp(): void
     {
-        $this->em = $this->createMock(ObjectManager::class);
+        $this->doctrine = $this->createMock(ManagerRegistry::class);
 
-        $doctrine = $this->createMock(ManagerRegistry::class);
-        $doctrine->expects($this->any())
-            ->method('getManagerForClass')
-            ->willReturn($this->em);
-
-        $this->provider = new TrackingVisitEventIdentification($doctrine);
+        $this->provider = new TrackingVisitEventIdentification($this->doctrine);
     }
 
-    public function testIsApplicable()
+    public function testIsApplicable(): void
     {
-        $this->assertFalse($this->provider->isApplicable(new TrackingVisit()));
+        self::assertFalse($this->provider->isApplicable(new TrackingVisit()));
     }
 
-    public function testGetIdentityTarget()
+    public function testGetIdentityTarget(): void
     {
-        $this->assertNull($this->provider->getIdentityTarget());
+        self::assertNull($this->provider->getIdentityTarget());
     }
 
-    public function testGetEventTargets()
+    public function testGetEventTargets(): void
     {
-        $this->assertEquals(
-            [
-                Campaign::class
-            ],
-            $this->provider->getEventTargets()
-        );
+        self::assertEquals([Campaign::class], $this->provider->getEventTargets());
     }
 
-    public function testIsApplicableVisitEvent()
+    public function testIsApplicableVisitEvent(): void
     {
-        $event = new TrackingVisitEvent();
         $webEvent = new TrackingEvent();
-        $event->setWebEvent($webEvent);
-        $this->assertFalse($this->provider->isApplicableVisitEvent($event));
-        $webEvent->setCode('test');
-        $this->assertTrue($this->provider->isApplicableVisitEvent($event));
-    }
-
-    /**
-     * @dataProvider processData
-     */
-    public function testProcessEvent(bool $isFind)
-    {
         $event = new TrackingVisitEvent();
-        $webEvent = new TrackingEvent();
-        $webEvent->setCode('test');
         $event->setWebEvent($webEvent);
 
-        $testResult = new \stdClass();
+        self::assertFalse($this->provider->isApplicableVisitEvent($event));
+
+        $webEvent->setCode('test');
+        self::assertTrue($this->provider->isApplicableVisitEvent($event));
+    }
+
+    public function testProcessEventWhenCampaignFound(): void
+    {
+        $webEvent = new TrackingEvent();
+        $webEvent->setCode('test');
+        $event = new TrackingVisitEvent();
+        $event->setWebEvent($webEvent);
+
+        $campaign = new Campaign();
 
         $repo = $this->createMock(CampaignRepository::class);
-        $this->em->expects($this->once())
+        $this->doctrine->expects(self::once())
             ->method('getRepository')
             ->with(Campaign::class)
             ->willReturn($repo);
-        $repo->expects($this->once())
+        $repo->expects(self::once())
             ->method('findOneByCode')
             ->with('test')
-            ->willReturn($isFind ? $testResult : null);
+            ->willReturn($campaign);
 
-        $this->assertEquals($isFind ? [$testResult] : [], $this->provider->processEvent($event));
+        self::assertSame([$campaign], $this->provider->processEvent($event));
     }
 
-    public function processData(): array
+    public function testProcessEventWhenCampaignNotFound(): void
     {
-        return [
-            [true],
-            [false]
-        ];
+        $webEvent = new TrackingEvent();
+        $webEvent->setCode('test');
+        $event = new TrackingVisitEvent();
+        $event->setWebEvent($webEvent);
+
+        $repo = $this->createMock(CampaignRepository::class);
+        $this->doctrine->expects(self::once())
+            ->method('getRepository')
+            ->with(Campaign::class)
+            ->willReturn($repo);
+        $repo->expects(self::once())
+            ->method('findOneByCode')
+            ->with('test')
+            ->willReturn(null);
+
+        self::assertSame([], $this->provider->processEvent($event));
     }
 }
