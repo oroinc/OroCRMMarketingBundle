@@ -4,19 +4,22 @@ namespace Oro\Bundle\MarketingActivityBundle\Model;
 
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
-use Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
+use Oro\Bundle\EntityExtendBundle\Provider\EnumOptionsProvider;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
+/**
+ * MarketingActivity entity factory
+ */
 class ActivityFactory
 {
     /**
-     * @var EnumValueProvider
+     * @var EnumOptionsProvider
      */
     protected $enumProvider;
 
-    public function __construct(EnumValueProvider $enumProvider)
+    public function __construct(EnumOptionsProvider $enumProvider)
     {
         $this->enumProvider = $enumProvider;
     }
@@ -57,10 +60,10 @@ class ActivityFactory
 
     /**
      * @param $id
-     * @return AbstractEnumValue
+     * @return EnumOptionInterface
      */
     protected function getActivityType($id)
     {
-        return $this->enumProvider->getEnumValueByCode(MarketingActivity::TYPE_ENUM_CODE, $id);
+        return $this->enumProvider->getEnumOptionByCode(MarketingActivity::TYPE_ENUM_CODE, $id);
     }
 }

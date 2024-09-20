@@ -8,14 +8,11 @@ datagrids:
                     - emailCampaign.id as emailCampaignId
                     - emailCampaign.name as emailCampaignName
                     - ma.actionDate as eventDate
-                    - eventType.id as eventTypeId
-                    - eventType.name as eventTypeName
                     - ma.details
                 from:
                     - { table: Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity , alias: ma }
                 join:
                     left:
-                        - { join: ma.type, alias: eventType }
                         -
                             join: 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign'
                             alias: emailCampaign
@@ -36,8 +33,13 @@ datagrids:
             emailCampaignName:
                 label: oro.marketingactivity.email_campaign.label
                 cellClassName: 'direction-ltr'
-            eventTypeName:
+            type:
                 label: oro.marketingactivity.event_type.label
+                frontend_type: select
+                enum_code: ma_type
+                data_name: type
+                choices: "@oro_entity_extend.enum_options_provider->getEnumChoicesByCode('ma_type')"
+                translatable_options: false
             eventDate:
                 label: oro.marketingactivity.event_date.label
                 frontend_type: datetime
@@ -46,9 +48,9 @@ datagrids:
         sorters:
             columns:
                 emailCampaignName: { data_name: emailCampaign.name }
-                eventTypeName:     { data_name: eventTypeName }
-                eventDate:         { data_name: ma.actionDate }
-                details:           { data_name: ma.details }
+                type: { data_name: type }
+                eventDate: { data_name: ma.actionDate }
+                details: { data_name: ma.details }
             default:
                 eventDate: DESC
         filters:
@@ -56,9 +58,9 @@ datagrids:
                 emailCampaignName:
                     type: string
                     data_name: emailCampaign.name
-                eventTypeName:
+                type:
                     type: enum
-                    data_name: eventTypeId
+                    data_name: type
                     enum_code: ma_type
                 eventDate:
                     type: datetime

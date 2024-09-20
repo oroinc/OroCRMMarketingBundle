@@ -77,7 +77,7 @@ class MarketingActivityTest extends RestJsonApiTestCase
             new \DateTime('2019-01-02 10:30:00', new \DateTimeZone('UTC')),
             $marketingActivity->getActionDate()
         );
-        self::assertEquals('open', $marketingActivity->getType()->getId());
+        self::assertEquals('open', $marketingActivity->getType()->getInternalId());
         self::assertEquals(TestActivity::class, $marketingActivity->getEntityClass());
         self::assertEquals($entityId, $marketingActivity->getEntityId());
     }

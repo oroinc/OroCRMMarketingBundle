@@ -41,13 +41,13 @@ oro:
         actions.label:                 Activity actions
         summary:
             label:                     Marketing Activity Summary
-            send.label:                Send
-            open.label:                Open
-            click.label:               Click
-            forward.label:             Forward
-            soft_bounce.label:         Soft Bounce
-            hard_bounce.label:         Hard Bounce
-            unsubscribe.label:         Unsubscribe
+            ma_type.send.label:                Send
+            ma_type.open.label:                Open
+            ma_type.click.label:               Click
+            ma_type.forward.label:             Forward
+            ma_type.soft_bounce.label:         Soft Bounce
+            ma_type.hard_bounce.label:         Hard Bounce
+            ma_type.unsubscribe.label:         Unsubscribe
         sections:
             marketingactivities:       Marketing Activity
 

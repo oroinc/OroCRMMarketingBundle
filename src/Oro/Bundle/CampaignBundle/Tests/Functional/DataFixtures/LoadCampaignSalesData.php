@@ -6,7 +6,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOption;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SalesBundle\Entity\Lead;
 use Oro\Bundle\SalesBundle\Entity\Opportunity;
@@ -86,15 +87,13 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
         $this->setReference($name, $opportunity);
     }
 
-    /**
-     * @param string $statusId
-     * @param ObjectManager $manager
-     * @return AbstractEnumValue
-     */
-    private function getStatus($statusId, ObjectManager $manager)
+    private function getStatus(string $statusId, ObjectManager $manager): ?EnumOptionInterface
     {
-        $className = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATUS_CODE);
-
-        return $manager->getRepository($className)->find(ExtendHelper::buildEnumValueId($statusId));
+        return $manager->getRepository(EnumOption::class)->find(
+            ExtendHelper::buildEnumOptionId(
+                Opportunity::INTERNAL_STATUS_CODE,
+                ExtendHelper::buildEnumInternalId($statusId)
+            )
+        );
     }
 }

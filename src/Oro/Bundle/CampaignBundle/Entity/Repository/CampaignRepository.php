@@ -9,7 +9,6 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
 use Oro\Bundle\CurrencyBundle\Query\CurrencyQueryBuilderTransformerInterface;
 use Oro\Bundle\SalesBundle\Entity\Lead;
-use Oro\Bundle\SalesBundle\Entity\Opportunity;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
@@ -134,11 +133,11 @@ class CampaignRepository extends EntityRepository
             ->join(Lead::class, 'lead', 'WITH', 'lead.campaign = campaign')
             ->join('lead.opportunities', $opportunitiesAlias)
             ->where(sprintf(
-                '%1$s.status = :status AND %1$s.closeRevenueValue > :closeRevenueStartValue',
+                'JSON_EXTRACT(%1$s.serialized_data, \'status\') = :status AND %1$s.closeRevenueValue > :revenueVal',
                 $opportunitiesAlias
             ))
-            ->setParameter('status', Opportunity::STATUS_WON)
-            ->setParameter('closeRevenueStartValue', 0)
+            ->setParameter('status', 'opportunity_status.won')
+            ->setParameter('revenueVal', 0)
             ->orderBy('closeRevenue', 'DESC')
             ->groupBy('campaign.name');
 

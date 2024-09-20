@@ -3,8 +3,10 @@
 namespace Oro\Bundle\MarketingActivityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOption;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
 /**
@@ -22,8 +24,9 @@ class MarketingActivityRepository extends EntityRepository
     public function getMarketingActivitySummaryQueryBuilder($campaignId, $entityClass, $entityId)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('COUNT(ma.id) as value, IDENTITY(ma.type) as typeId')
+        $queryBuilder->select('COUNT(ma.id) as value, type.id as typeId')
             ->from(MarketingActivity::class, 'ma')
+            ->innerJoin(EnumOption::class, 'type', Join::WITH, "JSON_EXTRACT(ma.serialized_data, 'type') = type.id")
             ->where('ma.campaign = :campaignId')
             ->groupBy('typeId')
             ->setParameter(':campaignId', $campaignId);
@@ -115,9 +118,9 @@ class MarketingActivityRepository extends EntityRepository
     public function addEventTypeData(&$items, $entityClass, $entityId)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('ma.actionDate, IDENTITY(ma.campaign) as campaignId, type.name')
+        $queryBuilder->select('ma.actionDate, IDENTITY(ma.campaign) as campaignId, type.name as name')
             ->from(MarketingActivity::class, 'ma')
-            ->join('ma.type', 'type')
+            ->innerJoin(EnumOption::class, 'type', Join::WITH, "JSON_EXTRACT(ma.serialized_data, 'type') = type.id")
             ->where('ma.entityClass = :entityClass')
             ->andWhere('ma.entityId = :entityId')
             ->setParameter(':entityClass', $entityClass)

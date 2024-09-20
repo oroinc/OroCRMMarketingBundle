@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroMarketingActivityBundle_Entity_MarketingActivity;
 use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
-use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOptionInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository;
@@ -16,7 +16,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 /**
  * Store marketing activity in database.
  *
- * @method AbstractEnumValue getType()
+ * @method EnumOptionInterface getType()
  * @mixin OroMarketingActivityBundle_Entity_MarketingActivity
  */
 #[ORM\Entity(repositoryClass: MarketingActivityRepository::class)]

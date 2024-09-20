@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Tests\Functional\DataFixtures\LoadCampaignData;
+use Oro\Bundle\EntityExtendBundle\Entity\EnumOption;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 use Oro\Bundle\TestFrameworkBundle\Entity\TestActivity;
@@ -85,7 +86,7 @@ class LoadMarketingActivityData extends AbstractFixture implements DependentFixt
     public function load(ObjectManager $manager)
     {
         $organization = $this->getReference('organization');
-        $enumRepo = $manager->getRepository(ExtendHelper::buildEnumValueClassName('ma_type'));
+        $enumRepo = $manager->getRepository(EnumOption::class);
         foreach (self::DATA as $key => $data) {
             $entity = new MarketingActivity();
             $entity->setOwner($organization)
@@ -93,7 +94,7 @@ class LoadMarketingActivityData extends AbstractFixture implements DependentFixt
                 ->setEntityId($this->getReference($data['entityClassReference'])->getId())
                 ->setEntityClass(TestActivity::class)
                 ->setActionDate(new \DateTime($data['actionDate']))
-                ->setType($enumRepo->find($data['type']));
+                ->setType($enumRepo->find(ExtendHelper::buildEnumOptionId('ma_type', $data['type'])));
             if (isset($data['relatedCampaign'])) {
                 $relatedCampaign = $this->getReference($data['relatedCampaign']);
                 $entity->setRelatedCampaignClass(ClassUtils::getClass($relatedCampaign))
@@ -110,7 +111,7 @@ class LoadMarketingActivityData extends AbstractFixture implements DependentFixt
     /**
      * {@inheritdoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadOrganization::class,

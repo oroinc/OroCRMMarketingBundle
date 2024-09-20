@@ -5,14 +5,15 @@ namespace Oro\Bundle\MarketingActivityBundle\QueryDesigner;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\AbstractQueryConverter;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\FunctionInterface;
 
+/**
+ * Abstract class for TypeCountFunctions
+ */
 abstract class AbstractTypeCountFunction implements FunctionInterface
 {
     /**
      * Returns type id
-     *
-     * @return string
      */
-    abstract protected function getType();
+    abstract protected function getType(): string;
 
     /**
      * {@inheritdoc}

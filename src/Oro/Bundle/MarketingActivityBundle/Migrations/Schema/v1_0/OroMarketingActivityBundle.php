@@ -5,14 +5,14 @@ namespace Oro\Bundle\MarketingActivityBundle\Migrations\Schema\v1_0;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareTrait;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\OutdatedExtendExtensionAwareInterface;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\OutdatedExtendExtensionAwareTrait;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-class OroMarketingActivityBundle implements Migration, ExtendExtensionAwareInterface
+class OroMarketingActivityBundle implements Migration, OutdatedExtendExtensionAwareInterface
 {
-    use ExtendExtensionAwareTrait;
+    use OutdatedExtendExtensionAwareTrait;
 
     /**
      * {@inheritdoc}
@@ -72,7 +72,7 @@ class OroMarketingActivityBundle implements Migration, ExtendExtensionAwareInter
 
     protected function addTypeField(Schema $schema)
     {
-        $this->extendExtension->addEnumField(
+        $this->outdatedExtendExtension->addOutdatedEnumField(
             $schema,
             'orocrm_marketing_activity',
             'type',
