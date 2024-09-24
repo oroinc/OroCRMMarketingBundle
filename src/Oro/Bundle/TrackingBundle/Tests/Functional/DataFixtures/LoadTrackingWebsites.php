@@ -13,17 +13,13 @@ class LoadTrackingWebsites extends AbstractFixture implements DependentFixtureIn
 {
     public const TRACKING_WEBSITE = 'oro_tracking.website1';
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadOrganization::class, LoadUser::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $website = new TrackingWebsite();

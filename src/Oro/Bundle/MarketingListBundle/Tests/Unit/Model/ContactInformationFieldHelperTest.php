@@ -27,6 +27,7 @@ class ContactInformationFieldHelperTest extends \PHPUnit\Framework\TestCase
     /** @var ContactInformationFieldHelper */
     private $helper;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configProvider = $this->createMock(ConfigProvider::class);

@@ -28,6 +28,7 @@ class ContactInformationExclusionProviderTest extends \PHPUnit\Framework\TestCas
     /** @var ContactInformationExclusionProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->virtualFieldProvider = $this->createMock(VirtualFieldProviderInterface::class);

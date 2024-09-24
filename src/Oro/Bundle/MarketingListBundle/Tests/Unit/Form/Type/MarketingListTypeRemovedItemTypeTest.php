@@ -14,6 +14,7 @@ class MarketingListTypeRemovedItemTypeTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListTypeRemovedItemType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->type = new MarketingListTypeRemovedItemType();

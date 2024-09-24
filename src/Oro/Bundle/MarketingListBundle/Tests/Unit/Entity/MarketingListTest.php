@@ -22,6 +22,7 @@ class MarketingListTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingList */
     private $entity;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entity = new MarketingList();

@@ -9,17 +9,13 @@ use Psr\Log\LoggerInterface;
 
 class RemoveContactInformation extends ParametrizedMigrationQuery
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDescription()
     {
         return 'Remove contact_information info from field configs which type does not supports contact information.';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function execute(LoggerInterface $logger)
     {
         $type = Type::getType(Types::ARRAY);

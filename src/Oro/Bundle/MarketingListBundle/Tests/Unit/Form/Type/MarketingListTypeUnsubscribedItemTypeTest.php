@@ -14,6 +14,7 @@ class MarketingListTypeUnsubscribedItemTypeTest extends \PHPUnit\Framework\TestC
     /** @var MarketingListTypeUnsubscribedItemType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->type = new MarketingListTypeUnsubscribedItemType();

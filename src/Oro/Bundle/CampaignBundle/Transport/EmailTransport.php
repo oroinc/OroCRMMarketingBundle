@@ -44,9 +44,7 @@ class EmailTransport implements TransportInterface, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function send(EmailCampaign $campaign, object $entity, array $from, array $to)
     {
         $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
@@ -99,33 +97,25 @@ class EmailTransport implements TransportInterface, LoggerAwareInterface
         throw new \InvalidArgumentException('Sender email and name is empty');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getName()
     {
         return self::NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel()
     {
         return 'oro.campaign.emailcampaign.transport.' . self::NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsFormType()
     {
         return InternalTransportSettingsType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsEntityFQCN()
     {
         return 'Oro\Bundle\CampaignBundle\Entity\InternalTransportSettings';

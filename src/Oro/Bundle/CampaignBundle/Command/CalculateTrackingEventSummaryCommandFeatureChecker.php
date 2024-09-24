@@ -20,9 +20,7 @@ class CalculateTrackingEventSummaryCommandFeatureChecker implements CronCommandF
         $this->featureChecker = $featureChecker;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isFeatureEnabled(string $commandName): bool
     {
         if ('oro:cron:calculate-tracking-event-summary' === $commandName) {

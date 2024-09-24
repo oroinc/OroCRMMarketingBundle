@@ -10,6 +10,7 @@ class GridMarketingListTypeProviderTest extends WebTestCase
     /** @var GridMarketingListTypeProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->initClient();

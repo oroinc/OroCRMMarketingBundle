@@ -10,6 +10,7 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
  */
 class LoadDataFieldEnumValues extends AbstractEnumFixture
 {
+    #[\Override]
     protected function getData(): array
     {
         return [
@@ -22,6 +23,7 @@ class LoadDataFieldEnumValues extends AbstractEnumFixture
         ];
     }
 
+    #[\Override]
     protected function getEnumCode(): string
     {
         return 'ma_type';

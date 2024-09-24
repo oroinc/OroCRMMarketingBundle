@@ -22,9 +22,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
         $this->entityProvider = $entityProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isVirtualRelation($className, $fieldName)
     {
         return
@@ -32,9 +30,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
             && $this->hasMarketingActivity($className);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getVirtualRelationQuery($className, $fieldName)
     {
         $relations = $this->getVirtualRelations($className);
@@ -45,9 +41,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getVirtualRelations($className)
     {
         if ($this->hasMarketingActivity($className)) {
@@ -57,9 +51,7 @@ class MarketingActivityVirtualRelationProvider implements VirtualRelationProvide
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getTargetJoinAlias($className, $fieldName, $selectFieldName = null)
     {
         return self::RELATION_NAME;

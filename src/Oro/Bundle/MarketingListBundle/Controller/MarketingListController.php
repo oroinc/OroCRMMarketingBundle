@@ -120,9 +120,7 @@ class MarketingListController extends AbstractController
         return $this->container->get('oro_marketing_list.entity_provider');
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(

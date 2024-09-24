@@ -20,9 +20,7 @@ class CampaignEventController extends AbstractController
 {
     const PRECALCULATED_SUFFIX = '-precalculated';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [

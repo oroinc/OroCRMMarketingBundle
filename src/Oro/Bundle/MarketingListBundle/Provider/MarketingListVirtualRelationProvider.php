@@ -27,6 +27,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         $this->cacheProvider = $cacheProvider;
     }
 
+    #[\Override]
     public function isVirtualRelation($className, $fieldName): bool
     {
         return
@@ -34,6 +35,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
             && $this->hasMarketingList($className);
     }
 
+    #[\Override]
     public function getVirtualRelationQuery($className, $fieldName): array
     {
         $relations = $this->getVirtualRelations($className);
@@ -44,6 +46,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         return [];
     }
 
+    #[\Override]
     public function getVirtualRelations($className): array
     {
         if ($this->hasMarketingList($className)) {
@@ -53,6 +56,7 @@ class MarketingListVirtualRelationProvider implements VirtualRelationProviderInt
         return [];
     }
 
+    #[\Override]
     public function getTargetJoinAlias($className, $fieldName, $selectFieldName = null): string
     {
         $isItemField = in_array(

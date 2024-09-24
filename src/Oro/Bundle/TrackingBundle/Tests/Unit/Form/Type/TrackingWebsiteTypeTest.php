@@ -13,6 +13,7 @@ class TrackingWebsiteTypeTest extends FormIntegrationTestCase
     /** @var TrackingWebsiteType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

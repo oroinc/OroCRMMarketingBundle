@@ -13,6 +13,7 @@ class MarketingListItemVirtualFieldProviderTest extends \PHPUnit\Framework\TestC
     /** @var MarketingListItemVirtualFieldProvider */
     private $fieldProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->relationProvider = $this->createMock(MarketingListVirtualRelationProvider::class);

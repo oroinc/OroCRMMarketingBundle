@@ -16,17 +16,20 @@ use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension
  */
 class VisitEventEntityFieldExtension extends AbstractAssociationEntityFieldExtension
 {
+    #[\Override]
     public function isApplicable(EntityFieldProcessTransport $transport): bool
     {
         return $transport->getClass() === TrackingVisitEvent::class
             && AssociationNameGenerator::extractAssociationKind($transport->getName()) === $this->getRelationKind();
     }
 
+    #[\Override]
     public function getRelationKind(): ?string
     {
         return VisitEventAssociationExtension::ASSOCIATION_KIND;
     }
 
+    #[\Override]
     public function getRelationType(): string
     {
         return RelationType::MULTIPLE_MANY_TO_ONE;

@@ -12,9 +12,7 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 
 class UpdateFormTypeConfigsToFQCN implements Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         $queries->addQuery(

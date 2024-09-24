@@ -71,6 +71,7 @@ class MultiLineDataTransformer implements TransformerInterface
      *
      * @return DataInterface
      */
+    #[\Override]
     public function transform(DataInterface $data, array $chartOptions)
     {
         $this->initialize($data, $chartOptions);

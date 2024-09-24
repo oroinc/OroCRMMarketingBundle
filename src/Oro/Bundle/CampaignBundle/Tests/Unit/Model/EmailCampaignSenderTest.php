@@ -51,6 +51,7 @@ class EmailCampaignSenderTest extends \PHPUnit\Framework\TestCase
     /** @var EmailCampaignSender */
     private $sender;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingListProvider = $this->createMock(MarketingListProvider::class);

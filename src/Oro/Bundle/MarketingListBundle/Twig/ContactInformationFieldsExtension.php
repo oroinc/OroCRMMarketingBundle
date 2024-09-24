@@ -30,9 +30,7 @@ class ContactInformationFieldsExtension extends AbstractExtension implements Ser
         return $this->container->get('oro_marketing_list.contact_information_field_helper');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getFunctions()
     {
         return [
@@ -57,9 +55,7 @@ class ContactInformationFieldsExtension extends AbstractExtension implements Ser
         return $this->getHelper()->getEntityContactInformationFieldsInfo($entityClass);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [

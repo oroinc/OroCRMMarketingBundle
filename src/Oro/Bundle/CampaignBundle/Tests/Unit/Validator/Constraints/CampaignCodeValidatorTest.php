@@ -16,12 +16,14 @@ class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
     /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $doctrine;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);
         parent::setUp();
     }
 
+    #[\Override]
     protected function createValidator()
     {
         return new CampaignCodeValidator($this->doctrine);

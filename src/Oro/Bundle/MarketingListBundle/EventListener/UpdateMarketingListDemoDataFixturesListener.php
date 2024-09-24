@@ -31,9 +31,7 @@ class UpdateMarketingListDemoDataFixturesListener extends AbstractDemoDataFixtur
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     protected function afterEnableListeners(MigrationDataFixturesEvent $event)
     {
         $event->log('updating marketing lists');

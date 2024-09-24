@@ -11,16 +11,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SendEmailCampaignTopic extends AbstractTopic implements JobAwareTopicInterface
 {
+    #[\Override]
     public static function getName(): string
     {
         return 'oro_campaign.email_campaign.send';
     }
 
+    #[\Override]
     public static function getDescription(): string
     {
         return 'Sends email campaign.';
     }
 
+    #[\Override]
     public function configureMessageBody(OptionsResolver $resolver): void
     {
         $resolver
@@ -28,6 +31,7 @@ class SendEmailCampaignTopic extends AbstractTopic implements JobAwareTopicInter
             ->addAllowedTypes('email_campaign', 'int');
     }
 
+    #[\Override]
     public function createJobName($messageBody): string
     {
         $emailCampaignId = $messageBody['email_campaign'];

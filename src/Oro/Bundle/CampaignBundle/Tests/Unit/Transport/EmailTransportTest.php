@@ -31,6 +31,7 @@ class EmailTransportTest extends \PHPUnit\Framework\TestCase
     /** @var EmailTransport */
     private $transport;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->emailModelSender = $this->createMock(EmailModelSender::class);

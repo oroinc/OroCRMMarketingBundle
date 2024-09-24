@@ -20,6 +20,7 @@ abstract class AbstractTransportSettingsType extends AbstractType
         $this->subscribers[] = $subscriber;
     }
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->subscribers as $subscriber) {

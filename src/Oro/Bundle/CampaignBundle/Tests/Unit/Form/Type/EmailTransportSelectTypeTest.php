@@ -15,6 +15,7 @@ class EmailTransportSelectTypeTest extends \PHPUnit\Framework\TestCase
     /** @var EmailTransportSelectType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->emailTransportProvider = $this->createMock(EmailTransportProvider::class);

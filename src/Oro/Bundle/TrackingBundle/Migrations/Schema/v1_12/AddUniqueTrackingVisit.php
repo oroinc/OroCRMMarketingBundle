@@ -9,9 +9,7 @@ use Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery;
 
 class AddUniqueTrackingVisit implements Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         if (!$schema->hasTable('oro_tracking_unique_visit')) {

@@ -12,16 +12,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class TrackingAggregateVisitsTopic extends AbstractTopic
 {
+    #[\Override]
     public static function getName(): string
     {
         return 'oro_tracking.aggregate_visits';
     }
 
+    #[\Override]
     public static function getDescription(): string
     {
         return 'Aggregate visits tracking records.';
     }
 
+    #[\Override]
     public function configureMessageBody(OptionsResolver $resolver): void
     {
     }

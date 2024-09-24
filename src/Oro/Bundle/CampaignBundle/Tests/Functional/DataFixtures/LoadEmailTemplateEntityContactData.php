@@ -16,14 +16,13 @@ class LoadEmailTemplateEntityContactData extends AbstractFixture implements Depe
 
     private const OWNER_USER_REFERENCE = 'simple_user';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadEmailTemplateData::class];
     }
 
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $owner = $this->getReference(self::OWNER_USER_REFERENCE);

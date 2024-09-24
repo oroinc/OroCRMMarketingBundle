@@ -22,6 +22,7 @@ class MarketingListVirtualRelationProviderTest extends \PHPUnit\Framework\TestCa
     /** @var MarketingListVirtualRelationProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);

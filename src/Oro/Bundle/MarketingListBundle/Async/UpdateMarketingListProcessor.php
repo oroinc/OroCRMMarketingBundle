@@ -36,6 +36,7 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
         $this->logger = new NullLogger();
     }
 
+    #[\Override]
     public function process(MessageInterface $message, SessionInterface $session): string
     {
         $messageBody = $message->getBody();
@@ -56,6 +57,7 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
         return self::ACK;
     }
 
+    #[\Override]
     public static function getSubscribedTopics(): array
     {
         return [MarketingListUpdateTopic::getName()];

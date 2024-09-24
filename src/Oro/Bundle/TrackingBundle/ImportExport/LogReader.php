@@ -18,9 +18,7 @@ class LogReader extends AbstractReader
      */
     protected $file;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function read()
     {
         if ($this->file->valid()) {
@@ -34,9 +32,7 @@ class LogReader extends AbstractReader
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function initializeFromContext(ContextInterface $context)
     {
         if (!$context->hasOption('file')) {

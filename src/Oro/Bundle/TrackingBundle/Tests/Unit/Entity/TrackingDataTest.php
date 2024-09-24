@@ -11,6 +11,7 @@ class TrackingDataTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingData */
     private $data;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->data = new TrackingData();

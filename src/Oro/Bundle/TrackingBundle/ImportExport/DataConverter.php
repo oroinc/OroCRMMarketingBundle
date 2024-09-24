@@ -6,9 +6,7 @@ use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
 
 class DataConverter extends AbstractTableDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -21,9 +19,7 @@ class DataConverter extends AbstractTableDataConverter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \Exception('Normalization is not implemented!');

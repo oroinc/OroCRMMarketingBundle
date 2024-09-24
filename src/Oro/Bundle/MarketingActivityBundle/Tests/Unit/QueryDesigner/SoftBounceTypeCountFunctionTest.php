@@ -8,6 +8,7 @@ use Oro\Bundle\MarketingActivityBundle\QueryDesigner\SoftBounceTypeCountFunction
 
 class SoftBounceTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $this->function = new SoftBounceTypeCountFunction();

@@ -10,17 +10,13 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 
 class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtureInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadUser::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $website = new TrackingWebsite();

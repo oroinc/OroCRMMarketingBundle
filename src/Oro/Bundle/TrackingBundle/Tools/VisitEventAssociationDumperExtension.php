@@ -36,9 +36,7 @@ class VisitEventAssociationDumperExtension extends AbstractEntityConfigDumperExt
         $this->associationBuilder = $associationBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supports($actionType)
     {
         if ($actionType === ExtendConfigDumper::ACTION_PRE_UPDATE) {
@@ -55,9 +53,7 @@ class VisitEventAssociationDumperExtension extends AbstractEntityConfigDumperExt
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function preUpdate()
     {
         $targetEntities = $this->getTargetEntities();

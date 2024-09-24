@@ -13,6 +13,7 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
 {
     const NAME = 'oro_campaign_internal_transport_settings';
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -33,9 +34,7 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
         parent::buildForm($builder, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -45,17 +44,12 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

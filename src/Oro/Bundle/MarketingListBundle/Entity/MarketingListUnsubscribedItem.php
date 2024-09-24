@@ -38,10 +38,10 @@ class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
     }
 
     /**
-     * {@inheritdoc}
      *
      * @return MarketingListUnsubscribedItem
      */
+    #[\Override]
     public function setEntityId($entityId)
     {
         $this->entityId = $entityId;
@@ -49,19 +49,17 @@ class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getEntityId()
     {
         return $this->entityId;
     }
 
     /**
-     * {@inheritdoc}
      *
      * @return MarketingListUnsubscribedItem
      */
+    #[\Override]
     public function setMarketingList(MarketingList $marketingList)
     {
         $this->marketingList = $marketingList;
@@ -69,9 +67,7 @@ class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getMarketingList()
     {
         return $this->marketingList;

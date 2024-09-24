@@ -28,6 +28,7 @@ class EmailCampaignHandlerTest extends TestCase
     /** @var EmailCampaignHandler */
     private $handler;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->request = new Request();

@@ -6,17 +6,13 @@ use Oro\Bundle\EntityBundle\Form\Type\EntityChoiceType;
 
 class ContactInformationEntityChoiceType extends EntityChoiceType
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_marketing_list_contact_information_entity_choice';

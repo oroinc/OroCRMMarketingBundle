@@ -39,9 +39,7 @@ class ContactInformationExclusionProvider extends AbstractExclusionProvider
         $this->managerRegistry = $managerRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isIgnoredEntity($className)
     {
         if ($this->virtualFieldProvider->isVirtualField($className, 'contactInformation')) {

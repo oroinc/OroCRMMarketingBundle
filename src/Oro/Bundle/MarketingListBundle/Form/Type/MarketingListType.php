@@ -23,9 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MarketingListType extends AbstractQueryDesignerType
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -77,6 +75,7 @@ class MarketingListType extends AbstractQueryDesignerType
      *
      * @return array
      */
+    #[\Override]
     public function getDefaultOptions()
     {
         return [
@@ -88,9 +87,7 @@ class MarketingListType extends AbstractQueryDesignerType
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -107,17 +104,12 @@ class MarketingListType extends AbstractQueryDesignerType
         $resolver->setDefaults($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_marketing_list';

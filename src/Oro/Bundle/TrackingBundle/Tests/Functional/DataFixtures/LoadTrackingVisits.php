@@ -32,9 +32,7 @@ class LoadTrackingVisits extends AbstractFixture implements DependentFixtureInte
         ]
     ];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         foreach ($this->visits as $reference => $item) {
@@ -52,9 +50,7 @@ class LoadTrackingVisits extends AbstractFixture implements DependentFixtureInte
         $manager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDependencies()
     {
         return [

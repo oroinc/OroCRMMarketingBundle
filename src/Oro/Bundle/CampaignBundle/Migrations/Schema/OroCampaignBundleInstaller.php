@@ -16,17 +16,13 @@ class OroCampaignBundleInstaller implements Installation, VisitEventAssociationE
 {
     use VisitEventAssociationExtensionAwareTrait;
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getMigrationVersion(): string
     {
         return 'v1_11';
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries): void
     {
         /** Tables generation **/

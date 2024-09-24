@@ -21,6 +21,7 @@ class MarketingListItemConnectorTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListItemConnector */
     private $connector;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);

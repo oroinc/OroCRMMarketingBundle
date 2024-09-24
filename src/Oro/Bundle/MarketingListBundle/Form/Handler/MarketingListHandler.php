@@ -43,9 +43,7 @@ class MarketingListHandler implements FormHandlerInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function process($entity, FormInterface $form, Request $request)
     {
         $form->setData($entity);

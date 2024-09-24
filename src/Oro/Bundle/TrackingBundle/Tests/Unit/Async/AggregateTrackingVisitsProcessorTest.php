@@ -21,6 +21,7 @@ class AggregateTrackingVisitsProcessorTest extends \PHPUnit\Framework\TestCase
 
     private AggregateTrackingVisitsProcessor $processor;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->trackingVisitDumper = $this->createMock(UniqueTrackingVisitDumper::class);

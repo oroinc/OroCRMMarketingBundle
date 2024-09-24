@@ -13,9 +13,7 @@ class AggregateStatisticsQuery implements MigrationQuery, ConnectionAwareInterfa
 {
     use ConnectionAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDescription()
     {
         $logger = new ArrayLogger();
@@ -24,9 +22,7 @@ class AggregateStatisticsQuery implements MigrationQuery, ConnectionAwareInterfa
         return $logger->getMessages();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function execute(LoggerInterface $logger)
     {
         $this->doExecute($logger);

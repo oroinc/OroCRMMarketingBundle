@@ -26,6 +26,7 @@ class LogReaderTest extends \PHPUnit\Framework\TestCase
     /** @var LogReader */
     private $reader;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->contextRegistry = $this->createMock(ContextRegistry::class);

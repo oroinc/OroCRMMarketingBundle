@@ -39,29 +39,27 @@ class SegmentController extends RestController
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getManager()
     {
         return $this->container->get('oro_segment.segment_manager.api');
     }
 
     /**
-     * {@inheritdoc}
      *
      * @throws \BadMethodCallException
      */
+    #[\Override]
     public function getForm()
     {
         throw new \BadMethodCallException('This method is not implemented yet.');
     }
 
     /**
-     * {@inheritdoc}
      *
      * @throws \BadMethodCallException
      */
+    #[\Override]
     public function getFormHandler()
     {
         throw new \BadMethodCallException('This method is not implemented yet.');

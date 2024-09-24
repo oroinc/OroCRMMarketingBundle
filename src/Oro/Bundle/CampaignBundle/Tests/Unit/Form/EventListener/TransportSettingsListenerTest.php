@@ -22,6 +22,7 @@ class TransportSettingsListenerTest extends \PHPUnit\Framework\TestCase
     /** @var TransportSettingsListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->emailTransportProvider = $this->createMock(EmailTransportProvider::class);

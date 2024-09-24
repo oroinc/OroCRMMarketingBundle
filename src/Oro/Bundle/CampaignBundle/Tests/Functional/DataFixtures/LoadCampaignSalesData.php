@@ -14,9 +14,7 @@ use Oro\Bundle\SalesBundle\Entity\Opportunity;
 
 class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDependencies()
     {
         return [
@@ -24,9 +22,7 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         /** @var Campaign $campaign1 */

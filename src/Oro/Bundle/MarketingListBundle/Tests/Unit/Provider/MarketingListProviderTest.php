@@ -24,6 +24,7 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->dataGridManager = $this->createMock(ManagerInterface::class);

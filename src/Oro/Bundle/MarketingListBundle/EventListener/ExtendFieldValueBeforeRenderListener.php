@@ -24,9 +24,6 @@ class ExtendFieldValueBeforeRenderListener
         $this->contactInformationMap = $contactInformationMap;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function beforeValueRender(ValueRenderEvent $event)
     {
         $fieldConfig            = $this->configProvider->getConfigById($event->getFieldConfigId());

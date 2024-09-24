@@ -43,6 +43,7 @@ class UpdateMarketingListOnEntityChangeTest extends TestCase
 
     private FeatureChecker|MockObject $featureChecker;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->messageProducer = $this->createMock(MessageProducerInterface::class);

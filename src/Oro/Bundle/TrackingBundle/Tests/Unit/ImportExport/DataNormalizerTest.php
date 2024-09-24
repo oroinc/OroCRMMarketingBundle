@@ -15,6 +15,7 @@ class DataNormalizerTest extends \PHPUnit\Framework\TestCase
     /** @var DataNormalizer */
     private $normalizer;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->fieldHelper = $this->createMock(FieldHelper::class);

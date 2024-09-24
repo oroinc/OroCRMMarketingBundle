@@ -17,6 +17,7 @@ class CalculateTrackingEventSummaryCommandFeatureCheckerTest extends \PHPUnit\Fr
     /** @var CalculateTrackingEventSummaryCommandFeatureChecker */
     private $checker;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->innerChecker = $this->createMock(CronCommandFeatureCheckerInterface::class);

@@ -15,6 +15,7 @@ class MarketingListHelperTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListHelper */
     private $helper;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->managerRegistry = $this->createMock(ManagerRegistry::class);

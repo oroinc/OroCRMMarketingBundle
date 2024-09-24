@@ -15,6 +15,7 @@ class EmailCampaignTypeTest extends \PHPUnit\Framework\TestCase
     /** @var EmailCampaignType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $transportProvider = $this->createMock(EmailTransportProvider::class);

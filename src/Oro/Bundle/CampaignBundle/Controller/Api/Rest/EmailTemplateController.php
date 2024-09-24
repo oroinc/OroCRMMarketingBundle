@@ -62,30 +62,25 @@ class EmailTemplateController extends RestController
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getManager()
     {
         throw new \BadMethodCallException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getForm()
     {
         throw new \BadMethodCallException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getFormHandler()
     {
         throw new \BadMethodCallException('Not implemented');
     }
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(

@@ -22,6 +22,7 @@ class ContextReaderTest extends \PHPUnit\Framework\TestCase
     /** @var ContextReader */
     private $reader;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->contextRegistry = $this->createMock(ContextRegistry::class);

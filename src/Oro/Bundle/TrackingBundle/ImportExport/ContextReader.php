@@ -13,9 +13,7 @@ class ContextReader extends AbstractReader
      */
     protected $data;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function read()
     {
         $data = $this->data;
@@ -25,9 +23,7 @@ class ContextReader extends AbstractReader
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function initializeFromContext(ContextInterface $context)
     {
         if (!$context->hasOption('data')) {

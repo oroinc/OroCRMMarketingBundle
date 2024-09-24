@@ -15,6 +15,7 @@ class ImportLogsCommandTest extends WebTestCase
     private Filesystem $fs;
     private string $directory;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->initClient();

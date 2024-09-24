@@ -22,17 +22,13 @@ class SetShareGridConfig extends AbstractFixture implements ContainerAwareInterf
     /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         $packageProvider = $this->container->get('oro_platform.provider.package');

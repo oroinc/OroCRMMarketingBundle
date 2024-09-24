@@ -21,6 +21,7 @@ class TrackingVisitEntityListenerTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingVisitEntityListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);

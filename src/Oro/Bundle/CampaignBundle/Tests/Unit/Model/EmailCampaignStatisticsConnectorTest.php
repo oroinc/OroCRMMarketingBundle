@@ -23,6 +23,7 @@ class EmailCampaignStatisticsConnectorTest extends \PHPUnit\Framework\TestCase
     /** @var EmailCampaignStatisticsConnector */
     private $connector;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingListItemConnector = $this->createMock(MarketingListItemConnector::class);

@@ -6,17 +6,13 @@ use Oro\Bundle\SoapBundle\Form\Type\AbstractPatchableApiType;
 
 class MarketingListUnsubscribedItemApiType extends AbstractPatchableApiType
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getParent(): ?string
     {
         return MarketingListTypeUnsubscribedItemType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_marketing_list_unsubscribed_item_api';

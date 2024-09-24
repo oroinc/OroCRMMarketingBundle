@@ -27,9 +27,7 @@ class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInter
         $this->relationProvider = $relationProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isVirtualField($className, $fieldName)
     {
         return
@@ -37,9 +35,7 @@ class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInter
             && $this->relationProvider->hasMarketingList($className);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getVirtualFieldQuery($className, $fieldName)
     {
         if ($fieldName === self::FIELD_LAST_CONTACTED_AT) {
@@ -51,9 +47,7 @@ class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInter
         throw new \RuntimeException(sprintf('No virtual field found for %s::%s', $className, $fieldName));
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getVirtualFields($className)
     {
         if ($this->relationProvider->hasMarketingList($className)) {

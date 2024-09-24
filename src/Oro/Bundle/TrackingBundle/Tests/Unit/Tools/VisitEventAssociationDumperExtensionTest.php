@@ -28,6 +28,7 @@ class VisitEventAssociationDumperExtensionTest extends \PHPUnit\Framework\TestCa
     /** @var VisitEventAssociationDumperExtension */
     private $extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);

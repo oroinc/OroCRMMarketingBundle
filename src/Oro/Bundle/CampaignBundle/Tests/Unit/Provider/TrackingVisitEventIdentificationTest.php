@@ -18,6 +18,7 @@ class TrackingVisitEventIdentificationTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingVisitEventIdentification */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->doctrine = $this->createMock(ManagerRegistry::class);

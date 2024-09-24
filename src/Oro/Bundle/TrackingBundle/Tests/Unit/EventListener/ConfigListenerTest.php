@@ -26,6 +26,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
     /** @var ConfigListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $logsDir = $this->getTempDir('tracking_log');

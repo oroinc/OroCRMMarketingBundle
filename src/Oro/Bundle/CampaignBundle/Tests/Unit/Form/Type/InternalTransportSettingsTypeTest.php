@@ -13,6 +13,7 @@ class InternalTransportSettingsTypeTest extends \PHPUnit\Framework\TestCase
     /** @var InternalTransportSettingsType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->type = new InternalTransportSettingsType();

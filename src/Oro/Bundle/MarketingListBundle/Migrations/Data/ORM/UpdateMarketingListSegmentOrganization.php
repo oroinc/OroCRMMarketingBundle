@@ -11,9 +11,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
  */
 class UpdateMarketingListSegmentOrganization extends AbstractFixture
 {
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $entitiesToFlush = [];

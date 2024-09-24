@@ -15,9 +15,7 @@ abstract class AbstractTypeCountFunction implements FunctionInterface
      */
     abstract protected function getType(): string;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getExpression($tableAlias, $fieldName, $columnName, $columnAlias, AbstractQueryConverter $qc)
     {
         list($alias, $name) = explode('.', $columnName);

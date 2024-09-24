@@ -10,9 +10,7 @@ use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
  */
 class SoftBounceTypeCountFunction extends AbstractTypeCountFunction
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getType(): string
     {
         return ExtendHelper::buildEnumOptionId(

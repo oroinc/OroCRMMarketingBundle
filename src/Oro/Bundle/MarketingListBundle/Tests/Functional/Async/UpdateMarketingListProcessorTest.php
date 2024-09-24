@@ -16,6 +16,7 @@ class UpdateMarketingListProcessorTest extends WebTestCase
 {
     use MessageQueueExtension;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -15,12 +15,14 @@ class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
     /** @var ContactInformationFieldHelper|\PHPUnit\Framework\MockObject\MockObject */
     private $contactInformationFieldHelper;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->contactInformationFieldHelper = $this->createMock(ContactInformationFieldHelper::class);
         parent::setUp();
     }
 
+    #[\Override]
     protected function createValidator()
     {
         return new ContactInformationColumnValidator($this->contactInformationFieldHelper);

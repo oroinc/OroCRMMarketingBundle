@@ -12,6 +12,7 @@ class TrackingEventDictionaryTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingEventDictionary */
     private $trackingEvents;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->trackingEvents = new TrackingEventDictionary();

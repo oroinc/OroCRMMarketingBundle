@@ -24,6 +24,7 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
     private ConfigProvider $entityConfigProvider;
     private Cache|CacheInterface $cacheProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->initClient();
@@ -106,6 +107,7 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
         $this->cacheProvider->delete('oro_marketing_list.allowed_entities');
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $config = $this->entityConfigProvider->getConfig(User::class, 'email');

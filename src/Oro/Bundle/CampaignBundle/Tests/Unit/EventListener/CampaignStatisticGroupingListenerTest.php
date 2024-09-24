@@ -21,6 +21,7 @@ class CampaignStatisticGroupingListenerTest extends \PHPUnit\Framework\TestCase
     /** @var CampaignStatisticGroupingListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingListHelper = $this->createMock(MarketingListHelper::class);

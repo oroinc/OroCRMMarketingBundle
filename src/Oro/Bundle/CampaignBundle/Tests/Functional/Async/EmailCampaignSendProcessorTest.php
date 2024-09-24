@@ -15,6 +15,7 @@ class EmailCampaignSendProcessorTest extends WebTestCase
 {
     use MessageQueueExtension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->initClient();

@@ -45,9 +45,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
         $this->helper = $helper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicable(string $gridName): bool
     {
         return (bool)$this->helper->getMarketingListIdByGridName($gridName);
@@ -59,6 +57,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
      * Get segments or concrete entity grid configuration by marketing list type and entity.
      * This configuration will be used as marketing list items grid configuration.
      */
+    #[\Override]
     public function getConfiguration(string $gridName): DatagridConfiguration
     {
         $marketingListId = $this->helper->getMarketingListIdByGridName($gridName);
@@ -112,6 +111,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
         return $gridName;
     }
 
+    #[\Override]
     public function isValidConfiguration(string $gridName): bool
     {
         try {

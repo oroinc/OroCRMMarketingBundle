@@ -14,6 +14,7 @@ class TrackingVisitEventTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingVisitEvent */
     private $trackingVisitEvent;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->trackingVisitEvent = new TrackingVisitEvent();

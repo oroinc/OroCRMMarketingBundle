@@ -14,16 +14,19 @@ class MarketingListUpdateTopic extends AbstractTopic
 {
     public const CLASS_NAME = 'class';
 
+    #[\Override]
     public static function getName(): string
     {
         return 'oro_marketing_list.message_queue.job.update_marketing_list';
     }
 
+    #[\Override]
     public static function getDescription(): string
     {
         return 'Updates marketing lists by the specified entity class.';
     }
 
+    #[\Override]
     public function configureMessageBody(OptionsResolver $resolver): void
     {
         $resolver

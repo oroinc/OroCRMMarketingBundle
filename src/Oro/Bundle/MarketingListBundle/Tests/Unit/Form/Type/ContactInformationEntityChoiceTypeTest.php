@@ -13,6 +13,7 @@ class ContactInformationEntityChoiceTypeTest extends \PHPUnit\Framework\TestCase
     /** @var ContactInformationEntityChoiceType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->provider = $this->createMock(EntityProvider::class);

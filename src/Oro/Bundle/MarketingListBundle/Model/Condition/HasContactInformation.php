@@ -51,17 +51,13 @@ class HasContactInformation extends AbstractCondition implements ContextAccessor
         $this->fieldsProvider = $fieldsProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getName()
     {
         return 'has_contact_information';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function isConditionAllowed($context)
     {
         $marketingList = $this->resolveValue($context, $this->marketingList, false);
@@ -76,9 +72,7 @@ class HasContactInformation extends AbstractCondition implements ContextAccessor
         return (bool)$this->fieldsProvider->getMarketingListTypedFields($marketingList, $type);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function initialize(array $options)
     {
         if (isset($options['marketing_list'])) {

@@ -12,9 +12,7 @@ use Oro\Bundle\CampaignBundle\Entity\CampaignCodeHistory;
  */
 class AddCampaignCodeHistory extends AbstractFixture
 {
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         /** @var Campaign[] $campaigns */

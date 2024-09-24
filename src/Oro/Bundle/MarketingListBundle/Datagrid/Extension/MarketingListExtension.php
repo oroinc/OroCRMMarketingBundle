@@ -43,9 +43,7 @@ class MarketingListExtension extends AbstractExtension
         $this->marketingListHelper = $marketingListHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicable(DatagridConfiguration $config)
     {
         if (!parent::isApplicable($config)) {
@@ -107,8 +105,8 @@ class MarketingListExtension extends AbstractExtension
 
     /**
      * @param OrmDatasource $datasource
-     * {@inheritdoc}
      */
+    #[\Override]
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         if (!$this->isApplicable($config)) {
@@ -155,9 +153,7 @@ class MarketingListExtension extends AbstractExtension
         $this->applicable[$cacheKey] = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getPriority()
     {
         return -10;

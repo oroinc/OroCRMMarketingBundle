@@ -26,6 +26,7 @@ class CampaignStatisticDatagridListenerTest extends TestCase
     /** @var CampaignStatisticDatagridListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingListHelper = $this->createMock(MarketingListHelper::class);

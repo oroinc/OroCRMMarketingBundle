@@ -17,6 +17,7 @@ class AggregateTrackingVisitsProcessorTest extends WebTestCase
     use MessageQueueExtension;
     use ConfigManagerAwareTestTrait;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,6 +25,7 @@ class AggregateTrackingVisitsProcessorTest extends WebTestCase
         $this->initClient();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         self::toggleConfig(true);

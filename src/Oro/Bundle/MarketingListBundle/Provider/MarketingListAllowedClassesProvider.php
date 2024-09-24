@@ -31,6 +31,7 @@ class MarketingListAllowedClassesProvider implements WarmableConfigCacheInterfac
         });
     }
 
+    #[\Override]
     public function warmUpCache(): void
     {
         $this->cacheProvider->delete(static::MARKETING_LIST_ALLOWED_ENTITIES_CACHE_KEY);

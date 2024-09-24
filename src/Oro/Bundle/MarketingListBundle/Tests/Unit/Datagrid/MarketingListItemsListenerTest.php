@@ -24,6 +24,7 @@ class MarketingListItemsListenerTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListItemsListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingListHelper = $this->createMock(MarketingListHelper::class);

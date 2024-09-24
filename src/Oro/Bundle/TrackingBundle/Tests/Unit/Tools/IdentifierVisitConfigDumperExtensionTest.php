@@ -28,6 +28,7 @@ class IdentifierVisitConfigDumperExtensionTest extends \PHPUnit\Framework\TestCa
     /** @var IdentifierVisitConfigDumperExtension */
     private $extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->configManager = $this->createMock(ConfigManager::class);

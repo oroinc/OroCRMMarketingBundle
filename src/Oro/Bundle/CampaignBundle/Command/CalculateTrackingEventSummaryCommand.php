@@ -35,18 +35,14 @@ class CalculateTrackingEventSummaryCommand extends Command implements
         $this->doctrine = $doctrine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDefaultDefinition(): string
     {
         // 00:01 every day
         return '1 0 * * *';
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isActive(): bool
     {
         $count = $this->getCampaignRepository()->getCount();
@@ -55,6 +51,7 @@ class CalculateTrackingEventSummaryCommand extends Command implements
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */
+    #[\Override]
     protected function configure()
     {
         $this->setDescription('Calculates tracking event summary (campaign statistics).')
@@ -73,6 +70,7 @@ HELP
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @noinspection PhpMissingParentCallCommonInspection
      */
+    #[\Override]
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $campaigns = $this->getCampaignRepository()->findAll();

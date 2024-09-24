@@ -36,17 +36,13 @@ class SendEmailCampaignsCommand extends Command implements
         $this->emailCampaignSenderBuilder = $emailCampaignSenderBuilder;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDefaultDefinition(): string
     {
         return '*/1 * * * *';
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isActive(): bool
     {
         $count = $this->getEmailCampaignRepository()->countEmailCampaignsToSend();
@@ -55,6 +51,7 @@ class SendEmailCampaignsCommand extends Command implements
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */
+    #[\Override]
     protected function configure()
     {
         $this
@@ -74,6 +71,7 @@ HELP
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @noinspection PhpMissingParentCallCommonInspection
      */
+    #[\Override]
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $emailCampaigns = $this->getEmailCampaignRepository()->findEmailCampaignsToSend();

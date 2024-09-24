@@ -78,9 +78,7 @@ use ...
 
 class TestCustomerIdentification implements TrackingEventIdentifierInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicable(TrackingVisit $trackingVisit)
     {
         /**
@@ -95,9 +93,8 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
 
     /**
      * The main logic, in most cases it will be the same.
-     *
-     * {@inheritdoc}
      */
+    #[\Override]
     public function identify(TrackingVisit $trackingVisit)
     {
         $userIdentifier = $trackingVisit->getParsedUID() > 0
@@ -120,9 +117,7 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getIdentityTarget()
     {
         /**
@@ -130,9 +125,7 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
          */
     }
     
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicableVisitEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         /**
@@ -140,9 +133,7 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
          */
     }
     
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function processEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         /**
@@ -150,9 +141,7 @@ class TestCustomerIdentification implements TrackingEventIdentifierInterface
          */
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getEventTargets()
     {
         /**

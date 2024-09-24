@@ -13,6 +13,7 @@ class MarketingActivityTest extends RestJsonApiTestCase
 {
     use RolePermissionExtension;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,6 +23,7 @@ class MarketingActivityTest extends RestJsonApiTestCase
         ]);
     }
 
+    #[\Override]
     protected function postFixtureLoad()
     {
         $this->updateRolePermissions(

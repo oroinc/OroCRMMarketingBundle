@@ -11,6 +11,7 @@ class TrackingEventIdentificationProviderTest extends \PHPUnit\Framework\TestCas
 {
     private TrackingEventIdentificationProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->provider = new TrackingEventIdentificationProvider([new TestProvider()]);

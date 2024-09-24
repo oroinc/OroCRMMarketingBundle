@@ -6,17 +6,13 @@ use Oro\Bundle\SecurityBundle\Migrations\Data\ORM\AbstractLoadAclData;
 
 class SetMarketingActivityDefaultAcls extends AbstractLoadAclData
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getDataPath()
     {
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getAclData()
     {
         return [

@@ -37,6 +37,7 @@ class AggregateTrackingVisitsProcessor implements
         $this->logger = new NullLogger();
     }
 
+    #[\Override]
     public function process(MessageInterface $message, SessionInterface $session): string
     {
         if (!$this->configManager->get('oro_tracking.precalculated_statistic_enabled')) {
@@ -49,6 +50,7 @@ class AggregateTrackingVisitsProcessor implements
         return self::ACK;
     }
 
+    #[\Override]
     public static function getSubscribedTopics(): array
     {
         return [TrackingAggregateVisitsTopic::getName()];

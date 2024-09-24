@@ -18,6 +18,7 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->type = new MarketingListType();

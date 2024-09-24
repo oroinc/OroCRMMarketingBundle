@@ -16,6 +16,7 @@ class ContactInformationFieldsExtensionTest extends \PHPUnit\Framework\TestCase
     /** @var ContactInformationFieldsExtension */
     private $extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->helper = $this->createMock(ContactInformationFieldHelper::class);

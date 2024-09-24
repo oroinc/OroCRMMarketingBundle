@@ -41,9 +41,7 @@ class InternalTransportSettings extends TransportSettings
         return $this->template;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsBag()
     {
         if (null === $this->settings) {
@@ -60,6 +58,7 @@ class InternalTransportSettings extends TransportSettings
     /**
      * @return string
      */
+    #[\Override]
     public function __toString()
     {
         return (string)$this->getId();

@@ -26,6 +26,7 @@ class UpdateMarketingListProcessorTest extends \PHPUnit\Framework\TestCase
 
     private UpdateMarketingListProcessor $processor;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->repository = $this->createMock(EntityRepository::class);

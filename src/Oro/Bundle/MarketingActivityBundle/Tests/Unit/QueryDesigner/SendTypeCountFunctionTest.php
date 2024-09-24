@@ -8,6 +8,7 @@ use Oro\Bundle\MarketingActivityBundle\QueryDesigner\SendTypeCountFunction;
 
 class SendTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $this->function = new SendTypeCountFunction();

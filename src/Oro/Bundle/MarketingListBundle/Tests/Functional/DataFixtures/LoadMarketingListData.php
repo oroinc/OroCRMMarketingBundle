@@ -19,6 +19,7 @@ class LoadMarketingListData extends AbstractFixture implements ContainerAwareInt
 
     public const MARKETING_LIST_1 = 'marketing_list_1';
 
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $type = $manager->getRepository(MarketingListType::class)
@@ -40,6 +41,7 @@ class LoadMarketingListData extends AbstractFixture implements ContainerAwareInt
         $this->addReference(self::MARKETING_LIST_1, $entity);
     }
 
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadOrganization::class];

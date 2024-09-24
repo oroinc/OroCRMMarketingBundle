@@ -11,6 +11,7 @@ class CampaignSelectTypeTest extends \PHPUnit\Framework\TestCase
     /** @var CampaignSelectType */
     private $type;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->type = new CampaignSelectType();

@@ -12,9 +12,7 @@ class AddTrackingVisitAssociation implements Migration, VisitEventAssociationExt
 {
     use VisitEventAssociationExtensionAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->visitEventAssociationExtension->addVisitEventAssociation($schema, 'orocrm_campaign');

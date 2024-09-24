@@ -149,9 +149,7 @@ class MarketingActivityController extends AbstractController
         return new JsonResponse($results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(

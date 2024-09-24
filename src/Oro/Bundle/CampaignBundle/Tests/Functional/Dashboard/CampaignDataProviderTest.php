@@ -11,6 +11,7 @@ class CampaignDataProviderTest extends WebTestCase
 {
     private CampaignDataProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         if (!class_exists('Oro\Bundle\SalesBundle\OroSalesBundle')) {

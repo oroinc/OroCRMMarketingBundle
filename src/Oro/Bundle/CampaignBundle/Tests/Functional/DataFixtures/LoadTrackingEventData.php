@@ -73,9 +73,7 @@ class LoadTrackingEventData extends AbstractFixture
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         $website = new TrackingWebsite();

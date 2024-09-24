@@ -11,6 +11,7 @@ class TrackingVisitTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingVisit */
     private $trackingVisit;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->trackingVisit = new TrackingVisit();

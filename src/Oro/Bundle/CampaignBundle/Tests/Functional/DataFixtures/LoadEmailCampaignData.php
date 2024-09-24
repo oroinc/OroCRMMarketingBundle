@@ -17,9 +17,7 @@ class LoadEmailCampaignData extends AbstractFixture
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         foreach (self::$data as $data) {

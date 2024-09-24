@@ -24,6 +24,7 @@ class UniqueTrackingVisitDumperTest extends \PHPUnit\Framework\TestCase
     /** @var UniqueTrackingVisitDumper */
     private $dumper;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);

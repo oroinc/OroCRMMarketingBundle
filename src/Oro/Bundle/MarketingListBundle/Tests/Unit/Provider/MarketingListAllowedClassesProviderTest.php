@@ -14,6 +14,7 @@ class MarketingListAllowedClassesProviderTest extends \PHPUnit\Framework\TestCas
     private CacheInterface $cacheProvider;
     private EntityProvider $entityProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->cacheProvider = $this->createMock(CacheInterface::class);

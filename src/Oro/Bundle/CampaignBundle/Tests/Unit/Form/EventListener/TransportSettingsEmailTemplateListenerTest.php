@@ -29,6 +29,7 @@ class TransportSettingsEmailTemplateListenerTest extends \PHPUnit\Framework\Test
     /** @var TransportSettingsEmailTemplateListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);

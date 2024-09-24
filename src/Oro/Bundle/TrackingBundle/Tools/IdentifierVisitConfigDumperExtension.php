@@ -33,9 +33,7 @@ class IdentifierVisitConfigDumperExtension extends AbstractEntityConfigDumperExt
         $this->associationBuilder = $associationBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supports($actionType)
     {
         if ($actionType === ExtendConfigDumper::ACTION_PRE_UPDATE) {
@@ -52,9 +50,7 @@ class IdentifierVisitConfigDumperExtension extends AbstractEntityConfigDumperExt
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function preUpdate()
     {
         $targetEntities = $this->getTargetEntities();

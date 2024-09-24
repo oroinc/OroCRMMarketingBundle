@@ -63,9 +63,7 @@ class TrackingDataController extends AbstractController
         return $this->container->get(JobExecutor::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [

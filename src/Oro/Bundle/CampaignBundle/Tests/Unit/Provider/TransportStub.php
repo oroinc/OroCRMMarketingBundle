@@ -8,44 +8,32 @@ use Oro\Bundle\CampaignBundle\Transport\VisibilityTransportInterface;
 
 class TransportStub implements TransportInterface, VisibilityTransportInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function send(EmailCampaign $campaign, object $entity, array $from, array $to)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getName()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsFormType()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsEntityFQCN()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isVisibleInForm()
     {
     }

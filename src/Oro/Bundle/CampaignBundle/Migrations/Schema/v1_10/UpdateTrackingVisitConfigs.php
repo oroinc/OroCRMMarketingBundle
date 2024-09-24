@@ -11,9 +11,7 @@ use Oro\Bundle\TrackingBundle\Migration\Extension\VisitEventAssociationExtension
 
 class UpdateTrackingVisitConfigs implements Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         $fieldName = ExtendHelper::buildAssociationName(

@@ -20,48 +20,36 @@ class TrackingVisitEventIdentification implements TrackingEventIdentifierInterfa
         $this->doctrine = $doctrine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isApplicable(TrackingVisit $trackingVisit)
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function identify(TrackingVisit $trackingVisit)
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getIdentityTarget()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getEventTargets()
     {
         return [Campaign::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isApplicableVisitEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         return null !== $trackingVisitEvent->getWebEvent()->getCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function processEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         $campaign = $this->doctrine->getRepository(Campaign::class)

@@ -47,6 +47,7 @@ class MarketingListHandlerTest extends TestCase
     /** @var MarketingListHandler */
     private $handler;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->form = $this->createMock(Form::class);

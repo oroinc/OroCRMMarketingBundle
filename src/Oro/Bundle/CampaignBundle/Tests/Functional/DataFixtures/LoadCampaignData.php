@@ -33,9 +33,7 @@ class LoadCampaignData extends AbstractFixture implements DependentFixtureInterf
         ]
     ];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         $organization = $this->getReference('organization');
@@ -58,9 +56,7 @@ class LoadCampaignData extends AbstractFixture implements DependentFixtureInterf
         $manager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDependencies()
     {
         return [

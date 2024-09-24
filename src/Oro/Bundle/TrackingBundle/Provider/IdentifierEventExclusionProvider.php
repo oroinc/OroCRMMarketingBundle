@@ -13,9 +13,7 @@ use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
  */
 class IdentifierEventExclusionProvider extends AbstractExclusionProvider
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isIgnoredRelation(ClassMetadata $metadata, $associationName)
     {
         if ($metadata->name !== 'Oro\Bundle\TrackingBundle\Entity\TrackingVisit') {

@@ -14,9 +14,7 @@ class OroMarketingActivityBundle implements Migration, OutdatedExtendExtensionAw
 {
     use OutdatedExtendExtensionAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->createOroMarketingActivityTable($schema);

@@ -15,6 +15,7 @@ class MarketingActivityVirtualRelationProviderTest extends \PHPUnit\Framework\Te
     /** @var MarketingActivityVirtualRelationProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityProvider = $this->createMock(EntityProvider::class);

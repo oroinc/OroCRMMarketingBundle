@@ -38,6 +38,7 @@ class EmailCampaignType extends AbstractType
         $this->subscribers[] = $subscriber;
     }
 
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->subscribers as $subscriber) {
@@ -106,6 +107,7 @@ class EmailCampaignType extends AbstractType
         $this->addTransport($builder);
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -123,9 +125,7 @@ class EmailCampaignType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_email_campaign';

@@ -17,14 +17,13 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     /** @var array fields to correct url encoded data */
     protected $urlEncodeFields = ['name', 'title', 'userIdentifier', 'url', 'code'];
 
+    #[\Override]
     public function setEntityName(string $entityName): void
     {
         $this->entityName = $entityName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         return parent::denormalize(
@@ -35,25 +34,19 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function normalize($object, string $format = null, array $context = [])
     {
         throw new \Exception('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supportsDenormalization($data, string $type, string $format = null, array $context = array()): bool
     {
         return is_array($data) && $type == $this->entityName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return false;

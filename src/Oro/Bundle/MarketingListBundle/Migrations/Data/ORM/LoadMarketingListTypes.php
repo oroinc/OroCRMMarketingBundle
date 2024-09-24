@@ -11,6 +11,7 @@ class LoadMarketingListTypes extends AbstractFixture
     /**
      * Load available segment types
      */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         $types = [

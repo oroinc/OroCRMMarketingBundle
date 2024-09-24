@@ -11,9 +11,7 @@ class CampaignCode extends Constraint
 {
     public string $message = 'This value is already used.';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

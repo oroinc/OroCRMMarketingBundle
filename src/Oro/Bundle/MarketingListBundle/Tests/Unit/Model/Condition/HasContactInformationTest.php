@@ -18,6 +18,7 @@ class HasContactInformationTest extends \PHPUnit\Framework\TestCase
     /** @var HasContactInformation */
     private $condition;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->fieldsProvider = $this->createMock(ContactInformationFieldsProvider::class);

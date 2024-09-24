@@ -12,6 +12,7 @@ class TrackingWebsiteTest extends \PHPUnit\Framework\TestCase
     /** @var TrackingWebsite */
     private $website;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->website = new TrackingWebsite();

@@ -80,9 +80,7 @@ class LoadMarketingActivityData extends AbstractFixture implements DependentFixt
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager)
     {
         $organization = $this->getReference('organization');
@@ -108,9 +106,7 @@ class LoadMarketingActivityData extends AbstractFixture implements DependentFixt
         $manager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [

@@ -21,9 +21,7 @@ class ContactInformationColumnValidator extends ConstraintValidator
         $this->contactInformationFieldHelper = $contactInformationFieldHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof ContactInformationColumn) {

@@ -12,6 +12,7 @@ class MultiLineDataTransformerTest extends \PHPUnit\Framework\TestCase
     /** @var MultiLineDataTransformer */
     private $transformer;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->transformer = new MultiLineDataTransformer();

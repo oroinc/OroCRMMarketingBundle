@@ -43,6 +43,7 @@ class UpdateMarketingListDemoDataFixturesListenerTest extends \PHPUnit\Framework
     /** @var UpdateMarketingListDemoDataFixturesListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->listenerManager = $this->createMock(OptionalListenerManager::class);

@@ -148,25 +148,19 @@ class MarketingListRemovedItemController extends RestController
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getManager()
     {
         return $this->container->get('oro_marketing_list.marketing_list_removed_item.manager.api');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getForm()
     {
         return $this->container->get('oro_marketing_list.form.marketing_list_removed_item');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getFormHandler()
     {
         return $this->container->get('oro_marketing_list.form.handler.marketing_list_removed_item');

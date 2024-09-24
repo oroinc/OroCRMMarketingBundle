@@ -16,17 +16,20 @@ use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
  */
 class IdentifierVisitEntityFieldExtension extends AbstractAssociationEntityFieldExtension
 {
+    #[\Override]
     public function isApplicable(EntityFieldProcessTransport $transport): bool
     {
         return $transport->getClass() === TrackingVisit::class
             && AssociationNameGenerator::extractAssociationKind($transport->getName()) === $this->getRelationKind();
     }
 
+    #[\Override]
     public function getRelationKind(): ?string
     {
         return IdentifierEventExtension::ASSOCIATION_KIND;
     }
 
+    #[\Override]
     public function getRelationType(): string
     {
         return RelationType::MANY_TO_ONE;

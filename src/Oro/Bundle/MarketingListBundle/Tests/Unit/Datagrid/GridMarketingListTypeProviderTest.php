@@ -16,6 +16,7 @@ class GridMarketingListTypeProviderTest extends \PHPUnit\Framework\TestCase
     /** @var GridMarketingListTypeProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);

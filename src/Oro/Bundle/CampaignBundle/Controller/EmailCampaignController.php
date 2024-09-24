@@ -202,9 +202,7 @@ class EmailCampaignController extends AbstractController
         return $sendAllowed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(

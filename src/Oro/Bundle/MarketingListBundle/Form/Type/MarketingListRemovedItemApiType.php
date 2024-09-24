@@ -6,17 +6,13 @@ use Oro\Bundle\SoapBundle\Form\Type\AbstractPatchableApiType;
 
 class MarketingListRemovedItemApiType extends AbstractPatchableApiType
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getParent(): ?string
     {
         return MarketingListTypeRemovedItemType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'oro_marketing_list_removed_item_api';

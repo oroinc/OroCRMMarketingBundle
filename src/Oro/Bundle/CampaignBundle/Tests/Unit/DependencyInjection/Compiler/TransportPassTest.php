@@ -11,6 +11,7 @@ class TransportPassTest extends \PHPUnit\Framework\TestCase
     /** @var TransportPass */
     private $compiler;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->compiler = new TransportPass();

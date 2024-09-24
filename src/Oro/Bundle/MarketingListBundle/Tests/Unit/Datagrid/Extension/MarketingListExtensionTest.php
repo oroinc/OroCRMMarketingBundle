@@ -30,6 +30,7 @@ class MarketingListExtensionTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListExtension */
     private $extension;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingListHelper = $this->createMock(MarketingListHelper::class);

@@ -10,6 +10,7 @@ class MarketingListTypeTest extends \PHPUnit\Framework\TestCase
     /** @var MarketingListType */
     private $entity;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entity = new MarketingListType(MarketingListType::TYPE_DYNAMIC);

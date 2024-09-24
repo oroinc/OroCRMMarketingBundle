@@ -8,17 +8,13 @@ use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentifierInterface;
 
 class TestProvider implements TrackingEventIdentifierInterface
 {
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function isApplicable(TrackingVisit $trackingVisit)
     {
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function identify(TrackingVisit $trackingVisit)
     {
         $result = new \stdClass();
@@ -27,25 +23,19 @@ class TestProvider implements TrackingEventIdentifierInterface
         return $result;
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function getIdentityTarget()
     {
         return '\stdClassIdentity';
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function isApplicableVisitEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function processEvent(TrackingVisitEvent $trackingVisitEvent)
     {
         $result = new \stdClass();
@@ -54,9 +44,7 @@ class TestProvider implements TrackingEventIdentifierInterface
         return [$result];
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function getEventTargets()
     {
         return ['\stdClass'];

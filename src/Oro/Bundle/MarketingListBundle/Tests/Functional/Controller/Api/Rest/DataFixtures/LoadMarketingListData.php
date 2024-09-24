@@ -14,17 +14,13 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
 {
     public const MARKETING_LIST_NAME = 'list_name';
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadOrganization::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $entity = new MarketingList();
