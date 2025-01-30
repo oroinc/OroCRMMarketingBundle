@@ -25,7 +25,7 @@ class EmailTemplateController extends RestController
      */
     #[AclAncestor('oro_email_emailtemplate_index')]
     public function cgetAction(
-        int $id = null,
+        ?int $id = null,
         bool $includeNonEntity = true,
         bool $includeSystemTemplates = false
     ): Response {

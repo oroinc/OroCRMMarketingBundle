@@ -102,7 +102,7 @@ class TrackingData
      * @param TrackingEvent|null $event
      * @return TrackingData
      */
-    public function setEvent(TrackingEvent $event = null)
+    public function setEvent(?TrackingEvent $event = null)
     {
         $this->event = $event;
 

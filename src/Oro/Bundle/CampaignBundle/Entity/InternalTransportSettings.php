@@ -24,7 +24,7 @@ class InternalTransportSettings extends TransportSettings
      *
      * @return InternalTransportSettings
      */
-    public function setTemplate(EmailTemplate $emailTemplate = null)
+    public function setTemplate(?EmailTemplate $emailTemplate = null)
     {
         $this->template = $emailTemplate;
 

@@ -18,7 +18,7 @@ class TrackingVisitRepository extends EntityRepository
     public function createNotDetectedTrackingVisitQueryBuilder(
         int $maxRetriesCount,
         bool $sortByActionTime = false,
-        int $maxResults = null
+        ?int $maxResults = null
     ): QueryBuilder {
         $queryBuilder = $this
             ->createQueryBuilder('entity')

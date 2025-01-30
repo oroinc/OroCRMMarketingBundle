@@ -16,7 +16,7 @@ class TrackingVisitEventRepository extends EntityRepository
 {
     public function createTrackingVisitEventEntityQueryBuilder(
         int $maxRetriesCount,
-        int $maxResults = null
+        ?int $maxResults = null
     ): QueryBuilder {
         $queryBuilder = $this
             ->getEntityManager()

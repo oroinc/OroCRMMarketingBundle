@@ -154,7 +154,7 @@ class Campaign implements ExtendEntityInterface
         return $this->code;
     }
 
-    public function setStartDate(\DateTime $startDate = null)
+    public function setStartDate(?\DateTime $startDate = null)
     {
         $this->startDate = $startDate;
     }
@@ -164,7 +164,7 @@ class Campaign implements ExtendEntityInterface
         return $this->startDate;
     }
 
-    public function setEndDate(\DateTime $endDate = null)
+    public function setEndDate(?\DateTime $endDate = null)
     {
         $this->endDate = $endDate;
     }
@@ -299,7 +299,7 @@ class Campaign implements ExtendEntityInterface
      * @param Organization|null $organization
      * @return Campaign
      */
-    public function setOrganization(Organization $organization = null)
+    public function setOrganization(?Organization $organization = null)
     {
         $this->organization = $organization;
 

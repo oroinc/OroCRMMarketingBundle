@@ -281,7 +281,7 @@ class TrackingEvent implements ExtendEntityInterface
      * @param TrackingWebsite|null $website
      * @return TrackingEvent
      */
-    public function setWebsite(TrackingWebsite $website = null)
+    public function setWebsite(?TrackingWebsite $website = null)
     {
         $this->website = $website;
 

@@ -176,7 +176,7 @@ class MarketingListProviderTest extends \PHPUnit\Framework\TestCase
         MarketingList $marketingList,
         QueryBuilder $queryBuilder,
         DatagridInterface|\PHPUnit\Framework\MockObject\MockObject $dataGrid,
-        string $mixin = null
+        ?string $mixin = null
     ): void {
         $dataSource = $this->createMock(OrmDatasource::class);
         $dataSource->expects($this->once())

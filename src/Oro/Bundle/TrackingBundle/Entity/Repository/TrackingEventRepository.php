@@ -13,7 +13,7 @@ class TrackingEventRepository extends EntityRepository
 {
     public function createNotParsedTrackingEventsQueryBuilder(
         bool $sortById = false,
-        int $maxResults = null
+        ?int $maxResults = null
     ): QueryBuilder {
         $queryBuilder = $this
             ->getEntityManager()
@@ -34,7 +34,7 @@ class TrackingEventRepository extends EntityRepository
         return $queryBuilder;
     }
 
-    public function getNotParsedTrackingEvents(bool $sortById = false, int $maxResults = null): array
+    public function getNotParsedTrackingEvents(bool $sortById = false, ?int $maxResults = null): array
     {
         return $this
             ->createNotParsedTrackingEventsQueryBuilder($sortById, $maxResults)

@@ -202,7 +202,7 @@ class EmailCampaign implements ExtendEntityInterface
      *
      * @return EmailCampaign
      */
-    public function setCampaign(Campaign $campaign = null)
+    public function setCampaign(?Campaign $campaign = null)
     {
         $this->campaign = $campaign;
 
@@ -250,7 +250,7 @@ class EmailCampaign implements ExtendEntityInterface
      *
      * @return EmailCampaign
      */
-    public function setOwner(User $owner = null)
+    public function setOwner(?User $owner = null)
     {
         $this->owner = $owner;
 
@@ -372,7 +372,7 @@ class EmailCampaign implements ExtendEntityInterface
      * @param \DateTime|null $scheduledFor
      * @return EmailCampaign
      */
-    public function setScheduledFor(\DateTime $scheduledFor = null)
+    public function setScheduledFor(?\DateTime $scheduledFor = null)
     {
         $this->scheduledFor = $scheduledFor;
 
@@ -492,7 +492,7 @@ class EmailCampaign implements ExtendEntityInterface
      * @param Organization|null $organization
      * @return EmailCampaign
      */
-    public function setOrganization(Organization $organization = null)
+    public function setOrganization(?Organization $organization = null)
     {
         $this->organization = $organization;
 

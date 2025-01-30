@@ -305,7 +305,7 @@ class EmailCampaignStatistics implements ExtendEntityInterface
      *
      * @return EmailCampaignStatistics
      */
-    public function setOwner(User $owner = null)
+    public function setOwner(?User $owner = null)
     {
         $this->owner = $owner;
 
@@ -328,7 +328,7 @@ class EmailCampaignStatistics implements ExtendEntityInterface
      * @param Organization|null $organization
      * @return EmailCampaignStatistics
      */
-    public function setOrganization(Organization $organization = null)
+    public function setOrganization(?Organization $organization = null)
     {
         $this->organization = $organization;
 

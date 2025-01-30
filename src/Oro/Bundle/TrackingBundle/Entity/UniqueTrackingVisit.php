@@ -54,7 +54,7 @@ class UniqueTrackingVisit
      * @param TrackingWebsite|null $trackingWebsite
      * @return $this
      */
-    public function setTrackingWebsite(TrackingWebsite $trackingWebsite = null)
+    public function setTrackingWebsite(?TrackingWebsite $trackingWebsite = null)
     {
         $this->trackingWebsite = $trackingWebsite;
 

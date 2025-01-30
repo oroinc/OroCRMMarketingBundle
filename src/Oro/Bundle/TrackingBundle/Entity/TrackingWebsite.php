@@ -214,7 +214,7 @@ class TrackingWebsite implements ExtendEntityInterface
      * @param User|null $owner
      * @return TrackingWebsite
      */
-    public function setOwner(User $owner = null)
+    public function setOwner(?User $owner = null)
     {
         $this->owner = $owner;
 
@@ -237,7 +237,7 @@ class TrackingWebsite implements ExtendEntityInterface
      * @param Organization|null $organization
      * @return TrackingWebsite
      */
-    public function setOrganization(Organization $organization = null)
+    public function setOrganization(?Organization $organization = null)
     {
         $this->organization = $organization;
 
