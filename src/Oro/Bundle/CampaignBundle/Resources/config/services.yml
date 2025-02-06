@@ -44,6 +44,7 @@ services:
 
     oro_campaign.data_transformer.multi_line:
         class: Oro\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer
+        public: true
 
     oro_campaign.form.autocomplete.campaign.search_handler:
         parent: oro_form.autocomplete.search_handler
