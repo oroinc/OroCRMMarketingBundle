@@ -12,7 +12,7 @@ class MarketingListControllerTest extends WebTestCase
     #[\Override]
     protected function setUp(): void
     {
-        $this->initClient([], $this->generateWsseAuthHeader());
+        $this->initClient([], self::generateApiAuthHeader());
     }
 
     public function testDelete()
@@ -37,7 +37,7 @@ class MarketingListControllerTest extends WebTestCase
             'DELETE',
             $this->getUrl('oro_api_delete_marketinglist', ['id' => $entity->getId()]),
             [],
-            $this->generateWsseAuthHeader()
+            self::generateApiAuthHeader()
         );
         $result = $this->client->getResponse();
         $this->assertEmptyResponseStatusCodeEquals($result, Response::HTTP_NO_CONTENT);

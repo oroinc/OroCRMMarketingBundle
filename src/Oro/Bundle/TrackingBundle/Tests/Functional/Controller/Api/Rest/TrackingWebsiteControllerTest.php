@@ -9,7 +9,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
     #[\Override]
     protected function setUp(): void
     {
-        $this->initClient([], $this->generateWsseAuthHeader());
+        $this->initClient([], self::generateApiAuthHeader());
 
         $this->loadFixtures(
             [
@@ -26,7 +26,7 @@ class TrackingWebsiteControllerTest extends WebTestCase
             'DELETE',
             $this->getUrl('oro_api_delete_tracking_website', ['id' => $website->getId()]),
             [],
-            $this->generateWsseAuthHeader()
+            self::generateApiAuthHeader()
         );
         $result = $this->client->getResponse();
         $this->assertEmptyResponseStatusCodeEquals($result, 204);
