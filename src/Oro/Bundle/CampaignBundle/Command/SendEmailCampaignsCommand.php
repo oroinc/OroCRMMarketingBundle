@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oro\Bundle\CampaignBundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
@@ -93,17 +94,27 @@ HELP
 
     private function send(OutputInterface $output, array $emailCampaigns): void
     {
+        $em = $this->getEntityManager();
         /** @var EmailCampaign $emailCampaign */
         foreach ($emailCampaigns as $emailCampaign) {
             $output->writeln(sprintf('<info>Sending email campaign</info>: %s', $emailCampaign->getName()));
 
             $sender = $this->emailCampaignSenderBuilder->getSender($emailCampaign);
             $sender->send();
+            $emailCampaign->setSent(true);
+            $em->persist($emailCampaign);
         }
+
+        $em->flush();
     }
 
     private function getEmailCampaignRepository(): EmailCampaignRepository
     {
         return $this->doctrine->getRepository(EmailCampaign::class);
+    }
+
+    private function getEntityManager(): ObjectManager
+    {
+        return $this->doctrine->getManagerForClass(EmailCampaign::class);
     }
 }
