@@ -17,7 +17,7 @@
             "Oro\\Bundle\\MarketingListBundle\\": "src/Oro/Bundle/MarketingListBundle",
             "Oro\\Bundle\\TrackingBundle\\": "src/Oro/Bundle/TrackingBundle"
         },
-        "exclude-from-classmap": ["/Tests/"]
+        "exclude-from-classmap": ["**/Tests/"]
     },
     "require": {
         "ext-curl": "*",
