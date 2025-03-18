@@ -83,7 +83,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
                 $concreteGridName = Segment::GRID_PREFIX . $marketingList->getSegment()->getId() . $postfix;
             }
 
-            $concreteGridConfiguration =  $this->chainConfigurationProvider->getConfiguration($concreteGridName);
+            $concreteGridConfiguration = $this->chainConfigurationProvider->getConfiguration($concreteGridName);
             // Reset configured name to current gridName for further usage in Listener and Extension
             $concreteGridConfiguration->setName($gridName);
             $this->configuration[$gridName] = $concreteGridConfiguration;
