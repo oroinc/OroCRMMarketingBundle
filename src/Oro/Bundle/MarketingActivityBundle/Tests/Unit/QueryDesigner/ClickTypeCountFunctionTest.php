@@ -12,6 +12,9 @@ class ClickTypeCountFunctionTest extends AbstractTypeCountFunctionTestCase
     protected function setUp(): void
     {
         $this->function = new ClickTypeCountFunction();
-        $this->type = ExtendHelper::buildEnumOptionId(MarketingActivity::TYPE_ENUM_CODE, MarketingActivity::TYPE_CLICK);
+        $this->type = ExtendHelper::buildEnumOptionId(
+            MarketingActivity::TYPE_ENUM_CODE,
+            MarketingActivity::TYPE_CLICK
+        );
     }
 }
