@@ -145,7 +145,7 @@ Specify the date which the campaign finishes on.
 
 #### get_subresource
 
-Retrieve the record of the user who is the owner of a specific campaign record.
+Retrieve a record of the user who is the owner of a specific campaign record.
 
 #### get_relationship
 
@@ -172,7 +172,7 @@ Example:
 
 #### get_subresource
 
-Retrieve the record of the organization that a specific campaign belongs to.
+Retrieve a record of the organization that a specific campaign belongs to.
 
 #### get_relationship
 

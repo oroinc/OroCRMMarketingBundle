@@ -214,7 +214,7 @@ Example:
 
 #### get_subresource
 
-Retrieve the record of a marketing activity type assigned to a specific marketing activity record.
+Retrieve a record of a marketing activity type assigned to a specific marketing activity record.
 
 #### get_relationship
 
@@ -241,7 +241,7 @@ Example:
 
 #### get_subresource
 
-Retrieve the record of the organization that is the owner of a specific marketing activity record.
+Retrieve a record of the organization that is the owner of a specific marketing activity record.
 
 #### get_relationship
 
