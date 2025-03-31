@@ -7,4 +7,4 @@ security:
 
 oro_security:
     access_control:
-        - { path: ^%web_backend_prefix%/tracking/data/create, roles: PUBLIC_ACCESS }
+        - { path: ^/tracking/data/create, roles: PUBLIC_ACCESS }

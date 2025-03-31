@@ -242,7 +242,7 @@ security:
     firewalls:
         # override pattern
         tracking_data:
-            pattern:   ^%web_backend_prefix%/tracking/data/create
+            pattern:   ^/tracking/data/create
 ```
 
 #### 2. Bundle's ``app.yml`` in ``Resources/config/oro``
@@ -252,5 +252,5 @@ security:
     firewalls:
         # override pattern
         tracking_data:
-            pattern:   ^%web_backend_prefix%/tracking/data/create
+            pattern:   ^/tracking/data/create
 ```
