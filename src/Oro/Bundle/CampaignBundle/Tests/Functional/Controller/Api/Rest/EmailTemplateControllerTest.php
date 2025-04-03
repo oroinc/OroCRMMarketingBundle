@@ -108,11 +108,11 @@ class EmailTemplateControllerTest extends WebTestCase
 
     public function testGetEntitySystem(): void
     {
-        $marketingListId = $this->getReference(LoadMarketingListData::MARKETING_LIST_NAME)->getId();
+        $marketingList = $this->getReference(LoadMarketingListData::MARKETING_LIST_NAME);
         $this->client->jsonRequest(
             'GET',
             $this->getUrl('oro_api_get_emailcampaign_email_templates', [
-                'id' => $marketingListId,
+                'id' => $marketingList->getId(),
                 'includeNonEntity' => 1,
                 'includeSystemTemplates' => 1
             ])
@@ -120,6 +120,11 @@ class EmailTemplateControllerTest extends WebTestCase
 
         $result = $this->getJsonResponseContent($this->client->getResponse(), 200);
 
-        $this->assertCount(13, $result);
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $expectedTemplates = $em
+            ->getRepository(EmailTemplate::class)
+            ->findBy(['entityName' => [$marketingList->getEntity(), null], 'visible' => true]);
+
+        self::assertCount(count($expectedTemplates), $result);
     }
 }
