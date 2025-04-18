@@ -26,7 +26,7 @@ class EmailCampaignSendProcessorTest extends WebTestCase
     {
         $sentMessage = self::sendMessage(
             SendEmailCampaignTopic::getName(),
-            ['email_campaign' => PHP_INT_MAX]
+            ['email_campaign' => self::BIGINT]
         );
         self::consumeMessage($sentMessage);
 
@@ -34,7 +34,7 @@ class EmailCampaignSendProcessorTest extends WebTestCase
         self::assertProcessedMessageProcessor('oro_campaign.async.email_campaign_send_processor', $sentMessage);
         self::assertTrue(
             self::getLoggerTestHandler()->hasNotice(
-                sprintf('Email campaign with id %d was not found', PHP_INT_MAX)
+                sprintf('Email campaign with id %d was not found', self::BIGINT)
             )
         );
     }
