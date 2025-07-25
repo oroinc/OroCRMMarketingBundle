@@ -1,11 +1,11 @@
 oro_campaign_bundle:
     resource:     "@OroCampaignBundle/Controller"
-    type:         annotation
+    type:         attribute
     prefix:       /
 
 oro_campaign_dashboard:
     resource:     "@OroCampaignBundle/Controller/Dashboard"
-    type:         annotation
+    type:         attribute
     prefix:       /dashboard
 
 

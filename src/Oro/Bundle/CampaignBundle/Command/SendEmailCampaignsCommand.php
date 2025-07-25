@@ -11,6 +11,7 @@ use Oro\Bundle\CampaignBundle\Entity\Repository\EmailCampaignRepository;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
 use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,13 +19,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Sends scheduled email campaigns.
  */
+#[AsCommand(
+    name: 'oro:cron:send-email-campaigns',
+    description: 'Sends scheduled email campaigns.'
+)]
 class SendEmailCampaignsCommand extends Command implements
     CronCommandScheduleDefinitionInterface,
     CronCommandActivationInterface
 {
-    /** @var string */
-    protected static $defaultName = 'oro:cron:send-email-campaigns';
-
     private ManagerRegistry $doctrine;
     private EmailCampaignSenderBuilder $emailCampaignSenderBuilder;
 
@@ -56,7 +58,6 @@ class SendEmailCampaignsCommand extends Command implements
     protected function configure()
     {
         $this
-            ->setDescription('Sends scheduled email campaigns.')
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command sends scheduled email campaigns.

@@ -15,6 +15,7 @@ use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\TrackingBundle\Entity\TrackingData;
 use Oro\Bundle\TrackingBundle\Tools\TrackingDataFolderSelector;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,11 +27,12 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * Imports event tracking logs.
  */
+#[AsCommand(
+    name: 'oro:cron:import-tracking',
+    description: 'Imports event tracking logs.'
+)]
 class ImportLogsCommand extends Command implements CronCommandScheduleDefinitionInterface
 {
-    /** @var string */
-    protected static $defaultName = 'oro:cron:import-tracking';
-
     private DoctrineJobRepository $doctrineJobRepository;
     private JobExecutor $jobExecutor;
     private ConfigManager $configManager;
@@ -61,7 +63,6 @@ class ImportLogsCommand extends Command implements CronCommandScheduleDefinition
     {
         $this
             ->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'Logs directory')
-            ->setDescription('Imports event tracking logs.')
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command imports event tracking logs.

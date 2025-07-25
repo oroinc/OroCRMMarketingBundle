@@ -9,7 +9,7 @@ use Oro\Bundle\DashboardBundle\Model\WidgetConfigs;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Adds charts for campaign leads, campaign opportunity, campaign by close revenue

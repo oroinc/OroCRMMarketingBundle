@@ -13,6 +13,7 @@ use Oro\Bundle\CampaignBundle\Entity\TrackingEventSummary;
 use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
 use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,13 +21,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Calculates tracking event summary (campaign statistics).
  */
+#[AsCommand(
+    name: 'oro:cron:calculate-tracking-event-summary',
+    description: 'Calculates tracking event summary (campaign statistics).'
+)]
 class CalculateTrackingEventSummaryCommand extends Command implements
     CronCommandScheduleDefinitionInterface,
     CronCommandActivationInterface
 {
-    /** @var string */
-    protected static $defaultName = 'oro:cron:calculate-tracking-event-summary';
-
     private ManagerRegistry $doctrine;
 
     public function __construct(ManagerRegistry $doctrine)
@@ -54,7 +56,7 @@ class CalculateTrackingEventSummaryCommand extends Command implements
     #[\Override]
     protected function configure()
     {
-        $this->setDescription('Calculates tracking event summary (campaign statistics).')
+        $this
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command calculates tracking event summary (campaign statistics).

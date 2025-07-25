@@ -1,6 +1,6 @@
 oro_marketing_list_bundle:
     resource:     "@OroMarketingListBundle/Controller"
-    type:         annotation
+    type:         attribute
     prefix:       /
 
 

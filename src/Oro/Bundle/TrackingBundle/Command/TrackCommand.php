@@ -8,6 +8,7 @@ use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
 use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\TrackingBundle\Processor\TrackingProcessor;
 use Oro\Component\Log\OutputLogger;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,14 +17,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Parses tracking logs.
  */
+#[AsCommand(
+    name: 'oro:cron:tracking:parse',
+    description: 'Parses tracking logs.'
+)]
 class TrackCommand extends Command implements
     CronCommandScheduleDefinitionInterface,
     CronCommandActivationInterface
 {
     public const STATUS_SUCCESS = 0;
-
-    /** @var string */
-    protected static $defaultName = 'oro:cron:tracking:parse';
 
     private TrackingProcessor $trackingProcessor;
 
@@ -57,7 +59,6 @@ class TrackCommand extends Command implements
                 'Max execution time in minutes (use 0 for unlimited)',
                 5
             )
-            ->setDescription('Parses tracking logs.')
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command parses tracking logs.
