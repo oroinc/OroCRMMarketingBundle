@@ -44,7 +44,8 @@ Oro\Bundle\CampaignBundle\Entity\EmailCampaign:
             - Length:
                 max: 100
         senderEmail:
-            - Email: ~
+            - Email:
+                mode: strict
             - Length:
                 max: 100
         senderName:
