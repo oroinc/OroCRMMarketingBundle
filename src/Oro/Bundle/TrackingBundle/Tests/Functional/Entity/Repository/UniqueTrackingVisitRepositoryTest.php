@@ -17,7 +17,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
     #[\Override]
     protected function setUp(): void
     {
-        $this->initClient([], $this->generateBasicAuthHeader());
+        $this->initClient([], self::generateBasicAuthHeader());
         $this->loadFixtures([LoadTrackingVisits::class]);
     }
 
@@ -26,13 +26,12 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         return self::getContainer()->get('doctrine')->getRepository(UniqueTrackingVisit::class);
     }
 
-    public function testGetUniqueRecordByTrackingVisit()
+    public function testGetUniqueRecordByTrackingVisit(): void
     {
         /** @var TrackingVisit $visit */
         $visit = $this->getReference(LoadTrackingVisits::TRACKING_VISIT_1);
 
         $timezone = $this->getTimezone();
-
         $uniqueVisit = $this->getRepository()->getUniqueRecordByTrackingVisit($visit, $timezone);
         $this->assertInstanceOf(UniqueTrackingVisit::class, $uniqueVisit);
         $this->assertSame(1, $uniqueVisit->getVisitCount());
@@ -40,7 +39,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         $this->assertUniqueVisitMatchesVisit($visit, $uniqueVisit, $timezone);
     }
 
-    public function testLogTrackingVisitNew()
+    public function testLogTrackingVisitNew(): void
     {
         $newVisit = new TrackingVisit();
         $newVisit->setTrackingWebsite($this->getReference(LoadTrackingWebsites::TRACKING_WEBSITE));
@@ -54,7 +53,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
         $this->assertUniqueVisitMatchesVisit($newVisit, $loggedUniqueVisit, $timezone);
     }
 
-    public function testLogTrackingVisitExisting()
+    public function testLogTrackingVisitExisting(): void
     {
         /** @var TrackingVisit $visit */
         $visit = $this->getReference(LoadTrackingVisits::TRACKING_VISIT_2);
@@ -68,13 +67,7 @@ class UniqueTrackingVisitRepositoryTest extends WebTestCase
 
     private function getTimezone(): \DateTimeZone
     {
-        $configManager = self::getConfigManager();
-
-        $timezoneName = $configManager->get('oro_locale.timezone');
-        if (!$timezoneName) {
-            $timezoneName = 'UTC';
-        }
-        return new \DateTimeZone($timezoneName);
+        return new \DateTimeZone(self::getConfigManager()->get('oro_locale.timezone') ?: 'UTC');
     }
 
     private function assertUniqueVisitMatchesVisit(

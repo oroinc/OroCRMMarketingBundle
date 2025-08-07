@@ -85,7 +85,8 @@ class AggregateTrackingVisitsProcessorTest extends WebTestCase
 
     private static function toggleConfig(bool $value): void
     {
-        self::getConfigManager()->set('oro_tracking.precalculated_statistic_enabled', $value);
-        self::getConfigManager()->flush();
+        $configManager = self::getConfigManager();
+        $configManager->set('oro_tracking.precalculated_statistic_enabled', $value);
+        $configManager->flush();
     }
 }

@@ -21,6 +21,7 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
     use MessageQueueExtension;
     use ConfigManagerAwareTestTrait;
 
+    private ?bool $initialFeatureEnabled;
     private ConfigProvider $entityConfigProvider;
     private Cache|CacheInterface $cacheProvider;
 
@@ -28,8 +29,9 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
     protected function setUp(): void
     {
         $this->initClient();
-
         $this->loadFixtures([LoadUserData::class]);
+
+        $this->initialFeatureEnabled = self::getConfigManager()->get('oro_marketing_list.feature_enabled');
 
         $this->getOptionalListenerManager()->enableListener('oro_marketing_list.event_listener.on_entity_change');
 
@@ -37,6 +39,19 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
         $this->cacheProvider = self::getContainer()->get('oro_marketing_list.marketing_list.cache');
 
         $this->addUserToContactInformationAllowedList();
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        $configManager = self::getConfigManager();
+        $configManager->set('oro_marketing_list.feature_enabled', $this->initialFeatureEnabled);
+        $configManager->flush();
+
+        $config = $this->entityConfigProvider->getConfig(User::class, 'email');
+        $config->remove('contact_information');
+
+        $this->cacheProvider->delete('oro_marketing_list.allowed_entities');
     }
 
     public function testOnFlushFeatureDisabled(): void
@@ -61,7 +76,7 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
         $this->toggleMarketingListFeature();
         $this->updateUser();
 
-        $this->assertMessagesSent(
+        self::assertMessagesSent(
             MarketingListUpdateTopic::getName(),
             [[MarketingListUpdateTopic::CLASS_NAME => User::class]]
         );
@@ -78,11 +93,11 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
         $entityManager->flush();
     }
 
-    private function toggleMarketingListFeature($enable = true): void
+    private function toggleMarketingListFeature(bool $enable = true): void
     {
         $configManager = self::getConfigManager();
         $configManager->set('oro_marketing_list.feature_enabled', $enable);
-        self::getContainer()->get('oro_featuretoggle.checker.feature_checker')->resetCache();
+        $configManager->flush();
     }
 
     private function disableListener(): void
@@ -103,15 +118,6 @@ class UpdateMarketingListOnEntityChangeTest extends WebTestCase
     {
         $config = $this->entityConfigProvider->getConfig(User::class, 'email');
         $config->set('contact_information', 'email');
-
-        $this->cacheProvider->delete('oro_marketing_list.allowed_entities');
-    }
-
-    #[\Override]
-    protected function tearDown(): void
-    {
-        $config = $this->entityConfigProvider->getConfig(User::class, 'email');
-        $config->remove('contact_information');
 
         $this->cacheProvider->delete('oro_marketing_list.allowed_entities');
     }
