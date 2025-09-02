@@ -26,8 +26,8 @@ class InternalTransportSettingsType extends AbstractTransportSettingsType
                     'depends_on_parent_field' => 'marketingList',
                     'data_route' => 'oro_api_get_emailcampaign_email_templates',
                     'data_route_parameter' => 'id',
-                    'includeNonEntity' => true,
-                    'includeSystemTemplates' => false
+                    'include_non_entity_templates' => true,
+                    'include_system_templates' => false
                 ]
             );
 
