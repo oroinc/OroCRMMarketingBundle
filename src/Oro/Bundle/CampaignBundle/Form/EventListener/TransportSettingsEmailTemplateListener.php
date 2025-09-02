@@ -84,8 +84,7 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
 
     protected function fillEmailTemplateChoices(FormInterface $form, ?string $entityName): void
     {
-        $includeNonEntity = $form->get('template')?->getConfig()->getOption('includeNonEntity') ?? false;
-        $includeSystemTpl = $form->get('template')?->getConfig()->getOption('includeSystemTemplates') ?? true;
+        $options = $form->get('template')?->getConfig()->getOptions();
 
         FormUtils::replaceField(
             $form,
@@ -94,14 +93,13 @@ class TransportSettingsEmailTemplateListener implements EventSubscriberInterface
                 'selectedEntity' => $entityName,
                 'query_builder'  => function (EmailTemplateRepository $templateRepository) use (
                     $entityName,
-                    $includeNonEntity,
-                    $includeSystemTpl
+                    $options
                 ) {
                     return $templateRepository->getEntityTemplatesQueryBuilder(
                         $entityName,
                         $this->tokenAccessor->getOrganization(),
-                        $includeNonEntity,
-                        $includeSystemTpl
+                        $options['includeNonEntity'] ?? false,
+                        $options['includeSystemTemplates'] ?? true
                     );
                 }
             ],
