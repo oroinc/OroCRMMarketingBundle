@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\TrackingBundle\Form\Type\TrackingWebsiteType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,7 +25,7 @@ class TrackingWebsiteController extends AbstractController
         requirements: ['_format' => 'html|json'],
         defaults: ['_format' => 'html']
     )]
-    #[Template]
+    #[Template('@OroTracking/TrackingWebsite/index.html.twig')]
     #[Acl(id: 'oro_tracking_website_view', type: 'entity', class: TrackingWebsite::class, permission: 'VIEW')]
     public function indexAction(): array
     {
@@ -43,7 +43,7 @@ class TrackingWebsiteController extends AbstractController
     }
 
     #[Route(path: '/update/{id}', name: 'oro_tracking_website_update', requirements: ['id' => '\d+'])]
-    #[Template]
+    #[Template('@OroTracking/TrackingWebsite/update.html.twig')]
     #[Acl(id: 'oro_tracking_website_update', type: 'entity', class: TrackingWebsite::class, permission: 'EDIT')]
     public function updateAction(TrackingWebsite $trackingWebsite): array|RedirectResponse
     {
@@ -51,7 +51,7 @@ class TrackingWebsiteController extends AbstractController
     }
 
     #[Route(path: '/view/{id}', name: 'oro_tracking_website_view', requirements: ['id' => '\d+'])]
-    #[Template]
+    #[Template('@OroTracking/TrackingWebsite/view.html.twig')]
     #[AclAncestor('oro_tracking_website_view')]
     public function viewAction(TrackingWebsite $trackingWebsite): array
     {

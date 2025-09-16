@@ -8,7 +8,7 @@ use Oro\Bundle\ChartBundle\Model\ConfigProvider;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -36,7 +36,7 @@ class CampaignEventController extends AbstractController
      * @return array
      */
     #[Route(path: '/plot/{period}/{campaign}', name: 'oro_campaign_event_plot')]
-    #[Template]
+    #[Template('@OroCampaign/CampaignEvent/plot.html.twig')]
     #[AclAncestor('oro_campaign_view')]
     public function plotAction($period, Campaign $campaign)
     {

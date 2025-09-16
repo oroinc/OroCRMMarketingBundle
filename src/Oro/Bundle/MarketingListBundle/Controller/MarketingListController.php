@@ -12,7 +12,7 @@ use Oro\Bundle\MarketingListBundle\Form\Type\MarketingListType;
 use Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager;
 use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,7 +27,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class MarketingListController extends AbstractController
 {
     #[Route(path: '/', name: 'oro_marketing_list_index')]
-    #[Template]
+    #[Template('@OroMarketingList/MarketingList/index.html.twig')]
     #[AclAncestor('oro_marketing_list_view')]
     public function indexAction(): array
     {
@@ -37,7 +37,7 @@ class MarketingListController extends AbstractController
     }
 
     #[Route(path: '/view/{id}', name: 'oro_marketing_list_view', requirements: ['id' => '\d+'], defaults: ['id' => 0])]
-    #[Template]
+    #[Template('@OroMarketingList/MarketingList/view.html.twig')]
     #[Acl(id: 'oro_marketing_list_view', type: 'entity', class: MarketingList::class, permission: 'VIEW')]
     public function viewAction(MarketingList $entity): array
     {
@@ -66,7 +66,7 @@ class MarketingListController extends AbstractController
         requirements: ['id' => '\d+'],
         defaults: ['id' => 0]
     )]
-    #[Template]
+    #[Template('@OroMarketingList/MarketingList/update.html.twig')]
     #[Acl(id: 'oro_marketing_list_update', type: 'entity', class: MarketingList::class, permission: 'EDIT')]
     public function updateAction(MarketingList $entity): array|RedirectResponse
     {

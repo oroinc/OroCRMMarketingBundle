@@ -13,7 +13,7 @@ use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\UIBundle\Route\Router;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,7 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class EmailCampaignController extends AbstractController
 {
     #[Route(path: '/', name: 'oro_email_campaign_index')]
-    #[Template]
+    #[Template('@OroCampaign/EmailCampaign/index.html.twig')]
     #[AclAncestor('oro_email_campaign_view')]
     public function indexAction()
     {
@@ -63,7 +63,7 @@ class EmailCampaignController extends AbstractController
         requirements: ['id' => '\d+'],
         defaults: ['id' => 0]
     )]
-    #[Template]
+    #[Template('@OroCampaign/EmailCampaign/update.html.twig')]
     #[Acl(id: 'oro_email_campaign_update', type: 'entity', class: EmailCampaign::class, permission: 'EDIT')]
     public function updateAction(EmailCampaign $entity, Request $request)
     {
@@ -77,7 +77,7 @@ class EmailCampaignController extends AbstractController
      * @return array
      */
     #[Route(path: '/view/{id}', name: 'oro_email_campaign_view', requirements: ['id' => '\d+'])]
-    #[Template]
+    #[Template('@OroCampaign/EmailCampaign/view.html.twig')]
     #[Acl(id: 'oro_email_campaign_view', type: 'entity', class: EmailCampaign::class, permission: 'VIEW')]
     public function viewAction(EmailCampaign $entity)
     {

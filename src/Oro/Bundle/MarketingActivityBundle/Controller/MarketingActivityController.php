@@ -11,7 +11,7 @@ use Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityReposi
 use Oro\Bundle\MarketingActivityBundle\Filter\MarketingActivitiesSectionFilterHelper;
 use Oro\Bundle\MarketingActivityBundle\Provider\MarketingActivitySectionDataNormalizer;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ class MarketingActivityController extends AbstractController
         name: 'oro_marketing_activity_widget_summary',
         requirements: ['campaignId' => '\d+']
     )]
-    #[Template]
+    #[Template('@OroMarketingActivity/MarketingActivity/summary.html.twig')]
     #[AclAncestor('oro_marketing_activity_view')]
     public function summaryAction($campaignId, $entityClass = null, $entityId = null)
     {

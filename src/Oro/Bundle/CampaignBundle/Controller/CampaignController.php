@@ -7,7 +7,7 @@ use Oro\Bundle\CampaignBundle\Entity\Campaign;
 use Oro\Bundle\FormBundle\Model\UpdateHandlerFacade;
 use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CampaignController extends AbstractController
 {
     #[Route(path: '/', name: 'oro_campaign_index')]
-    #[Template]
+    #[Template('@OroCampaign/Campaign/index.html.twig')]
     #[AclAncestor('oro_campaign_view')]
     public function indexAction(): array
     {
@@ -45,7 +45,7 @@ class CampaignController extends AbstractController
      * Edit campaign
      */
     #[Route(path: '/update/{id}', name: 'oro_campaign_update', requirements: ['id' => '\d+'], defaults: ['id' => 0])]
-    #[Template]
+    #[Template('@OroCampaign/Campaign/update.html.twig')]
     #[Acl(id: 'oro_campaign_update', type: 'entity', class: Campaign::class, permission: 'EDIT')]
     public function updateAction(Campaign $entity): array|RedirectResponse
     {
@@ -56,7 +56,7 @@ class CampaignController extends AbstractController
      * View campaign
      */
     #[Route(path: '/view/{id}', name: 'oro_campaign_view')]
-    #[Template]
+    #[Template('@OroCampaign/Campaign/view.html.twig')]
     #[Acl(id: 'oro_campaign_view', type: 'entity', class: Campaign::class, permission: 'VIEW')]
     public function viewAction(Campaign $entity): array
     {
