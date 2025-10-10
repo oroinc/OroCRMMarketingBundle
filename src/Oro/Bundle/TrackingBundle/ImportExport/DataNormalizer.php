@@ -5,6 +5,10 @@ namespace Oro\Bundle\TrackingBundle\ImportExport;
 use Oro\Bundle\ImportExportBundle\Processor\EntityNameAwareInterface;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\ConfigurableEntityNormalizer;
 
+/**
+ * Normalizes tracking data by URL-decoding specific fields and structuring it for import processing
+ * Transforms raw tracking input into a standardized format with event and data components
+ */
 class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameAwareInterface
 {
     const DEFAULT_NAME = 'visit';
@@ -24,7 +28,7 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     }
 
     #[\Override]
-    public function denormalize($data, string $type, ?string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         return parent::denormalize(
             $this->updateData($data),
@@ -35,8 +39,11 @@ class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameA
     }
 
     #[\Override]
-    public function normalize($object, ?string $format = null, array $context = [])
-    {
+    public function normalize(
+        mixed $object,
+        ?string $format = null,
+        array $context = []
+    ): float|int|bool|\ArrayObject|array|string|null {
         throw new \Exception('Not implemented');
     }
 
