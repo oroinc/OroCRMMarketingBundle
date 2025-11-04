@@ -1,4 +1,4 @@
-<a href="{{ record.getValue('url') }}">
+<a href="{{ record.getValue('url')|strip_dangerous_protocols }}">
     {% if record.getValue('title') %}
         {{ record.getValue('title') }}
     {% else %}
