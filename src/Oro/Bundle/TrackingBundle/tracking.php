@@ -1,10 +1,11 @@
 <?php
+
 /**
  * This is tracking endpoint, which must be as fast as possible.
  * KISS.
  *
  * @SuppressWarnings(PHPMD)
- * @codingStandardsIgnoreFile
+ * phpcs:ignoreFile
  */
 
 use Symfony\Component\Dotenv\Dotenv;
