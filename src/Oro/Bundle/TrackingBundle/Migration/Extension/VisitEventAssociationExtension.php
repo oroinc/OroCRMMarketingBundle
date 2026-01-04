@@ -15,8 +15,8 @@ class VisitEventAssociationExtension implements ExtendExtensionAwareInterface
 {
     use ExtendExtensionAwareTrait;
 
-    const ASSOCIATION_KIND = 'association';
-    const VISIT_EVENT_TABLE_NAME = 'oro_tracking_visit_event';
+    public const ASSOCIATION_KIND = 'association';
+    public const VISIT_EVENT_TABLE_NAME = 'oro_tracking_visit_event';
 
     /**
      * Adds the association between the target table and the visit event table

@@ -12,8 +12,8 @@ use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
  */
 class CampaignStatisticGroupingListener
 {
-    const MIXIN_NAME = 'orocrm-email-campaign-marketing-list-items-mixin';
-    const MANUAL_MIXIN_NAME = 'orocrm-email-campaign-marketing-list-manual-items-mixin';
+    public const MIXIN_NAME = 'orocrm-email-campaign-marketing-list-items-mixin';
+    public const MANUAL_MIXIN_NAME = 'orocrm-email-campaign-marketing-list-manual-items-mixin';
 
     /**
      * @var MarketingListHelper

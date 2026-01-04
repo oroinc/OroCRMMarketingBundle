@@ -9,8 +9,8 @@ use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;
  */
 class MarketingListItemVirtualFieldProvider implements VirtualFieldProviderInterface
 {
-    const FIELD_CONTACTED_TIMES = 'mlContactedTimes';
-    const FIELD_LAST_CONTACTED_AT = 'mlLastContactedAt';
+    public const FIELD_CONTACTED_TIMES = 'mlContactedTimes';
+    public const FIELD_LAST_CONTACTED_AT = 'mlLastContactedAt';
 
     /**
      * @var array|null

@@ -14,8 +14,8 @@ use Symfony\Component\Security\Acl\Util\ClassUtils;
  */
 class ContactInformationFieldsProvider
 {
-    const CONTACT_INFORMATION_SCOPE_EMAIL = 'email';
-    const CONTACT_INFORMATION_SCOPE_PHONE = 'phone';
+    public const CONTACT_INFORMATION_SCOPE_EMAIL = 'email';
+    public const CONTACT_INFORMATION_SCOPE_PHONE = 'phone';
 
     /**
      * @var ContactInformationFieldHelper

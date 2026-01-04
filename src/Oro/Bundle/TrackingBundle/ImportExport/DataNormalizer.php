@@ -11,7 +11,7 @@ use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\ConfigurableEntityNormal
  */
 class DataNormalizer extends ConfigurableEntityNormalizer implements EntityNameAwareInterface
 {
-    const DEFAULT_NAME = 'visit';
+    public const DEFAULT_NAME = 'visit';
 
     /**
      * @var string

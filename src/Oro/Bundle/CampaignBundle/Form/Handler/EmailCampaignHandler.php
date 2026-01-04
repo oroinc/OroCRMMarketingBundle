@@ -15,7 +15,7 @@ class EmailCampaignHandler
 {
     use RequestHandlerTrait;
 
-    const UPDATE_MARKER = 'formUpdateMarker';
+    public const UPDATE_MARKER = 'formUpdateMarker';
 
     /** @var RequestStack */
     protected $requestStack;

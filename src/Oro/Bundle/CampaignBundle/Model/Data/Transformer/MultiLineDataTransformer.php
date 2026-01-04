@@ -18,7 +18,7 @@ class MultiLineDataTransformer implements TransformerInterface
     /**
      * Force next scale if more than N items of previous scale where used
      */
-    const MAX = 40;
+    public const MAX = 40;
 
     /**
      * @var array

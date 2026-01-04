@@ -10,7 +10,7 @@ use Twig\Environment;
 
 class TrackingMainContext extends OroFeatureContext
 {
-    const TRACKING_FILENAME_KEY = 'tracking';
+    public const TRACKING_FILENAME_KEY = 'tracking';
 
     /**
      * Removes "var/logs/tracking/settings.ser" file which is generated on tracking configuration save

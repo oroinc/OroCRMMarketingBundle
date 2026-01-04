@@ -10,7 +10,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
  */
 class GridMarketingListTypeProvider
 {
-    const MARKETING_LIST_TYPE = MarketingListType::class;
+    public const MARKETING_LIST_TYPE = MarketingListType::class;
 
     /**
      * @var ManagerRegistry

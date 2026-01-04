@@ -22,7 +22,7 @@ class UpdateMarketingListProcessor implements MessageProcessorInterface, TopicSu
 {
     use LoggerAwareTrait;
 
-    const UPDATE_MARKETING_LIST_EVENT = 'oro_marketing_list.event.update_marketing_list';
+    public const UPDATE_MARKETING_LIST_EVENT = 'oro_marketing_list.event.update_marketing_list';
 
     private DoctrineHelper $doctrineHelper;
 

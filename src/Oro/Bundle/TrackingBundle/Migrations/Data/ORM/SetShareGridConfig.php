@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SetShareGridConfig extends AbstractFixture implements ContainerAwareInterface
 {
-    const PACKAGE_ENTERPRISE = 'enterprise';
+    public const PACKAGE_ENTERPRISE = 'enterprise';
 
     protected static $entityEnterpriseSecurityConfigs = [
         ['Oro\Bundle\TrackingBundle\Entity\TrackingWebsite', 'share_scopes', ['user']],

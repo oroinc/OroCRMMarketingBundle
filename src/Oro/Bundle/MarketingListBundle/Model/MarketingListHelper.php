@@ -8,7 +8,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 class MarketingListHelper
 {
-    const MARKETING_LIST = 'Oro\Bundle\MarketingListBundle\Entity\MarketingList';
+    public const MARKETING_LIST = 'Oro\Bundle\MarketingListBundle\Entity\MarketingList';
 
     /**
      * @var ManagerRegistry

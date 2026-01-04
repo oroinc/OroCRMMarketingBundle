@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrackingWebsiteType extends AbstractType
 {
-    const NAME = 'oro_tracking_website';
+    public const NAME = 'oro_tracking_website';
 
     /**
      * @var string

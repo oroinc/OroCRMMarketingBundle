@@ -49,10 +49,10 @@ class Campaign implements ExtendEntityInterface
     use DatesAwareTrait;
     use ExtendEntityTrait;
 
-    const PERIOD_HOURLY  = 'hour';
-    const PERIOD_DAILY   = 'day';
-    const PERIOD_MONTHLY = 'month';
-    const PERIOD_YEARLY  = 'year';
+    public const PERIOD_HOURLY  = 'hour';
+    public const PERIOD_DAILY   = 'day';
+    public const PERIOD_MONTHLY = 'month';
+    public const PERIOD_YEARLY  = 'year';
 
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: Types::INTEGER)]

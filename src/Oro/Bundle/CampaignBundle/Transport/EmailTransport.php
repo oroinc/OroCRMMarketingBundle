@@ -21,7 +21,7 @@ class EmailTransport implements TransportInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const NAME = 'internal';
+    public const NAME = 'internal';
 
     private EmailModelSender $emailModelSender;
 

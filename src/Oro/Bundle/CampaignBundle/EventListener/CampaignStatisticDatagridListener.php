@@ -14,8 +14,8 @@ use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
  */
 class CampaignStatisticDatagridListener
 {
-    const MIXIN_SENT_NAME = 'oro-email-campaign-marketing-list-sent-items-mixin';
-    const MIXIN_UNSENT_NAME = 'oro-email-campaign-marketing-list-unsent-items-mixin';
+    public const MIXIN_SENT_NAME = 'oro-email-campaign-marketing-list-sent-items-mixin';
+    public const MIXIN_UNSENT_NAME = 'oro-email-campaign-marketing-list-unsent-items-mixin';
 
     /**
      * @var ManagerRegistry

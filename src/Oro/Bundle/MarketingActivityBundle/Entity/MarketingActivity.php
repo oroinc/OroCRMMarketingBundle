@@ -42,15 +42,15 @@ class MarketingActivity implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
-    const TYPE_ENUM_CODE = 'ma_type';
+    public const TYPE_ENUM_CODE = 'ma_type';
 
     /** constant for enum ma_type */
-    const TYPE_SEND        = 'send';
-    const TYPE_OPEN        = 'open';
-    const TYPE_CLICK       = 'click';
-    const TYPE_SOFT_BOUNCE = 'soft_bounce';
-    const TYPE_HARD_BOUNCE = 'hard_bounce';
-    const TYPE_UNSUBSCRIBE = 'unsubscribe';
+    public const TYPE_SEND        = 'send';
+    public const TYPE_OPEN        = 'open';
+    public const TYPE_CLICK       = 'click';
+    public const TYPE_SOFT_BOUNCE = 'soft_bounce';
+    public const TYPE_HARD_BOUNCE = 'hard_bounce';
+    public const TYPE_UNSUBSCRIBE = 'unsubscribe';
 
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]

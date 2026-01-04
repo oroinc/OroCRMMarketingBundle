@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/campaign/event')]
 class CampaignEventController extends AbstractController
 {
-    const PRECALCULATED_SUFFIX = '-precalculated';
+    public const PRECALCULATED_SUFFIX = '-precalculated';
 
     #[\Override]
     public static function getSubscribedServices(): array

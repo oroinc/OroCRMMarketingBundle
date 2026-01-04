@@ -15,8 +15,8 @@ class IdentifierEventExtension implements ExtendExtensionAwareInterface
 {
     use ExtendExtensionAwareTrait;
 
-    const ASSOCIATION_KIND = 'identifier';
-    const VISIT_TABLE_NAME = 'oro_tracking_visit';
+    public const ASSOCIATION_KIND = 'identifier';
+    public const VISIT_TABLE_NAME = 'oro_tracking_visit';
 
     /**
      * Adds the association between the target table and the visit table

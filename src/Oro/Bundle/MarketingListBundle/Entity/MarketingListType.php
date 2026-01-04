@@ -15,9 +15,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 #[Config]
 class MarketingListType
 {
-    const TYPE_DYNAMIC = 'dynamic';
-    const TYPE_STATIC  = 'static';
-    const TYPE_MANUAL  = 'manual';
+    public const TYPE_DYNAMIC = 'dynamic';
+    public const TYPE_STATIC  = 'static';
+    public const TYPE_MANUAL  = 'manual';
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 32)]
     #[ORM\Id]

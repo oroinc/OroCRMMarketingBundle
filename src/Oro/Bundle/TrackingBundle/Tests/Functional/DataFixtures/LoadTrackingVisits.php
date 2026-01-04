@@ -9,8 +9,8 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 
 class LoadTrackingVisits extends AbstractFixture implements DependentFixtureInterface
 {
-    const TRACKING_VISIT_1 = 'oro_tracking.visit1';
-    const TRACKING_VISIT_2 = 'oro_tracking.visit2';
+    public const TRACKING_VISIT_1 = 'oro_tracking.visit1';
+    public const TRACKING_VISIT_2 = 'oro_tracking.visit2';
 
     /**
      * @var array

@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class InternalTransportSettingsType extends AbstractTransportSettingsType
 {
-    const NAME = 'oro_campaign_internal_transport_settings';
+    public const NAME = 'oro_campaign_internal_transport_settings';
 
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)

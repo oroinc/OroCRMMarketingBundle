@@ -24,15 +24,15 @@ use Oro\Bundle\TagBundle\Grid\TagsExtension;
 class MarketingListProvider
 {
     // entity.id + contactedTimes + lastContactedAt + MLI + MLRI is null + MLUI
-    const RESULT_ITEMS_MIXIN = 'oro-marketing-list-items-mixin';
-    const MANUAL_RESULT_ITEMS_MIXIN = 'oro-marketing-list-manual-items-mixin';
+    public const RESULT_ITEMS_MIXIN = 'oro-marketing-list-items-mixin';
+    public const MANUAL_RESULT_ITEMS_MIXIN = 'oro-marketing-list-manual-items-mixin';
 
     // entity.id + MLI
-    const FULL_ENTITIES_MIXIN = 'oro-marketing-full-mixin';
+    public const FULL_ENTITIES_MIXIN = 'oro-marketing-full-mixin';
 
     // entity.id + MLI + MLRI is null + MLUI is null
-    const RESULT_ENTITIES_MIXIN = 'oro-marketing-list-entities-mixin';
-    const MANUAL_RESULT_ENTITIES_MIXIN = 'oro-marketing-list-manual-entities-mixin';
+    public const RESULT_ENTITIES_MIXIN = 'oro-marketing-list-entities-mixin';
+    public const MANUAL_RESULT_ENTITIES_MIXIN = 'oro-marketing-list-manual-entities-mixin';
 
     /**
      * @var ManagerInterface

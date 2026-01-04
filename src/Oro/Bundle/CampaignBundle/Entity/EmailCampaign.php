@@ -45,8 +45,8 @@ class EmailCampaign implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
 
-    const SCHEDULE_MANUAL = 'manual';
-    const SCHEDULE_DEFERRED = 'deferred';
+    public const SCHEDULE_MANUAL = 'manual';
+    public const SCHEDULE_DEFERRED = 'deferred';
 
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
