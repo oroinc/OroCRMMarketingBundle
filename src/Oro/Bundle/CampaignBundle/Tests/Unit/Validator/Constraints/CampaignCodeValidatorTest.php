@@ -9,6 +9,7 @@ use Oro\Bundle\CampaignBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCode;
 use Oro\Bundle\CampaignBundle\Validator\Constraints\CampaignCodeValidator;
 use Oro\Component\Testing\ReflectionUtil;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
@@ -24,7 +25,7 @@ class CampaignCodeValidatorTest extends ConstraintValidatorTestCase
     }
 
     #[\Override]
-    protected function createValidator()
+    protected function createValidator(): ConstraintValidatorInterface
     {
         return new CampaignCodeValidator($this->doctrine);
     }

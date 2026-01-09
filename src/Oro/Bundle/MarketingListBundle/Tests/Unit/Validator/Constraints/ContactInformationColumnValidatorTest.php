@@ -7,6 +7,7 @@ use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColum
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnValidator;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
@@ -23,7 +24,7 @@ class ContactInformationColumnValidatorTest extends ConstraintValidatorTestCase
     }
 
     #[\Override]
-    protected function createValidator()
+    protected function createValidator(): ConstraintValidatorInterface
     {
         return new ContactInformationColumnValidator($this->contactInformationFieldHelper);
     }

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\CampaignBundle\Entity\Repository;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
@@ -30,7 +31,7 @@ class EmailCampaignStatisticsRepository extends EntityRepository
             )
             ->from(EmailCampaignStatistics::class, 'ecs')
             ->where($qb->expr()->eq('ecs.emailCampaign', ':emailCampaign'))
-            ->setParameter('emailCampaign', $emailCampaign);
+            ->setParameter('emailCampaign', $emailCampaign->getId(), Types::INTEGER);
 
         return $qb->getQuery()->getSingleResult();
     }

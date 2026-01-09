@@ -41,7 +41,7 @@ class TrackingEventSummaryRepository extends EntityRepository
             ->andWhere('trackingEvent.website IS NOT NULL')
             ->andWhere('campaignCodeHistory.campaign = :campaign')
             ->andWhere('DATE(trackingEvent.loggedAt) < DATE(:today)')
-            ->setParameter('campaign', $campaign)
+            ->setParameter('campaign', $campaign->getId(), Types::INTEGER)
             ->setParameter('today', $today, Types::DATETIME_MUTABLE)
             ->groupBy('trackingEvent.name, trackingEvent.website, campaignCodeHistory.code, loggedAtDate');
 

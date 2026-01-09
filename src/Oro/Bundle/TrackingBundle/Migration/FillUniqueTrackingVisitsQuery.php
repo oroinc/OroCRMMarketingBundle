@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\TrackingBundle\Migration;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
@@ -102,7 +102,7 @@ SQL;
     {
         $timezone = $this->getTimezone($logger);
         if ($timezone) {
-            if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+            if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
                 return sprintf("CONVERT_TZ(%s, 'UTC', '%s')", $fieldName, $timezone);
             } else {
                 return sprintf('"timestamp"(%s) AT TIME ZONE \'UTC\' AT TIME ZONE \'%s\'', $fieldName, $timezone);

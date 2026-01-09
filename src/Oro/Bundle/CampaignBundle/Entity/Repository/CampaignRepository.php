@@ -38,7 +38,7 @@ class CampaignRepository extends EntityRepository
         $qb->select('campaignCodeHistory.code')
             ->from(CampaignCodeHistory::class, 'campaignCodeHistory')
             ->where('campaignCodeHistory.campaign = :campaign')
-            ->setParameter('campaign', $campaign);
+            ->setParameter('campaign', $campaign->getId(), Types::INTEGER);
         if ($excludeCurrent) {
             $qb->andWhere('campaignCodeHistory.code != :code')
                 ->setParameter('code', $campaign->getCode());
