@@ -50,7 +50,8 @@ class PlaceholderFilter implements FeatureToggleableInterface
      */
     public function isApplicable($entity = null)
     {
-        if (!$this->isFeaturesEnabled()
+        if (
+            !$this->isFeaturesEnabled()
             || !is_object($entity)
             || !$this->doctrineHelper->isManageableEntity($entity)
             || $this->doctrineHelper->isNewEntity($entity)

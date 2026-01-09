@@ -145,7 +145,8 @@ class MarketingActivityRepository extends EntityRepository
         foreach ($items as &$item) {
             $item['eventType'] = '';
             foreach ($types as $type) {
-                if ($item['id'] == $type['campaignId']
+                if (
+                    $item['id'] == $type['campaignId']
                     && $item['eventDate'] == $type['actionDate']->format('Y-m-d H:i:s')
                 ) {
                     $item['eventType'] = $type['name'];

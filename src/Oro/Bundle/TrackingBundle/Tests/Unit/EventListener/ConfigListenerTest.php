@@ -33,7 +33,7 @@ class ConfigListenerTest extends \PHPUnit\Framework\TestCase
         $trackingDirSelector = new TrackingDataFolderSelector($logsDir);
         $trackingDir = $trackingDirSelector->retrieve();
 
-        $this->settingsFile = $trackingDir.DIRECTORY_SEPARATOR.'settings.ser';
+        $this->settingsFile = $trackingDir . DIRECTORY_SEPARATOR . 'settings.ser';
 
         $this->configManager = $this->createMock(ConfigManager::class);
         $this->router = $this->createMock(RouterInterface::class);

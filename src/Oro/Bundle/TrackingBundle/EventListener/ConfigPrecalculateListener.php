@@ -25,7 +25,8 @@ class ConfigPrecalculateListener
         }
 
         $statisticToggleKey = 'oro_tracking.precalculated_statistic_enabled';
-        if (($event->isChanged($statisticToggleKey) && $event->getNewValue($statisticToggleKey))
+        if (
+            ($event->isChanged($statisticToggleKey) && $event->getNewValue($statisticToggleKey))
             || $event->isChanged('oro_locale.timezone')
         ) {
             $this->producer->send(TrackingAggregateVisitsTopic::getName(), []);

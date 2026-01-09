@@ -21,9 +21,9 @@ class TrackingDataFolderSelector
     public function retrieve(): string
     {
         if ($this->envVar) {
-            return $this->projectDir.DIRECTORY_SEPARATOR.$this->envVar;
+            return $this->projectDir . DIRECTORY_SEPARATOR . $this->envVar;
         }
 
-        return $this->projectDir.DIRECTORY_SEPARATOR.self::DEFAULT_FOLDER;
+        return $this->projectDir . DIRECTORY_SEPARATOR . self::DEFAULT_FOLDER;
     }
 }

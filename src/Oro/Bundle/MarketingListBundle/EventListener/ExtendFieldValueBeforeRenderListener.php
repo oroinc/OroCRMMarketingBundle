@@ -30,7 +30,8 @@ class ExtendFieldValueBeforeRenderListener
         $contactInformationType = $fieldConfig->get('contact_information');
 
         // if some contact information type is defined -- applies proper template for its value
-        if (null !== $contactInformationType
+        if (
+            null !== $contactInformationType
             && isset($this->contactInformationMap[$contactInformationType])
         ) {
             if ($event->getFieldValue() instanceof Collection) {

@@ -38,11 +38,11 @@ class LoadCampaignSalesData extends AbstractFixture implements DependentFixtureI
         $createdToday = new \DateTime('now', new \DateTimeZone('UTC'));
         $createdPastYear = new \DateTime('-1 year', new \DateTimeZone('UTC'));
 
-        $lead = $this->createLead($campaign, $manager, $prefix.'.lead.now', $createdToday);
-        $this->createOpportunity($manager, $prefix.'.opportunity.now', $lead);
+        $lead = $this->createLead($campaign, $manager, $prefix . '.lead.now', $createdToday);
+        $this->createOpportunity($manager, $prefix . '.opportunity.now', $lead);
 
-        $lead = $this->createLead($campaign, $manager, $prefix.'.lead.past_year', $createdPastYear);
-        $this->createOpportunity($manager, $prefix.'.opportunity.past_year', $lead);
+        $lead = $this->createLead($campaign, $manager, $prefix . '.lead.past_year', $createdPastYear);
+        $this->createOpportunity($manager, $prefix . '.opportunity.past_year', $lead);
 
         $manager->flush();
     }

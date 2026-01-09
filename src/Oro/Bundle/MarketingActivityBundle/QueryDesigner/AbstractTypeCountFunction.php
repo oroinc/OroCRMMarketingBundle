@@ -20,8 +20,8 @@ abstract class AbstractTypeCountFunction implements FunctionInterface
     {
         list($alias, $name) = explode('.', $columnName);
         if ($name === 'type') {
-            // Make sure type table joined when marketing activity is used as virtual relation
-            // @Todo: remove after BAP-13387 is fixed
+            // Make sure type table joined when marketing activity is used as a virtual relation -
+            // problem STR without this workaround is described in BAP-13387.
             $alias = $qc->ensureChildTableJoined($alias, 'type', 'inner');
         }
 

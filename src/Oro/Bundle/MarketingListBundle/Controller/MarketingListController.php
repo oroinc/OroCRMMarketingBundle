@@ -103,7 +103,8 @@ class MarketingListController extends AbstractController
 
     protected function checkMarketingList(MarketingList $marketingList): void
     {
-        if ($marketingList->getEntity() &&
+        if (
+            $marketingList->getEntity() &&
             !$this->getFeatureChecker()->isResourceEnabled($marketingList->getEntity(), 'entities')
         ) {
             throw $this->createNotFoundException();
