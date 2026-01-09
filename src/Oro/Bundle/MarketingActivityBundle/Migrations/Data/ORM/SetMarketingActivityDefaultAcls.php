@@ -4,6 +4,9 @@ namespace Oro\Bundle\MarketingActivityBundle\Migrations\Data\ORM;
 
 use Oro\Bundle\SecurityBundle\Migrations\Data\ORM\AbstractLoadAclData;
 
+/**
+ * Loads default ACL permissions for marketing activity entities during database initialization.
+ */
 class SetMarketingActivityDefaultAcls extends AbstractLoadAclData
 {
     #[\Override]

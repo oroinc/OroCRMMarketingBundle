@@ -8,6 +8,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+/**
+ * Provides common functionality for email campaign transport settings form types.
+ *
+ * This base class manages event subscribers and handles common form events for transport settings.
+ * It provides infrastructure for registering custom event subscribers and cleaning up parent data
+ * during form submission. Subclasses should extend this to create transport-specific settings forms.
+ */
 abstract class AbstractTransportSettingsType extends AbstractType
 {
     /**

@@ -6,6 +6,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
 
+/**
+ * Reads tracking data from import/export context for processing.
+ */
 class ContextReader extends AbstractReader
 {
     /**

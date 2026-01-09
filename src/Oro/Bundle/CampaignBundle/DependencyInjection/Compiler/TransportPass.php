@@ -6,6 +6,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Registers email transport services with the email transport provider during dependency injection compilation.
+ */
 class TransportPass implements CompilerPassInterface
 {
     public const TAG = 'oro_campaign.email_transport';

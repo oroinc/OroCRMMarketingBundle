@@ -8,6 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines the form type for marketing list removed item entity data input.
+ */
 class MarketingListTypeRemovedItemType extends AbstractType
 {
     #[\Override]

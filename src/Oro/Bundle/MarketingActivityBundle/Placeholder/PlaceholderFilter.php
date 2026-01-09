@@ -8,6 +8,9 @@ use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Oro\Bundle\MarketingActivityBundle\Entity\MarketingActivity;
 
+/**
+ * Filters marketing activity placeholders based on feature toggle status and entity applicability.
+ */
 class PlaceholderFilter implements FeatureToggleableInterface
 {
     use FeatureCheckerHolderTrait;

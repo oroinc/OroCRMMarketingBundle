@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines the form type for campaign entity data input and configuration.
+ */
 class CampaignType extends AbstractType
 {
     #[\Override]

@@ -4,6 +4,9 @@ namespace Oro\Bundle\CampaignBundle\Model;
 
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 
+/**
+ * Builds and configures email campaign senders with campaign-specific settings.
+ */
 class EmailCampaignSenderBuilder
 {
     /**

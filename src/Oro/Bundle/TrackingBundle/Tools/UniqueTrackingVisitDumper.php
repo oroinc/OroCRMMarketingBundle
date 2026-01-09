@@ -9,6 +9,9 @@ use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 use Oro\Bundle\TrackingBundle\Migration\FillUniqueTrackingVisitsQuery;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Dumps and aggregates unique tracking visit data from tracking visits into the unique visits table.
+ */
 class UniqueTrackingVisitDumper
 {
     /**

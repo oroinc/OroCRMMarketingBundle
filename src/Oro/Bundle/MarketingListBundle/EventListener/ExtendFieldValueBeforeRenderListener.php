@@ -6,6 +6,9 @@ use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 
+/**
+ * Listens to field value render events and applies contact information field formatting for marketing lists.
+ */
 class ExtendFieldValueBeforeRenderListener
 {
     /**

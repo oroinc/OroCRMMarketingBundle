@@ -6,6 +6,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
+/**
+ * Provides utility methods for working with marketing lists and their associated datagrids.
+ */
 class MarketingListHelper
 {
     public const MARKETING_LIST = 'Oro\Bundle\MarketingListBundle\Entity\MarketingList';

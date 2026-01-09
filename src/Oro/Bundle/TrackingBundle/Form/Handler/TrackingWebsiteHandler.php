@@ -8,6 +8,9 @@ use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * Handles form submission and processing for tracking website entities.
+ */
 class TrackingWebsiteHandler
 {
     use RequestHandlerTrait;

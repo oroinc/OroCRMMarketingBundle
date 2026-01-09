@@ -6,6 +6,9 @@ use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Registers marketing list grid prefixes as unsupported for tag extensions during dependency injection compilation.
+ */
 class GridCompilerPass implements CompilerPassInterface
 {
     #[\Override]

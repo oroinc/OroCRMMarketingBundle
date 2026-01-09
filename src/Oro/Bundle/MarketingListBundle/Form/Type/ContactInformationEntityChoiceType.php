@@ -4,6 +4,9 @@ namespace Oro\Bundle\MarketingListBundle\Form\Type;
 
 use Oro\Bundle\EntityBundle\Form\Type\EntityChoiceType;
 
+/**
+ * Defines a form type for selecting contact information entities in marketing lists.
+ */
 class ContactInformationEntityChoiceType extends EntityChoiceType
 {
     #[\Override]

@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MarketingActivityBundle\Provider;
 
+/**
+ * Normalizes marketing activity data for display in entity sections with count and item details.
+ */
 class MarketingActivitySectionDataNormalizer
 {
     /**

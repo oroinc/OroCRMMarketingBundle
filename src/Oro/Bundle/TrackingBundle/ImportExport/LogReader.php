@@ -6,6 +6,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
 
+/**
+ * Reads tracking event data from log files for import/export processing.
+ */
 class LogReader extends AbstractReader
 {
     /**

@@ -4,6 +4,9 @@ namespace Oro\Bundle\TrackingBundle\Processor;
 
 use DeviceDetector\DeviceDetector;
 
+/**
+ * Factory for creating and caching {@see DeviceDetector} instances for user agent parsing.
+ */
 class DeviceDetectorFactory
 {
     /** @var array Collection of parsed user agents */

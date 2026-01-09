@@ -9,6 +9,9 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
 
+/**
+ * Listens to datagrid build events and configures marketing list item datagrids with appropriate mixins and filters.
+ */
 class MarketingListItemsListener
 {
     /**

@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 
+/**
+ * Repository for accessing and managing unique tracking visit records with visit count aggregation.
+ */
 class UniqueTrackingVisitRepository extends EntityRepository
 {
     /**

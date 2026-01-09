@@ -11,6 +11,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * Listens to email campaign form events and dynamically adds/updates transport-specific settings forms
+ * based on selected transport.
+ */
 class TransportSettingsListener implements EventSubscriberInterface
 {
     /**
