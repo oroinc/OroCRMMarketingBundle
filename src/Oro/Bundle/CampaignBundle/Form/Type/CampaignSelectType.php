@@ -6,6 +6,9 @@ use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines a form type for selecting campaigns with autocomplete and inline creation support.
+ */
 class CampaignSelectType extends AbstractType
 {
     #[\Override]

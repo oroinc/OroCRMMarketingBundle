@@ -4,6 +4,9 @@ namespace Oro\Bundle\TrackingBundle\ImportExport;
 
 use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
 
+/**
+ * Converts tracking data headers and formats for import/export operations.
+ */
 class DataConverter extends AbstractTableDataConverter
 {
     #[\Override]

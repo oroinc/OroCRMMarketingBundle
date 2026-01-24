@@ -5,6 +5,9 @@ namespace Oro\Bundle\CampaignBundle\Provider;
 use Oro\Bundle\CampaignBundle\Transport\TransportInterface;
 use Oro\Bundle\CampaignBundle\Transport\VisibilityTransportInterface;
 
+/**
+ * Provides access to registered email transports with visibility filtering support.
+ */
 class EmailTransportProvider
 {
     /**

@@ -16,6 +16,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines the form type for email campaign entity data input with transport-specific settings support.
+ */
 class EmailCampaignType extends AbstractType
 {
     /**

@@ -6,6 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
+/**
+ * Loads predefined marketing list types during database initialization.
+ */
 class LoadMarketingListTypes extends AbstractFixture
 {
     /**

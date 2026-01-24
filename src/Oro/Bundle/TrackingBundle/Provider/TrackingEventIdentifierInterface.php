@@ -5,6 +5,9 @@ namespace Oro\Bundle\TrackingBundle\Provider;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
 
+/**
+ * Defines the contract for identifying and processing tracking events to associate them with entities.
+ */
 interface TrackingEventIdentifierInterface
 {
     /**

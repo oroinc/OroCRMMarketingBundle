@@ -7,6 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines a form type for selecting email transports with visibility filtering.
+ */
 class EmailTransportSelectType extends AbstractType
 {
     /**

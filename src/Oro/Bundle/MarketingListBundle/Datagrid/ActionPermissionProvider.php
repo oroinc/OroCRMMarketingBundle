@@ -4,6 +4,9 @@ namespace Oro\Bundle\MarketingListBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
+/**
+ * Provides action permissions for marketing list items based on subscription status.
+ */
 class ActionPermissionProvider
 {
     /**

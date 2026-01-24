@@ -12,6 +12,9 @@ use Oro\Bundle\PlatformBundle\EventListener\AbstractDemoDataFixturesListener;
 use Oro\Bundle\PlatformBundle\Manager\OptionalListenerManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Listens to demo data fixture events and triggers marketing list updates for demo data entities.
+ */
 class UpdateMarketingListDemoDataFixturesListener extends AbstractDemoDataFixturesListener
 {
     /** @var EntityProvider */

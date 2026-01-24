@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MarketingListBundle\Entity;
 
+/**
+ * Defines the contract for entities that track state changes in marketing lists.
+ */
 interface MarketingListStateItemInterface
 {
     /**

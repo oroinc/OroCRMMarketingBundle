@@ -8,6 +8,9 @@ use Oro\Bundle\TrackingBundle\Entity\Repository\UniqueTrackingVisitRepository;
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
 use Oro\Bundle\TrackingBundle\Entity\UniqueTrackingVisit;
 
+/**
+ * Listens to tracking visit entity lifecycle events and logs unique visits based on configuration.
+ */
 class TrackingVisitEntityListener
 {
     /**

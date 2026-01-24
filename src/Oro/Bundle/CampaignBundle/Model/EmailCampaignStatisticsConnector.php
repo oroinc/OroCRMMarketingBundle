@@ -8,6 +8,9 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListItemConnector;
 
+/**
+ * Connects email campaign statistics with marketing list items and provides statistics retrieval functionality.
+ */
 class EmailCampaignStatisticsConnector
 {
     /**

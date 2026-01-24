@@ -8,6 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines the form type for marketing list unsubscribed item entity data input.
+ */
 class MarketingListTypeUnsubscribedItemType extends AbstractType
 {
     #[\Override]

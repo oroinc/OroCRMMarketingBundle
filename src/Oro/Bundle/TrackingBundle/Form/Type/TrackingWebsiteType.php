@@ -7,6 +7,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Defines the form type for tracking website entity data input and configuration.
+ */
 class TrackingWebsiteType extends AbstractType
 {
     const NAME = 'oro_tracking_website';

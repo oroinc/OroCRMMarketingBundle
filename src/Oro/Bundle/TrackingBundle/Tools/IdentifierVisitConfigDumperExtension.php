@@ -9,6 +9,9 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\TrackingBundle\Migration\Extension\IdentifierEventExtension;
 use Oro\Bundle\TrackingBundle\Provider\TrackingEventIdentificationProvider;
 
+/**
+ * Extends entity config dumper to build tracking event identifier associations during schema generation.
+ */
 class IdentifierVisitConfigDumperExtension extends AbstractEntityConfigDumperExtension
 {
     /** @var  TrackingEventIdentificationProvider */

@@ -4,6 +4,9 @@ namespace Oro\Bundle\MarketingActivityBundle\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Applies campaign filters to query builders for the marketing activities section.
+ */
 class MarketingActivitiesSectionFilterHelper
 {
     /**
