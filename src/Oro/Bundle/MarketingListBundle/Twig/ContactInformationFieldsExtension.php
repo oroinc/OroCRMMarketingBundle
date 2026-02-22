@@ -14,39 +14,20 @@ use Twig\TwigFunction;
  */
 class ContactInformationFieldsExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
-    /** @var ContainerInterface */
-    protected $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @return ContactInformationFieldHelper
-     */
-    protected function getHelper()
-    {
-        return $this->container->get('oro_marketing_list.contact_information_field_helper');
+    public function __construct(
+        private readonly ContainerInterface $container
+    ) {
     }
 
     #[\Override]
     public function getFunctions()
     {
         return [
-            new TwigFunction(
-                'get_contact_information_fields_info',
-                [$this, 'getContactInformationFieldsInfo']
-            )
+            new TwigFunction('get_contact_information_fields_info', [$this, 'getContactInformationFieldsInfo'])
         ];
     }
 
-    /**
-     * @param string $entityClass
-     *
-     * @return array
-     */
-    public function getContactInformationFieldsInfo($entityClass)
+    public function getContactInformationFieldsInfo(?string $entityClass): array
     {
         if (!$entityClass) {
             return [];
@@ -59,7 +40,12 @@ class ContactInformationFieldsExtension extends AbstractExtension implements Ser
     public static function getSubscribedServices(): array
     {
         return [
-            'oro_marketing_list.contact_information_field_helper' => ContactInformationFieldHelper::class,
+            ContactInformationFieldHelper::class
         ];
+    }
+
+    private function getHelper(): ContactInformationFieldHelper
+    {
+        return $this->container->get(ContactInformationFieldHelper::class);
     }
 }
