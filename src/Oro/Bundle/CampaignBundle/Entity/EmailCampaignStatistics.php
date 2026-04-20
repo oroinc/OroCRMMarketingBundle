@@ -289,9 +289,6 @@ class EmailCampaignStatistics implements ExtendEntityInterface
         return $this;
     }
 
-    /**
-     * Pre persist event handler
-     */
     #[ORM\PrePersist]
     public function prePersist()
     {

@@ -92,9 +92,6 @@ class MarketingListUnsubscribedItem implements MarketingListStateItemInterface
         return $this->createdAt;
     }
 
-    /**
-     * Pre persist event listener
-     */
     #[ORM\PrePersist]
     public function beforeSave()
     {

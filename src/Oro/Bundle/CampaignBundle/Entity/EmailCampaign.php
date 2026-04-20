@@ -108,9 +108,6 @@ class EmailCampaign implements ExtendEntityInterface
     #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.updated_at']])]
     protected ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * Pre persist event handler
-     */
     #[ORM\PrePersist]
     public function prePersist()
     {
@@ -118,9 +115,6 @@ class EmailCampaign implements ExtendEntityInterface
         $this->updatedAt = clone $this->createdAt;
     }
 
-    /**
-     * Pre update event handler
-     */
     #[ORM\PreUpdate]
     public function preUpdate()
     {

@@ -106,9 +106,6 @@ class Campaign implements ExtendEntityInterface
     #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     protected ?OrganizationInterface $organization = null;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->reportPeriod = self::PERIOD_DAILY;
@@ -219,9 +216,6 @@ class Campaign implements ExtendEntityInterface
         return $this->owner;
     }
 
-    /**
-     * Pre persist event handler
-     */
     #[ORM\PrePersist]
     public function prePersist()
     {
@@ -230,9 +224,6 @@ class Campaign implements ExtendEntityInterface
         $this->updatedAt = clone $this->createdAt;
     }
 
-    /**
-     * Pre update event handler
-     */
     #[ORM\PreUpdate]
     public function preUpdate()
     {

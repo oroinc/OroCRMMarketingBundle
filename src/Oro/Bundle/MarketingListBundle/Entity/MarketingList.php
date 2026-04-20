@@ -368,9 +368,6 @@ class MarketingList implements ExtendEntityInterface
         return $this->lastRun;
     }
 
-    /**
-     * Pre persist event listener
-     */
     #[ORM\PrePersist]
     public function beforeSave()
     {
@@ -378,9 +375,6 @@ class MarketingList implements ExtendEntityInterface
         $this->updatedAt = clone $this->createdAt;
     }
 
-    /**
-     * Pre update event handler
-     */
     #[ORM\PreUpdate]
     public function doUpdate()
     {
