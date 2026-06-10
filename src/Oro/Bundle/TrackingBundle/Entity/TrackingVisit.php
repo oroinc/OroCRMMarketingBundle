@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingVisit;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitRepository;
@@ -25,7 +26,10 @@ use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitRepository;
 #[ORM\Index(columns: ['user_identifier'], name: 'visit_userIdentifier_idx')]
 #[ORM\Index(columns: ['website_id', 'first_action_time'], name: 'website_first_action_time_idx')]
 #[ORM\HasLifecycleCallbacks]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-external-link'],
+    'email' => ['available_in_template' => true],
+])]
 class TrackingVisit implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
@@ -35,61 +39,80 @@ class TrackingVisit implements ExtendEntityInterface
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
     #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingWebsite $trackingWebsite = null;
 
     #[ORM\Column(name: 'visitor_uid', type: Types::STRING, length: 255)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $visitorUid = null;
 
     #[ORM\Column(name: 'user_identifier', type: Types::STRING, length: 255)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $userIdentifier = null;
 
     #[ORM\Column(name: 'first_action_time', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $firstActionTime = null;
 
     #[ORM\Column(name: 'last_action_time', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $lastActionTime = null;
 
     #[ORM\Column(name: 'parsed_uid', type: Types::INTEGER, length: 255, nullable: false, options: ['default' => 0])]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $parsedUID = 0;
 
     #[ORM\Column(name: 'identifier_detected', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $identifierDetected = false;
 
     #[ORM\Column(name: 'parsing_count', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $parsingCount = 0;
 
     #[ORM\Column(name: 'ip', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $ip = null;
 
     #[ORM\Column(name: 'client', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $client = null;
 
     #[ORM\Column(name: 'client_version', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $clientVersion = null;
 
     #[ORM\Column(name: 'client_type', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $clientType = null;
 
     #[ORM\Column(name: 'os', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $os = null;
 
     #[ORM\Column(name: 'os_version', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $osVersion = null;
 
     #[ORM\Column(name: 'desktop', type: Types::BOOLEAN, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $desktop = null;
 
     #[ORM\Column(name: 'mobile', type: Types::BOOLEAN, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $mobile = null;
 
     #[ORM\Column(name: 'bot', type: Types::BOOLEAN, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $bot = null;
 
     #[ORM\Column(name: 'code', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $code = null;
 
     /**
