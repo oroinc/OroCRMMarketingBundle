@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Extend\Entity\Autocomplete\OroTrackingBundle_Entity_TrackingVisitEvent;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
 use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitEventRepository;
@@ -22,7 +23,10 @@ use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingVisitEventRepository;
 #[ORM\Entity(repositoryClass: TrackingVisitEventRepository::class)]
 #[ORM\Table(name: 'oro_tracking_visit_event')]
 #[ORM\HasLifecycleCallbacks]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-external-link'],
+    'email' => ['available_in_template' => true],
+])]
 class TrackingVisitEvent implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
@@ -32,28 +36,35 @@ class TrackingVisitEvent implements ExtendEntityInterface
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: TrackingVisit::class)]
     #[ORM\JoinColumn(name: 'visit_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingVisit $visit = null;
 
     #[ORM\ManyToOne(targetEntity: TrackingEventDictionary::class, fetch: 'EXTRA_LAZY', inversedBy: 'visitEvents')]
     #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingEventDictionary $event = null;
 
     #[ORM\OneToOne(targetEntity: TrackingEvent::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(name: 'web_event_id', referencedColumnName: 'id')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingEvent $webEvent = null;
 
     #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
     #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingWebsite $website = null;
 
     #[ORM\Column(name: 'parsing_count', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $parsingCount = 0;
 
     #[ORM\Column(name: 'code', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $code = null;
 
     /**
