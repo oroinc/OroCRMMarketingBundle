@@ -24,7 +24,11 @@ use Oro\Bundle\TrackingBundle\Entity\Repository\TrackingEventRepository;
 #[ORM\Index(columns: ['parsed'], name: 'event_parsed_idx')]
 #[ORM\Index(columns: ['code'], name: 'code_idx')]
 #[ORM\HasLifecycleCallbacks]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link'], 'grid' => ['default' => 'tracking-events-grid']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-external-link'],
+    'grid' => ['default' => 'tracking-events-grid'],
+    'email' => ['available_in_template' => true],
+])]
 class TrackingEvent implements ExtendEntityInterface
 {
     use ExtendEntityTrait;
@@ -34,44 +38,58 @@ class TrackingEvent implements ExtendEntityInterface
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
     #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingWebsite $website = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $name = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(name: 'value', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $value;
 
     #[ORM\Column(name: 'user_identifier', type: Types::STRING, length: 255)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $userIdentifier = null;
 
     #[ORM\Column(name: 'url', type: Types::TEXT)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $url = null;
 
     #[ORM\Column(name: 'title', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $title = null;
 
     #[ORM\Column(name: 'code', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $code = null;
 
     #[ORM\Column(name: 'parsed', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $parsed = false;
 
     #[ORM\OneToOne(mappedBy: 'event', targetEntity: TrackingData::class)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingData $eventData = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    #[ConfigField(defaultValues: [
+        'entity' => ['label' => 'oro.ui.created_at'],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'logged_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $loggedAt = null;
 
     #[ORM\PrePersist]

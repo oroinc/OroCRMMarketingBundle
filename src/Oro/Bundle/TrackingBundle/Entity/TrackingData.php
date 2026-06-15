@@ -14,24 +14,32 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 #[ORM\Entity]
 #[ORM\Table(name: 'oro_tracking_data')]
 #[ORM\HasLifecycleCallbacks]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-external-link'],
+    'email' => ['available_in_template' => true],
+])]
 class TrackingData
 {
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\Column(name: 'data', type: Types::TEXT)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $data = null;
 
     #[ORM\OneToOne(inversedBy: 'eventData', targetEntity: TrackingEvent::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['full' => true]])]
+    #[ConfigField(defaultValues: ['importexport' => ['full' => true], 'email' => ['available_in_template' => true]])]
     protected ?TrackingEvent $event = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    #[ConfigField(defaultValues: [
+        'entity' => ['label' => 'oro.ui.created_at'],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\PrePersist]

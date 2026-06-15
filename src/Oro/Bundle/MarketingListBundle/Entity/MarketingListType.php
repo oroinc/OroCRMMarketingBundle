@@ -5,6 +5,7 @@ namespace Oro\Bundle\MarketingListBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 
 /**
 * Entity that represents Marketing List Type
@@ -21,9 +22,11 @@ class MarketingListType
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 32)]
     #[ORM\Id]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $name = null;
 
     #[ORM\Column(name: 'label', type: Types::STRING, length: 255, unique: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $label = null;
 
     /**
