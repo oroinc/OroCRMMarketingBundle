@@ -27,7 +27,10 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  *      },
  *      "grid"={
  *          "default"="tracking-events-grid"
- *     }
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
+ *      }
  *  }
  * )
  */

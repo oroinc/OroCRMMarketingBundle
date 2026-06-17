@@ -14,6 +14,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *  defaultValues={
  *      "entity"={
  *          "icon"="fa-external-link"
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
  *      }
  *  }
  * )

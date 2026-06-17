@@ -34,7 +34,10 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      },
  *      "grid"={
  *          "default"="website-grid"
- *     }
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
+ *      }
  *  }
  * )
  */

@@ -21,6 +21,9 @@ use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityTrait;
  *  defaultValues={
  *      "entity"={
  *          "icon"="fa-external-link"
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
  *      }
  *  }
  * )
