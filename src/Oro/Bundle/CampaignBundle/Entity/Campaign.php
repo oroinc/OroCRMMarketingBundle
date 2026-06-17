@@ -50,6 +50,9 @@ use Oro\Bundle\UserBundle\Entity\User;
  *          },
  *          "merge"={
  *              "enable"=true
+ *          },
+ *          "email"={
+ *              "available_in_template"=true
  *          }
  *      }
  * )

@@ -20,6 +20,9 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingVisit;
  *  defaultValues={
  *      "entity"={
  *          "icon"="fa-external-link"
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
  *      }
  *  }
  * )

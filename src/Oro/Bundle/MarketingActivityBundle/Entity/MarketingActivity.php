@@ -9,6 +9,8 @@ use Oro\Bundle\MarketingActivityBundle\Model\ExtendMarketingActivity;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Store marketing activity in database.
+ *
  * @ORM\Entity(repositoryClass="Oro\Bundle\MarketingActivityBundle\Entity\Repository\MarketingActivityRepository")
  * @ORM\Table(
  *     name="orocrm_marketing_activity",
@@ -35,6 +37,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *          "type"="ACL",
  *          "group_name"="",
  *          "category"="marketing"
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
  *      }
  *  }
  * )

@@ -26,7 +26,10 @@ use Oro\Bundle\TrackingBundle\Model\ExtendTrackingEvent;
  *      },
  *      "grid"={
  *          "default"="tracking-events-grid"
- *     }
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
+ *      }
  *  }
  * )
  */
