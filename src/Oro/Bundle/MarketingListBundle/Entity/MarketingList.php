@@ -42,7 +42,8 @@ use Oro\Bundle\UserBundle\Entity\User;
         'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
         'form' => ['form_type' => MarketingListSelectType::class, 'grid_name' => 'oro-marketing-list-select-grid'],
         'grid' => ['default' => 'oro-marketing-list-grid'],
-        'tag' => ['enabled' => true]
+        'tag' => ['enabled' => true],
+        'email' => ['available_in_template' => true],
     ]
 )]
 class MarketingList implements ExtendEntityInterface
@@ -52,23 +53,29 @@ class MarketingList implements ExtendEntityInterface
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $name = null;
 
     #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $description = null;
 
     #[ORM\Column(name: 'entity', type: Types::STRING, length: 255, unique: false, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $entity = null;
 
     #[ORM\ManyToOne(targetEntity: MarketingListType::class)]
     #[ORM\JoinColumn(name: 'type', referencedColumnName: 'name', nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?MarketingListType $type = null;
 
     #[ORM\ManyToOne(targetEntity: Segment::class, cascade: ['all'])]
     #[ORM\JoinColumn(name: 'segment_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Segment $segment = null;
 
     /**
@@ -80,6 +87,7 @@ class MarketingList implements ExtendEntityInterface
         cascade: ['all'],
         orphanRemoval: true
     )]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Collection $marketingListItems = null;
 
     /**
@@ -91,6 +99,7 @@ class MarketingList implements ExtendEntityInterface
         cascade: ['all'],
         orphanRemoval: true
     )]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Collection $marketingListUnsubscribedItems = null;
 
     /**
@@ -102,25 +111,35 @@ class MarketingList implements ExtendEntityInterface
         cascade: ['all'],
         orphanRemoval: true
     )]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Collection $marketingListRemovedItems = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?User $owner = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?OrganizationInterface $organization = null;
 
     #[ORM\Column(name: 'last_run', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $lastRun = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.created_at']])]
+    #[ConfigField(defaultValues: [
+        'entity' => ['label' => 'oro.ui.created_at'],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE)]
-    #[ConfigField(defaultValues: ['entity' => ['label' => 'oro.ui.updated_at']])]
+    #[ConfigField(defaultValues: [
+        'entity' => ['label' => 'oro.ui.updated_at'],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?\DateTimeInterface $updatedAt = null;
 
     /**
@@ -130,6 +149,7 @@ class MarketingList implements ExtendEntityInterface
      * @var bool
      */
     #[ORM\Column(name: 'union_contacted_items', type: Types::BOOLEAN, nullable: false, options: ['default' => true])]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $union = true;
 
     public function __construct()

@@ -41,7 +41,8 @@ use Oro\Bundle\UserBundle\Entity\User;
         'form' => ['form_type' => CampaignSelectType::class, 'grid_name' => 'oro-campaign-grid'],
         'grid' => ['default' => 'oro-campaign-grid'],
         'tag' => ['enabled' => true],
-        'merge' => ['enable' => true]
+        'merge' => ['enable' => true],
+        'email' => ['available_in_template' => true],
     ]
 )]
 class Campaign implements ExtendEntityInterface
@@ -57,53 +58,59 @@ class Campaign implements ExtendEntityInterface
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
-    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true], 'email' => ['available_in_template' => true]])]
     protected ?string $name = null;
 
     #[ORM\Column(name: 'code', type: Types::STRING, length: 255, unique: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $code = null;
 
     /**
      * This field needed as label in related entities drown select
      */
     #[ORM\Column(name: 'combined_name', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $combinedName = null;
 
     #[ORM\Column(name: 'start_date', type: Types::DATE_MUTABLE, nullable: true)]
-    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true], 'email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(name: 'end_date', type: Types::DATE_MUTABLE, nullable: true)]
-    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true], 'email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
-    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true], 'email' => ['available_in_template' => true]])]
     protected ?string $description = null;
 
     /**
      * @var double
      */
     #[ORM\Column(name: 'budget', type: 'money', nullable: true)]
-    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true], 'email' => ['available_in_template' => true]])]
     protected $budget;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    #[ConfigField(defaultValues: ['merge' => ['display' => true]])]
+    #[ConfigField(defaultValues: ['merge' => ['display' => true], 'email' => ['available_in_template' => true]])]
     protected ?User $owner = null;
 
     #[ORM\Column(name: 'report_period', type: Types::STRING, length: 25)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $reportPeriod = null;
 
     #[ORM\Column(name: 'report_refresh_date', type: Types::DATE_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $reportRefreshDate = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?OrganizationInterface $organization = null;
 
     public function __construct()

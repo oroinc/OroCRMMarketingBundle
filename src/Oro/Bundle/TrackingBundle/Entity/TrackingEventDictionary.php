@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 
 /**
 * Entity that represents Tracking Event Dictionary
@@ -14,25 +15,32 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 #[ORM\Entity]
 #[ORM\Table(name: 'oro_tracking_event_dictionary')]
 #[ORM\HasLifecycleCallbacks]
-#[Config(defaultValues: ['entity' => ['icon' => 'fa-external-link']])]
+#[Config(defaultValues: [
+    'entity' => ['icon' => 'fa-external-link'],
+    'email' => ['available_in_template' => true],
+])]
 class TrackingEventDictionary
 {
     #[ORM\Column(name: 'id', type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: TrackingWebsite::class)]
     #[ORM\JoinColumn(name: 'website_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?TrackingWebsite $website = null;
 
     /**
      * @var Collection<int, TrackingVisitEvent>
      **/
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: TrackingVisitEvent::class)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Collection $visitEvents = null;
 
     /**
