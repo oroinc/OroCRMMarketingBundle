@@ -1,4 +1,3 @@
-@regression
 @ticket-BB-23317
 
 Feature: Create marketing list and check multi enum filters
