@@ -2,27 +2,26 @@
 {% import '@OroEmail/macros.html.twig' as email %}
 {% import '@OroEntityConfig/macros.html.twig' as entityConfig %}
 
-<div class="widget-content">
-    <div class="row-fluid form-horizontal">
-        <div class="responsive-block">
-            {{ ui.renderProperty('oro.campaign.name.label'|trans, entity.name) }}
-            {%- set codesData -%}
-                {{ entity.code }}
-                {% if codes_history is not empty %} ({{ codes_history|join(', ') }}) {{ ui.tooltip('oro.campaign.code.tooltip'|trans) }}{% endif %}
-            {%- endset -%}
-            {{ ui.renderHtmlProperty('oro.campaign.code.label'|trans, codesData, null, null, {'dir': 'ltr'}) }}
-            {{ ui.renderSwitchableHtmlProperty('oro.campaign.description.label'|trans, entity.description) }}
-        </div>
+<div class="responsive-with-extra-block">
+    <div class="widget-content">
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ ui.renderProperty('oro.campaign.name.label'|trans, entity.name) }}
+                {%- set codesData -%}
+                    {{ entity.code }}
+                    {% if codes_history is not empty %} ({{ codes_history|join(', ') }}) {{ ui.tooltip('oro.campaign.code.tooltip'|trans) }}{% endif %}
+                {%- endset -%}
+                {{ ui.renderHtmlProperty('oro.campaign.code.label'|trans, codesData, null, null, {'dir': 'ltr'}) }}
+                {{ ui.renderSwitchableHtmlProperty('oro.campaign.description.label'|trans, entity.description) }}
+                {{ ui.renderProperty('oro.campaign.budget.label'|trans, entity.budget|oro_format_currency) }}
+                {{ entityConfig.renderDynamicFields(entity) }}
+            </div>
 
-        <div class="responsive-block">
-            {{ ui.renderProperty('oro.campaign.budget.label'|trans, entity.budget|oro_format_currency) }}
-            {{ ui.renderProperty('oro.campaign.start_date.label'|trans, entity.startDate is empty ? 'N/A'|trans : entity.startDate|oro_format_date) }}
-            {{ ui.renderProperty('oro.campaign.end_date.label'|trans, entity.endDate is empty ? 'N/A'|trans : entity.endDate|oro_format_date) }}
-            {{ ui.renderProperty('oro.campaign.report_period.label'|trans, ('oro.campaign.report_period.' ~ entity.reportPeriod)|trans) }}
-        </div>
-
-        <div class="responsive-block">
-            {{ entityConfig.renderDynamicFields(entity) }}
+            <div class="responsive-block">
+                {{ ui.renderProperty('oro.campaign.start_date.label'|trans, entity.startDate is empty ? 'N/A'|trans : entity.startDate|oro_format_date) }}
+                {{ ui.renderProperty('oro.campaign.end_date.label'|trans, entity.endDate is empty ? 'N/A'|trans : entity.endDate|oro_format_date) }}
+                {{ ui.renderProperty('oro.campaign.report_period.label'|trans, ('oro.campaign.report_period.' ~ entity.reportPeriod)|trans) }}
+            </div>
         </div>
     </div>
 </div>
