@@ -24,5 +24,9 @@ features:
             - Oro\Bundle\MarketingListBundle\Entity\MarketingList
             - Oro\Bundle\MarketingListBundle\Entity\MarketingListItem
             - Oro\Bundle\MarketingListBundle\Entity\MarketingListType
+        datagrids:
+            - oro-base-marketing-list-grid
+            - oro-marketing-list-grid
+            - oro-marketing-list-select-grid
         mq_topics:
             - 'oro_marketing_list.message_queue.job.update_marketing_list'

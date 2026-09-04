@@ -30,6 +30,9 @@ features:
         entities:
             - 'Oro\Bundle\CampaignBundle\Entity\Campaign'
             - 'Oro\Bundle\CampaignBundle\Entity\EmailCampaign'
+        datagrids:
+            - 'oro-campaign-grid'
+            - 'oro-email-campaign-grid'
         navigation_items:
             - 'application_menu > reports_tab > oro.campaign.entity_plural_label_report_tab'
         commands:
