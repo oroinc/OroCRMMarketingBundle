@@ -1,3 +1,4 @@
+@skip-base
 @regression
 @ticket-CRM-8143
 
