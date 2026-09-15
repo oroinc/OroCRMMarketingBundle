@@ -1,3 +1,4 @@
+@skip-base
 @regression
 Feature: System entities should be available as ML targets
   In order to manage marketing lists
