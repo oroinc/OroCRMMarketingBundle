@@ -17,7 +17,7 @@ Feature: System entities should be available as ML targets
   Scenario Outline: Successful creating marketing list based on system entities
     And I go to Marketing/ Marketing Lists
     And I click "Create Marketing List"
-    When I fill form with:
+    When I fill "Marketing List Form" with:
       | Name   | <Marketing List Name> |
       | Entity | <Entity Name>         |
       | Type   | Dynamic               |

@@ -1,5 +1,15 @@
 oro_behat_extension:
   elements:
+    Marketing List Form:
+      selector: 'form[name="oro_marketing_list_form"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Entity:
+            type: xpath
+            locator: '//*[@data-ftid="oro_marketing_list_form_entity"]'
+            element: Select2Entity
+
     Available contact information fields:
       selector: "div[id='contact-information-fields-list']"
     Channel entities:
