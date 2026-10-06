@@ -12,6 +12,10 @@ features:
             - oro_api_delete_tracking_website
         api_resources:
             - Oro\Bundle\TrackingBundle\Entity\TrackingWebsite
+        datagrids:
+            - tracking-events-grid
+            - website-grid
+            - website-tracking-events-grid
         commands:
             - oro:cron:import-tracking
             - oro:cron:tracking:parse
