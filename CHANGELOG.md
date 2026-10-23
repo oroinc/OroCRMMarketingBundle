@@ -19,6 +19,13 @@ The current file describes significant changes in the code that may affect the u
 - [2.2.0](#220-2017-05-31)
 - [2.1.0](#210-2017-03-30)
 
+## UNRELEASED
+
+### Changed
+
+#### CampaignBundle
+* Changed the `oro_email_campaign_send` route (`\Oro\Bundle\CampaignBundle\Controller\EmailCampaignController::sendAction()`): it now requires a valid `X-CSRF-Header` and responds with 403 otherwise. Custom code that calls the route directly must send the header.
+
 ## 6.1.0 (2025-03-31)
 [Show detailed list of changes](incompatibilities-6-1.md)
 
