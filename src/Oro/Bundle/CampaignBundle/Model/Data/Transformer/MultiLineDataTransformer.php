@@ -153,9 +153,10 @@ class MultiLineDataTransformer implements TransformerInterface
         }
         asort($labels);
 
+        // "|" resets the date and time fields missing from the format, which otherwise come from the current time.
         $format = $this->dateFormatMap[$this->period];
-        $start  = \DateTime::createFromFormat($format, reset($labels));
-        $end    = \DateTime::createFromFormat($format, end($labels));
+        $start  = \DateTime::createFromFormat($format . '|', reset($labels));
+        $end    = \DateTime::createFromFormat($format . '|', end($labels));
 
         if (!$start || !$end) {
             return array_unique($labels);
