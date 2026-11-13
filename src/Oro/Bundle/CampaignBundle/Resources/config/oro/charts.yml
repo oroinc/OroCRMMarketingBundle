@@ -7,6 +7,7 @@ charts:
                 label: oro.campaign.trackingevent.report.date.label
                 required: true
                 default_type: string
+                type: month
                 field_name: logTime
             value:
                 name: value
