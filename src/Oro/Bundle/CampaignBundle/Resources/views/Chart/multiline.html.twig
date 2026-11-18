@@ -25,175 +25,175 @@
         </div>
     </div>
     <script type="text/javascript">
-        loadModules(['jquery', 'oroui/js/layout', 'flotr2', 'orochart/js/data_formatter', 'oroui/js/mediator'],
-            function ($, layout, Flotr, dataFormatter, mediator) {
-                $(function () {
-                    var $chart = $('#{{ containerId }}-chart');
-                    var $widgetContent = $chart.parents('.chart-container').parent();
-                    var setChartSize = function () {
-                        var chartWidth = Math.round($widgetContent.width() * 0.75);
-                        if (chartWidth != $chart.width()) {
-                            $chart.width(chartWidth);
-                            $chart.height(Math.min(Math.round(chartWidth * 0.4), 450));
+        loadModules(['jquery', 'flotr2', 'orochart/js/data_formatter', 'oroui/js/mediator'],
+            function($, Flotr, dataFormatter, mediator) {
+                $(function() {
+                    const chartElement = document.querySelector('#{{ containerId }}-chart');
+                    const widgetElement = chartElement.closest('.chart-container').parentElement;
+
+                    const setChartSize = () => {
+                        const chartWidth = Math.round(widgetElement.offsetWidth * 0.75);
+
+                        if (chartWidth !== chartElement.offsetWidth) {
+                            chartElement.style.width = `${chartWidth}px`;
+                            chartElement.style.height = `${Math.min(Math.round(chartWidth * 0.4), 450)}px`;
+
                             return true;
                         }
+
                         return false;
                     };
-                    var setChartContainerSize = function () {
-                        $chart.closest('.clearfix').width($chart.width());
+
+                    const setChartContainerSize = () => {
+                        chartElement.closest('.clearfix').style.width = `${chartElement.offsetWidth}px`;
                     };
-                    var drawChart = function () {
-                        var xFormat = {{ options.data_schema.label.type|json_encode|raw }};
-                        var yFormat = {{ options.data_schema.value.type|json_encode|raw }};
-                        if (!$chart.get(0).clientWidth) {
+
+                    const drawChart = () => {
+                        const xFormat = {{ options.data_schema.label.type|json_encode|raw }};
+                        const yFormat = {{ options.data_schema.value.type|json_encode|raw }};
+                        const xTitle = {{ options.data_schema.label.label|trans|json_encode|raw }};
+                        const yTitle = {{ options.data_schema.value.label|trans|json_encode|raw }};
+                        const connectDots = {{ options.settings.connect_dots_with_line|json_encode|raw }};
+                        const colors = {{ config.default_settings.chartColors|json_encode|raw }};
+                        const rawData = {{ data|json_encode|raw }};
+                        const length = Object.values(rawData)[0]?.length ?? 0;
+
+                        if (!chartElement.clientWidth) {
                             return;
                         }
 
-                        var rawData = {{ data|json_encode|raw }};
-                        var length = _.size(rawData[_.first(_.keys(rawData))]);
-
                         if (dataFormatter.isValueNumerical(xFormat)) {
-                            var sort = function (rawData) {
-                                rawData.sort(function (first, second) {
-                                    if (first.label == null) {
-                                        return -1;
-                                    }
-                                    if (second.label == null) {
-                                        return 1;
-                                    }
-                                    var firstLabel = dataFormatter.parseValue(first.label, xFormat);
-                                    var secondLabel = dataFormatter.parseValue(second.label, xFormat);
+                            Object.values(rawData).forEach(data => {
+                                data.sort((first, second) => {
+                                    if (first.label == null) return -1;
+                                    if (second.label == null) return 1;
+
+                                    const firstLabel = dataFormatter.parseValue(first.label, xFormat);
+                                    const secondLabel = dataFormatter.parseValue(second.label, xFormat);
+
                                     return firstLabel - secondLabel;
                                 });
-                            };
-
-                            _.each(rawData, sort);
+                            });
                         }
 
-                        var getXLabel = function (data) {
-                            var label = dataFormatter.formatValue(data, xFormat);
+                        const getXLabel = data => {
+                            let label = dataFormatter.formatValue(data, xFormat);
+
                             if (label === null) {
-                                var number = parseInt(data);
+                                const number = parseInt(data);
+
                                 if (rawData.length > number) {
                                     label = rawData[number]['label'] === null ? '{{ 'N/A'|trans }}' : rawData[number]['label'];
                                 } else {
                                     label = '';
                                 }
                             }
+
                             return label;
                         };
 
-                        var getYLabel = function (data) {
-                            var label = dataFormatter.formatValue(data, yFormat);
+                        const getYLabel = data => {
+                            let label = dataFormatter.formatValue(data, yFormat);
+
                             if (label === null) {
-                                var number = parseInt(data);
+                                const number = parseInt(data);
+
                                 if (rawData.length > number) {
                                     label = rawData[data]['value'] === null ? '{{ 'N/A'|trans }}' : rawData[data]['value'];
                                 } else {
                                     label = '';
                                 }
                             }
+
                             return label;
                         };
 
-                        var connectDots = {{ options.settings.connect_dots_with_line|json_encode|raw }};
-                        var colors = {{ config.default_settings.chartColors|json_encode|raw }};
+                        const makeChart = (data, count, key) => {
+                            let prevYValue = 0;
 
-                        var makeChart = function (rawData, count, key) {
-                            var chartData = [];
-                            var prevYValue = 0;
+                            const chartData = data.map(({ value, label }, index) => {
+                                const parsedY = dataFormatter.parseValue(value, yFormat);
+                                const yValue = (parsedY ?? index) + prevYValue;
 
-                            for (var i in rawData) {
-                                var yValue = dataFormatter.parseValue(rawData[i]['value'], yFormat);
-                                yValue = yValue === null ? parseInt(i) : yValue;
-                                yValue = yValue + prevYValue;
-                                var xValue = dataFormatter.parseValue(rawData[i]['label'], xFormat);
-                                xValue = xValue === null ? parseInt(i) : xValue;
+                                const parsedX = dataFormatter.parseValue(label, xFormat);
+                                const xValue = parsedX ?? index;
 
-                                var item = [xValue, yValue];
-                                chartData.push(item);
                                 prevYValue = yValue;
-                            }
+
+                                return [xValue, yValue];
+                            });
 
                             return {
                                 label: key,
                                 data: chartData,
-                                color: colors[Math.ceil(colors.length/count)],
+                                color: colors[count % colors.length],
                                 markers: { show: false },
-                                points: { show: true }
+                                points: { show: true },
                             };
                         };
 
-                        var charts = [];
-                        var count = 0;
+                        const entries = Array.isArray(rawData)
+                            ? rawData.map((data, index) => [index, data])
+                            : Object.entries(rawData);
 
-                        _.each(rawData, function (rawData, key) {
-                            var result = makeChart(rawData, count, key);
-                            count++;
-
-                            charts.push(result);
-                        });
+                        const charts = entries.map(([key, data], index) => makeChart(data, index, key));
 
                         Flotr.draw(
-                                $chart.get(0),
-                                charts,
-                                {
-                                    colors: colors,
-                                    fontColor: {{ options.settings.chartFontColor|json_encode|raw }},
-                                    fontSize: {{ options.settings.chartFontSize|json_encode|raw }},
-                                    lines: {
-                                        show: connectDots
-                                    },
-                                    mouse: {
-                                        track: true,
-                                        relative: true,
-                                        trackFormatter: function (pointData) {
-                                            return {{ options.data_schema.label.label|trans|json_encode|raw }}
-                                                + ': ' + getXLabel(pointData.x)
-                                                + ';</br>' + {{ options.data_schema.value.label|trans|json_encode|raw }}
-                                                + ': ' + getYLabel(pointData.y);
-                                        }
-                                    },
-                                    yaxis: {
-                                        autoscale: true,
-                                        autoscaleMargin: 1,
-                                        tickFormatter: function (y) {
-                                            return getYLabel(y);
-                                        },
-                                        title: {{ options.data_schema.value.label|trans|json_encode|raw }}
-                                    },
-                                    xaxis: {
-                                        autoscale: true,
-                                        autoscaleMargin: 0,
-                                        labelsAngle: 45,
-                                        mode: 'time',
-                                        noTicks: length * 2,
-                                        tickFormatter: function (x) {
-                                            return getXLabel(x);
-                                        },
-                                        title: {{ options.data_schema.label.label|trans|json_encode|raw }}
-                                    },
-                                    HtmlText: false,
-                                    grid: {
-                                        verticalLines: false,
-                                        labelMargin: 10
-                                    },
-                                    legend: {
-                                        show: true,
-                                        noColumns: 1,
-                                        position: 'nw'
+                            chartElement,
+                            charts,
+                            {
+                                colors: colors,
+                                fontColor: {{ options.settings.chartFontColor|json_encode|raw }},
+                                fontSize: {{ options.settings.chartFontSize|json_encode|raw }},
+                                lines: {
+                                    show: connectDots
+                                },
+                                mouse: {
+                                    track: true,
+                                    relative: true,
+                                    trackFormatter: pointData => {
+                                        return `
+                                            ${xTitle}: ${getXLabel(pointData.x)};
+                                            </br> ${yTitle}: ${getYLabel(pointData.y)}
+                                        `;
                                     }
+                                },
+                                yaxis: {
+                                    autoscale: true,
+                                    autoscaleMargin: 1,
+                                    tickFormatter: y => getYLabel(y),
+                                    title: yTitle
+                                },
+                                xaxis: {
+                                    autoscale: true,
+                                    autoscaleMargin: 0,
+                                    labelsAngle: 45,
+                                    mode: 'time',
+                                    noTicks: length * 2,
+                                    tickFormatter: x => getXLabel(x),
+                                    title: xTitle
+                                },
+                                HtmlText: false,
+                                grid: {
+                                    verticalLines: false,
+                                    labelMargin: 10
+                                },
+                                legend: {
+                                    show: true,
+                                    noColumns: 1,
+                                    position: 'nw'
                                 }
+                            }
                         );
                     };
 
-                    mediator.on('page:afterChange', function(){
+                    mediator.on('page:afterChange', function() {
                         setChartSize();
                         drawChart();
                         setChartContainerSize();
                     });
 
-                    $(window).on('resize', function () {
+                    $(window).on('resize', function() {
                         if (setChartSize()) {
                             drawChart();
                             setChartContainerSize();

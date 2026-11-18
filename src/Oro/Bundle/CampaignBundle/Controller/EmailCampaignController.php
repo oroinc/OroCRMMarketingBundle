@@ -11,6 +11,7 @@ use Oro\Bundle\CampaignBundle\Form\Type\EmailCampaignType;
 use Oro\Bundle\CampaignBundle\Model\EmailCampaignSenderBuilder;
 use Oro\Bundle\SecurityBundle\Attribute\Acl;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\CsrfProtection;
 use Oro\Bundle\UIBundle\Route\Router;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -147,6 +148,7 @@ class EmailCampaignController extends AbstractController
         description: 'oro.campaign.acl.send_emails.description',
         category: 'marketing'
     )]
+    #[CsrfProtection]
     public function sendAction(EmailCampaign $emailCampaign, Request $request)
     {
         if ($this->isManualSendAllowed($emailCampaign)) {
